@@ -1,13 +1,22 @@
-[14:29:43] [Client thread/INFO]: Setting user: Player576
-[14:29:43] [Client thread/INFO]: (Session ID is token:0:Player576)
-[14:29:44] [Client thread/INFO]: LWJGL Version: 2.9.4
-[14:29:44] [Client thread/INFO]: Reloading ResourceManager: Default
-[14:29:44] [Sound Library Loader/INFO]: Starting up SoundSystem...
-[14:29:44] [Thread-6/INFO]: Initializing LWJGL OpenAL
-[14:29:44] [Thread-6/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[14:29:45] [Thread-6/INFO]: OpenAL initialized.
-[14:29:45] [Sound Library Loader/INFO]: Sound engine started
-[14:29:46] [Client thread/INFO]: Created: 512x512 textures-atlas
-[14:30:46] [Client thread/INFO]: Stopping!
-[14:30:46] [Client thread/INFO]: SoundSystem shutting down...
-[14:30:46] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com
+[15:22:07] [Client thread/INFO]: Setting user: Player320
+[15:22:07] [Client thread/INFO]: (Session ID is token:0:Player320)
+[15:22:07] [Client thread/INFO]: LWJGL Version: 2.9.4
+[15:22:08] [Client thread/INFO]: Reloading ResourceManager: Default
+[15:22:08] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[15:22:08] [Thread-6/INFO]: Initializing LWJGL OpenAL
+[15:22:08] [Thread-6/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[15:22:08] [Thread-6/INFO]: OpenAL initialized.
+[15:22:08] [Sound Library Loader/INFO]: Sound engine started
+[15:22:09] [Client thread/INFO]: Created: 512x512 textures-atlas
+[15:26:46] [Client thread/INFO]: Connecting to anticheat-test.com., 25565
+[15:26:47] [Client thread/INFO]: [CHAT]                                      
+[15:26:47] [Client thread/INFO]: [CHAT]  
+[15:26:47] [Client thread/INFO]: [CHAT] our Discord server got terminated, relink with /discord
+[15:26:47] [Client thread/INFO]: [CHAT]  
+[15:26:50] [Client thread/INFO]: [CHAT] use /help for commands and stuff
+[15:26:53] [Client thread/INFO]: [CHAT] Connecting to grim
+[15:26:54] [Client thread/INFO]: [CHAT]  
+[15:26:54] [Client thread/INFO]: [CHAT] our Discord server got terminated, relink with /discord
+[15:26:54] [Client thread/INFO]: [CHAT]  
+[15:26:54] [Client thread/INFO]: [CHAT] Alerts are filtered by default to see everyone's alerts type /filter
+[15:26:56] [Client thread/INFO]: [CHAT] use /help for commands and stuff
