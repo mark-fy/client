@@ -9,3 +9,4 @@
 out/
 run/
 *.log
+run/logs/latest.log
