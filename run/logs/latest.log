@@ -1,22 +1,37 @@
-[15:22:07] [Client thread/INFO]: Setting user: Player320
-[15:22:07] [Client thread/INFO]: (Session ID is token:0:Player320)
-[15:22:07] [Client thread/INFO]: LWJGL Version: 2.9.4
-[15:22:08] [Client thread/INFO]: Reloading ResourceManager: Default
-[15:22:08] [Sound Library Loader/INFO]: Starting up SoundSystem...
-[15:22:08] [Thread-6/INFO]: Initializing LWJGL OpenAL
-[15:22:08] [Thread-6/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[15:22:08] [Thread-6/INFO]: OpenAL initialized.
-[15:22:08] [Sound Library Loader/INFO]: Sound engine started
-[15:22:09] [Client thread/INFO]: Created: 512x512 textures-atlas
-[15:26:46] [Client thread/INFO]: Connecting to anticheat-test.com., 25565
-[15:26:47] [Client thread/INFO]: [CHAT]                                      
-[15:26:47] [Client thread/INFO]: [CHAT]  
-[15:26:47] [Client thread/INFO]: [CHAT] our Discord server got terminated, relink with /discord
-[15:26:47] [Client thread/INFO]: [CHAT]  
-[15:26:50] [Client thread/INFO]: [CHAT] use /help for commands and stuff
-[15:26:53] [Client thread/INFO]: [CHAT] Connecting to grim
-[15:26:54] [Client thread/INFO]: [CHAT]  
-[15:26:54] [Client thread/INFO]: [CHAT] our Discord server got terminated, relink with /discord
-[15:26:54] [Client thread/INFO]: [CHAT]  
-[15:26:54] [Client thread/INFO]: [CHAT] Alerts are filtered by default to see everyone's alerts type /filter
-[15:26:56] [Client thread/INFO]: [CHAT] use /help for commands and stuff
+[15:52:20] [Client thread/INFO]: Setting user: Player952
+[15:52:20] [Client thread/INFO]: (Session ID is token:0:Player952)
+[15:52:21] [Client thread/INFO]: LWJGL Version: 2.9.4
+[15:52:21] [Client thread/INFO]: Reloading ResourceManager: Default
+[15:52:21] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[15:52:22] [Thread-6/INFO]: Initializing LWJGL OpenAL
+[15:52:22] [Thread-6/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[15:52:22] [Thread-6/INFO]: OpenAL initialized.
+[15:52:22] [Sound Library Loader/INFO]: Sound engine started
+[15:52:23] [Client thread/INFO]: Created: 512x512 textures-atlas
+[15:52:28] [Server thread/INFO]: Starting integrated minecraft server version 1.8.9
+[15:52:28] [Server thread/INFO]: Generating keypair
+[15:52:28] [Server thread/INFO]: Preparing start region for level 0
+[15:52:29] [Server thread/INFO]: Changing view distance to 9, from 10
+[15:52:29] [Server thread/INFO]: Player952[local:E:a74ac21c] logged in with entity id 238 at (54.95103799803701, 81.0, 282.2014681175148)
+[15:52:29] [Server thread/INFO]: Player952 joined the game
+[15:52:29] [Server thread/INFO]: Saving and pausing game...
+[15:52:29] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[15:52:30] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[15:52:30] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[15:56:06] [Server thread/INFO]: Saving and pausing game...
+[15:56:06] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[15:56:06] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[15:56:06] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[15:56:12] [Server thread/INFO]: Saving and pausing game...
+[15:56:12] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[15:56:12] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[15:56:12] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[15:56:12] [Server thread/INFO]: Stopping server
+[15:56:12] [Server thread/INFO]: Saving players
+[15:56:12] [Server thread/INFO]: Saving worlds
+[15:56:12] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[15:56:12] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[15:56:12] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[15:56:13] [Client thread/INFO]: Stopping!
+[15:56:13] [Client thread/INFO]: SoundSystem shutting down...
+[15:56:13] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com

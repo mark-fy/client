@@ -1,9 +1,6 @@
 package wtf.tophat.screen.cgui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
@@ -36,43 +33,70 @@ public class ClickGUI extends GuiScreen {
         Theme colors = Client.moduleManager.getByClass(Theme.class);
         Color color = colors.clientTheme.get();
 
-        double categoryWidth = 100, categoryHeight = 20;
-        double totalCategoryWidth = Module.Category.values().length * (categoryWidth + 15) - 15;
-
-        double x = (this.width - totalCategoryWidth) / 2.0, y = 50;
+        double x = (this.width - getTotalCategoryWidth()) / 2.0;
+        double y = 50;
 
         for (Module.Category category : Module.Category.values()) {
+            double categoryWidth = getMaxModuleNameWidth(category) + 20;
+            double categoryHeight = 20;
+
+            // Calculate the position for the category text
+            double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName().toLowerCase(Locale.ROOT))) / 2 - 2;
+            double categoryTextY = y + 6;
 
             DrawingUtil.rectangle(x, y, categoryWidth, categoryHeight, true, new Color(20, 20, 20));
 
-            frBig.drawStringChoose(shadow, category.getName().toLowerCase(Locale.ROOT), (int) (x + (categoryWidth - fr.getStringWidth(category.getName().toLowerCase(Locale.ROOT))) / 2) - 2, (int) y + 6, Color.WHITE);
+            frBig.drawStringChoose(shadow, category.getName().toLowerCase(Locale.ROOT), (int) categoryTextX, (int) categoryTextY, Color.WHITE);
 
-            double modX = x, modY = y + categoryHeight, modWidth = 100, modHeight = 20;
+            double modX = x, modY = y + categoryHeight, modHeight = 20;
 
             for (Module module : Client.moduleManager.getModulesByCategory(category)) {
                 Color moduleColor = module.isEnabled() ? new Color(44, 44, 44) : new Color(33, 33, 33);
-                DrawingUtil.rectangle(modX, modY, modWidth, modHeight, true, moduleColor);
 
+                // Calculate the module rectangle's width including keybind text
+                String keybindText;
+                int keybindTextWidth = 0;
+
+                if (module == listeningModule) {
+                    keybindText = " [...]";
+                    keybindTextWidth = fr.getStringWidth(keybindText);
+                } else if (module.getKeyCode() == Keyboard.KEY_NONE) {
+                    keybindText = " [NONE]";
+                    keybindTextWidth = fr.getStringWidth(keybindText);
+                } else {
+                    keybindText = " [" + Keyboard.getKeyName(module.getKeyCode()) + "]";
+                    keybindTextWidth = fr.getStringWidth(keybindText);
+                }
+
+                double moduleRectWidth = categoryWidth + keybindTextWidth;
+
+                // Check if mouse is hovering over the module rectangle
+                boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) moduleRectWidth, (float) modHeight);
+
+                // Set the module rectangle's background color
+                Color moduleBackgroundColor = isHovered
+                        ? module.isEnabled()
+                        ? new Color(55, 55, 55) // Lighter color for hovered and enabled module
+                        : new Color(44, 44, 44) // Lighter color for hovered and disabled module
+                        : module.isEnabled()
+                        ? new Color(44, 44, 44) // Regular color for enabled module
+                        : new Color(33, 33, 33); // Regular color for disabled module
+
+                DrawingUtil.rectangle(modX, modY, categoryWidth, modHeight, true, moduleBackgroundColor);
+
+                // Draw module name
                 String moduleName = module.getName().toLowerCase(Locale.ROOT);
                 int moduleNameX = (int) modX + 5;
 
                 fr.drawStringChoose(shadow, moduleName, moduleNameX, (int) (modY + 6), module.isEnabled() ? color : Color.WHITE);
 
-                String keybindText;
+                // Calculate the position for keybind text
+                int keybindX = (int) (modX + moduleRectWidth - keybindTextWidth - 5);
+                int keybindY = (int) modY + 6;
 
-                if (module == listeningModule) {
-                    keybindText = " [...]";
-                } else if (module.getKeyCode() == Keyboard.KEY_NONE) {
-                    keybindText = " [NONE]";
-                } else {
-                    keybindText = " [" + Keyboard.getKeyName(module.getKeyCode()) + "]";
-                }
+                fr.drawStringChoose(shadow, keybindText, keybindX - keybindTextWidth, keybindY, Color.darkGray);
 
-                int keybindX = (int) (modX + modWidth - 5 - fr.getStringWidth(keybindText)), keybindY = (int) modY + 6;
-
-                fr.drawStringChoose(shadow, keybindText, keybindX, keybindY, Color.darkGray);
-
-                if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) modWidth, (float) modHeight)) {
+                if (isHovered) {
                     int counter = 0;
 
                     String text = (module.getDesc()).toLowerCase(Locale.ROOT);
@@ -89,7 +113,6 @@ public class ClickGUI extends GuiScreen {
                     counter++;
                 }
 
-
                 modY += 20;
             }
 
@@ -101,55 +124,28 @@ public class ClickGUI extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        double categoryWidth = 100, categoryHeight = 20;
+        double x = (this.width - getTotalCategoryWidth()) / 2.0;
+        double y = 50;
 
-        if (mouseButton == 0) {
-            double x = (this.width - Module.Category.values().length * (categoryWidth + 15) + 15) / 2.0;
-            double y = 50;
-
+        if (mouseButton == 0 || mouseButton == 1 || mouseButton == 2) {
             for (Module.Category category : Module.Category.values()) {
-                double modX = x, modY = y + categoryHeight, modWidth = 100, modHeight = 20;
+                double categoryWidth = getMaxModuleNameWidth(category) + 20;
+                double categoryHeight = 20;
+                double modX = x, modY = y + categoryHeight, modHeight = 20;
 
                 for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+                    double modWidth = categoryWidth;
+
                     if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) modWidth, (float) modHeight)) {
-                        module.toggle();
-                    }
-
-                    modY += 20;
-                }
-
-                x += categoryWidth + 15;
-            }
-        } else if (mouseButton == 1) {
-            double x = (this.width - Module.Category.values().length * (categoryWidth + 15) + 15) / 2.0;
-            double y = 50;
-
-            for (Module.Category category : Module.Category.values()) {
-                double modX = x, modY = y + categoryHeight, modWidth = 100, modHeight = 20;
-
-                for (Module module : Client.moduleManager.getModulesByCategory(category)) {
-                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) modWidth, (float) modHeight)) {
-                        if (Client.settingManager.getSettingsByModule(module).size() < 1)
-                            return;
-
-                        mc.displayGuiScreen(new SettingFrame(this, module));
-                    }
-
-                    modY += 20;
-                }
-
-                x += categoryWidth + 15;
-            }
-        } else if (mouseButton == 2) {
-            double x = (this.width - Module.Category.values().length * (categoryWidth + 15) + 15) / 2.0;
-            double y = 50;
-
-            for (Module.Category category : Module.Category.values()) {
-                double modX = x, modY = y + categoryHeight, modWidth = 100, modHeight = 20;
-
-                for (Module module : Client.moduleManager.getModulesByCategory(category)) {
-                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) modWidth, (float) modHeight)) {
-                        listeningModule = module;
+                        if (mouseButton == 0) {
+                            module.toggle();
+                        } else if (mouseButton == 1) {
+                            if (Client.settingManager.getSettingsByModule(module).size() > 0) {
+                                mc.displayGuiScreen(new SettingFrame(this, module));
+                            }
+                        } else if (mouseButton == 2) {
+                            listeningModule = module;
+                        }
                     }
 
                     modY += 20;
@@ -174,6 +170,45 @@ public class ClickGUI extends GuiScreen {
             }
             listeningModule = null;
         }
+    }
+
+    private double getMaxModuleNameWidth(Module.Category category) {
+        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
+        double maxModuleNameWidth = 0;
+
+        for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+            String keybindText;
+            int keybindTextWidth = 0;
+
+            if (module == listeningModule) {
+                keybindText = " [...]";
+                keybindTextWidth = fr.getStringWidth(keybindText);
+            } else if (module.getKeyCode() == Keyboard.KEY_NONE) {
+                keybindText = " [NONE]";
+                keybindTextWidth = fr.getStringWidth(keybindText);
+            } else {
+                keybindText = " [" + Keyboard.getKeyName(module.getKeyCode()) + "]";
+                keybindTextWidth = fr.getStringWidth(keybindText);
+            }
+
+            double moduleNameWidth = fr.getStringWidth(module.getName().toLowerCase(Locale.ROOT)) + keybindTextWidth;
+            if (moduleNameWidth > maxModuleNameWidth) {
+                maxModuleNameWidth = moduleNameWidth;
+            }
+        }
+
+        return maxModuleNameWidth;
+    }
+
+    private double getTotalCategoryWidth() {
+        double totalCategoryWidth = 0;
+
+        for (Module.Category category : Module.Category.values()) {
+            double categoryWidth = getMaxModuleNameWidth(category) + 20;
+            totalCategoryWidth += categoryWidth;
+        }
+
+        return totalCategoryWidth;
     }
 
 }
