@@ -1,0 +1,10 @@
+.idea/
+.settings/
+
+*.iml
+
+*.classpath
+*.project
+
+out/
+natives/
