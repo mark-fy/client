@@ -1,14 +1,10 @@
 <component name="libraryTable">
   <library name="libraries">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../jars/libraries/javassist-3.28.0-GA.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../jars/libraries/jsr305-3.0.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../jars/libraries/radbus-1.0.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../jars/libraries/RClasses-1.2.4.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../jars/libraries/reflections-0.10.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../jars/libraries/slf4j-api-1.7.32.jar!/" />
+      <root url="file://$PROJECT_DIR$/libraries" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/libraries" recursive="false" />
   </library>
 </component>
