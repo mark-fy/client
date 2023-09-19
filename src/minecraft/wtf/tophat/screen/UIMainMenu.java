@@ -4,9 +4,13 @@ import net.minecraft.client.gui.*;
 import wtf.tophat.Client;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
+import wtf.tophat.utilities.render.ColorUtil;
 
 import java.awt.*;
 import java.io.IOException;
+
+import static wtf.tophat.utilities.ColorPallete.DEFAULT_COLOR;
+import static wtf.tophat.utilities.ColorPallete.WHITE_COLOR;
 
 public class UIMainMenu extends GuiScreen {
 
@@ -56,13 +60,16 @@ public class UIMainMenu extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         CFontRenderer fr = CFontUtil.SF_Regular_32.getRenderer();
+        CFontRenderer frSmall = CFontUtil.SF_Regular_20.getRenderer();
+        int counter = 0;
         this.drawDefaultBackground();
 
         int x = width / 2 - fr.getStringWidth(Client.getName()) / 2;
         int y = height / 2 - fr.getHeight() / 2 - 45;
 
         fr.drawString(Client.getName(), x, y, Color.WHITE);
-
+        frSmall.drawString("v" + Client.getVersion(), x + 48, y + 14, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
+        counter++;
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

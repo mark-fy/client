@@ -33,10 +33,10 @@ public class UIAltManager extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
             case 0:
-                mc.displayGuiScreen(new GuiSelectWorld(this));
+
                 break;
             case 1:
-                mc.displayGuiScreen(new GuiMultiplayer(this));
+                mc.displayGuiScreen(parent);
                 break;
         }
         super.actionPerformed(button);
@@ -44,13 +44,10 @@ public class UIAltManager extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        CFontRenderer fr = CFontUtil.SF_Regular_32.getRenderer();
+        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
         this.drawDefaultBackground();
 
-        int x = width / 2 - fr.getStringWidth(Client.getName()) / 2;
-        int y = height / 2 - fr.getHeight() / 2 - 45;
-
-        fr.drawString(Client.getName(), x, y, Color.WHITE);
+        fr.drawString(mc.getSession().getUsername(), 5, 5, Color.WHITE);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
