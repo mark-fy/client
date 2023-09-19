@@ -5,10 +5,8 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
-import wtf.tophat.module.impl.client.Theme;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
-import wtf.tophat.settings.impl.ColorSetting;
 import wtf.tophat.settings.impl.ModeSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.font.CFontRenderer;
@@ -49,8 +47,7 @@ public class SettingFrame extends GuiScreen {
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
         boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.client.ClickGUI.class).fontShadow.get();
 
-        Theme colors = Client.moduleManager.getByClass(Theme.class);
-        Color color = colors.clientTheme.get();
+        Color color = new Color(0,85,255);
 
         double x = (width - 200) / 2.0, y = (height - 15) / 2.0;
         double width = 200;

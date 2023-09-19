@@ -4,7 +4,6 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
-import wtf.tophat.module.impl.client.Theme;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
@@ -30,8 +29,7 @@ public class ClickGUI extends GuiScreen {
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
         boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.client.ClickGUI.class).fontShadow.get();
 
-        Theme colors = Client.moduleManager.getByClass(Theme.class);
-        Color color = colors.clientTheme.get();
+        Color color = new Color(0,85,255);
 
         double x = (this.width - getTotalCategoryWidth()) / 2.0;
         double y = 50;
