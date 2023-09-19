@@ -20,9 +20,13 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
+import wtf.tophat.Client;
+import wtf.tophat.module.impl.client.CustomScoreboard;
+import wtf.tophat.module.impl.misc.NameProtect;
 
 public class FontRenderer implements IResourceManagerReloadListener
 {
@@ -400,6 +404,25 @@ public class FontRenderer implements IResourceManagerReloadListener
      */
     private void renderStringAtPos(String text, boolean shadow)
     {
+        //NameProtect
+        if(Client.moduleManager.getByClass(NameProtect.class).isEnabled()) {
+            if(text.contains(Minecraft.getMinecraft().player.getName())) {
+                text = text.replace(Minecraft.getMinecraft().player.getName(), "TopHatBest");
+            }
+        } else {
+            if(Minecraft.getMinecraft().player != null && Minecraft.getMinecraft().player.getName() != null && text.contains(Minecraft.getMinecraft().player.getName())) {
+                text = text.replace(Minecraft.getMinecraft().player.getName(), Minecraft.getMinecraft().player.getName() + EnumChatFormatting.RESET);
+            }
+        }
+
+        //Custom Scoreboard
+        if(Client.moduleManager.getByClass(CustomScoreboard.class).isEnabled() && Client.moduleManager.getByClass(CustomScoreboard.class).customIp.get()) {
+            text = text.replace(EnumChatFormatting.YELLOW + "www.hypixel.net", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);
+            text = text.replace(EnumChatFormatting.YELLOW + "BlocksMC.com", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);
+            text = text.replace(EnumChatFormatting.YELLOW + "jartexnetwork.com", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);
+            text = text.replace(EnumChatFormatting.YELLOW + "playmc.games", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);
+        }
+
         for (int i = 0; i < text.length(); ++i)
         {
             char c0 = text.charAt(i);
