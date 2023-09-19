@@ -5,7 +5,7 @@ import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
-import wtf.tophat.screen.UIMainMenuScreen;
+import wtf.tophat.screen.UIMainMenu;
 
 public class GuiIngameMenu extends GuiScreen
 {
@@ -57,11 +57,11 @@ public class GuiIngameMenu extends GuiScreen
 
                 if (flag)
                 {
-                    this.mc.displayGuiScreen(new UIMainMenuScreen());
+                    this.mc.displayGuiScreen(new UIMainMenu());
                 }
                 else
                 {
-                    this.mc.displayGuiScreen(new GuiMultiplayer(new UIMainMenuScreen()));
+                    this.mc.displayGuiScreen(new GuiMultiplayer(new UIMainMenu()));
                 }
 
             case 2:

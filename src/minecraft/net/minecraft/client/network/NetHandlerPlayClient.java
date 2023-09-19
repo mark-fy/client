@@ -206,7 +206,7 @@ import net.minecraft.world.storage.MapData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import wtf.tophat.events.impl.PacketEvent;
-import wtf.tophat.screen.UIMainMenuScreen;
+import wtf.tophat.screen.UIMainMenu;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient
 {
@@ -796,7 +796,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
         else
         {
-            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new UIMainMenuScreen()), "disconnect.lost", reason));
+            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new UIMainMenu()), "disconnect.lost", reason));
         }
     }
 

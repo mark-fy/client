@@ -2,7 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import net.minecraft.client.resources.I18n;
-import wtf.tophat.screen.UIMainMenuScreen;
+import wtf.tophat.screen.UIMainMenu;
 
 public class GuiMemoryErrorScreen extends GuiScreen
 {
@@ -24,7 +24,7 @@ public class GuiMemoryErrorScreen extends GuiScreen
     {
         if (button.id == 0)
         {
-            this.mc.displayGuiScreen(new UIMainMenuScreen());
+            this.mc.displayGuiScreen(new UIMainMenu());
         }
         else if (button.id == 1)
         {

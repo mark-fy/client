@@ -177,7 +177,7 @@ import org.lwjgl.util.glu.GLU;
 import wtf.tophat.Client;
 import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.events.impl.RunTickEvent;
-import wtf.tophat.screen.UIMainMenuScreen;
+import wtf.tophat.screen.UIMainMenu;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
@@ -562,11 +562,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         if (this.serverName != null)
         {
-            this.displayGuiScreen(new GuiConnecting(new UIMainMenuScreen(), this, this.serverName, this.serverPort));
+            this.displayGuiScreen(new GuiConnecting(new UIMainMenu(), this, this.serverName, this.serverPort));
         }
         else
         {
-            this.displayGuiScreen(new UIMainMenuScreen());
+            this.displayGuiScreen(new UIMainMenu());
         }
 
         this.renderEngine.deleteTexture(this.mojangLogo);
@@ -971,14 +971,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         if (guiScreenIn == null && this.world == null)
         {
-            guiScreenIn = new UIMainMenuScreen();
+            guiScreenIn = new UIMainMenu();
         }
         else if (guiScreenIn == null && this.player.getHealth() <= 0.0F)
         {
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof UIMainMenuScreen)
+        if (guiScreenIn instanceof UIMainMenu)
         {
             this.settings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages();

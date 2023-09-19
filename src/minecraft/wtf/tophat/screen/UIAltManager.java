@@ -8,9 +8,13 @@ import wtf.tophat.utilities.font.CFontUtil;
 import java.awt.*;
 import java.io.IOException;
 
-public class UIMainMenuScreen extends GuiScreen {
+public class UIAltManager extends GuiScreen {
 
-    public UIMainMenuScreen() {}
+    private final GuiScreen parent;
+
+    public UIAltManager(GuiScreen parentScreen) {
+        this.parent = parentScreen;
+    }
 
     @Override
     public void initGui() {
@@ -19,13 +23,9 @@ public class UIMainMenuScreen extends GuiScreen {
         int buttonX = this.width / 2 - 100;
         int buttonY = this.height / 2 + 25 - 45;
 
-        this.buttonList.add(new GuiButton(0, buttonX, buttonY, "Singleplayer"));
+        this.buttonList.add(new GuiButton(0, buttonX, buttonY, "Login"));
         buttonY += 20;
-        this.buttonList.add(new GuiButton(1, buttonX, buttonY, "Multiplayer"));
-        buttonY += 20;
-        this.buttonList.add(new GuiButton(2, buttonX, buttonY, "Options"));
-        buttonY += 20;
-        this.buttonList.add(new GuiButton(3, buttonX, buttonY, "Quit"));
+        this.buttonList.add(new GuiButton(1, buttonX, buttonY, "Cancel"));
         super.initGui();
     }
 
@@ -37,12 +37,6 @@ public class UIMainMenuScreen extends GuiScreen {
                 break;
             case 1:
                 mc.displayGuiScreen(new GuiMultiplayer(this));
-                break;
-            case 2:
-                mc.displayGuiScreen(new GuiOptions(this, mc.settings));
-                break;
-            case 3:
-                Client.shutdown();
                 break;
         }
         super.actionPerformed(button);
