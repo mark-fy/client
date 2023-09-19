@@ -7,4 +7,5 @@
 *.project
 
 out/
+run/
 *.log
