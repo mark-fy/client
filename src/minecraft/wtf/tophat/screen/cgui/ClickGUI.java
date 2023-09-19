@@ -40,7 +40,6 @@ public class ClickGUI extends GuiScreen {
             double categoryWidth = getMaxModuleNameWidth(category) + 20;
             double categoryHeight = 20;
 
-            // Calculate the position for the category text
             double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName().toLowerCase(Locale.ROOT))) / 2 - 2;
             double categoryTextY = y + 6;
 
@@ -51,9 +50,7 @@ public class ClickGUI extends GuiScreen {
             double modX = x, modY = y + categoryHeight, modHeight = 20;
 
             for (Module module : Client.moduleManager.getModulesByCategory(category)) {
-                Color moduleColor = module.isEnabled() ? new Color(44, 44, 44) : new Color(33, 33, 33);
 
-                // Calculate the module rectangle's width including keybind text
                 String keybindText;
                 int keybindTextWidth = 0;
 
@@ -71,16 +68,19 @@ public class ClickGUI extends GuiScreen {
                 double moduleRectWidth = categoryWidth + keybindTextWidth;
 
                 // Check if mouse is hovering over the module rectangle
-                boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) moduleRectWidth, (float) modHeight);
+                // Check if mouse is hovering over the module rectangle
+                boolean isHovered = mouseX >= modX && mouseX <= modX + categoryWidth && mouseY >= modY && mouseY <= modY + modHeight;
 
-                // Set the module rectangle's background color
-                Color moduleBackgroundColor = isHovered
+                boolean isNotHoveringOutsideText = mouseX <= modX + categoryWidth;
+
+                Color moduleBackgroundColor = isHovered && isNotHoveringOutsideText
                         ? module.isEnabled()
                         ? new Color(55, 55, 55) // Lighter color for hovered and enabled module
                         : new Color(44, 44, 44) // Lighter color for hovered and disabled module
                         : module.isEnabled()
                         ? new Color(44, 44, 44) // Regular color for enabled module
                         : new Color(33, 33, 33); // Regular color for disabled module
+
 
                 DrawingUtil.rectangle(modX, modY, categoryWidth, modHeight, true, moduleBackgroundColor);
 
