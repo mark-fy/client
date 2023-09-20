@@ -45,14 +45,14 @@ public class NoFall extends Module {
         if(Methods.mc.player == null || Methods.mc.world == null)
             return;
 
-        float v1 =  mc.player.fallDistance % 3;
-        boolean v2 = v1 < 1f && mc.player.fallDistance > 3;
+        float modulo =  mc.player.fallDistance % 3;
+        boolean correctModulo = modulo < 1f && mc.player.fallDistance > 3;
 
         switch(mode.getValue()) {
             case "Vulcan":
                 if(event.getPacket() instanceof C03PacketPlayer) {
                     C03PacketPlayer packet = (C03PacketPlayer) event.getPacket();
-                    if(v2) {
+                    if(correctModulo) {
                         mc.player.motionY = -500;
                         packet.setOnGround(true);
                     } else {
