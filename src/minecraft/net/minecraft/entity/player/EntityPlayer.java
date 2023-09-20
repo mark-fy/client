@@ -11,6 +11,7 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -74,6 +75,7 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.LockCode;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
+import wtf.tophat.events.handler.PlayerHandler;
 
 @SuppressWarnings("incomplete-switch")
 public abstract class EntityPlayer extends EntityLivingBase
@@ -545,27 +547,31 @@ public abstract class EntityPlayer extends EntityLivingBase
      */
     public void updateRidden()
     {
-        if (!this.worldObj.isRemote && this.isSneaking())
-        {
+        if (!this.worldObj.isRemote && this.isSneaking()) {
             this.mountEntity((Entity)null);
             this.setSneaking(false);
-        }
-        else
-        {
+        } else {
             double d0 = this.posX;
             double d1 = this.posY;
             double d2 = this.posZ;
-            float f = this.rotationYaw;
-            float f1 = this.rotationPitch;
+            float yaw = this.rotationYaw;
+            float pitch = this.rotationPitch;
+            if(this == Minecraft.getMinecraft().player) {
+                yaw = PlayerHandler.yaw;
+                pitch = PlayerHandler.pitch;
+            }
             super.updateRidden();
             this.prevCameraYaw = this.cameraYaw;
             this.cameraYaw = 0.0F;
             this.addMountedMovementStat(this.posX - d0, this.posY - d1, this.posZ - d2);
 
-            if (this.ridingEntity instanceof EntityPig)
-            {
-                this.rotationPitch = f1;
-                this.rotationYaw = f;
+            if (this.ridingEntity instanceof EntityPig) {
+                this.rotationPitch = yaw;
+                this.rotationYaw = pitch;
+                if(this == Minecraft.getMinecraft().player) {
+                    PlayerHandler.yaw = yaw;
+                    PlayerHandler.pitch = pitch;
+                }
                 this.renderYawOffset = ((EntityPig)this.ridingEntity).renderYawOffset;
             }
         }

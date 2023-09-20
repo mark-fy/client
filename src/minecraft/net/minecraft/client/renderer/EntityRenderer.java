@@ -65,7 +65,10 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
+import wtf.tophat.events.handler.PlayerHandler;
+import wtf.tophat.events.impl.EntityRendererEvent;
 import wtf.tophat.events.impl.Render3DEvent;
+import wtf.tophat.events.impl.RotationEvent;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -1106,22 +1109,28 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 i = -1;
             }
 
-            if (this.mc.settings.smoothCamera)
-            {
-                this.smoothCamYaw += f2;
-                this.smoothCamPitch += f3;
-                float f4 = partialTicks - this.smoothCamPartialTicks;
-                this.smoothCamPartialTicks = partialTicks;
-                f2 = this.smoothCamFilterX * f4;
-                f3 = this.smoothCamFilterY * f4;
-                this.mc.player.setAngles(f2, f3 * (float)i);
-            }
-            else
-            {
-                this.smoothCamYaw = 0.0F;
-                this.smoothCamPitch = 0.0F;
-                this.mc.player.setAngles(f2, f3 * (float)i);
-            }
+            EntityRendererEvent entityRendererEvent = new EntityRendererEvent(this.mc.player);
+            entityRendererEvent.call();
+            if (entityRendererEvent.getEntity() != null)
+                if (this.mc.settings.smoothCamera) {
+                    this.smoothCamYaw += f2;
+                    this.smoothCamPitch += f3;
+                    float f4 = partialTicks - this.smoothCamPartialTicks;
+                    this.smoothCamPartialTicks = partialTicks;
+                    f2 = this.smoothCamFilterX * f4;
+                    f3 = this.smoothCamFilterY * f4;
+                    entityRendererEvent.getEntity().setAngles(f2, f3 * (float) i);
+                } else {
+                    this.smoothCamYaw = 0.0F;
+                    this.smoothCamPitch = 0.0F;
+                    entityRendererEvent.getEntity().setAngles(f2, f3 * (float) i);
+                }
+            PlayerHandler.prevYaw = PlayerHandler.yaw;
+            PlayerHandler.prevPitch = PlayerHandler.pitch;
+            RotationEvent rotationEvent = new RotationEvent(entityRendererEvent.getEntity().rotationYaw, entityRendererEvent.getEntity().rotationPitch);
+            rotationEvent.call();
+            PlayerHandler.yaw = rotationEvent.getYaw();
+            PlayerHandler.pitch = rotationEvent.getPitch();
         }
 
         this.mc.mcProfiler.endSection();

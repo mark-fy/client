@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import wtf.tophat.events.handler.PlayerHandler;
 
 public class GuiInventory extends InventoryEffectRenderer
 {
@@ -105,6 +106,11 @@ public class GuiInventory extends InventoryEffectRenderer
         float f2 = ent.rotationPitch;
         float f3 = ent.prevRotationYawHead;
         float f4 = ent.rotationYawHead;
+
+        final float beforeYaw = PlayerHandler.yaw;
+        final float beforePitch = PlayerHandler.pitch;
+        final float beforePrevPitch = PlayerHandler.prevPitch;
+
         GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
@@ -114,6 +120,11 @@ public class GuiInventory extends InventoryEffectRenderer
         ent.rotationPitch = -((float)Math.atan((double)(mouseY / 40.0F))) * 20.0F;
         ent.rotationYawHead = ent.rotationYaw;
         ent.prevRotationYawHead = ent.rotationYaw;
+        if(ent == Minecraft.getMinecraft().player) {
+            PlayerHandler.yaw = ent.rotationYawHead;
+            PlayerHandler.pitch = ent.rotationPitch;
+            PlayerHandler.prevPitch = ent.prevRotationPitch;
+        }
         GlStateManager.translate(0.0F, 0.0F, 0.0F);
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         rendermanager.setPlayerViewY(180.0F);
@@ -125,6 +136,11 @@ public class GuiInventory extends InventoryEffectRenderer
         ent.rotationPitch = f2;
         ent.prevRotationYawHead = f3;
         ent.rotationYawHead = f4;
+        if(ent == Minecraft.getMinecraft().player) {
+            PlayerHandler.yaw = beforeYaw;
+            PlayerHandler.pitch = beforePitch;
+            PlayerHandler.prevPitch = beforePrevPitch;
+        }
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();

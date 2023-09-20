@@ -42,17 +42,15 @@ import net.minecraft.potion.Potion;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MovementInput;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import wtf.tophat.events.Event;
+import wtf.tophat.events.handler.PlayerHandler;
 import wtf.tophat.events.impl.*;
+import wtf.tophat.utilities.movement.MoveUtil;
+
+import java.util.ArrayList;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -164,6 +162,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
     }
 
+    @Override
+    public void moveFlying(float f, float f2, float f3) {
+        MoveFlyingEvent moveFlyingEvent = new MoveFlyingEvent(f, f2, f3);
+        moveFlyingEvent.call();
+
+        f = moveFlyingEvent.getStrafe();
+        f2 = moveFlyingEvent.getForward();
+        if (moveFlyingEvent.isCancelled()) {
+            return;
+        }
+
+        float f4 = PlayerHandler.moveFix ? PlayerHandler.yaw : this.rotationYaw;
+        float f5 = f * f + f2 * f2;
+        if (f5 >= 1.0E-4f) {
+            if ((f5 = MathHelper.sqrt_float(f5)) < 1.0f) {
+                f5 = 1.0f;
+            }
+            f5 = f3 / f5;
+            float f6 = MathHelper.sin(f4 * (float)Math.PI / 180.0f);
+            float f7 = MathHelper.cos(f4 * (float)Math.PI / 180.0f);
+            this.motionX += (f *= f5) * f7 - (f2 *= f5) * f6;
+            this.motionZ += f2 * f7 + f * f6;
+        }
+    }
+
     /**
      * Called to update the entity's position/logic.
      */
@@ -177,12 +200,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
             if (this.isRiding())
             {
-                this.sendQueue.send(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+                this.sendQueue.send(new C03PacketPlayer.C05PacketPlayerLook(PlayerHandler.yaw, PlayerHandler.pitch, this.onGround));
                 this.sendQueue.send(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
             }
             else
             {
-                this.onUpdateWalkingPlayer();
+                this.onUpdateWalkingPlayer(PlayerHandler.yaw, PlayerHandler.pitch);
             }
         }
     }
@@ -190,7 +213,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     /**
      * called every tick when the player is on foot. Performs all the things that normally happen during movement.
      */
-    public void onUpdateWalkingPlayer()
+    public void onUpdateWalkingPlayer(float yaw, float pitch)
     {
         MotionEvent motionEvent = new MotionEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
         motionEvent.setState(Event.State.PRE);
@@ -198,8 +221,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         boolean flag = this.isSprinting();
 
-        if (flag != this.serverSprintState)
-        {
+        if (flag != this.serverSprintState) {
             if (flag)
             {
                 this.sendQueue.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SPRINTING));
@@ -208,6 +230,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
             {
                 this.sendQueue.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SPRINTING));
             }
+
+            PlayerHandler.shouldSprintReset = false;
 
             this.serverSprintState = flag;
         }
@@ -803,7 +827,38 @@ public class EntityPlayerSP extends AbstractClientPlayer
         boolean flag1 = this.movementInput.sneak;
         float f = 0.8F;
         boolean flag2 = this.movementInput.moveForward >= f;
+        final float forward = this.movementInput.moveForward;
+        final float strafe = this.movementInput.moveStrafe;
         this.movementInput.updatePlayerMoveState();
+
+        SilentMoveEvent silentMoveEvent = new SilentMoveEvent();
+        silentMoveEvent.call();
+
+        if (PlayerHandler.moveFix && PlayerHandler.currentMode == PlayerHandler.MoveFixMode.SILENT) {
+            final float[] floats = this.mySilentStrafe(this.movementInput.moveStrafe, this.movementInput.moveForward, this.rotationYaw, true);
+            final float diffForward = forward - floats[1];
+            final float diffStrafe = strafe - floats[0];
+            if (this.movementInput.sneak) {
+                this.movementInput.moveStrafe = MathHelper.clamp_float(floats[0], -0.3f, 0.3f);
+                this.movementInput.moveForward = MathHelper.clamp_float(floats[1], -0.3f, 0.3f);
+            }
+            else {
+                if (diffForward >= 2.0f) {
+                    floats[1] = 0.0f;
+                }
+                if (diffForward <= -2.0f) {
+                    floats[1] = 0.0f;
+                }
+                if (diffStrafe >= 2.0f) {
+                    floats[0] = 0.0f;
+                }
+                if (diffStrafe <= -2.0f) {
+                    floats[0] = 0.0f;
+                }
+                this.movementInput.moveStrafe = MathHelper.clamp_float(floats[0], -1.0f, 1.0f);
+                this.movementInput.moveForward = MathHelper.clamp_float(floats[1], -1.0f, 1.0f);
+            }
+        }
 
         SlowDownEvent slowDownEvent = new SlowDownEvent(0.2f, 0.2f);
         slowDownEvent.call();
@@ -822,6 +877,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ - (double)this.width * 0.35D);
         this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
         boolean flag69 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
+
+        float movef = this.movementInput.moveForward;
+        if (PlayerHandler.shouldSprintReset) {
+            movef = this.movementInput.moveForward;
+            this.movementInput.moveForward = 0;
+        }
 
         if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag69 && (!this.isUsingItem() || slowDownEvent.isSprint()) && !this.isPotionActive(Potion.blindness)) {
             if (this.sprintToggleTimer <= 0 && !this.mc.settings.keyBindSprint.isKeyDown()) {
@@ -843,6 +904,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if (!slowDownEvent.isSprint() && this.isUsingItem() && !this.isRiding()) {
             this.setSprinting(false);
+        }
+
+        if (PlayerHandler.shouldSprintReset) {
+            this.movementInput.moveForward = movef;
+            PlayerHandler.shouldSprintReset = false;
         }
 
         if (this.capabilities.allowFlying)
@@ -931,5 +997,151 @@ public class EntityPlayerSP extends AbstractClientPlayer
             this.capabilities.isFlying = false;
             this.sendPlayerAbilities();
         }
+    }
+
+    public float[] mySilentStrafe(final float strafe, final float forward, final float yaw, final boolean advanced) {
+        final Minecraft mc = Minecraft.getMinecraft();
+        final float diff = MathHelper.wrapAngleTo180_float(yaw - PlayerHandler.yaw);
+        float newForward = 0.0f;
+        float newStrafe = 0.0f;
+        if (!advanced) {
+            if (diff >= 22.5 && diff < 67.5) {
+                newStrafe += strafe;
+                newForward += forward;
+                newStrafe -= forward;
+                newForward += strafe;
+            }
+            else if (diff >= 67.5 && diff < 112.5) {
+                newStrafe -= forward;
+                newForward += strafe;
+            }
+            else if (diff >= 112.5 && diff < 157.5) {
+                newStrafe -= strafe;
+                newForward -= forward;
+                newStrafe -= forward;
+                newForward += strafe;
+            }
+            else if (diff >= 157.5 || diff <= -157.5) {
+                newStrafe -= strafe;
+                newForward -= forward;
+            }
+            else if (diff > -157.5 && diff <= -112.5) {
+                newStrafe -= strafe;
+                newForward -= forward;
+                newStrafe += forward;
+                newForward -= strafe;
+            }
+            else if (diff > -112.5 && diff <= -67.5) {
+                newStrafe += forward;
+                newForward -= strafe;
+            }
+            else if (diff > -67.5 && diff <= -22.5) {
+                newStrafe += strafe;
+                newForward += forward;
+                newStrafe += forward;
+                newForward -= strafe;
+            }
+            else {
+                newStrafe += strafe;
+                newForward += forward;
+            }
+            return new float[] { newStrafe, newForward };
+        }
+        final double[] realMotion = MoveUtil.getMotion(0.22, strafe, forward, mc.player.rotationYaw);
+        final double[] array;
+        final double[] realPos = array = new double[] { mc.player.posX, mc.player.posZ };
+        final int n = 0;
+        array[n] += realMotion[0];
+        final double[] array2 = realPos;
+        final int n2 = 1;
+        array2[n2] += realMotion[1];
+        final ArrayList<float[]> possibleForwardStrafe = new ArrayList<float[]>();
+        int i = 0;
+        boolean b = false;
+        while (!b) {
+            newForward = 0.0f;
+            newStrafe = 0.0f;
+            if (i == 0) {
+                newStrafe += strafe;
+                newForward += forward;
+                newStrafe -= forward;
+                newForward += strafe;
+                possibleForwardStrafe.add(new float[] { newForward, newStrafe });
+            }
+            else if (i == 1) {
+                newStrafe -= forward;
+                newForward += strafe;
+                possibleForwardStrafe.add(new float[] { newForward, newStrafe });
+            }
+            else if (i == 2) {
+                newStrafe -= strafe;
+                newForward -= forward;
+                newStrafe -= forward;
+                newForward += strafe;
+                possibleForwardStrafe.add(new float[] { newForward, newStrafe });
+            }
+            else if (i == 3) {
+                newStrafe -= strafe;
+                newForward -= forward;
+                possibleForwardStrafe.add(new float[] { newForward, newStrafe });
+            }
+            else if (i == 4) {
+                newStrafe -= strafe;
+                newForward -= forward;
+                newStrafe += forward;
+                newForward -= strafe;
+                possibleForwardStrafe.add(new float[] { newForward, newStrafe });
+            }
+            else if (i == 5) {
+                newStrafe += forward;
+                newForward -= strafe;
+                possibleForwardStrafe.add(new float[] { newForward, newStrafe });
+            }
+            else if (i == 6) {
+                newStrafe += strafe;
+                newForward += forward;
+                newStrafe += forward;
+                newForward -= strafe;
+                possibleForwardStrafe.add(new float[] { newForward, newStrafe });
+            }
+            else {
+                newStrafe += strafe;
+                newForward += forward;
+                possibleForwardStrafe.add(new float[] { newForward, newStrafe });
+                b = true;
+            }
+            ++i;
+        }
+        double distance = 5000.0;
+        float[] floats = new float[2];
+        for (final float[] flo : possibleForwardStrafe) {
+            if (flo[0] > 1.0f) {
+                flo[0] = 1.0f;
+            }
+            else if (flo[0] < -1.0f) {
+                flo[0] = -1.0f;
+            }
+            if (flo[1] > 1.0f) {
+                flo[1] = 1.0f;
+            }
+            else if (flo[1] < -1.0f) {
+                flo[1] = -1.0f;
+            }
+            final double[] motion2;
+            final double[] motion = motion2 = MoveUtil.getMotion(0.22, flo[1], flo[0], PlayerHandler.yaw);
+            final int n3 = 0;
+            motion2[n3] += mc.player.posX;
+            final double[] array3 = motion;
+            final int n4 = 1;
+            array3[n4] += mc.player.posZ;
+            final double diffX = Math.abs(realPos[0] - motion[0]);
+            final double diffZ = Math.abs(realPos[1] - motion[1]);
+            final double d0 = diffX * diffX + diffZ * diffZ;
+            if (d0 < distance) {
+                distance = d0;
+                floats = flo;
+            }
+        }
+        return new float[] { floats[1], floats[0] };
     }
 }

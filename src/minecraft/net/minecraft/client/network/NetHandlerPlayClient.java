@@ -205,6 +205,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import wtf.tophat.events.handler.PlayerHandler;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.screen.UIMainMenu;
 
@@ -584,6 +585,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                 entity.setPositionAndRotation2(d0, d1, d2, f, f1, 3, true);
             }
 
+            if(entity == Minecraft.getMinecraft().player) {
+                PlayerHandler.yaw = f;
+                PlayerHandler.pitch = f1;
+            }
+
             entity.onGround = packetIn.getOnGround();
         }
     }
@@ -699,18 +705,20 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             entityplayer.motionZ = 0.0D;
         }
 
-        if (packetIn.func_179834_f().contains(S08PacketPlayerPosLook.EnumFlags.X_ROT))
-        {
-            f1 += entityplayer.rotationPitch;
+        if (packetIn.func_179834_f().contains(S08PacketPlayerPosLook.EnumFlags.X_ROT)) {
+            f1 += PlayerHandler.pitch;
         }
 
-        if (packetIn.func_179834_f().contains(S08PacketPlayerPosLook.EnumFlags.Y_ROT))
-        {
-            f += entityplayer.rotationYaw;
+        if (packetIn.func_179834_f().contains(S08PacketPlayerPosLook.EnumFlags.Y_ROT)) {
+            f += PlayerHandler.yaw;
         }
 
+        final float yaw = f;
+        final float pitch = f1;
         entityplayer.setPositionAndRotation(d0, d1, d2, f, f1);
-        this.netManager.sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(entityplayer.posX, entityplayer.getEntityBoundingBox().minY, entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch, false));
+        PlayerHandler.yaw = yaw;
+        PlayerHandler.pitch = pitch;
+        this.netManager.sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(entityplayer.posX, entityplayer.getEntityBoundingBox().minY, entityplayer.posZ, yaw, pitch, false));
 
         if (!this.doneLoadingTerrain)
         {
