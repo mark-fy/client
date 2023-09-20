@@ -24,7 +24,7 @@ public class Velocity extends Module {
 
     public Velocity() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Grim"),
+                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
                         .setHidden(() -> !mode.compare("Simple")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)
@@ -62,6 +62,18 @@ public class Velocity extends Module {
                         packet.setMotionX((int) (packet.getMotionX() * (horizontal.getValue().doubleValue() / 100D)));
                         packet.setMotionY((int) (packet.getMotionY() * (vertical.getValue().doubleValue() / 100D)));
                         packet.setMotionZ((int) (packet.getMotionZ() * (horizontal.getValue().doubleValue() / 100D)));
+                    }
+                }
+                break;
+            case "Reverse":
+                if (event.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) event.getPacket();
+                    if (packet.getEntityID() == mc.player.getEntityId()) {
+                        if (horizontal.getValue().doubleValue() == 0 && vertical.getValue().doubleValue() == 0)
+                            event.setCancelled(true);
+                        packet.setMotionX((int) (packet.getMotionX() * (-horizontal.getValue().doubleValue() / 100D)));
+                        packet.setMotionY((int) (packet.getMotionY() * (-vertical.getValue().doubleValue() / 100D)));
+                        packet.setMotionZ((int) (packet.getMotionZ() * (-horizontal.getValue().doubleValue() / 100D)));
                     }
                 }
                 break;

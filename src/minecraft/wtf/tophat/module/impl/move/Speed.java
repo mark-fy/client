@@ -1,6 +1,7 @@
 package wtf.tophat.module.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.client.settings.KeyBinding;
 import wtf.tophat.Client;
 import wtf.tophat.events.Event;
 import wtf.tophat.events.impl.MotionEvent;
@@ -86,9 +87,13 @@ public class Speed extends Module {
     }
 
     @Override
-    public void onEnable() {
+    public void onDisable() {
         hypixelTicks = 0;
-        super.onEnable();
+        mc.timer.timerSpeed = 1.0f;
+        mc.player.speedInAir = 0.02f;
+        mc.settings.keyBindJump.pressed = false;
+        KeyBinding.setKeyBindState(mc.settings.keyBindSprint.getKeyCode(), false);
+        super.onDisable();
     }
 
 }
