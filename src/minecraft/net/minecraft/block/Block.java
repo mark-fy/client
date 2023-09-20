@@ -32,6 +32,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import wtf.tophat.events.impl.CollisionBoxesEvent;
 
 public class Block
 {
@@ -490,7 +491,12 @@ public class Block
     {
         AxisAlignedBB axisalignedbb = this.getCollisionBoundingBox(worldIn, pos, state);
 
-        if (axisalignedbb != null && mask.intersectsWith(axisalignedbb))
+        CollisionBoxesEvent collisionBoxesEvent = new CollisionBoxesEvent(pos, axisalignedbb);
+        collisionBoxesEvent.call();
+
+        axisalignedbb = collisionBoxesEvent.getBoundingBox();
+
+        if (axisalignedbb != null && mask.intersectsWith(axisalignedbb) && !collisionBoxesEvent.isCancelled())
         {
             list.add(axisalignedbb);
         }
