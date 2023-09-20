@@ -1,6 +1,7 @@
 .idea/
 .settings/
 
+*.log
 *.iml
 
 *.classpath
@@ -8,3 +9,4 @@
 
 out/
 run/
+run/logs
