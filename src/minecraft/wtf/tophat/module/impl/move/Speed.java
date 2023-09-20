@@ -18,7 +18,7 @@ public class Speed extends Module {
 
     public Speed() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave"),
                 speed = new NumberSetting(this, "Speed", 0, 3, 1, 2)
                         .setHidden(() -> !mode.compare("Vanilla"))
         );
@@ -28,6 +28,25 @@ public class Speed extends Module {
     public void onMotion(MotionEvent event) {
         if(event.state == Event.State.PRE) {
             switch (mode.getValue()) {
+                case "Intave":
+                    mc.settings.keyBindJump.pressed = MoveUtil.getSpeed() != 0;
+
+                    if(mc.player.onGround) {
+                        mc.timer.timerSpeed = 1.07F;
+                    } else {
+                        mc.timer.timerSpeed = (float) (1 + Math.random() / 1200);
+                    }
+
+                    if(mc.player.motionY > 0) {
+                        mc.timer.timerSpeed += 0.01;
+                        mc.player.motionX *= 1.0004;
+                        mc.player.motionZ *= 1.0004;
+                    }
+
+                    if(mc.player.hurtTime != 0) {
+                        mc.timer.timerSpeed = 1.21f;
+                    }
+                    break;
                 case "Vanilla":
                     MoveUtil.setSpeed(speed.getValue().floatValue());
                     if(isMoving() && mc.player.onGround) {
