@@ -41,7 +41,6 @@ public class Disabler extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
-
         if (Methods.mc.player == null || Methods.mc.world == null)
             return;
 

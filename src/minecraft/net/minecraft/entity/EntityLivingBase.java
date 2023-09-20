@@ -50,6 +50,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import wtf.tophat.events.impl.DelayJumpEvent;
 
 public abstract class EntityLivingBase extends Entity
 {
@@ -2018,7 +2019,13 @@ public abstract class EntityLivingBase extends Entity
             else if (this.onGround && this.jumpTicks == 0)
             {
                 this.jump();
-                this.jumpTicks = 10;
+
+                DelayJumpEvent delayJumpEvent = new DelayJumpEvent();
+                delayJumpEvent.call();
+
+                if(!delayJumpEvent.isCancelled()) {
+                    this.jumpTicks = 10;
+                }
             }
         }
         else

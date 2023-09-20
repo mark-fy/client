@@ -12,6 +12,7 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
+import wtf.tophat.utilities.Methods;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -49,7 +50,7 @@ public class Velocity extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
-        if(mc.player == null || mc.player == null)
+        if(Methods.mc.player == null || Methods.mc.world == null)
             return;
 
         switch (mode.getValue()) {

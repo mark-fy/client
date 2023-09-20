@@ -31,7 +31,7 @@ public class Watermark extends Module {
     public void renderIngame() {
         int counter = 0;
 
-        CFontRenderer fr = CFontUtil.SF_Semibold_20.getRenderer();
+        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
 
         String text = (Client.getName() + "sense | " + Minecraft.getDebugFPS() + " fps | " + mc.getSession().getUsername()).toLowerCase(Locale.ROOT);
         int strWidth = fr.getStringWidth(text);
