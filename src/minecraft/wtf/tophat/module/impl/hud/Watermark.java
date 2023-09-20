@@ -1,4 +1,4 @@
-package wtf.tophat.module.impl.client;
+package wtf.tophat.module.impl.hud;
 
 import net.minecraft.client.Minecraft;
 import wtf.tophat.Client;
@@ -16,7 +16,7 @@ import java.util.Locale;
 import static wtf.tophat.utilities.ColorPallete.DEFAULT_COLOR;
 import static wtf.tophat.utilities.ColorPallete.WHITE_COLOR;
 
-@ModuleInfo(name = "Watermark",desc = "displays the client's watermark", category = Module.Category.CLIENT)
+@ModuleInfo(name = "Watermark",desc = "displays the client's watermark", category = Module.Category.HUD)
 public class Watermark extends Module {
 
     private final BooleanSetting fontShadow;

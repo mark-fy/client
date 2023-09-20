@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
+import wtf.tophat.module.impl.hud.ClickGUI;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
@@ -45,7 +46,7 @@ public class SettingFrame extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
-        boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.client.ClickGUI.class).fontShadow.getValue();
+        boolean shadow = Client.moduleManager.getByClass(ClickGUI.class).fontShadow.getValue();
 
         Color color = new Color(0,85,255);
 

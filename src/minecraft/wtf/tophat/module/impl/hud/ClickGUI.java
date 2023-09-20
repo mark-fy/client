@@ -1,4 +1,4 @@
-package wtf.tophat.module.impl.client;
+package wtf.tophat.module.impl.hud;
 
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
@@ -6,7 +6,7 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 
-@ModuleInfo(name = "ClickGUI",desc = "clicky gui", category = Module.Category.CLIENT, bind = Keyboard.KEY_RSHIFT)
+@ModuleInfo(name = "ClickGUI",desc = "clicky gui", category = Module.Category.HUD, bind = Keyboard.KEY_RSHIFT)
 public class ClickGUI extends Module {
 
     public final BooleanSetting fontShadow;

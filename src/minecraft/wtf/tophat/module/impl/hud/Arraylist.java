@@ -1,4 +1,4 @@
-package wtf.tophat.module.impl.client;
+package wtf.tophat.module.impl.hud;
 
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.EnumChatFormatting;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import static wtf.tophat.utilities.ColorPallete.*;
 
-@ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.CLIENT)
+@ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.HUD)
 public class Arraylist extends Module {
 
     private final StringSetting color;
@@ -45,7 +45,7 @@ public class Arraylist extends Module {
                 .filter(module ->
                                 (!hideVisualModules.getValue() ||
                                 (!module.getCategory().equals(Category.RENDER) &&
-                                !module.getCategory().equals(Category.CLIENT)))
+                                !module.getCategory().equals(Category.HUD)))
                 )
                 .sorted((module1, module2) -> {
                     int width1 = calculateTotalWidth(module1, fr);
