@@ -147,13 +147,12 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         }
         else
         {
-            ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)this.chunksToRemove.keySet().iterator().next();
-            boolean lvt_3_1_;
+            ChunkCoordIntPair chunkcoordintpair = this.chunksToRemove.keySet().iterator().next();
 
             try
             {
                 this.pendingAnvilChunksCoordinates.add(chunkcoordintpair);
-                NBTTagCompound nbttagcompound = (NBTTagCompound)this.chunksToRemove.remove(chunkcoordintpair);
+                NBTTagCompound nbttagcompound = this.chunksToRemove.remove(chunkcoordintpair);
 
                 if (nbttagcompound != null)
                 {
@@ -167,14 +166,13 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
                     }
                 }
 
-                lvt_3_1_ = true;
             }
             finally
             {
                 this.pendingAnvilChunksCoordinates.remove(chunkcoordintpair);
             }
 
-            return lvt_3_1_;
+            return true;
         }
     }
 

@@ -284,7 +284,7 @@ public class RegionFile
      */
     private void write(int sectorNumber, byte[] data, int length) throws IOException
     {
-        this.dataFile.seek((long)(sectorNumber * 4096));
+        this.dataFile.seek(sectorNumber * 4096L);
         this.dataFile.writeInt(length + 1);
         this.dataFile.writeByte(2);
         this.dataFile.write(data, 0, length);
@@ -347,8 +347,8 @@ public class RegionFile
 
     class ChunkBuffer extends ByteArrayOutputStream
     {
-        private int chunkX;
-        private int chunkZ;
+        private final int chunkX;
+        private final int chunkZ;
 
         public ChunkBuffer(int x, int z)
         {
