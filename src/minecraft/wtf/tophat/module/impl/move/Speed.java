@@ -58,7 +58,7 @@ public class Speed extends Module {
                     mc.settings.keyBindJump.pressed = MoveUtil.getSpeed() != 0;
 
                     if(mc.player.onGround) {
-                        mc.timer.timerSpeed = 1.07F;
+                        mc.timer.timerSpeed = 1.07f;
                     } else {
                         mc.timer.timerSpeed = (float) (1 + Math.random() / 1200);
                     }
