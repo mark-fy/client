@@ -18,16 +18,41 @@ public class Speed extends Module {
 
     public Speed() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel"),
                 speed = new NumberSetting(this, "Speed", 0, 3, 1, 2)
                         .setHidden(() -> !mode.compare("Vanilla"))
         );
     }
 
+    // Hypixel
+    private int hypixelTicks = 0;
+
     @Listen
     public void onMotion(MotionEvent event) {
         if(event.state == Event.State.PRE) {
             switch (mode.getValue()) {
+                case "Hypixel":
+                    if(MoveUtil.getSpeed() == 0) {
+                        mc.timer.timerSpeed = 1;
+                    } else {
+                        mc.timer.timerSpeed = (float) (1 + Math.random() / 30);
+                        if(mc.player.onGround) {
+                            hypixelTicks = 0;
+                            mc.player.jump();
+                            MoveUtil.strafe(0.418f);
+                        } else {
+                            hypixelTicks++;
+                            mc.player.motionY -= 0.0008;
+                            if(hypixelTicks == 1) {
+                                mc.player.motionY -= 0.002;
+                            }
+
+                            if(hypixelTicks == 8) {
+                                mc.player.motionY -= 0.003;
+                            }
+                        }
+                    }
+                    break;
                 case "Intave":
                     mc.settings.keyBindJump.pressed = MoveUtil.getSpeed() != 0;
 
@@ -58,6 +83,12 @@ public class Speed extends Module {
                     break;
             }
         }
+    }
+
+    @Override
+    public void onEnable() {
+        hypixelTicks = 0;
+        super.onEnable();
     }
 
 }
