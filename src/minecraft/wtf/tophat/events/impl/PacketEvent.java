@@ -16,17 +16,11 @@ public class PacketEvent extends Event {
         this.type = type;
     }
 
-    public Packet<?> getPacket() {
-        return packet;
-    }
+    public Packet<?> getPacket() { return packet; }
 
-    public INetHandler getiNetHandler() {
-        return iNetHandler;
-    }
+    public INetHandler getiNetHandler() { return iNetHandler; }
 
-    public Type getType() {
-        return type;
-    }
+    public Type getType() { return type; }
 
     public enum Type {
         INCOMING, OUTGOING

@@ -6,15 +6,9 @@ public class DirectionSprintCheckEvent extends Event {
 
     private boolean sprintCheck;
 
-    public DirectionSprintCheckEvent(boolean sprintCheck) {
-        this.sprintCheck = sprintCheck;
-    }
+    public DirectionSprintCheckEvent(boolean sprintCheck) { this.sprintCheck = sprintCheck; }
 
-    public boolean isSprintCheck() {
-        return sprintCheck;
-    }
+    public boolean isSprintCheck() { return sprintCheck; }
 
-    public void setSprintCheck(boolean sprintCheck) {
-        this.sprintCheck = sprintCheck;
-    }
+    public void setSprintCheck(boolean sprintCheck) { this.sprintCheck = sprintCheck; }
 }
