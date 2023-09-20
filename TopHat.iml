@@ -80,6 +80,7 @@
   </component>
   <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/out/production/TopHat" />
+    <output-test url="file://$MODULE_DIR$/out/test/TopHat" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/minecraft" isTestSource="false" />
