@@ -10,7 +10,7 @@ import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
-import wtf.tophat.settings.impl.ModeSetting;
+import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 
 import java.util.Queue;
@@ -19,12 +19,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ModuleInfo(name = "Velocity",desc = "disables knockback", category = Module.Category.COMBAT)
 public class Velocity extends Module {
 
-    private final ModeSetting mode;
+    private final StringSetting mode;
     private final NumberSetting horizontal,vertical;
 
     public Velocity() {
         Client.settingManager.add(
-                mode = new ModeSetting(this, "Mode", "Simple", "Simple", "Grim"),
+                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Grim"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
                         .setHidden(() -> !mode.compare("Simple")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)

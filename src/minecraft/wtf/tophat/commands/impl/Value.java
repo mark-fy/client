@@ -6,7 +6,7 @@ import wtf.tophat.commands.base.CommandInfo;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
-import wtf.tophat.settings.impl.ModeSetting;
+import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.chat.ChatUtil;
 import wtf.tophat.utilities.parser.BooleanParser;
@@ -49,8 +49,8 @@ public class Value extends Command {
                             } else {
                                 ChatUtil.addChatMessage(String.format("Could not parse value %s", newValue));
                             }
-                        } else if(setting instanceof ModeSetting) {
-                            ModeSetting modeSetting = (ModeSetting) setting;
+                        } else if(setting instanceof StringSetting) {
+                            StringSetting modeSetting = (StringSetting) setting;
                             modeSetting.set(args[2]);
                             ChatUtil.addChatMessage(String.format("Value set to %s", newValue));
                         }

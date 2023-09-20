@@ -4,4 +4,8 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 
 @ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.MISC)
-public class Disabler extends Module { }
+public class Disabler extends Module {
+
+
+
+}

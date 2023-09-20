@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="Melon">
-    <output-path>$PROJECT_DIR$/..</output-path>
-    <root id="archive" name="Melon.jar">
-      <element id="module-output" name="Melon" />
-    </root>
-  </artifact>
-</component>

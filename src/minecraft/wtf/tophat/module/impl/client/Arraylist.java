@@ -7,7 +7,7 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
-import wtf.tophat.settings.impl.ModeSetting;
+import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
@@ -23,12 +23,12 @@ import static wtf.tophat.utilities.ColorPallete.*;
 @ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.CLIENT)
 public class Arraylist extends Module {
 
-    private final ModeSetting color;
+    private final StringSetting color;
     private final BooleanSetting hideVisualModules, fontShadow, suffix;
 
     public Arraylist() {
         Client.settingManager.add(
-                color = new ModeSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
                 hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true),
                 suffix = new BooleanSetting(this, "Suffix", true)
@@ -99,9 +99,9 @@ public class Arraylist extends Module {
             }
 
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
-                if (setting instanceof ModeSetting) {
+                if (setting instanceof StringSetting) {
                     if (suffix.get()) {
-                        modeText = EnumChatFormatting.WHITE + " [" + ((ModeSetting) setting).get() + "]".toLowerCase(Locale.ROOT);
+                        modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).get() + "]".toLowerCase(Locale.ROOT);
                     }
                     break;
                 }
@@ -123,8 +123,8 @@ public class Arraylist extends Module {
 
         if(suffix.get()) {
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
-                if (setting instanceof ModeSetting) {
-                    modeText = " [" + ((ModeSetting) setting).get() + "]";
+                if (setting instanceof StringSetting) {
+                    modeText = " [" + ((StringSetting) setting).get() + "]";
                     break;
                 }
             }

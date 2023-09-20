@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ModeSetting extends Setting {
+public class StringSetting extends Setting {
 
     private String value;
     private List<String> all;
 
-    public ModeSetting(Module parent, String name, String value, String... all) {
+    public StringSetting(Module parent, String name, String value, String... all) {
         this.parent = parent;
         this.name = name;
         this.value = value;

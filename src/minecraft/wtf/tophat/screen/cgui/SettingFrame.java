@@ -7,7 +7,7 @@ import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
-import wtf.tophat.settings.impl.ModeSetting;
+import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
@@ -60,10 +60,10 @@ public class SettingFrame extends GuiScreen {
             if(setting.isHidden())
                 continue;
 
-            if(setting instanceof ModeSetting) {
+            if(setting instanceof StringSetting) {
                 DrawingUtil.rectangle(x, y + 18, width, height, true, new Color(33,33,33));
                 fr.drawStringChoose(shadow,setting.getName().toLowerCase(Locale.ROOT) + ": ", (int) x + 5, (int) y + 25, Color.WHITE);
-                drawBox(fr,((ModeSetting) setting).get().toLowerCase(Locale.ROOT), x + 187 - fr.getStringWidth(((ModeSetting) setting).get()), y + 22, fr.getStringWidth(((ModeSetting) setting).get()) + 3, 11, color, shadow);
+                drawBox(fr,((StringSetting) setting).get().toLowerCase(Locale.ROOT), x + 187 - fr.getStringWidth(((StringSetting) setting).get()), y + 22, fr.getStringWidth(((StringSetting) setting).get()) + 3, 11, color, shadow);
                 y += 20;
             }
 
@@ -105,14 +105,14 @@ public class SettingFrame extends GuiScreen {
         double x = (width - 200) / 2.0, y = (height - 18) / 2.0;
 
         for (Setting setting : Client.settingManager.getSettingsByModule(parent)) {
-            if (setting instanceof ModeSetting) {
-                double boxX = x + 187 - fr.getStringWidth(((ModeSetting) setting).get()), boxY = y + 22, boxWidth = fr.getStringWidth(((ModeSetting) setting).get()) + 3, boxHeight = 11;
+            if (setting instanceof StringSetting) {
+                double boxX = x + 187 - fr.getStringWidth(((StringSetting) setting).get()), boxY = y + 22, boxWidth = fr.getStringWidth(((StringSetting) setting).get()) + 3, boxHeight = 11;
 
                 if (mouseX >= boxX && mouseX <= boxX + boxWidth && mouseY >= boxY && mouseY <= boxY + boxHeight) {
                     if (mouseButton == 0) {
-                        ((ModeSetting) setting).forward();
+                        ((StringSetting) setting).forward();
                     } else if (mouseButton == 1) {
-                        ((ModeSetting) setting).backward();
+                        ((StringSetting) setting).backward();
                     }
                 }
 

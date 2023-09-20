@@ -10,7 +10,7 @@ import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
-import wtf.tophat.settings.impl.ModeSetting;
+import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
@@ -24,13 +24,13 @@ import static wtf.tophat.utilities.ColorPallete.WHITE_COLOR;
 @ModuleInfo(name = "TargetHUD",desc = "shows your enemy info", category = Module.Category.RENDER)
 public class TargetHUD extends Module {
 
-    private final ModeSetting mode, color;
+    private final StringSetting mode, color;
     private final BooleanSetting fontShadow;
 
     public TargetHUD() {
         Client.settingManager.add(
-                mode = new ModeSetting(this, "Mode", "GameSense", "GameSense", "Fyre"),
-                color = new ModeSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
+                mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Fyre"),
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true)
         );
     }

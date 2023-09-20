@@ -6,19 +6,19 @@ import wtf.tophat.Client;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
-import wtf.tophat.settings.impl.ModeSetting;
+import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.movement.MoveUtil;
 
 @ModuleInfo(name = "Flight",desc = "fly like a bird", category = Module.Category.MOVE)
 public class Flight extends Module {
 
-    private final ModeSetting mode;
+    private final StringSetting mode;
     private final NumberSetting speed;
 
     public Flight() {
         Client.settingManager.add(
-                mode = new ModeSetting(this, "Mode", "Vanilla", "Vanilla"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla"),
                 speed = new NumberSetting(this, "Speed", 0, 4, 1, 2)
         );
     }
