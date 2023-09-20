@@ -24,6 +24,7 @@ public class Flight extends Module {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Collision", "Verus"),
                 speed = new NumberSetting(this, "Speed", 0, 4, 1, 2)
+                        .setHidden(() -> !mode.compare("Vanilla"))
         );
     }
 
