@@ -1,4 +1,4 @@
-package wtf.tophat.module.impl.render;
+package wtf.tophat.module.impl.hud;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.ScaledResolution;;
@@ -21,7 +21,7 @@ import java.awt.*;
 import static wtf.tophat.utilities.ColorPallete.DEFAULT_COLOR;
 import static wtf.tophat.utilities.ColorPallete.WHITE_COLOR;
 
-@ModuleInfo(name = "TargetHUD",desc = "shows your enemy info", category = Module.Category.RENDER)
+@ModuleInfo(name = "TargetHUD",desc = "shows your enemy info", category = Module.Category.HUD)
 public class TargetHUD extends Module {
 
     private final StringSetting mode, color;
