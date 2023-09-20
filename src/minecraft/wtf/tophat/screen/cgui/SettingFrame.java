@@ -45,7 +45,7 @@ public class SettingFrame extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
-        boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.client.ClickGUI.class).fontShadow.get();
+        boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.client.ClickGUI.class).fontShadow.getValue();
 
         Color color = new Color(0,85,255);
 
@@ -63,20 +63,20 @@ public class SettingFrame extends GuiScreen {
             if(setting instanceof StringSetting) {
                 DrawingUtil.rectangle(x, y + 18, width, height, true, new Color(33,33,33));
                 fr.drawStringChoose(shadow,setting.getName().toLowerCase(Locale.ROOT) + ": ", (int) x + 5, (int) y + 25, Color.WHITE);
-                drawBox(fr,((StringSetting) setting).get().toLowerCase(Locale.ROOT), x + 187 - fr.getStringWidth(((StringSetting) setting).get()), y + 22, fr.getStringWidth(((StringSetting) setting).get()) + 3, 11, color, shadow);
+                drawBox(fr,((StringSetting) setting).getValue().toLowerCase(Locale.ROOT), x + 187 - fr.getStringWidth(((StringSetting) setting).getValue()), y + 22, fr.getStringWidth(((StringSetting) setting).getValue()) + 3, 11, color, shadow);
                 y += 20;
             }
 
             if(setting instanceof BooleanSetting) {
                 DrawingUtil.rectangle(x, y + 18, width, height, true, new Color(33,33,33));
                 fr.drawStringChoose(shadow,setting.getName().toLowerCase(Locale.ROOT) + ": ", (int) x + 4, (int) y + 25, Color.WHITE);
-                drawBoxSmaller(fr, ((BooleanSetting) setting).get() ? "ON" : "OFF", x + 175, y + 22, fr.getStringWidth(((BooleanSetting) setting).get() ? "ON" : "OFF") + 3, 11, color, shadow);
+                drawBoxSmaller(fr, ((BooleanSetting) setting).getValue() ? "ON" : "OFF", x + 175, y + 22, fr.getStringWidth(((BooleanSetting) setting).getValue() ? "ON" : "OFF") + 3, 11, color, shadow);
                 y += 20;
             }
 
             if (setting instanceof NumberSetting) {
                 NumberSetting numberSetting = (NumberSetting) setting;
-                double currentValue = numberSetting.get().doubleValue(), minValue = numberSetting.min().doubleValue(), maxValue = numberSetting.max().doubleValue();
+                double currentValue = numberSetting.getValue().doubleValue(), minValue = numberSetting.getMinimum().doubleValue(), maxValue = numberSetting.getMaximum().doubleValue();
                 int decimalPoints = numberSetting.decimalPoints;
 
                 double randoValue = ((currentValue - minValue) / (maxValue - minValue)) * (185 - 6);
@@ -106,7 +106,7 @@ public class SettingFrame extends GuiScreen {
 
         for (Setting setting : Client.settingManager.getSettingsByModule(parent)) {
             if (setting instanceof StringSetting) {
-                double boxX = x + 187 - fr.getStringWidth(((StringSetting) setting).get()), boxY = y + 22, boxWidth = fr.getStringWidth(((StringSetting) setting).get()) + 3, boxHeight = 11;
+                double boxX = x + 187 - fr.getStringWidth(((StringSetting) setting).getValue()), boxY = y + 22, boxWidth = fr.getStringWidth(((StringSetting) setting).getValue()) + 3, boxHeight = 11;
 
                 if (mouseX >= boxX && mouseX <= boxX + boxWidth && mouseY >= boxY && mouseY <= boxY + boxHeight) {
                     if (mouseButton == 0) {
@@ -169,9 +169,9 @@ public class SettingFrame extends GuiScreen {
 
         if (dWheel != 0 && currentDraggingSetting != null) {
             double step = currentDraggingSetting.step();
-            double newValue = currentDraggingSetting.get().doubleValue() + step * (dWheel > 0 ? 1 : -1);
-            newValue = Math.min(currentDraggingSetting.max().doubleValue(), Math.max(currentDraggingSetting.min().doubleValue(), newValue));
-            currentDraggingSetting.set(newValue);
+            double newValue = currentDraggingSetting.getValue().doubleValue() + step * (dWheel > 0 ? 1 : -1);
+            newValue = Math.min(currentDraggingSetting.getMaximum().doubleValue(), Math.max(currentDraggingSetting.getMinimum().doubleValue(), newValue));
+            currentDraggingSetting.setValue(newValue);
         }
 
         if (currentDraggingSetting != null && Mouse.isButtonDown(0)) {
@@ -200,12 +200,12 @@ public class SettingFrame extends GuiScreen {
 
     private void handleSliderDrag(int mouseX, double sliderX, double sliderWidth) {
         double relativeX = mouseX - sliderX;
-        double range = currentDraggingSetting.max().doubleValue() - currentDraggingSetting.min().doubleValue();
+        double range = currentDraggingSetting.getMaximum().doubleValue() - currentDraggingSetting.getMinimum().doubleValue();
         double step = range / (sliderWidth - 6);
-        double newValue = currentDraggingSetting.min().doubleValue() + (relativeX / (sliderWidth - 6)) * range;
-        newValue = Math.min(currentDraggingSetting.max().doubleValue(), Math.max(currentDraggingSetting.min().doubleValue(), newValue));
+        double newValue = currentDraggingSetting.getMinimum().doubleValue() + (relativeX / (sliderWidth - 6)) * range;
+        newValue = Math.min(currentDraggingSetting.getMaximum().doubleValue(), Math.max(currentDraggingSetting.getMinimum().doubleValue(), newValue));
         newValue = Math.round(newValue * Math.pow(10, currentDraggingSetting.decimalPoints)) / Math.pow(10, currentDraggingSetting.decimalPoints); // Apply decimal points
-        currentDraggingSetting.set(newValue);
+        currentDraggingSetting.setValue(newValue);
     }
 
 }

@@ -46,7 +46,7 @@ public class TargetHUD extends Module {
         int counter = 0;
         int color = 0;
 
-        switch (this.color.get()) {
+        switch (this.color.getValue()) {
             case "Gradient":
                 color = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
                 break;
@@ -63,7 +63,7 @@ public class TargetHUD extends Module {
             EntityLivingBase livingEntity = (EntityLivingBase) targetEntity;
             float health = livingEntity.getHealth();
             if (health > 0.1) {
-                switch (mode.get()) {
+                switch (mode.getValue()) {
                     case "GameSense":
                         float healthPercentage = Math.min(1.0f, health / livingEntity.getMaxHealth());
                         int sliderWidth = (int) (95 * healthPercentage);
@@ -79,8 +79,8 @@ public class TargetHUD extends Module {
                         DrawingUtil.rectangle(x + 2, y + 38, sliderWidth, 6, true, new Color(60, 60, 60));
                         DrawingUtil.rectangle(x + 2, y + 38, 95, 6, false, new Color(color));
 
-                        mc.fontRenderer.drawStringChoose(fontShadow.get(), livingEntity.getName(), x + 2, y + 10, -1);
-                        mc.fontRenderer.drawStringChoose(fontShadow.get(),"Health: " + (int) Math.ceil(health), x + 2, y + 29, -1);
+                        mc.fontRenderer.drawStringChoose(fontShadow.getValue(), livingEntity.getName(), x + 2, y + 10, -1);
+                        mc.fontRenderer.drawStringChoose(fontShadow.getValue(),"Health: " + (int) Math.ceil(health), x + 2, y + 29, -1);
                         GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, livingEntity.rotationYaw, livingEntity.rotationPitch, livingEntity);
                         break;
                     case "Fyre":
@@ -90,7 +90,7 @@ public class TargetHUD extends Module {
                         float x1 = x, y1 = y, x2 = x1 + width, y2 = y1 + height;
 
                         RoundUtil.drawSmoothRoundedRect(x1, y1, x2, y2, 8, DEFAULT_COLOR);
-                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.get(), livingEntity.getName(), x, y + 10, Color.WHITE);
+                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.getValue(), livingEntity.getName(), x, y + 10, Color.WHITE);
                         break;
                 }
             }

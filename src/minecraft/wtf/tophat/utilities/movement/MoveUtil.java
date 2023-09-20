@@ -1,5 +1,6 @@
 package wtf.tophat.utilities.movement;
 
+import net.minecraft.util.AxisAlignedBB;
 import wtf.tophat.utilities.Methods;
 
 public class MoveUtil implements Methods {
@@ -35,6 +36,20 @@ public class MoveUtil implements Methods {
 
     public static void setSpeed(double moveSpeed) {
         setSpeed(moveSpeed, mc.player.rotationYaw, mc.player.movementInput.moveStrafe, mc.player.movementInput.moveForward);
+    }
+
+
+    public static boolean isBlockUnder() {
+        if (mc.player.posY < 0) {
+            return false;
+        }
+        for (int offset = 0; offset < (int) mc.player.posY + 2; offset += 2) {
+            AxisAlignedBB bb = mc.player.getEntityBoundingBox().offset(0, -offset, 0);
+            if (!mc.world.getCollidingBoundingBoxes(mc.player, bb).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -17,13 +17,13 @@ public class NumberSetting extends Setting {
         this.decimalPoints = decimalPoints;
     }
 
-    public Number min() { return min; }
+    public Number getMinimum() { return min; }
 
-    public Number max() { return max; }
+    public Number getMaximum() { return max; }
 
-    public Number get() { return value; }
+    public Number getValue() { return value; }
 
-    public void set(Number value) {
+    public void setValue(Number value) {
         change(value);
         onChange(this.value, value);
     }

@@ -43,7 +43,7 @@ public class Arraylist extends Module {
         List<Module> enabledModules = Client.moduleManager.getEnabledModules()
                 .stream()
                 .filter(module ->
-                                (!hideVisualModules.get() ||
+                                (!hideVisualModules.getValue() ||
                                 (!module.getCategory().equals(Category.RENDER) &&
                                 !module.getCategory().equals(Category.CLIENT)))
                 )
@@ -67,7 +67,7 @@ public class Arraylist extends Module {
         int counter = 0;
         int rcColor = 0;
 
-        switch (this.color.get()) {
+        switch (this.color.getValue()) {
             case "Gradient":
                 rcColor = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
                 break;
@@ -86,7 +86,7 @@ public class Arraylist extends Module {
 
             int color = 0;
 
-            switch (this.color.get()) {
+            switch (this.color.getValue()) {
                 case "Gradient":
                     color = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
                     break;
@@ -100,8 +100,8 @@ public class Arraylist extends Module {
 
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
                 if (setting instanceof StringSetting) {
-                    if (suffix.get()) {
-                        modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).get() + "]".toLowerCase(Locale.ROOT);
+                    if (suffix.getValue()) {
+                        modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).getValue() + "]".toLowerCase(Locale.ROOT);
                     }
                     break;
                 }
@@ -109,7 +109,7 @@ public class Arraylist extends Module {
 
             String fullText = moduleName + modeText;
             DrawingUtil.rectangle(sr.getScaledWidth() - fr.getStringWidth(fullText) - 6 - 2, y, fr.getStringWidth(fullText) + 5, fr.getHeight() + 3, true, new Color(0, 0, 0, 128));
-            fr.drawStringChoose(fontShadow.get(), fullText, sr.getScaledWidth() - 7 - fr.getStringWidth(fullText), y + (fr.getHeight() + 2 - fr.getHeight()) / 2, new Color(color));
+            fr.drawStringChoose(fontShadow.getValue(), fullText, sr.getScaledWidth() - 7 - fr.getStringWidth(fullText), y + (fr.getHeight() + 2 - fr.getHeight()) / 2, new Color(color));
             DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 4 + maxWidth, y, 1, fr.getHeight() + 3, true, new Color(color));
 
             y += 11;
@@ -121,10 +121,10 @@ public class Arraylist extends Module {
         String moduleName = module.getName().toLowerCase(Locale.ROOT);
         String modeText = "";
 
-        if(suffix.get()) {
+        if(suffix.getValue()) {
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
                 if (setting instanceof StringSetting) {
-                    modeText = " [" + ((StringSetting) setting).get() + "]";
+                    modeText = " [" + ((StringSetting) setting).getValue() + "]";
                     break;
                 }
             }

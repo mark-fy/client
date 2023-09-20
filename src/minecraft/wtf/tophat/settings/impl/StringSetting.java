@@ -10,7 +10,7 @@ import java.util.List;
 public class StringSetting extends Setting {
 
     private String value;
-    private List<String> all;
+    private final List<String> all;
 
     public StringSetting(Module parent, String name, String value, String... all) {
         this.parent = parent;
@@ -19,11 +19,11 @@ public class StringSetting extends Setting {
         this.all = new ArrayList<String>(Arrays.asList(all));
     }
 
-    public List<String> all() { return all; }
+    public List<String> getValues() { return all; }
 
-    public String get() { return value; }
+    public String getValue() { return value; }
 
-    public void set(String value) {
+    public void setValue(String value) {
         onChange(this.value, value);
         change(value);
     }
@@ -36,9 +36,9 @@ public class StringSetting extends Setting {
         int maximum = all.size();
 
         if (current < maximum - 1) {
-            set(all.get(current + 1));
+            setValue(all.get(current + 1));
         } else {
-            set(all.get(0));
+            setValue(all.get(0));
         }
 
     }
@@ -48,9 +48,9 @@ public class StringSetting extends Setting {
         int maximum = all.size();
 
         if (current > 0) {
-            set(all.get(current - 1));
+            setValue(all.get(current - 1));
         } else {
-            set(all.get(maximum - 1));
+            setValue(all.get(maximum - 1));
         }
     }
 

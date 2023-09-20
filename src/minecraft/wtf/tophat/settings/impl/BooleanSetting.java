@@ -19,9 +19,9 @@ public class BooleanSetting extends Setting {
         return this.value;
     }
 
-    public boolean get() { return value; }
+    public boolean getValue() { return value; }
 
-    public void set(boolean value) {
+    public void setValue(boolean value) {
         onChange(this.value, value);
         change(value);
     }

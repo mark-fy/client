@@ -22,7 +22,7 @@ public class TriggerBot extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        int randomizedCps = (int) ((cps.get().intValue() + Math.round(Math.random() / 6)) - Math.round(Math.random() / 8));
+        int randomizedCps = (int) ((cps.getValue().intValue() + Math.round(Math.random() / 6)) - Math.round(Math.random() / 8));
         boolean doubleClick;
 
         doubleClick = Math.random() * 100 < 33;

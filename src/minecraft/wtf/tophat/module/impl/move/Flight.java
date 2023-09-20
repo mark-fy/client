@@ -33,7 +33,7 @@ public class Flight extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        switch ((mode.get())){
+        switch ((mode.getValue())){
             case "Verus":
                 if(event.state == Event.State.PRE) {
                     if (!mc.settings.keyBindJump.isKeyDown()) {
@@ -56,14 +56,14 @@ public class Flight extends Module {
                 mc.player.motionY = 0;
 
                 if (Keyboard.isKeyDown(mc.settings.keyBindJump.getKeyCode())) {
-                    mc.player.motionY = speed.get().floatValue();
+                    mc.player.motionY = speed.getValue().floatValue();
                 }
 
                 if (Keyboard.isKeyDown(mc.settings.keyBindSneak.getKeyCode())) {
-                    mc.player.motionY = -speed.get().floatValue();
+                    mc.player.motionY = -speed.getValue().floatValue();
                 }
 
-                MoveUtil.setSpeed(speed.get().floatValue());
+                MoveUtil.setSpeed(speed.getValue().floatValue());
                 break;
         }
     }
@@ -73,7 +73,7 @@ public class Flight extends Module {
         if(Methods.mc.player == null || Methods.mc.world == null)
             return;
 
-        switch (mode.get()) {
+        switch (mode.getValue()) {
             case "Verus":
                 event.setBoundingBox(new AxisAlignedBB(-5, -1, -5, 5, 1, 5).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ()));
                 break;

@@ -40,7 +40,7 @@ public class NoSlow extends Module {
             return;
         }
 
-        switch (mode.get()) {
+        switch (mode.getValue()) {
             case "Switch":
             case "Grim":
                 if(event.state == Event.State.PRE) {
@@ -58,19 +58,19 @@ public class NoSlow extends Module {
             return;
         }
 
-        if(sword.get() && currentItem.getItem() instanceof ItemSword) {
+        if(sword.getValue() && currentItem.getItem() instanceof ItemSword) {
             event.setSprint(true);
             event.setForward(1f);
             event.setStrafe(1f);
         }
 
-        if(food.get() && currentItem.getItem() instanceof ItemFood) {
+        if(food.getValue() && currentItem.getItem() instanceof ItemFood) {
             event.setSprint(true);
             event.setForward(1f);
             event.setStrafe(1f);
         }
 
-        if(bows.get() && currentItem.getItem() instanceof ItemBow) {
+        if(bows.getValue() && currentItem.getItem() instanceof ItemBow) {
             event.setSprint(true);
             event.setForward(1f);
             event.setStrafe(1f);
@@ -83,7 +83,7 @@ public class NoSlow extends Module {
             return;
         }
 
-        switch (mode.get()) {
+        switch (mode.getValue()) {
             case "Grim":
                 if (mc.player.isBlocking()) {
                     sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));

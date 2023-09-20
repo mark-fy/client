@@ -1,7 +1,6 @@
 package wtf.tophat.module.impl.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumChatFormatting;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
@@ -43,7 +42,7 @@ public class Watermark extends Module {
         DrawingUtil.rectangle(10, 10, strWidth + 1, 10, true, new Color(22,22,22));
         DrawingUtil.rectangle(10, 10, strWidth + 1, 1, true, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
 
-        fr.drawStringChoose(fontShadow.get(), text, 11, 12, Color.WHITE);
+        fr.drawStringChoose(fontShadow.getValue(), text, 11, 12, Color.WHITE);
         counter++;
     }
 

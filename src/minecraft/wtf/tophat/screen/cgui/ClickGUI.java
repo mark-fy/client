@@ -27,7 +27,7 @@ public class ClickGUI extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
-        boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.client.ClickGUI.class).fontShadow.get();
+        boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.client.ClickGUI.class).fontShadow.getValue();
 
         Color color = new Color(0,85,255);
 

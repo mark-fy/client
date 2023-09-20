@@ -47,9 +47,9 @@ public class Disabler extends Module {
 
         Packet<?> packet = event.getPacket();
 
-        switch(mode.get()) {
+        switch(mode.getValue()) {
             case "Verus":
-                if(verusCombat.get()) {
+                if(verusCombat.getValue()) {
                     if (packet instanceof C0FPacketConfirmTransaction) {
                         if (mc.player.isDead) {
                             verusCounter = 0;
@@ -66,23 +66,23 @@ public class Disabler extends Module {
                 }
                 break;
             case "Custom":
-                if(c00.get() && packet instanceof C00PacketKeepAlive) {
+                if(c00.getValue() && packet instanceof C00PacketKeepAlive) {
                     event.setCancelled(true);
                 }
 
-                if(c13.get() && packet instanceof C13PacketPlayerAbilities) {
+                if(c13.getValue() && packet instanceof C13PacketPlayerAbilities) {
                     event.setCancelled(true);
                 }
 
-                if(c0f.get() && packet instanceof C0FPacketConfirmTransaction) {
+                if(c0f.getValue() && packet instanceof C0FPacketConfirmTransaction) {
                     event.setCancelled(true);
                 }
 
-                if(c0c.get() && packet instanceof C0CPacketInput) {
+                if(c0c.getValue() && packet instanceof C0CPacketInput) {
                     event.setCancelled(true);
                 }
 
-                if(c0b.get() && packet instanceof C0BPacketEntityAction) {
+                if(c0b.getValue() && packet instanceof C0BPacketEntityAction) {
                     event.setCancelled(true);
                 }
                 break;
@@ -96,7 +96,7 @@ public class Disabler extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        switch (mode.get()) {
+        switch (mode.getValue()) {
             case "Intave Timer":
                 StringBuilder builder = new StringBuilder();
                 for (int i = 32; i < 256; i++) builder.append((char)i);

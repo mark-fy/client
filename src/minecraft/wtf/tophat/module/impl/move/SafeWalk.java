@@ -14,7 +14,6 @@ public class SafeWalk extends Module {
         if(Methods.mc.player == null || Methods.mc.world == null)
             return;
 
-
         event.setSafe(mc.player.onGround);
     }
 

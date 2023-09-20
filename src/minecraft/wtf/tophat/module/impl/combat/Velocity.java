@@ -38,7 +38,7 @@ public class Velocity extends Module {
 
     @Listen
     public void onUpdate(UpdateEvent event) {
-        switch (mode.get()) {
+        switch (mode.getValue()) {
             case "Grim":
                 if (transactionQueue.isEmpty() && grimPacket) {
                     grimPacket = false;
@@ -52,16 +52,16 @@ public class Velocity extends Module {
         if(mc.player == null || mc.player == null)
             return;
 
-        switch (mode.get()) {
+        switch (mode.getValue()) {
             case "Simple":
                 if (event.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) event.getPacket();
                     if (packet.getEntityID() == mc.player.getEntityId()) {
-                        if (horizontal.get().doubleValue() == 0 && vertical.get().doubleValue() == 0)
+                        if (horizontal.getValue().doubleValue() == 0 && vertical.getValue().doubleValue() == 0)
                             event.setCancelled(true);
-                        packet.setMotionX((int) (packet.getMotionX() * (horizontal.get().doubleValue() / 100D)));
-                        packet.setMotionY((int) (packet.getMotionY() * (vertical.get().doubleValue() / 100D)));
-                        packet.setMotionZ((int) (packet.getMotionZ() * (horizontal.get().doubleValue() / 100D)));
+                        packet.setMotionX((int) (packet.getMotionX() * (horizontal.getValue().doubleValue() / 100D)));
+                        packet.setMotionY((int) (packet.getMotionY() * (vertical.getValue().doubleValue() / 100D)));
+                        packet.setMotionZ((int) (packet.getMotionZ() * (horizontal.getValue().doubleValue() / 100D)));
                     }
                 }
                 break;
