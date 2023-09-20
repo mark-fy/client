@@ -55,7 +55,7 @@ public class Module implements Methods {
     public enum Category {
 
         COMBAT ("Combat"),MOVE ("Move"), PLAYER ("Player"),
-        RENDER ("Render"),EXPLOIT("Exploit"), CLIENT ("Client");
+        RENDER ("Render"), MISC("Misc"), CLIENT ("Client");
 
         private final String name;
 

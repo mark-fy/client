@@ -1,4 +1,4 @@
-package wtf.tophat.module.impl.exploit;
+package wtf.tophat.module.impl.misc;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.Packet;
@@ -12,7 +12,7 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 
-@ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.EXPLOIT)
+@ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.MISC)
 public class Disabler extends Module {
 
     private final StringSetting mode;
