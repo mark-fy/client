@@ -17,6 +17,8 @@ public interface Methods {
 
     default void sendPacket(Packet<? extends INetHandler> packet) { mc.player.sendQueue.send(packet); }
 
+    default void sendPacketUnlogged(Packet<? extends INetHandler> packet) { mc.getNetHandler().getNetworkManager().sendPacket(packet); }
+
     default void click(boolean doubleClick) {
         mc.click();
         if(doubleClick)
