@@ -1,7 +1,6 @@
 .idea/
 .settings/
 
-*.log
 *.iml
 
 *.classpath
