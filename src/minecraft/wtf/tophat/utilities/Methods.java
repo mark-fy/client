@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
+import wtf.tophat.utilities.chat.ChatUtil;
 
 public interface Methods {
 
@@ -18,6 +19,10 @@ public interface Methods {
     default void sendPacket(Packet<? extends INetHandler> packet) { mc.player.sendQueue.send(packet); }
 
     default void sendPacketUnlogged(Packet<? extends INetHandler> packet) { mc.getNetHandler().getNetworkManager().sendPacket(packet); }
+
+    default void sendChat(String message, boolean prefix) { ChatUtil.addChatMessage(message, prefix); }
+
+    default void sendChat(String message) { ChatUtil.addChatMessage(message, false); }
 
     default void click(boolean doubleClick) {
         mc.click();

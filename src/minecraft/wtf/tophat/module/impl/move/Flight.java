@@ -1,14 +1,19 @@
 package wtf.tophat.module.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.network.play.client.C0APacketAnimation;
+import net.minecraft.network.play.client.C14PacketTabComplete;
+import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.CollisionBoxesEvent;
 import wtf.tophat.events.impl.MotionEvent;
+import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
+import wtf.tophat.module.impl.misc.Blink;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.Methods;
@@ -22,7 +27,7 @@ public class Flight extends Module {
 
     public Flight() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Collision", "Verus"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Collision", "Verus", "Intave"),
                 speed = new NumberSetting(this, "Speed", 0, 4, 1, 2)
                         .setHidden(() -> !mode.compare("Vanilla"))
         );
@@ -65,6 +70,32 @@ public class Flight extends Module {
 
                 MoveUtil.setSpeed(speed.getValue().floatValue());
                 break;
+            case "Intave":
+                mc.player.motionY = 0.0D;
+                MoveUtil.setSpeed(speed.getValue().floatValue());
+                break;
+        }
+    }
+
+    @Listen
+    public void onPacket(PacketEvent event) {
+        if(Methods.mc.player == null || Methods.mc.world == null)
+            return;
+
+        switch (mode.getValue()) {
+            case "Intave":
+                if(event.getPacket() instanceof C0APacketAnimation) {
+                    event.setCancelled(true);
+                }
+
+                if(event.getPacket() instanceof C19PacketResourcePackStatus) {
+                    event.setCancelled(true);
+                }
+
+                if(event.getPacket() instanceof C14PacketTabComplete) {
+                    event.setCancelled(true);
+                }
+                break;
         }
     }
 
@@ -86,7 +117,6 @@ public class Flight extends Module {
 
     @Override
     public void onEnable() {
-        up = false;
         super.onEnable();
     }
 

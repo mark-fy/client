@@ -10,13 +10,13 @@ public class Help extends Command {
 
     @Override
     public void onCommand(String[] args, String command) {
-        ChatUtil.addChatMessage("", false);
-        ChatUtil.addChatMessage(String.format("Running %s v%s made by %s", Client.getName(), Client.getVersion(), "MarkGG"));
-        ChatUtil.addChatMessage("", false);
+        sendChat("");
+        sendChat(String.format("Running %s v%s made by %s", Client.getName(), Client.getVersion(), "MarkGG"));
+        sendChat("");
         for(Command command1 : Client.commandManager.getList()) {
-            ChatUtil.addChatMessage(command1.getCommand() + " - " + command1.getDescription());
+            sendChat(command1.getCommand() + " - " + command1.getDescription(), true);
         }
-        ChatUtil.addChatMessage("", false);
+        sendChat("");
         super.onCommand(args, command);
     }
 }

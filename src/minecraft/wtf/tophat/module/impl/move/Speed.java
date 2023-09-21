@@ -5,10 +5,12 @@ import net.minecraft.client.settings.KeyBinding;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
+import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
+import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
 @ModuleInfo(name = "Speed", desc = "move faster", category = Module.Category.MOVE)
@@ -27,6 +29,18 @@ public class Speed extends Module {
 
     // Hypixel
     private int hypixelTicks = 0;
+
+    // Intave
+    private int onTicks, offTicks;
+
+    @Listen
+    public void onTick(RunTickEvent event) {
+        if(Methods.mc.player == null || Methods.mc.world == null)
+            return;
+
+        onTicks = mc.player.onGround ? ++onTicks : 0;
+        offTicks = mc.player.onGround ? 0 : ++offTicks;
+    }
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -55,23 +69,12 @@ public class Speed extends Module {
                     }
                     break;
                 case "Intave":
-                    mc.settings.keyBindJump.pressed = MoveUtil.getSpeed() != 0;
+                    mc.settings.keyBindJump.pressed = true;
 
-                    if(mc.player.onGround) {
-                        mc.timer.timerSpeed = 1.07f;
-                    } else {
-                        mc.timer.timerSpeed = (float) (1 + Math.random() / 1200);
+                    if (offTicks >= 10 && offTicks % 5 == 0) {
+                        MoveUtil.setSpeed(MoveUtil.getSpeed());
                     }
 
-                    if(mc.player.motionY > 0) {
-                        mc.timer.timerSpeed += 0.01;
-                        mc.player.motionX *= 1.0004;
-                        mc.player.motionZ *= 1.0004;
-                    }
-
-                    if(mc.player.hurtTime != 0) {
-                        mc.timer.timerSpeed = 1.21f;
-                    }
                     break;
                 case "Vanilla":
                     MoveUtil.setSpeed(speed.getValue().floatValue());
@@ -89,6 +92,8 @@ public class Speed extends Module {
     @Override
     public void onDisable() {
         hypixelTicks = 0;
+        onTicks = 0;
+        offTicks = 0;
         mc.timer.timerSpeed = 1.0f;
         mc.player.speedInAir = 0.02f;
         mc.settings.keyBindJump.pressed = false;

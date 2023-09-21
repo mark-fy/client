@@ -22,12 +22,12 @@ public class Bind extends Command {
 
             if (module != null) {
                 module.setKeyCode(Keyboard.getKeyIndex(keyName.toUpperCase(Locale.ROOT)));
-                ChatUtil.addChatMessage(String.format("Bound %s to %s", moduleName, Keyboard.getKeyName(module.getKeyCode())));
+                sendChat(String.format("Bound %s to %s", moduleName, Keyboard.getKeyName(module.getKeyCode())), true);
             } else {
-                ChatUtil.addChatMessage(String.format("Module %s not found", moduleName));
+                sendChat(String.format("Module %s not found", moduleName), true);
             }
         } else {
-            ChatUtil.addChatMessage("Usage: .bind <module> <key>");
+            sendChat("Usage: .bind <module> <key>", true);
         }
 
         super.onCommand(args, command);

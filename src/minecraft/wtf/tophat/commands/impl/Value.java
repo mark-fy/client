@@ -36,35 +36,35 @@ public class Value extends Command {
                             Optional<Boolean> optional = BooleanParser.parse(newValue);
                             if(optional != null) {
                                 booleanSetting.setValue(optional.get());
-                                ChatUtil.addChatMessage(String.format("Value set to %s", newValue));
+                                sendChat(String.format("Value set to %s", newValue), true);
                             } else {
-                                ChatUtil.addChatMessage(String.format("Could not parse value %s", newValue));
+                                sendChat(String.format("Could not parse value %s", newValue), true);
                             }
                         } else if(setting instanceof NumberSetting) {
                             NumberSetting numberSetting = (NumberSetting) setting;
                             Number result = NumberParser.parse(newValue, numberSetting.getValue().getClass());
                             if(result != null) {
                                 numberSetting.setValue(result);
-                                ChatUtil.addChatMessage(String.format("Value set to %s", newValue));
+                                sendChat(String.format("Value set to %s", newValue), true);
                             } else {
-                                ChatUtil.addChatMessage(String.format("Could not parse value %s", newValue));
+                                sendChat(String.format("Could not parse value %s", newValue), true);
                             }
                         } else if(setting instanceof StringSetting) {
                             StringSetting modeSetting = (StringSetting) setting;
                             modeSetting.setValue(args[2]);
-                            ChatUtil.addChatMessage(String.format("Value set to %s", newValue));
+                            sendChat(String.format("Value set to %s", newValue), true);
                         }
                         break;
                     }
                 }
                 if(!found) {
-                    ChatUtil.addChatMessage(String.format("Value %s not found", newValue));
+                    sendChat(String.format("Value %s not found", newValue), true);
                 }
             } else {
-                ChatUtil.addChatMessage(String.format("Module %s not found", moduleName));
+                sendChat(String.format("Module %s not found", moduleName), true);
             }
         } else {
-            ChatUtil.addChatMessage("Usage: .value <module> <value name> <value>");
+            sendChat("Usage: .value <module> <value name> <value>", true);
         }
         super.onCommand(args, command);
     }

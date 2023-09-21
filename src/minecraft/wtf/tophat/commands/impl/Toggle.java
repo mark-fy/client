@@ -18,12 +18,12 @@ public class Toggle extends Command {
 
             if (module != null) {
                 module.toggle();
-                ChatUtil.addChatMessage(String.format("Toggled %s", moduleName));
+               sendChat(String.format("Toggled %s", moduleName), true);
             } else {
-                ChatUtil.addChatMessage(String.format("Module %s not found", moduleName));
+               sendChat(String.format("Module %s not found", moduleName), true);
             }
         } else {
-            ChatUtil.addChatMessage("Usage: .toggle <module>");
+           sendChat("Usage: .toggle <module>", true);
         }
         super.onCommand(args, command);
     }
