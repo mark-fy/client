@@ -9,7 +9,7 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
 import wtf.tophat.Client;
-import wtf.tophat.events.Event;
+import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.events.impl.SlowDownEvent;

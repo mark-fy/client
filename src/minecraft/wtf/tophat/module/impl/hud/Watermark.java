@@ -13,8 +13,8 @@ import wtf.tophat.utilities.render.DrawingUtil;
 import java.awt.*;
 import java.util.Locale;
 
-import static wtf.tophat.utilities.ColorPallete.DEFAULT_COLOR;
-import static wtf.tophat.utilities.ColorPallete.WHITE_COLOR;
+import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
+import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
 @ModuleInfo(name = "Watermark",desc = "displays the client's watermark", category = Module.Category.HUD)
 public class Watermark extends Module {

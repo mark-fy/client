@@ -1,4 +1,4 @@
-package wtf.tophat.events;
+package wtf.tophat.events.base;
 
 import wtf.tophat.Client;
 

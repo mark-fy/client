@@ -1,6 +1,7 @@
-package wtf.tophat.events;
+package wtf.tophat.events.base;
 
 import io.github.nevalackin.radbus.PubSub;
+import wtf.tophat.events.base.Event;
 
 public class EventManager {
 

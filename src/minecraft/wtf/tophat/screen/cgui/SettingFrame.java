@@ -177,7 +177,6 @@ public class SettingFrame extends GuiScreen {
 
         if (currentDraggingSetting != null && Mouse.isButtonDown(0)) {
             double mouseX = Mouse.getEventX();
-            double mouseY = mc.displayHeight - Mouse.getEventY();
             double sliderX = (width - 200) / 2.0 + 5;
             double sliderWidth = 185;
 
@@ -202,7 +201,6 @@ public class SettingFrame extends GuiScreen {
     private void handleSliderDrag(int mouseX, double sliderX, double sliderWidth) {
         double relativeX = mouseX - sliderX;
         double range = currentDraggingSetting.getMaximum().doubleValue() - currentDraggingSetting.getMinimum().doubleValue();
-        double step = range / (sliderWidth - 6);
         double newValue = currentDraggingSetting.getMinimum().doubleValue() + (relativeX / (sliderWidth - 6)) * range;
         newValue = Math.min(currentDraggingSetting.getMaximum().doubleValue(), Math.max(currentDraggingSetting.getMinimum().doubleValue(), newValue));
         newValue = Math.round(newValue * Math.pow(10, currentDraggingSetting.decimalPoints)) / Math.pow(10, currentDraggingSetting.decimalPoints); // Apply decimal points

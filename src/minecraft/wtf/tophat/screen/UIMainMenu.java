@@ -9,8 +9,8 @@ import wtf.tophat.utilities.render.ColorUtil;
 import java.awt.*;
 import java.io.IOException;
 
-import static wtf.tophat.utilities.ColorPallete.DEFAULT_COLOR;
-import static wtf.tophat.utilities.ColorPallete.WHITE_COLOR;
+import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
+import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
 public class UIMainMenu extends GuiScreen {
 

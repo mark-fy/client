@@ -2,7 +2,7 @@ package wtf.tophat.events.impl;
 
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
-import wtf.tophat.events.Event;
+import wtf.tophat.events.base.Event;
 
 public class PacketEvent extends Event {
 

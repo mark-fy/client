@@ -3,7 +3,7 @@ package wtf.tophat.module.impl.player;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import wtf.tophat.Client;
-import wtf.tophat.events.Event;
+import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.module.base.Module;

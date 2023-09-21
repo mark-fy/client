@@ -4,7 +4,7 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
-import wtf.tophat.events.Event;
+import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.CollisionBoxesEvent;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.module.base.Module;

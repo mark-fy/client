@@ -3,7 +3,7 @@ package wtf.tophat;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.Display;
 import wtf.tophat.commands.base.CommandManager;
-import wtf.tophat.events.EventManager;
+import wtf.tophat.events.base.EventManager;
 import wtf.tophat.module.base.ModuleManager;
 import wtf.tophat.settings.base.SettingManager;
 

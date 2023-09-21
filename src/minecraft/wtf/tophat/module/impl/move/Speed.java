@@ -3,7 +3,7 @@ package wtf.tophat.module.impl.move;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.settings.KeyBinding;
 import wtf.tophat.Client;
-import wtf.tophat.events.Event;
+import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;

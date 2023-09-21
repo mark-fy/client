@@ -2,7 +2,7 @@ package wtf.tophat.events.impl;
 
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import wtf.tophat.events.Event;
+import wtf.tophat.events.base.Event;
 
 public class CollisionBoxesEvent extends Event {
 

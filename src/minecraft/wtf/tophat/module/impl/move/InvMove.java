@@ -4,7 +4,7 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.events.Event;
+import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;

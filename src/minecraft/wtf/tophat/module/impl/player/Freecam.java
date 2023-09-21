@@ -7,16 +7,11 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldSettings;
 import org.lwjgl.util.vector.Vector2f;
-import wtf.tophat.Client;
-import wtf.tophat.events.Event;
 import wtf.tophat.events.impl.CollisionBoxesEvent;
-import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
-import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
-import wtf.tophat.utilities.movement.MoveUtil;
 
 import java.util.UUID;
 

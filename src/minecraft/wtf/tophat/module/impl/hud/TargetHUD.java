@@ -18,8 +18,8 @@ import wtf.tophat.utilities.render.RoundUtil;
 
 import java.awt.*;
 
-import static wtf.tophat.utilities.ColorPallete.DEFAULT_COLOR;
-import static wtf.tophat.utilities.ColorPallete.WHITE_COLOR;
+import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
+import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
 @ModuleInfo(name = "TargetHUD",desc = "shows your enemy info", category = Module.Category.HUD)
 public class TargetHUD extends Module {

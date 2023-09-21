@@ -13,8 +13,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Locale;
 
-import static wtf.tophat.utilities.ColorPallete.DEFAULT_COLOR;
-import static wtf.tophat.utilities.ColorPallete.WHITE_COLOR;
+import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
+import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
 public class ClickGUI extends GuiScreen {
 

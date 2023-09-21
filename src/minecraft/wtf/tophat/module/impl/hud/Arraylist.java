@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static wtf.tophat.utilities.ColorPallete.*;
+import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
+import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
 @ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.HUD)
 public class Arraylist extends Module {

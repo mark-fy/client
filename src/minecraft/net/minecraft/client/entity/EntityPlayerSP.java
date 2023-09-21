@@ -45,7 +45,7 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
-import wtf.tophat.events.Event;
+import wtf.tophat.events.base.Event;
 import wtf.tophat.events.handler.PlayerHandler;
 import wtf.tophat.events.impl.*;
 import wtf.tophat.utilities.movement.MoveUtil;
