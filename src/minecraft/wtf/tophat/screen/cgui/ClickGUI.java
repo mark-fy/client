@@ -54,6 +54,13 @@ public class ClickGUI extends GuiScreen {
             double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName().toLowerCase(Locale.ROOT))) / 2 - 2;
             double categoryTextY = y + 6;
 
+            double dropdownMinX = x;
+            double dropdownMinY = y;
+            double dropdownMaxX = x + categoryWidth;
+            double dropdownMaxY = y + categoryHeight;
+
+            DrawingUtil.rectangle(dropdownMinX, dropdownMinY, dropdownMaxX - dropdownMinX, dropdownMaxY - dropdownMinY, false, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, x)));
+
             DrawingUtil.rectangle(x, y, categoryWidth, categoryHeight, true, new Color(20, 20, 20));
 
             frBig.drawStringChoose(shadow, category.getName().toLowerCase(Locale.ROOT), (int) categoryTextX, (int) categoryTextY, Color.WHITE);
@@ -78,8 +85,6 @@ public class ClickGUI extends GuiScreen {
 
                 double moduleRectWidth = categoryWidth + keybindTextWidth;
 
-                // Check if mouse is hovering over the module rectangle
-                // Check if mouse is hovering over the module rectangle
                 boolean isHovered = mouseX >= modX && mouseX <= modX + categoryWidth && mouseY >= modY && mouseY <= modY + modHeight;
 
                 boolean isNotHoveringOutsideText = mouseX <= modX + categoryWidth;
@@ -126,6 +131,10 @@ public class ClickGUI extends GuiScreen {
 
                 modY += 20;
             }
+
+            dropdownMaxY = modY;
+
+            DrawingUtil.rectangle(dropdownMinX, dropdownMinY, dropdownMaxX - dropdownMinX, dropdownMaxY - dropdownMinY, false, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, x)));
 
             x += categoryWidth + 15;
         }

@@ -65,7 +65,6 @@ public class TargetHUD extends Module {
             EntityLivingBase livingEntity = (EntityLivingBase) targetEntity;
             float health = livingEntity.getHealth();
 
-
             if (health > 0.1) {
                 switch (mode.getValue()) {
                     case "GameSense":
@@ -83,8 +82,8 @@ public class TargetHUD extends Module {
                         DrawingUtil.rectangle(x + 2, y + 38, sliderWidth, 6, true, new Color(60, 60, 60));
                         DrawingUtil.rectangle(x + 2, y + 38, 95, 6, false, new Color(color));
 
-                        mc.fontRenderer.drawStringChoose(fontShadow.getValue(), livingEntity.getName(), x + 2, y + 10, -1);
-                        mc.fontRenderer.drawStringChoose(fontShadow.getValue(),"Health: " + (int) Math.ceil(health), x + 2, y + 29, -1);
+                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.getValue(), livingEntity.getName(), x + 2, y + 10, Color.WHITE);
+                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.getValue(),"Health: " + (int) Math.ceil(health), x + 2, y + 29, Color.WHITE);
                         GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, livingEntity.rotationYaw, livingEntity.rotationPitch, livingEntity);
                         break;
                     case "Modern":
