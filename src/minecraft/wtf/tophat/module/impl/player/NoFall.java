@@ -12,7 +12,7 @@ import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
-@ModuleInfo(name = "NoFall",desc = "disables fall damage", category = Module.Category.PLAYER)
+@ModuleInfo(name = "No Fall",desc = "disables fall damage", category = Module.Category.PLAYER)
 public class NoFall extends Module {
 
     private final StringSetting mode;

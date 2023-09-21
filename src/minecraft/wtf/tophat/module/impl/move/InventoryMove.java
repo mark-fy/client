@@ -9,8 +9,8 @@ import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 
-@ModuleInfo(name = "InvMove",desc = "move in guis", category = Module.Category.MOVE)
-public class InvMove extends Module {
+@ModuleInfo(name = "Inventory Move",desc = "move in guis", category = Module.Category.MOVE)
+public class InventoryMove extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {

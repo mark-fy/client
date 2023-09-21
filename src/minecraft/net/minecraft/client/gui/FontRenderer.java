@@ -406,13 +406,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     {
         //NameProtect
         if(Client.moduleManager.getByClass(NameProtect.class).isEnabled()) {
-            if(text.contains(Minecraft.getMinecraft().getSession().getUsername())) {
-                text = text.replace(Minecraft.getMinecraft().getSession().getUsername(), "TopHatBest");
-            }
-        } else {
-            if(text.contains(Minecraft.getMinecraft().getSession().getUsername())) {
-                text = text.replace(Minecraft.getMinecraft().getSession().getUsername(), Minecraft.getMinecraft().getSession().getUsername() + EnumChatFormatting.RESET);
-            }
+            text = text.replace(Minecraft.getMinecraft().getSession().getUsername(), "TopHatBest");
         }
 
         //Custom Scoreboard

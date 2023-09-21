@@ -21,7 +21,7 @@ public class Speed extends Module {
 
     public Speed() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus"),
                 speed = new NumberSetting(this, "Speed", 0, 3, 1, 2)
                         .setHidden(() -> !mode.compare("Vanilla"))
         );
@@ -46,6 +46,20 @@ public class Speed extends Module {
     public void onMotion(MotionEvent event) {
         if(event.state == Event.State.PRE) {
             switch (mode.getValue()) {
+                case "Verus":
+                    if(event.state == Event.State.PRE) {
+                        if (isMoving()) {
+                            if (mc.player.onGround) {
+                                mc.player.jump();
+                                MoveUtil.setSpeed(0.48);
+                            } else {
+                                MoveUtil.setSpeed(MoveUtil.getSpeed());
+                            }
+                        } else {
+                            MoveUtil.setSpeed(0);
+                        }
+                    }
+                    break;
                 case "Hypixel":
                     if(MoveUtil.getSpeed() == 0) {
                         mc.timer.timerSpeed = 1;

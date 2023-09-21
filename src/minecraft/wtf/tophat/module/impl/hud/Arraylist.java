@@ -44,9 +44,9 @@ public class Arraylist extends Module {
         List<Module> enabledModules = Client.moduleManager.getEnabledModules()
                 .stream()
                 .filter(module ->
-                                (!hideVisualModules.getValue() ||
+                        (!hideVisualModules.getValue() ||
                                 (!module.getCategory().equals(Category.RENDER) &&
-                                !module.getCategory().equals(Category.HUD)))
+                                        !module.getCategory().equals(Category.HUD)))
                 )
                 .sorted((module1, module2) -> {
                     int width1 = calculateTotalWidth(module1, fr);
@@ -82,8 +82,10 @@ public class Arraylist extends Module {
 
         DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 5, y - 1, maxWidth + 2, 1, true, new Color(rcColor));
         for (Module module : enabledModules) {
-            String moduleName = module.getName().toLowerCase(Locale.ROOT);
+            String moduleName = module.getName();
             String modeText = "";
+
+            moduleName = moduleName.toLowerCase(Locale.ROOT);
 
             int color = 0;
 
@@ -102,7 +104,7 @@ public class Arraylist extends Module {
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
                 if (setting instanceof StringSetting) {
                     if (suffix.getValue()) {
-                        modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).getValue() + "]".toLowerCase(Locale.ROOT);
+                        modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).getValue() + "]";
                     }
                     break;
                 }
@@ -119,10 +121,10 @@ public class Arraylist extends Module {
     }
 
     private int calculateTotalWidth(Module module, CFontRenderer fr) {
-        String moduleName = module.getName().toLowerCase(Locale.ROOT);
+        String moduleName = module.getName();
         String modeText = "";
 
-        if(suffix.getValue()) {
+        if (suffix.getValue()) {
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
                 if (setting instanceof StringSetting) {
                     modeText = " [" + ((StringSetting) setting).getValue() + "]";
@@ -130,6 +132,8 @@ public class Arraylist extends Module {
                 }
             }
         }
+
+        moduleName = moduleName.toLowerCase(Locale.ROOT);
 
         String fullText = moduleName + modeText;
         return fr.getStringWidth(fullText);

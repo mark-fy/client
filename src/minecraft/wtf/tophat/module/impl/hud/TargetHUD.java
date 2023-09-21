@@ -23,7 +23,7 @@ import java.awt.*;
 import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
 import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
-@ModuleInfo(name = "TargetHUD",desc = "shows your enemy info", category = Module.Category.HUD)
+@ModuleInfo(name = "Target HUD",desc = "shows your enemy info", category = Module.Category.HUD)
 public class TargetHUD extends Module {
 
     private final StringSetting mode, color;

@@ -6,7 +6,7 @@ import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 
 // Hooked in FontRenderer.java class
-@ModuleInfo(name = "CustomScoreboard",desc = "change the scoreboard", category = Module.Category.HUD)
+@ModuleInfo(name = "Custom Scoreboard",desc = "change the scoreboard", category = Module.Category.HUD)
 public class CustomScoreboard extends Module {
 
     public final BooleanSetting customIp;

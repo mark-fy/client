@@ -18,13 +18,13 @@ import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 
-@ModuleInfo(name = "NoSlow",desc = "disable slow down effects", category = Module.Category.MOVE)
-public class NoSlow extends Module {
+@ModuleInfo(name = "No Slowdown",desc = "disable slow down effects", category = Module.Category.MOVE)
+public class NoSlowdown extends Module {
 
     private final StringSetting mode;
     private final BooleanSetting sword, food, bows;
 
-    public NoSlow() {
+    public NoSlowdown() {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim"),
                 sword = new BooleanSetting(this, "Sword", true),

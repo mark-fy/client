@@ -6,7 +6,7 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.utilities.Methods;
 
-@ModuleInfo(name = "NoJumpDelay",desc = "removes jumping delay", category = Module.Category.MOVE)
+@ModuleInfo(name = "No Jump Delay",desc = "removes jumping delay", category = Module.Category.MOVE)
 public class NoJumpDelay extends Module {
 
     @Listen

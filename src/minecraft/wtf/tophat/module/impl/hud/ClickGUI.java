@@ -6,7 +6,7 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 
-@ModuleInfo(name = "ClickGUI",desc = "clicky gui", category = Module.Category.HUD, bind = Keyboard.KEY_RSHIFT)
+@ModuleInfo(name = "Click GUI",desc = "clicky gui", category = Module.Category.HUD, bind = Keyboard.KEY_RSHIFT)
 public class ClickGUI extends Module {
 
     public final BooleanSetting fontShadow;

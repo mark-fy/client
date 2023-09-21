@@ -10,7 +10,7 @@ import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 
-@ModuleInfo(name = "CorrectMovement",desc = "correct your movement", category = Module.Category.MOVE)
+@ModuleInfo(name = "Correct Movement",desc = "correct your movement", category = Module.Category.MOVE)
 public class CorrectMoverment extends Module {
 
     private final StringSetting mode;

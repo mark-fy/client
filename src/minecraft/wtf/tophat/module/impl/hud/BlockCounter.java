@@ -1,4 +1,4 @@
-package wtf.tophat.module.impl.render;
+package wtf.tophat.module.impl.hud;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.util.BlockPos;
@@ -20,7 +20,7 @@ import java.awt.*;
 import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
 import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
-@ModuleInfo(name = "BlockCounter",desc = "counts how much blocks you have walked", category = Module.Category.RENDER)
+@ModuleInfo(name = "Block Counter",desc = "counts how much blocks you have walked", category = Module.Category.HUD)
 public class BlockCounter extends Module {
 
     private final BooleanSetting fontShadow;

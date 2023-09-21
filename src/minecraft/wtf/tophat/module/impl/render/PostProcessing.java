@@ -5,7 +5,7 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 
-@ModuleInfo(name = "PostProcessing",desc = "modify shaders", category = Module.Category.RENDER)
+@ModuleInfo(name = "Post Processing",desc = "modify shaders", category = Module.Category.RENDER)
 public class PostProcessing extends Module {
 
     public final BooleanSetting blurShader;
