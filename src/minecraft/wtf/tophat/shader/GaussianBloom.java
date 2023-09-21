@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL20.glUniform1;
 
 public class GaussianBloom implements Methods {
 
-    public static ShaderUtil gaussianBloom = new ShaderUtil("Tenacity/Shaders/bloom.frag");
+    public static ShaderUtil gaussianBloom = new ShaderUtil("tophat/shaders/bloom.frag");
 
     public static Framebuffer framebuffer = new Framebuffer(1, 1, false);
 

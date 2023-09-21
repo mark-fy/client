@@ -1,7 +1,9 @@
-package dev.tenacity.utils.render;
+package wtf.tophat.shader;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import wtf.tophat.shader.ShaderUtil;
+import wtf.tophat.utilities.render.ColorUtil;
 
 import java.awt.*;
 
