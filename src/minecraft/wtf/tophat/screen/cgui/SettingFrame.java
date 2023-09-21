@@ -6,10 +6,12 @@ import org.lwjgl.input.Mouse;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.impl.hud.ClickGUI;
+import wtf.tophat.module.impl.render.PostProcessing;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
+import wtf.tophat.shader.GaussianBlur;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
@@ -47,6 +49,12 @@ public class SettingFrame extends GuiScreen {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
         boolean shadow = Client.moduleManager.getByClass(ClickGUI.class).fontShadow.getValue();
+
+        if(Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+            GaussianBlur.startBlur();
+            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
+            GaussianBlur.endBlur(10, 2);
+        }
 
         Color color = new Color(0,85,255);
 
