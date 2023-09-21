@@ -9,12 +9,14 @@ import wtf.tophat.Client;
 import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
+import wtf.tophat.module.impl.render.PostProcessing;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
+import wtf.tophat.shader.GaussianBlur;
+import wtf.tophat.shader.RoundedUtil;
 import wtf.tophat.utilities.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
-import wtf.tophat.utilities.render.RoundUtil;
 
 import java.awt.*;
 
@@ -29,7 +31,7 @@ public class TargetHUD extends Module {
 
     public TargetHUD() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Fyre"),
+                mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern"),
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true)
         );
@@ -62,6 +64,8 @@ public class TargetHUD extends Module {
         if (targetEntity != null && targetEntity instanceof EntityLivingBase) {
             EntityLivingBase livingEntity = (EntityLivingBase) targetEntity;
             float health = livingEntity.getHealth();
+
+
             if (health > 0.1) {
                 switch (mode.getValue()) {
                     case "GameSense":
@@ -83,14 +87,24 @@ public class TargetHUD extends Module {
                         mc.fontRenderer.drawStringChoose(fontShadow.getValue(),"Health: " + (int) Math.ceil(health), x + 2, y + 29, -1);
                         GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, livingEntity.rotationYaw, livingEntity.rotationPitch, livingEntity);
                         break;
-                    case "Fyre":
+                    case "Modern":
                         width = 185;
                         height = 65;
 
-                        float x1 = x, y1 = y, x2 = x1 + width, y2 = y1 + height;
+                        float healthPercentage1 = Math.min(1.0f, health / livingEntity.getMaxHealth());
+                        int sliderWidth1 = (int) (173 * healthPercentage1);
 
-                        RoundUtil.drawSmoothRoundedRect(x1, y1, x2, y2, 8, DEFAULT_COLOR);
-                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.getValue(), livingEntity.getName(), x, y + 10, Color.WHITE);
+                        if(Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+                            GaussianBlur.startBlur();
+                            RoundedUtil.drawRound(x, y, width, height, 8, new Color(13, 60, 123));
+                            GaussianBlur.endBlur(8, 2);
+                        }
+
+                        RoundedUtil.drawRoundOutline(x, y, width, height, 8, 0.30f, new Color(255,255,255,25), new Color(color));
+                        RoundedUtil.drawRound(x + 6, y + 51, sliderWidth1, 8, 4, new Color(0,255,0,125));
+                        RoundedUtil.drawRoundOutline(x + 5, y + 50, 175, 10, 4, 0.30f, new Color(255,255,255,125), new Color(color));
+
+                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.getValue(), livingEntity.getName() + " - " + (int) Math.ceil(health) + "hp", x + 5, y + 5, Color.WHITE);
                         break;
                 }
             }

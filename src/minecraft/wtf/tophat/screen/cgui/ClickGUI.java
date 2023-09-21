@@ -4,6 +4,8 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
+import wtf.tophat.module.impl.render.PostProcessing;
+import wtf.tophat.shader.GaussianBlur;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
@@ -21,6 +23,11 @@ public class ClickGUI extends GuiScreen {
     private Module listeningModule = null;
 
     @Override
+    public void initGui() {
+        super.initGui();
+    }
+
+    @Override
     public boolean doesGuiPauseGame() { return false; }
 
     @Override
@@ -28,6 +35,12 @@ public class ClickGUI extends GuiScreen {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
         boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.hud.ClickGUI.class).fontShadow.getValue();
+
+        if(Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+            GaussianBlur.startBlur();
+            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
+            GaussianBlur.endBlur(10, 2);
+        }
 
         Color color = new Color(0,85,255);
 
