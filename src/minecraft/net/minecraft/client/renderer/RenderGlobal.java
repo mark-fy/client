@@ -2359,6 +2359,97 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
         }
     }
 
+    public static void renderCustomBoundingBox(AxisAlignedBB bb, boolean outline, boolean filled) {
+        if (outline) {
+            GL11.glBegin(GL11.GL_LINE_STRIP);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glEnd();
+            GL11.glBegin(GL11.GL_LINE_STRIP);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glEnd();
+            GL11.glBegin(GL11.GL_LINES);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+            GL11.glEnd();
+        }
+        if (filled) {
+            GL11.glBegin(7);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+            GL11.glEnd();
+            GL11.glBegin(7);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+            GL11.glEnd();
+            GL11.glBegin(7);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+            GL11.glEnd();
+            GL11.glBegin(7);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            GL11.glEnd();
+            GL11.glBegin(7);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+            GL11.glEnd();
+            GL11.glBegin(7);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+            GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+            GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+            GL11.glEnd();
+        }
+    }
+
     public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress)
     {
         if (progress >= 0 && progress < 10)

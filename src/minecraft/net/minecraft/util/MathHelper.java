@@ -1,11 +1,16 @@
 package net.minecraft.util;
 
+import wtf.tophat.utilities.math.MathUtil2;
+
 import java.util.Random;
 import java.util.UUID;
 
 public class MathHelper
 {
     public static final float SQRT_2 = sqrt_float(2.0F);
+    public static final float PI = MathUtil2.roundToFloat(Math.PI);
+    public static final float PI2 = MathUtil2.roundToFloat((Math.PI * 2D));
+    public static final float PId2 = MathUtil2.roundToFloat((Math.PI / 2D));
 
     /**
      * A table of sin values computed from 0 (inclusive) to 2*pi (exclusive), with steps of 2*PI / 65536.

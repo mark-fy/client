@@ -34,4 +34,9 @@ public class MathUtil {
         return time / ((1.0 / bias - 2.0) * (1.0 - time) + 1.0);
     }
 
+    public static float calculateGaussianValue(float x, float sigma) {
+        double output = 1.0 / Math.sqrt(2.0 * Math.PI * (sigma * sigma));
+        return (float) (output * Math.exp(-(x * x) / (2.0 * (sigma * sigma))));
+    }
+
 }
