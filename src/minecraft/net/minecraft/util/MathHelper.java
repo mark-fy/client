@@ -32,9 +32,9 @@ public class MathHelper
     /**
      * sin looked up in a table
      */
-    public static float sin(float p_76126_0_)
+    public static float sin(float value)
     {
-        return SIN_TABLE[(int)(p_76126_0_ * 10430.378F) & 65535];
+        return SIN_TABLE[(int)(value * 10430.378F) & 65535];
     }
 
     /**
