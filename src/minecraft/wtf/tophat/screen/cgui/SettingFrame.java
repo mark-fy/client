@@ -58,7 +58,7 @@ public class SettingFrame extends GuiScreen {
 
         Color color = new Color(0,85,255);
 
-        double x = (width - 200) / 2.0, y = (height - 15) / 2.0;
+        double x = (width - 200) / 2.0, y = 50;
         double width = 200;
         double height = 20;
 
@@ -111,7 +111,7 @@ public class SettingFrame extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         FontRenderer fr = mc.fontRenderer;
 
-        double x = (width - 200) / 2.0, y = (height - 18) / 2.0;
+        double x = (width - 200) / 2.0, y = 50;
 
         for (Setting setting : Client.settingManager.getSettingsByModule(parent)) {
             if (setting instanceof StringSetting) {
