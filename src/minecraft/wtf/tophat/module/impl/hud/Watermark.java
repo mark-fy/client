@@ -1,6 +1,7 @@
 package wtf.tophat.module.impl.hud;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
@@ -24,20 +25,24 @@ import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 public class Watermark extends Module {
 
     private final StringSetting mode, color;
-    private final BooleanSetting fontShadow;
+    private final BooleanSetting fontShadow, bps;
 
     public Watermark() {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern"),
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
-                fontShadow = new BooleanSetting(this, "Font Shadow", true)
+                fontShadow = new BooleanSetting(this, "Font Shadow", true),
+                bps = new BooleanSetting(this, "Blocks per Second", true)
         );
         setEnabled(true);
     }
 
     public void renderIngame() {
-
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
+        ScaledResolution sr = new ScaledResolution(mc);
+
+        int scrWidth = sr.getScaledWidth();
+        int scrHeight = sr.getScaledHeight();
 
         String text = (Client.getName() + "sense | " + Minecraft.getDebugFPS() + " fps | " + mc.getSession().getUsername()).toLowerCase(Locale.ROOT);
 
@@ -59,6 +64,7 @@ public class Watermark extends Module {
         switch(mode.getValue()) {
             case "GameSense":
                 int strWidth = fr.getStringWidth(text);
+
                 DrawingUtil.rectangle(5, 5, strWidth + 11, 20, true, new Color(5,5,5));
                 DrawingUtil.rectangle(6, 6, strWidth + 9, 18, true, new Color(60,60,60));
                 DrawingUtil.rectangle(7, 7, strWidth + 7, 16, true, new Color(40,40,40));
@@ -67,6 +73,30 @@ public class Watermark extends Module {
                 DrawingUtil.rectangle(10, 10, strWidth + 1, 1, true, new Color(color));
 
                 fr.drawStringChoose(fontShadow.getValue(), text, 11, 12, Color.WHITE);
+
+                int textY = scrHeight - 25;
+
+                if(bps.getValue()) {
+                    final double motionX = mc.player.posX - mc.player.prevPosX;
+                    final double motionZ = mc.player.posZ - mc.player.prevPosZ;
+                    double speed = Math.sqrt(motionX * motionX + motionZ * motionZ) * 20 * mc.timer.timerSpeed;
+                    speed = Math.round(speed * 10);
+                    speed = speed / 10;
+
+                    int strWidth1 = fr.getStringWidth("bps: " + speed) + 2;
+
+                    int textX = scrWidth - strWidth1 - 15;
+
+                    DrawingUtil.rectangle(textX - 1, textY - 1, strWidth1 + 11, 20, true, new Color(5,5,5));
+                    DrawingUtil.rectangle(textX, textY, strWidth1 + 9, 18, true, new Color(60,60,60));
+                    DrawingUtil.rectangle(textX + 1, textY + 1, strWidth1 + 7, 16, true, new Color(40,40,40));
+                    DrawingUtil.rectangle(textX + 3, textY + 3, strWidth1 + 3, 12, true, new Color(60,60,60));
+                    DrawingUtil.rectangle(textX + 4, textY + 4, strWidth1 + 1, 10, true, new Color(22,22,22));
+                    DrawingUtil.rectangle(textX + 4, textY + 4, strWidth1 + 1, 1, true, new Color(color));
+
+                    fr.drawStringChoose(fontShadow.getValue(), "bps: " + speed, textX + 5, textY + 5, Color.WHITE);
+                    textY -= 25;
+                }
                 break;
             case "Modern":
                 text = Client.getName() + " - " + mc.getSession().getUsername();
@@ -81,7 +111,6 @@ public class Watermark extends Module {
                 fr.drawStringChoose(fontShadow.getValue(), text, 7, 10, Color.WHITE);
                 break;
         }
-
 
         counter++;
     }
