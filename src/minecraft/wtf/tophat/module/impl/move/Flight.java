@@ -72,7 +72,7 @@ public class Flight extends Module {
                 break;
             case "Intave":
                 mc.player.motionY = 0.0D;
-                MoveUtil.setSpeed(speed.getValue().floatValue());
+                MoveUtil.setSpeed(0.2f);
                 break;
         }
     }
@@ -113,11 +113,6 @@ public class Flight extends Module {
                     event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ()));
                 break;
         }
-    }
-
-    @Override
-    public void onEnable() {
-        super.onEnable();
     }
 
     @Override
