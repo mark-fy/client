@@ -2,14 +2,20 @@ package wtf.tophat.module.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import wtf.tophat.Client;
+import wtf.tophat.events.impl.CollisionBoxesEvent;
 import wtf.tophat.events.impl.DirectionSprintCheckEvent;
 import wtf.tophat.events.impl.MotionEvent;
+import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
+import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
 @ModuleInfo(name = "Sprint",desc = "auto sprint", category = Module.Category.MOVE)
@@ -19,19 +25,66 @@ public class Spider extends Module {
 
     public Spider() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Verus", "Vulcan")
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Collision", "Verus", "Vulcan")
         );
     }
 
     @Listen
-    public void onMotion(MotionEvent event) {
-        if (mc.player.isCollidedHorizontally) {
-            if (!mc.player.onGround && mc.player.isCollidedVertically) {
-                return;
-            }
+    public void onPacket(PacketEvent packetEvent) {
+        if(Methods.mc.player == null || Methods.mc.world == null)
+            return;
 
+        if(canClimbWall()) {
+            switch (mode.getValue()) {
+                case "Vulcan":
+                    if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                        C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
+
+                        if(mc.player.ticksExisted % 3 == 0) {
+                            float yaw = MoveUtil.getDirection();
+                            double random = (Math.random() * 0.03 + 0.16);
+
+                            packet.setY(packet.getY() - 0.015);
+
+                            float f = yaw * 0.017453292f;
+                            packet.setX(packet.getX() + (MathHelper.sin(f) * random));
+                            packet.setZ(packet.getZ() - (MathHelper.cos(f) * random));
+                        }
+
+                        if(mc.player.ticksExisted % 2 == 0) {
+                            packet.setOnGround(true);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    @Listen
+    public void onCollisionBoxes(CollisionBoxesEvent collisionBoxesEvent) {
+        if(Methods.mc.player == null || Methods.mc.world == null)
+            return;
+
+        if(canClimbWall()) {
+            switch(mode.getValue()) {
+                case "Collision":
+                    if (mc.player.motionY > 0) {
+                        return;
+                    }
+
+                    BlockPos blockPos = collisionBoxesEvent.getBlockPos();
+                    collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockPos.getX() + 1, 1, blockPos.getZ() + 1));
+                    break;
+            }
+        }
+    }
+
+    @Listen
+    public void onMotion(MotionEvent event) {
+        if (canClimbWall()) {
             switch (mode.getValue()) {
                 case "Vanilla":
+                case "Vulcan":
                     mc.player.jump();
                     break;
                 case "Verus":
@@ -39,19 +92,12 @@ public class Spider extends Module {
                         mc.player.motionY = 0.42f;
                     }
                     break;
-                case "Vulcan":
-                    if (mc.player.isCollidedHorizontally) {
-                        if (mc.player.ticksExisted % 2 == 0) {
-                            event.setOnGround(true);
-                            mc.player.motionY = 0.42F;
-                        }
-                        final double yaw = MoveUtil.getDirection();
-                        event.setX(event.getX() - -MathHelper.sin((float) yaw) * 0.1f);
-                        event.setZ(event.getZ() - MathHelper.cos((float) yaw) * 0.1f);
-                    }
-                    break;
             }
         }
+    }
+
+    private boolean canClimbWall() {
+        return mc.player != null && mc.player.isCollidedHorizontally && !mc.player.isOnLadder() && !mc.player.isInWater() && mc.player.fallDistance < 1.0F;
     }
 
 }
