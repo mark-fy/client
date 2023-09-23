@@ -18,7 +18,7 @@ import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
-@ModuleInfo(name = "Sprint",desc = "auto sprint", category = Module.Category.MOVE)
+@ModuleInfo(name = "Spider",desc = "lets you climb walls", category = Module.Category.MOVE)
 public class Spider extends Module {
 
     private final StringSetting mode;
