@@ -40,7 +40,7 @@ public class Flight extends Module {
     public void onMotion(MotionEvent event) {
         switch ((mode.getValue())){
             case "Verus":
-                if(event.state == Event.State.PRE) {
+                if(event.getState() == Event.State.PRE) {
                     if (!mc.settings.keyBindJump.isKeyDown()) {
                         if (mc.player.onGround) {
                             mc.player.motionY = 0.42f;

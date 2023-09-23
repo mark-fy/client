@@ -210,7 +210,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
 
     private boolean func_183006_b(C03PacketPlayer p_183006_1_)
     {
-        return !Doubles.isFinite(p_183006_1_.getPositionX()) || !Doubles.isFinite(p_183006_1_.getPositionY()) || !Doubles.isFinite(p_183006_1_.getPositionZ()) || !Floats.isFinite(p_183006_1_.getPitch()) || !Floats.isFinite(p_183006_1_.getYaw());
+        return !Doubles.isFinite(p_183006_1_.getX()) || !Doubles.isFinite(p_183006_1_.getY()) || !Doubles.isFinite(p_183006_1_.getZ()) || !Floats.isFinite(p_183006_1_.getPitch()) || !Floats.isFinite(p_183006_1_.getYaw());
     }
 
     /**
@@ -235,9 +235,9 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
                 double d1 = this.playerEntity.posY;
                 double d2 = this.playerEntity.posZ;
                 double d3 = 0.0D;
-                double d4 = packetIn.getPositionX() - this.lastPosX;
-                double d5 = packetIn.getPositionY() - this.lastPosY;
-                double d6 = packetIn.getPositionZ() - this.lastPosZ;
+                double d4 = packetIn.getX() - this.lastPosX;
+                double d5 = packetIn.getY() - this.lastPosY;
+                double d6 = packetIn.getZ() - this.lastPosZ;
 
                 if (packetIn.isMoving())
                 {
@@ -320,18 +320,18 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
                     float f1 = this.playerEntity.rotationYaw;
                     float f2 = this.playerEntity.rotationPitch;
 
-                    if (packetIn.isMoving() && packetIn.getPositionY() == -999.0D)
+                    if (packetIn.isMoving() && packetIn.getY() == -999.0D)
                     {
                         packetIn.setMoving(false);
                     }
 
                     if (packetIn.isMoving())
                     {
-                        d8 = packetIn.getPositionX();
-                        d9 = packetIn.getPositionY();
-                        d10 = packetIn.getPositionZ();
+                        d8 = packetIn.getX();
+                        d9 = packetIn.getY();
+                        d10 = packetIn.getZ();
 
-                        if (Math.abs(packetIn.getPositionX()) > 3.0E7D || Math.abs(packetIn.getPositionZ()) > 3.0E7D)
+                        if (Math.abs(packetIn.getX()) > 3.0E7D || Math.abs(packetIn.getZ()) > 3.0E7D)
                         {
                             this.kickPlayerFromServer("Illegal position");
                             return;

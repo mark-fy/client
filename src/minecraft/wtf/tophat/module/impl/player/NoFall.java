@@ -25,7 +25,7 @@ public class NoFall extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        if(event.state == Event.State.PRE) {
+        if(event.getState() == Event.State.PRE) {
             if (mc.player.fallDistance > 3.0 && MoveUtil.isBlockUnder()) {
                 switch (mode.getValue()) {
                     case "Vanilla":

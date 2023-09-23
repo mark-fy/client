@@ -44,10 +44,10 @@ public class Speed extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        if(event.state == Event.State.PRE) {
+        if(event.getState() == Event.State.PRE) {
             switch (mode.getValue()) {
                 case "Verus":
-                    if(event.state == Event.State.PRE) {
+                    if(event.getState() == Event.State.PRE) {
                         if (isMoving()) {
                             if (mc.player.onGround) {
                                 mc.player.jump();
