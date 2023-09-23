@@ -32,7 +32,7 @@ public class NoSlowdown extends Module {
 
     public NoSlowdown() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim",  "Old Intave"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave"),
 
                 sword = new BooleanSetting(this, "Sword", true),
                 food = new BooleanSetting(this, "Food", true),
