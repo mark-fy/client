@@ -145,7 +145,7 @@ public class SettingFrame extends GuiScreen {
                     }
                 }
 
-                y += 40;
+                y += 38;
             }
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
