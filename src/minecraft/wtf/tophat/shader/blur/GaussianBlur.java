@@ -1,8 +1,11 @@
-package wtf.tophat.shader;
+package wtf.tophat.shader.blur;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.BufferUtils;
+import wtf.tophat.shader.RenderUtil;
+import wtf.tophat.shader.ShaderUtil;
+import wtf.tophat.shader.StencilUtil;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.MathUtil;
 

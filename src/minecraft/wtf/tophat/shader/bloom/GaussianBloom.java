@@ -1,4 +1,4 @@
-package wtf.tophat.shader;
+package wtf.tophat.shader.bloom;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -6,6 +6,8 @@ import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import wtf.tophat.shader.RenderUtil;
+import wtf.tophat.shader.ShaderUtil;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.MathUtil;
 
