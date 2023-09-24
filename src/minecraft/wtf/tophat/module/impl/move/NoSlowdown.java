@@ -17,11 +17,14 @@ import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.events.impl.SlowDownEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
+import wtf.tophat.module.impl.player.Timer;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.TimeUtil;
+
+import java.util.Set;
 
 @ModuleInfo(name = "No Slowdown",desc = "disable slow down effects", category = Module.Category.MOVE)
 public class NoSlowdown extends Module {
@@ -32,7 +35,7 @@ public class NoSlowdown extends Module {
 
     public NoSlowdown() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave", "Fyre test"),
 
                 sword = new BooleanSetting(this, "Sword", true),
                 food = new BooleanSetting(this, "Food", true),
@@ -49,6 +52,7 @@ public class NoSlowdown extends Module {
     }
 
     private final TimeUtil intaveTimer = new TimeUtil();
+    private final TimeUtil fyretimer = new TimeUtil();
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -59,6 +63,20 @@ public class NoSlowdown extends Module {
 
         switch (mode.getValue()) {
             case "Switch":
+            case "Fyre test":
+                if(mc.player.isUsingItem() && currentItem.getItem() instanceof ItemSword && fyretimer.elapsed(75L)) {
+                    if (event.getState() == Event.State.PRE) {
+                        sendPacketUnlogged(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
+                    }
+
+                    if (event.getState() == Event.State.POST) {
+                        sendPacketUnlogged(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
+                        fyretimer.reset();
+                    }
+                }
+                break;
+
+
             case "Grim":
                 if(event.getState() == Event.State.PRE) {
                     sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
