@@ -39,6 +39,7 @@ public enum Client {
         settingManager.init();
         Minecraft.getMinecraft().settings.guiScale = 2;
         Minecraft.getMinecraft().settings.limitFramerate = 144;
+        Minecraft.getMinecraft().settings.fullScreen = false;
     }
 
     public static void shutdown() {

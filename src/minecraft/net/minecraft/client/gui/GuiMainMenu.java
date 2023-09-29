@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
+import wtf.tophat.Client;
 
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 {
@@ -512,7 +513,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         GlStateManager.scale(f, f, f);
         this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
         GlStateManager.popMatrix();
-        String s = "Minecraft 1.8.9";
+        String s = "TopHat " + Client.getVersion();
 
         if (this.mc.isDemo())
         {
