@@ -101,7 +101,7 @@ public class Watermark extends Module {
             case "Modern":
                 text = Client.getName() + " - " + mc.getSession().getUsername();
                 int strWidth1 = fr.getStringWidth(text);
-                if(Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+                if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
                     GaussianBlur.startBlur();
                     RoundedUtil.drawRound(5, 5, strWidth1 + 6, 20, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);

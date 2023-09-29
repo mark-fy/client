@@ -93,7 +93,7 @@ public class TargetHUD extends Module {
                         float healthPercentage1 = Math.min(1.0f, health / livingEntity.getMaxHealth());
                         int sliderWidth1 = (int) (173 * healthPercentage1);
 
-                        if(Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+                        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
                             GaussianBlur.startBlur();
                             RoundedUtil.drawRound(x, y, width, height, 8, new Color(13, 60, 123));
                             GaussianBlur.endBlur(8, 2);

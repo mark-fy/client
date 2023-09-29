@@ -50,7 +50,7 @@ public class SettingFrame extends GuiScreen {
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
         boolean shadow = Client.moduleManager.getByClass(ClickGUI.class).fontShadow.getValue();
 
-        if(Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
             GaussianBlur.startBlur();
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
             GaussianBlur.endBlur(10, 2);

@@ -14,11 +14,6 @@ public class PostProcessing extends Module {
         Client.settingManager.add(
                 blurShader = new BooleanSetting(this, "Blur Shader", true)
         );
-    }
-
-    @Override
-    public void onEnable() {
-        setEnabled(false);
-        super.onEnable();
+        setEnabled(true);
     }
 }
