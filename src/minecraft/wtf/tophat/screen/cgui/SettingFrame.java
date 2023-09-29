@@ -43,7 +43,6 @@ public class SettingFrame extends GuiScreen {
         super.keyTyped(typedChar, keyCode);
     }
 
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
@@ -57,6 +56,7 @@ public class SettingFrame extends GuiScreen {
         }
 
         Color color = new Color(0,85,255);
+        Color colorLighter = new Color(61, 128, 255);
 
         double x = (width - 200) / 2.0, y = 50;
         double width = 200;
@@ -65,6 +65,7 @@ public class SettingFrame extends GuiScreen {
         DrawingUtil.rectangle(x, y, width, height, true, new Color(20,20,20));
 
         frBig.drawStringChoose(shadow, parent.getName().toLowerCase(Locale.ROOT), (int) x + 5, (int) y + 5, Color.WHITE);
+
         for(Setting setting : Client.settingManager.getSettingsByModule(parent)) {
             if(setting.isHidden())
                 continue;
@@ -72,14 +73,18 @@ public class SettingFrame extends GuiScreen {
             if(setting instanceof StringSetting) {
                 DrawingUtil.rectangle(x, y + 18, width, height, true, new Color(33,33,33));
                 fr.drawStringChoose(shadow,setting.getName().toLowerCase(Locale.ROOT) + ": ", (int) x + 5, (int) y + 25, Color.WHITE);
-                drawBox(fr,((StringSetting) setting).getValue().toLowerCase(Locale.ROOT), x + 187 - fr.getStringWidth(((StringSetting) setting).getValue()), y + 22, fr.getStringWidth(((StringSetting) setting).getValue()) + 3, 11, color, shadow);
+                DrawingUtil.rectangle(x + 187 - fr.getStringWidth(((StringSetting) setting).getValue()), y + 22, fr.getStringWidth(((StringSetting) setting).getValue()) + 3, 11, true, new Color(20,20,20));
+                DrawingUtil.rectangle(x + 187 - fr.getStringWidth(((StringSetting) setting).getValue()), y + 22, fr.getStringWidth(((StringSetting) setting).getValue()) + 3, 11, false, color);
+                fr.drawStringChoose(shadow, ((StringSetting) setting).getValue().toLowerCase(Locale.ROOT), (int) (x + 187 - fr.getStringWidth(((StringSetting) setting).getValue()) + 1), (int) y + 22 + 2, Color.WHITE);
                 y += 20;
             }
 
             if(setting instanceof BooleanSetting) {
                 DrawingUtil.rectangle(x, y + 18, width, height, true, new Color(33,33,33));
                 fr.drawStringChoose(shadow,setting.getName().toLowerCase(Locale.ROOT) + ": ", (int) x + 4, (int) y + 25, Color.WHITE);
-                drawBoxSmaller(fr, ((BooleanSetting) setting).getValue() ? "ON" : "OFF", x + 175, y + 22, fr.getStringWidth(((BooleanSetting) setting).getValue() ? "ON" : "OFF") + 3, 11, color, shadow);
+                DrawingUtil.rectangle(x + 174, y + 22, 21, 11, true, new Color(20,20,20));
+                DrawingUtil.rectangle(x + 174, y + 22, 21, 11, false, color);
+                DrawingUtil.rectangle(((BooleanSetting) setting).getValue() ? x + 185 : x + 175, y + 23, 9, 9, true, ((BooleanSetting) setting).getValue() ? colorLighter : new Color(255, 255, 255));
                 y += 20;
             }
 
@@ -127,7 +132,7 @@ public class SettingFrame extends GuiScreen {
 
                 y += 20;
             } else if (setting instanceof BooleanSetting) {
-                double boxX = x + 179, boxY = y + 22, boxWidth = 11, boxHeight = 11;
+                double boxX = x + 174, boxY = y + 22, boxWidth = 21, boxHeight = 11;
 
                 if (mouseX >= boxX && mouseX <= boxX + boxWidth && mouseY >= boxY && mouseY <= boxY + boxHeight) {
                     ((BooleanSetting) setting).toggle();
@@ -164,6 +169,7 @@ public class SettingFrame extends GuiScreen {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
     }
 
+    @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         if (currentDraggingSetting != null && state == 0) {
             currentDraggingSetting = null;
@@ -192,18 +198,6 @@ public class SettingFrame extends GuiScreen {
                 handleSliderDrag((int) mouseX, sliderX, sliderWidth);
             }
         }
-    }
-
-    private void drawBox(CFontRenderer fr, String text, double x, double y, double width, double height, Color color, boolean shadow) {
-        DrawingUtil.rectangle(x, y, width, height, true, new Color(20,20,20));
-        DrawingUtil.rectangle(x, y, width, height, false, color);
-        fr.drawStringChoose(shadow, text, (int) x + 1, (int) y + 2, Color.WHITE);
-    }
-
-    private void drawBoxSmaller(CFontRenderer fr, String text, double x, double y, double width, double height, Color color, boolean shadow) {
-        DrawingUtil.rectangle(x, y, width, height, true, new Color(20,20,20));
-        DrawingUtil.rectangle(x, y, width, height, false, color);
-        fr.drawStringChoose(shadow, text, (int) x, (int) y + 2, Color.WHITE);
     }
 
     private void handleSliderDrag(int mouseX, double sliderX, double sliderWidth) {
