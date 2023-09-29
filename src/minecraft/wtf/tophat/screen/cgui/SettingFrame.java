@@ -14,14 +14,18 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.shader.blur.GaussianBlur;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
+import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.Locale;
 
-public class SettingFrame extends GuiScreen {
+import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
+import static wtf.tophat.utilities.Colors.LIGHT_GRAY_COLOR;
+import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
+public class SettingFrame extends GuiScreen {
     private NumberSetting currentDraggingSetting = null;
     private final GuiScreen screenParent;
     private final Module parent;
@@ -56,7 +60,7 @@ public class SettingFrame extends GuiScreen {
         }
 
         Color color = new Color(0,85,255);
-        Color colorLighter = new Color(61, 128, 255);
+        Color colorLighter = new Color(122, 168, 255);
 
         double x = (width - 200) / 2.0, y = 50;
         double width = 200;
@@ -66,6 +70,7 @@ public class SettingFrame extends GuiScreen {
 
         frBig.drawStringChoose(shadow, parent.getName().toLowerCase(Locale.ROOT), (int) x + 5, (int) y + 5, Color.WHITE);
 
+        int counter = 0;
         for(Setting setting : Client.settingManager.getSettingsByModule(parent)) {
             if(setting.isHidden())
                 continue;
@@ -83,7 +88,8 @@ public class SettingFrame extends GuiScreen {
                 DrawingUtil.rectangle(x, y + 18, width, height, true, new Color(33,33,33));
                 fr.drawStringChoose(shadow,setting.getName().toLowerCase(Locale.ROOT) + ": ", (int) x + 4, (int) y + 25, Color.WHITE);
                 DrawingUtil.rectangle(x + 174, y + 22, 21, 11, true, new Color(20,20,20));
-                DrawingUtil.rectangle(x + 174, y + 22, 21, 11, false, color);
+                // new Color(ColorUtil.fadeBetween(WHITE_COLOR, LIGHT_GRAY_COLOR, counter * 150L))
+                DrawingUtil.rectangle(x + 174, y + 22, 21, 11, false, ((BooleanSetting) setting).getValue() ? new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, colorLighter.getRGB(), counter * 150L)) : new Color(ColorUtil.fadeBetween(WHITE_COLOR, LIGHT_GRAY_COLOR, counter * 150L)));
                 DrawingUtil.rectangle(((BooleanSetting) setting).getValue() ? x + 185 : x + 175, y + 23, 9, 9, true, ((BooleanSetting) setting).getValue() ? colorLighter : new Color(255, 255, 255));
                 y += 20;
             }
@@ -108,6 +114,7 @@ public class SettingFrame extends GuiScreen {
                 DrawingUtil.rectangle(x + 5, y + 40, 185, 11, false, color);
                 y += 38;
             }
+            counter++;
         }
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
