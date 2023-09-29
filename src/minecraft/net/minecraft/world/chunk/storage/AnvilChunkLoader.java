@@ -140,7 +140,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
         {
             if (this.field_183014_e)
             {
-                logger.info("ThreadedAnvilChunkStorage ({}): All chunks are saved", new Object[] {this.chunkSaveLocation.getName()});
+                logger.info("ThreadedAnvilChunkStorage ({}): All chunks are saved", this.chunkSaveLocation.getName());
             }
 
             return false;
@@ -162,7 +162,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
                     }
                     catch (Exception exception)
                     {
-                        logger.error((String)"Failed to save chunk", (Throwable)exception);
+                        logger.error("Failed to save chunk", exception);
                     }
                 }
 
