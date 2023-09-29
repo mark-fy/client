@@ -14,15 +14,20 @@ public class Bind extends Command {
 
     @Override
     public void onCommand(String[] args, String command) {
-        if (args.length == 3) {
-            String moduleName = args[1];
-            String keyName = args[2];
+        if (args.length >= 3) {
+            StringBuilder moduleNameBuilder = new StringBuilder();
+            for (int i = 1; i < args.length - 1; i++) {
+                moduleNameBuilder.append(args[i]).append(" ");
+            }
+            String moduleName = moduleNameBuilder.toString().trim();
+
+            String keyName = args[args.length - 1];
 
             Module module = Client.moduleManager.getModule(moduleName);
 
             if (module != null) {
                 module.setKeyCode(Keyboard.getKeyIndex(keyName.toUpperCase(Locale.ROOT)));
-                sendChat(String.format("Bound %s to %s", moduleName, Keyboard.getKeyName(module.getKeyCode())), true);
+                sendChat(String.format("Bound %s to %s", module.getName(), Keyboard.getKeyName(module.getKeyCode())), true);
             } else {
                 sendChat(String.format("Module %s not found", moduleName), true);
             }
