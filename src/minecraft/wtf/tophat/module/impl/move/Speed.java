@@ -88,7 +88,6 @@ public class Speed extends Module {
                     if (offTicks >= 10 && offTicks % 5 == 0) {
                         MoveUtil.setSpeed(MoveUtil.getSpeed());
                     }
-
                     break;
                 case "Vanilla":
                     MoveUtil.setSpeed(speed.getValue().floatValue());
