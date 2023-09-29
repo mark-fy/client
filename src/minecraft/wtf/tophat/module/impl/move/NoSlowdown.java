@@ -35,7 +35,7 @@ public class NoSlowdown extends Module {
 
     public NoSlowdown() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave", "Fyre test"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave"),
 
                 sword = new BooleanSetting(this, "Sword", true),
                 food = new BooleanSetting(this, "Food", true),
@@ -63,7 +63,6 @@ public class NoSlowdown extends Module {
 
         switch (mode.getValue()) {
             case "Switch":
-            case "Fyre test":
                 if(mc.player.isUsingItem() && currentItem.getItem() instanceof ItemSword && fyretimer.elapsed(75L)) {
                     if (event.getState() == Event.State.PRE) {
                         sendPacketUnlogged(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
