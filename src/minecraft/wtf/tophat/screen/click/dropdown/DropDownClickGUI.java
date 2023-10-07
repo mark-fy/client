@@ -1,4 +1,4 @@
-package wtf.tophat.screen.cgui;
+package wtf.tophat.screen.click.dropdown;
 
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
@@ -18,7 +18,7 @@ import java.util.Locale;
 import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
 import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
-public class ClickGUI extends GuiScreen {
+public class DropDownClickGUI extends GuiScreen {
 
     private Module listeningModule = null;
 
@@ -36,11 +36,7 @@ public class ClickGUI extends GuiScreen {
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
         boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.hud.ClickGUI.class).fontShadow.getValue();
 
-        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
-            GaussianBlur.startBlur();
-            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
-            GaussianBlur.endBlur(10, 2);
-        }
+        renderBlur();
 
         Color color = new Color(0,85,255);
 
@@ -161,7 +157,7 @@ public class ClickGUI extends GuiScreen {
                             module.toggle();
                         } else if (mouseButton == 1) {
                             if (Client.settingManager.getSettingsByModule(module).size() > 0) {
-                                mc.displayGuiScreen(new SettingFrame(this, module));
+                                mc.displayGuiScreen(new DropDownSettingFrame(this, module));
                             }
                         } else if (mouseButton == 2) {
                             listeningModule = module;
@@ -229,6 +225,14 @@ public class ClickGUI extends GuiScreen {
         }
 
         return totalCategoryWidth;
+    }
+
+    private void renderBlur() {
+        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+            GaussianBlur.startBlur();
+            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
+            GaussianBlur.endBlur(10, 2);
+        }
     }
 
 }

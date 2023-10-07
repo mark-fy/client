@@ -4,22 +4,35 @@ import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
+import wtf.tophat.screen.click.dropdown.DropDownClickGUI;
+import wtf.tophat.screen.click.material.MaterialClickGUI;
 import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.StringSetting;
 
 @ModuleInfo(name = "Click GUI",desc = "clicky gui", category = Module.Category.HUD, bind = Keyboard.KEY_RSHIFT)
 public class ClickGUI extends Module {
+
+    private final StringSetting mode;
 
     public final BooleanSetting fontShadow;
 
     public ClickGUI() {
         Client.settingManager.add(
+                mode = new StringSetting(this, "Style", "Dropdown", "Material"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true)
         );
     }
 
     @Override
     public void onEnable() {
-        mc.displayGuiScreen(new wtf.tophat.screen.cgui.ClickGUI());
+        switch (mode.getValue()) {
+            case "Dropdown":
+                mc.displayGuiScreen(new DropDownClickGUI());
+                break;
+            case "Material":
+                mc.displayGuiScreen(new MaterialClickGUI());
+                break;
+        }
         this.setEnabled(false);
         super.onEnable();
     }

@@ -1,4 +1,4 @@
-package wtf.tophat.screen.cgui;
+package wtf.tophat.screen.click.dropdown;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -25,12 +25,12 @@ import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
 import static wtf.tophat.utilities.Colors.LIGHT_GRAY_COLOR;
 import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
-public class SettingFrame extends GuiScreen {
+public class DropDownSettingFrame extends GuiScreen {
     private NumberSetting currentDraggingSetting = null;
     private final GuiScreen screenParent;
     private final Module parent;
 
-    public SettingFrame(GuiScreen screenParent, Module parent) {
+    public DropDownSettingFrame(GuiScreen screenParent, Module parent) {
         this.screenParent = screenParent;
         this.parent = parent;
     }
@@ -53,11 +53,7 @@ public class SettingFrame extends GuiScreen {
         CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
         boolean shadow = Client.moduleManager.getByClass(ClickGUI.class).fontShadow.getValue();
 
-        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
-            GaussianBlur.startBlur();
-            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
-            GaussianBlur.endBlur(10, 2);
-        }
+        renderBlur();
 
         Color color = new Color(0,85,255);
         Color colorLighter = new Color(122, 168, 255);
@@ -213,6 +209,14 @@ public class SettingFrame extends GuiScreen {
         newValue = Math.min(currentDraggingSetting.getMaximum().doubleValue(), Math.max(currentDraggingSetting.getMinimum().doubleValue(), newValue));
         newValue = Math.round(newValue * Math.pow(10, currentDraggingSetting.decimalPoints)) / Math.pow(10, currentDraggingSetting.decimalPoints); // Apply decimal points
         currentDraggingSetting.setValue(newValue);
+    }
+
+    private void renderBlur() {
+        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+            GaussianBlur.startBlur();
+            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
+            GaussianBlur.endBlur(10, 2);
+        }
     }
 
 }
