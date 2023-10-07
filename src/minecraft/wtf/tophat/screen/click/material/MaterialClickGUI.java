@@ -2,6 +2,8 @@ package wtf.tophat.screen.click.material;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
@@ -33,6 +35,8 @@ public class MaterialClickGUI extends GuiScreen {
     public boolean doesGuiPauseGame() {
         return false;
     }
+
+    private final Module.Category defaultCategory = Module.Category.COMBAT;
 
     private double frameX;
     private double frameY;
@@ -82,8 +86,35 @@ public class MaterialClickGUI extends GuiScreen {
 
         int counter = 30;
         for(Module.Category category : Module.Category.values()) {
-            fr.drawString(category.getName(), x + 5, y + counter, Color.WHITE);
-            counter += 30;
+            if(category.equals(Module.Category.COMBAT)) {
+                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/combat.png"));
+                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 20, 0,0, 48, 48, 48,48);
+            }
+
+            if(category.equals(Module.Category.MOVE)) {
+                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/move.png"));
+                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 68, 0,0, 48, 48, 48,48);
+            }
+
+            if(category.equals(Module.Category.PLAYER)) {
+                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/player.png"));
+                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 116, 0,0, 48, 48, 48,48);
+            }
+
+            if(category.equals(Module.Category.RENDER)) {
+                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/render.png"));
+                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 164, 0,0, 48, 48, 48,48);
+            }
+
+            if(category.equals(Module.Category.MISC)) {
+                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/misc.png"));
+                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 212, 0,0, 48, 48, 48,48);
+            }
+
+            if(category.equals(Module.Category.HUD)) {
+                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/hud.png"));
+                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 260, 0,0, 48, 48, 48,48);
+            }
         }
     }
 
