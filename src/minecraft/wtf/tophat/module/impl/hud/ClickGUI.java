@@ -18,7 +18,7 @@ public class ClickGUI extends Module {
 
     public ClickGUI() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Style", "Dropdown", "Material"),
+                mode = new StringSetting(this, "Style", "Dropdown", "Dropdown", "Material"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true)
         );
     }

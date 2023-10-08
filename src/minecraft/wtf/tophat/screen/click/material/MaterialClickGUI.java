@@ -3,19 +3,26 @@ package wtf.tophat.screen.click.material;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.impl.render.PostProcessing;
+import wtf.tophat.settings.base.Setting;
+import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.NumberSetting;
+import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.shader.blur.GaussianBlur;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
+import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
+
+import static wtf.tophat.utilities.Colors.*;
 
 public class MaterialClickGUI extends GuiScreen {
 
@@ -37,6 +44,8 @@ public class MaterialClickGUI extends GuiScreen {
     }
 
     private final Module.Category defaultCategory = Module.Category.COMBAT;
+    private Module.Category selectedCategory = Module.Category.COMBAT;
+    private Module expandedModule = null;
 
     private double frameX;
     private double frameY;
@@ -58,7 +67,6 @@ public class MaterialClickGUI extends GuiScreen {
         if (isDragging) {
             double newX = mouseX - dragOffsetX;
             double newY = mouseY - dragOffsetY;
-            // Ensure the frame stays within the screen boundaries
             newX = Math.max(0, Math.min(sr.getScaledWidth_double() - width, newX));
             newY = Math.max(0, Math.min(sr.getScaledHeight_double() - height, newY));
             frameX = newX;
@@ -74,9 +82,9 @@ public class MaterialClickGUI extends GuiScreen {
         DrawingUtil.rectangle(x, y, width, height, false, new Color(0, 85, 255));
 
         // Drag Bar
-        DrawingUtil.rectangle(x, y, width - 1, 15, true, new Color(30, 30, 30));
+        DrawingUtil.rectangle(x, y + 1, width - 1, 15, true, new Color(30, 30, 30));
 
-        boolean mouseHovered = mouseX >= x + 340 && mouseX <= x + 340 + fr.getStringWidth("X") && mouseY >= y + 3 && mouseY <= y + 3 + fr.getHeight();
+        boolean mouseHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.getHeight());
 
         fr.drawString("X", x + 340, y + 3, mouseHovered ? new Color(0, 85, 255) : Color.WHITE);
         fr.drawString(Client.getName().toLowerCase(Locale.ROOT), x + 3, y + 3, new Color(0, 85, 255));
@@ -84,37 +92,92 @@ public class MaterialClickGUI extends GuiScreen {
         // Category Box
         DrawingUtil.rectangle(x, y + 15, 50, 334, true, new Color(30, 30, 30));
 
-        int counter = 30;
-        for(Module.Category category : Module.Category.values()) {
-            if(category.equals(Module.Category.COMBAT)) {
-                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/combat.png"));
-                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 20, 0,0, 48, 48, 48,48);
+        int counter = 0;
+        for (Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+            Color moduleColor;
+
+            if (module.isEnabled() && DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
+                moduleColor = new Color(95, 148, 255);
+            } else if (module.isEnabled()) {
+                moduleColor = new Color(0, 85, 255);
+            } else {
+                moduleColor = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)
+                        ? new Color(51, 119, 255)
+                        : new Color(255, 255, 255);
             }
 
-            if(category.equals(Module.Category.MOVE)) {
-                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/move.png"));
-                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 68, 0,0, 48, 48, 48,48);
+            DrawingUtil.rectangle(x + 50, y + 16 + counter, 100, 15, true, new Color(30, 30, 30));
+            fr.drawStringWithShadow(module.getName(), x + 54, y + 19 + counter, moduleColor);
+
+            if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
+                String text = (module.getDesc()).toLowerCase(Locale.ROOT);
+                int strWidth = fr.getStringWidth(text) + 3;
+
+                DrawingUtil.rectangle(5, this.height - 35, strWidth + 11, 20, true, new Color(5,5,5));
+                DrawingUtil.rectangle(6, this.height - 34, strWidth + 9, 18, true, new Color(60,60,60));
+                DrawingUtil.rectangle(7, this.height - 33, strWidth + 7, 16, true, new Color(40,40,40));
+                DrawingUtil.rectangle(9, this.height - 31, strWidth + 3, 12, true, new Color(60,60,60));
+                DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 10, true, new Color(22,22,22));
+                DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 1, true, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
+
+                fr.drawStringWithShadow(text, 11, this.height - 28, Color.WHITE);
             }
 
-            if(category.equals(Module.Category.PLAYER)) {
-                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/player.png"));
-                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 116, 0,0, 48, 48, 48,48);
+            counter += 15;
+        }
+
+        int offset = 15;
+        for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
+            if (setting.isHidden()) {
+                continue;
             }
 
-            if(category.equals(Module.Category.RENDER)) {
-                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/render.png"));
-                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 164, 0,0, 48, 48, 48,48);
+            if (setting instanceof StringSetting) {
+                DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, new Color(30, 30, 30));
+                fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).getValue(), x + 150, y + offset + 3, Color.WHITE);
+                offset += 15;
+            } else if (setting instanceof BooleanSetting) {
+                DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, new Color(30, 30, 30));
+                fr.drawStringWithShadow(setting.getName() + ": " + ((BooleanSetting) setting).getValue(), x + 150, y + offset + 3, Color.WHITE);
+                offset += 15;
+            } else if (setting instanceof NumberSetting) {
+                NumberSetting numberSetting = (NumberSetting) setting;
+                double currentValue = numberSetting.getValue().doubleValue(), minValue = numberSetting.getMinimum().doubleValue(), maxValue = numberSetting.getMaximum().doubleValue();
+                int decimalPoints = numberSetting.decimalPoints;
+
+                double randoValue = ((currentValue - minValue) / (maxValue - minValue)) * (185 - 6);
+                double sliderPosition = x + 154 + randoValue;
+
+                DrawingUtil.rectangle(x + 150, y + offset, 199, 32, true, new Color(33, 33, 33));
+
+                String formattedValue = String.format(Locale.ROOT, setting.getName() + ": %." + decimalPoints + "f", currentValue);
+
+                fr.drawStringWithShadow(formattedValue, x + 150, y + offset + 3, Color.WHITE);
+
+                DrawingUtil.rectangle(x + 154, y + offset + 15, 185, 11, true, new Color(0, 0, 0));
+                //The slider that will move along with the slider pointer when it is dragged.
+                DrawingUtil.rectangle(x + 154, y + offset + 15, randoValue, 11, true, new Color(60, 60, 60));
+                // Slider Pointer
+                DrawingUtil.rectangle(sliderPosition, y + offset + 15, 6, 11, true, new Color(ColorUtil.fadeBetween(WHITE_COLOR, LIGHT_GRAY_COLOR, counter * 150L)));
+                DrawingUtil.rectangle(x + 154, y + offset + 15, 185, 11, false, Color.WHITE);
+                offset += 32;
+            }
+        }
+
+
+        int adjustment = 10;
+        for (Module.Category category : Module.Category.values()) {
+            float categoryX = (float) (x + adjustment);
+            float categoryY = (float) (y + getCategoryY(category));
+
+            DrawingUtil.rectangle(categoryX - 2, categoryY - 2, 36, 36, true, DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY - 2, 36 ,36) ? new Color(45,45,45) : new Color(30,30,30));
+
+            if (category.equals(selectedCategory)) {
+                DrawingUtil.rectangle(categoryX - 2, categoryY - 2, 36, 36, true,DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY - 2, 36 ,36) ? new Color(45,45,45) : new Color(35,35,35));
             }
 
-            if(category.equals(Module.Category.MISC)) {
-                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/misc.png"));
-                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 212, 0,0, 48, 48, 48,48);
-            }
-
-            if(category.equals(Module.Category.HUD)) {
-                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/hud.png"));
-                drawModalRectWithCustomSizedTexture((int) (x + 2), (int) y + 260, 0,0, 48, 48, 48,48);
-            }
+            mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/" + category.getName().toLowerCase(Locale.ROOT) + ".png"));
+            drawModalRectWithCustomSizedTexture((int) categoryX, (int) categoryY, 0, 0, 32, 32, 32, 32);
         }
     }
 
@@ -127,25 +190,95 @@ public class MaterialClickGUI extends GuiScreen {
             double x = frameX;
             double y = frameY;
 
-            if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + 15) {
+            if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x, (float) y, (float) (width - 1), 15)) {
                 isDragging = true;
                 dragOffsetX = mouseX - (int) x;
                 dragOffsetY = mouseY - (int) y;
             }
 
-            // Check if the mouse click occurred on the "X" text area and close the GUI
-            double xText = x + 340;
-            double yText = y + 3;
-            if (mouseX >= xText && mouseX <= xText + fr.getStringWidth("X") && mouseY >= yText && mouseY <= yText + fr.getHeight()) {
-                mc.displayGuiScreen(null); // Close the GUI
+            int counter = 0;
+            for(Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+                if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
+                    module.toggle();
+                }
+                counter += 15;
+            }
+
+            for (Module.Category category : Module.Category.values()) {
+                if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 10), (float) (y + getCategoryY(category)), 36, 36)) {
+                    selectedCategory = category;
+                }
+            }
+
+            int offset = 15;
+            for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
+                if(setting.isHidden()) {
+                    continue;
+                }
+
+                if(setting instanceof StringSetting) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
+                        ((StringSetting) setting).forward();
+                    }
+                    offset += 15;
+                }
+                if(setting instanceof BooleanSetting) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
+                        ((BooleanSetting) setting).toggle();
+                    }
+                    offset += 15;
+                }
+            }
+
+            boolean closeClicked = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.getHeight());
+            if (closeClicked) {
+                mc.displayGuiScreen(null);
+            }
+        }
+
+        if(mouseButton == 1) {
+            double x = frameX;
+            double y = frameY;
+
+            int counter = 0;
+            for(Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+                if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
+                    expandedModule = module;
+                }
+                counter += 15;
+            }
+
+            int offset = 15;
+            for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
+                if(setting.isHidden()) {
+                    continue;
+                }
+
+                if(setting instanceof StringSetting) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
+                        ((StringSetting) setting).backward();
+                    }
+                    offset += 15;
+                }
+                if(setting instanceof BooleanSetting) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
+                        ((BooleanSetting) setting).toggle();
+                    }
+                    offset += 15;
+                }
             }
         }
     }
 
+    private int getCategoryY(Module.Category category) {
+        int index = Arrays.asList(Module.Category.values()).indexOf(category);
+        return 20 + index * 48;
+    }
+
     private void renderBlur() {
-        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+        if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
             GaussianBlur.startBlur();
-            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
+            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0, 0, 0));
             GaussianBlur.endBlur(10, 2);
         }
     }
