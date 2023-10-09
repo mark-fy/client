@@ -56,6 +56,7 @@ public class MaterialClickGUI extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         ScaledResolution sr = new ScaledResolution(mc);
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
+        CFontRenderer catfr = CFontUtil.ICONS_50.getRenderer();
 
         renderBlur();
 
@@ -87,7 +88,7 @@ public class MaterialClickGUI extends GuiScreen {
         boolean mouseHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.getHeight());
 
         fr.drawString("X", x + 340, y + 3, mouseHovered ? new Color(0, 85, 255) : Color.WHITE);
-        fr.drawString(Client.getName().toLowerCase(Locale.ROOT), x + 3, y + 3, new Color(0, 85, 255));
+        fr.drawString(Client.getName().toLowerCase(Locale.ROOT) + " v" + Client.getVersion(), x + 3, y + 3, new Color(0, 85, 255));
 
         // Category Box
         DrawingUtil.rectangle(x, y + 15, 50, 334, true, new Color(30, 30, 30));
@@ -164,20 +165,24 @@ public class MaterialClickGUI extends GuiScreen {
             }
         }
 
-
         int adjustment = 10;
         for (Module.Category category : Module.Category.values()) {
             float categoryX = (float) (x + adjustment);
             float categoryY = (float) (y + getCategoryY(category));
 
-            DrawingUtil.rectangle(categoryX - 2, categoryY - 2, 36, 36, true, DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY - 2, 36 ,36) ? new Color(45,45,45) : new Color(30,30,30));
+            Color categoryColor;
 
-            if (category.equals(selectedCategory)) {
-                DrawingUtil.rectangle(categoryX - 2, categoryY - 2, 36, 36, true,DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY - 2, 36 ,36) ? new Color(45,45,45) : new Color(35,35,35));
+            if (category.equals(selectedCategory) && DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX + 2, categoryY + 4 + adjustment, 36, 36)) {
+                categoryColor = new Color(95, 148, 255);
+            } else if (category.equals(selectedCategory)) {
+                categoryColor = new Color(0, 85, 255);
+            } else {
+                categoryColor = DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY - 2, 36 ,36)
+                        ? new Color(51, 119, 255)
+                        : new Color(255, 255, 255);
             }
 
-            mc.getTextureManager().bindTexture(new ResourceLocation("tophat/categories/" + category.getName().toLowerCase(Locale.ROOT) + ".png"));
-            drawModalRectWithCustomSizedTexture((int) categoryX, (int) categoryY, 0, 0, 32, 32, 32, 32);
+            catfr.drawStringWithShadow(getCategoryLetter(category), categoryX + 2, categoryY + 4, categoryColor);
         }
     }
 
@@ -281,5 +286,20 @@ public class MaterialClickGUI extends GuiScreen {
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0, 0, 0));
             GaussianBlur.endBlur(10, 2);
         }
+    }
+
+    private String getCategoryLetter(Module.Category category) {
+        if(category.equals(Module.Category.COMBAT)) {
+            return "a";
+        } else if(category.equals(Module.Category.MOVE)) {
+            return "c";
+        } else if(category.equals(Module.Category.RENDER)) {
+            return "f";
+        } else if(category.equals(Module.Category.PLAYER)) {
+            return "e";
+        } else if(category.equals(Module.Category.HUD)) {
+            return "d";
+        } else
+            return "b";
     }
 }
