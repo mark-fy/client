@@ -24,6 +24,10 @@ public enum CFontUtil {
     SF_Semibold_32 ("SF Semibold 32", new CFontRenderer(new ResourceLocation("tophat/fonts/SF Semibold.ttf"), 32)),
     SF_Semibold_36 ("SF Semibold 36", new CFontRenderer(new ResourceLocation("tophat/fonts/SF Semibold.ttf"), 36)),
     SF_Semibold_40 ("SF Semibold 40", new CFontRenderer(new ResourceLocation("tophat/fonts/SF Semibold.ttf"), 40)),
+    ICONS_20 ("ICONS 20", new CFontRenderer(new ResourceLocation("tophat/fonts/Icons.ttf"), 20)),
+    ICONS_24 ("ICONS 24", new CFontRenderer(new ResourceLocation("tophat/fonts/Icons.ttf"), 24)),
+    ICONS_28 ("ICONS 28", new CFontRenderer(new ResourceLocation("tophat/fonts/Icons.ttf"), 28)),
+    ICONS_30 ("ICONS 30", new CFontRenderer(new ResourceLocation("tophat/fonts/Icons.ttf"), 30)),
     ICONS_36 ("ICONS 36", new CFontRenderer(new ResourceLocation("tophat/fonts/Icons.ttf"), 36)),
     ICONS_40 ("ICONS 40", new CFontRenderer(new ResourceLocation("tophat/fonts/Icons.ttf"), 40)),
     ICONS_50 ("ICONS 50", new CFontRenderer(new ResourceLocation("tophat/fonts/Icons.ttf"), 50));

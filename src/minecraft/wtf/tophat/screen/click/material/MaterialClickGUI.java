@@ -14,6 +14,7 @@ import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.shader.blur.GaussianBlur;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
+import wtf.tophat.utilities.render.CategoryUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
@@ -80,37 +81,57 @@ public class MaterialClickGUI extends GuiScreen {
 
         // Main Frame
         DrawingUtil.rectangle(x, y, width, height, true, new Color(20, 20, 20));
-        DrawingUtil.rectangle(x, y, width, height, false, new Color(0, 85, 255));
+        // Border
+        DrawingUtil.rectangle(x, y, width, height, false, CategoryUtil.getCategoryColor(selectedCategory));
 
         // Drag Bar
         DrawingUtil.rectangle(x, y + 1, width - 1, 15, true, new Color(30, 30, 30));
 
         boolean mouseHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.getHeight());
 
-        fr.drawString("X", x + 340, y + 3, mouseHovered ? new Color(0, 85, 255) : Color.WHITE);
-        fr.drawString(Client.getName().toLowerCase(Locale.ROOT) + " v" + Client.getVersion(), x + 3, y + 3, new Color(0, 85, 255));
+        fr.drawString("X", x + 340, y + 3, mouseHovered ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
+        fr.drawString(Client.getName().toLowerCase(Locale.ROOT) + " v" + Client.getVersion(), x + 3, y + 3, CategoryUtil.getCategoryColor(selectedCategory));
 
         // Category Box
         DrawingUtil.rectangle(x, y + 15, 50, 334, true, new Color(30, 30, 30));
 
-        int counter = 0;
-        for (Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
-            Color moduleColor;
+        int adjustment = 10;
+        for (Module.Category category : Module.Category.values()) {
+            float categoryX = (float) (x + adjustment);
+            float categoryY = (float) (y + CategoryUtil.getCategoryY(category));
 
-            if (module.isEnabled() && DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
-                moduleColor = new Color(95, 148, 255);
-            } else if (module.isEnabled()) {
-                moduleColor = new Color(0, 85, 255);
+            boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY - 2, 36, 36);
+
+            Color textColor;
+
+            if (isHovered) {
+                textColor = CategoryUtil.getCategoryColor(category);
+            } else if (category == selectedCategory) {
+                textColor = CategoryUtil.getCategoryColor(category);
             } else {
-                moduleColor = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)
-                        ? new Color(51, 119, 255)
-                        : new Color(255, 255, 255);
+                textColor = Color.WHITE;
             }
 
-            DrawingUtil.rectangle(x + 50, y + 16 + counter, 100, 15, true, new Color(30, 30, 30));
-            fr.drawStringWithShadow(module.getName(), x + 54, y + 19 + counter, moduleColor);
+            catfr.drawStringWithShadow(CategoryUtil.getCategoryLetter(category), categoryX + 2, categoryY + 4, textColor);
+        }
 
-            if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
+        int counter = 0;
+        for (Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+
+            boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15);
+
+            Color moduleBackgroundColor = isHovered
+                    ? module.isEnabled()
+                    ? new Color(55, 55, 55) // Lighter color for hovered and enabled module
+                    : new Color(44, 44, 44) // Lighter color for hovered and disabled module
+                    : module.isEnabled()
+                    ? new Color(44, 44, 44) // Regular color for enabled module
+                    : new Color(33, 33, 33); // Regular color for disabled module
+
+            DrawingUtil.rectangle(x + 50, y + 16 + counter, 100, 15, true, moduleBackgroundColor);
+            fr.drawStringWithShadow(module.getName(), x + 54, y + 19 + counter, module.isEnabled() ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
+
+            if (isHovered) {
                 String text = (module.getDesc()).toLowerCase(Locale.ROOT);
                 int strWidth = fr.getStringWidth(text) + 3;
 
@@ -127,18 +148,25 @@ public class MaterialClickGUI extends GuiScreen {
             counter += 15;
         }
 
-        int offset = 15;
+        int offset = 16;
         for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
+
+            boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 150, (float) y + offset, 199, setting instanceof NumberSetting ? 32 : 15);
+
+            Color settingBackgroundColor = isHovered ?
+                    new Color(44, 44, 44) :
+                    new Color(30,30,30);
+
             if (setting.isHidden()) {
                 continue;
             }
 
             if (setting instanceof StringSetting) {
-                DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, new Color(30, 30, 30));
+                DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
                 fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).getValue(), x + 150, y + offset + 3, Color.WHITE);
                 offset += 15;
             } else if (setting instanceof BooleanSetting) {
-                DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, new Color(30, 30, 30));
+                DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
                 fr.drawStringWithShadow(setting.getName() + ": " + ((BooleanSetting) setting).getValue(), x + 150, y + offset + 3, Color.WHITE);
                 offset += 15;
             } else if (setting instanceof NumberSetting) {
@@ -149,7 +177,7 @@ public class MaterialClickGUI extends GuiScreen {
                 double randoValue = ((currentValue - minValue) / (maxValue - minValue)) * (185 - 6);
                 double sliderPosition = x + 154 + randoValue;
 
-                DrawingUtil.rectangle(x + 150, y + offset, 199, 32, true, new Color(33, 33, 33));
+                DrawingUtil.rectangle(x + 150, y + offset, 199, 32, true, settingBackgroundColor);
 
                 String formattedValue = String.format(Locale.ROOT, setting.getName() + ": %." + decimalPoints + "f", currentValue);
 
@@ -163,26 +191,6 @@ public class MaterialClickGUI extends GuiScreen {
                 DrawingUtil.rectangle(x + 154, y + offset + 15, 185, 11, false, Color.WHITE);
                 offset += 32;
             }
-        }
-
-        int adjustment = 10;
-        for (Module.Category category : Module.Category.values()) {
-            float categoryX = (float) (x + adjustment);
-            float categoryY = (float) (y + getCategoryY(category));
-
-            Color categoryColor;
-
-            if (category.equals(selectedCategory) && DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX + 2, categoryY + 4 + adjustment, 36, 36)) {
-                categoryColor = new Color(95, 148, 255);
-            } else if (category.equals(selectedCategory)) {
-                categoryColor = new Color(0, 85, 255);
-            } else {
-                categoryColor = DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY - 2, 36 ,36)
-                        ? new Color(51, 119, 255)
-                        : new Color(255, 255, 255);
-            }
-
-            catfr.drawStringWithShadow(getCategoryLetter(category), categoryX + 2, categoryY + 4, categoryColor);
         }
     }
 
@@ -210,12 +218,12 @@ public class MaterialClickGUI extends GuiScreen {
             }
 
             for (Module.Category category : Module.Category.values()) {
-                if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 10), (float) (y + getCategoryY(category)), 36, 36)) {
+                if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 10), (float) (y + CategoryUtil.getCategoryY(category)), 36, 36)) {
                     selectedCategory = category;
                 }
             }
 
-            int offset = 15;
+            int offset = 16;
             for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
                 if(setting.isHidden()) {
                     continue;
@@ -275,31 +283,11 @@ public class MaterialClickGUI extends GuiScreen {
         }
     }
 
-    private int getCategoryY(Module.Category category) {
-        int index = Arrays.asList(Module.Category.values()).indexOf(category);
-        return 20 + index * 48;
-    }
-
     private void renderBlur() {
         if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
             GaussianBlur.startBlur();
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0, 0, 0));
             GaussianBlur.endBlur(10, 2);
         }
-    }
-
-    private String getCategoryLetter(Module.Category category) {
-        if(category.equals(Module.Category.COMBAT)) {
-            return "a";
-        } else if(category.equals(Module.Category.MOVE)) {
-            return "c";
-        } else if(category.equals(Module.Category.RENDER)) {
-            return "f";
-        } else if(category.equals(Module.Category.PLAYER)) {
-            return "e";
-        } else if(category.equals(Module.Category.HUD)) {
-            return "d";
-        } else
-            return "b";
     }
 }
