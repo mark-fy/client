@@ -9,7 +9,7 @@ import wtf.tophat.utilities.Methods;
 
 import java.util.UUID;
 
-@ModuleInfo(name = "Fake Player",desc = "hides your name client side", category = Module.Category.MISC)
+@ModuleInfo(name = "Fake Player",desc = "hides your name client side", category = Module.Category.EXPLOIT)
 public class FakePlayer extends Module {
 
     @Override

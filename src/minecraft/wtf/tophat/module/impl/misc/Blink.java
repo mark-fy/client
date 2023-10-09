@@ -14,7 +14,7 @@ import wtf.tophat.utilities.math.TimeUtil;
 
 import java.util.ArrayDeque;
 
-@ModuleInfo(name = "Blink", desc = "blocks your packets for a time being", category = Module.Category.MISC)
+@ModuleInfo(name = "Blink", desc = "blocks your packets for a time being", category = Module.Category.EXPLOIT)
 public class Blink extends Module {
     private final BooleanSetting incoming, pulse;
     private final NumberSetting pulseDelay;

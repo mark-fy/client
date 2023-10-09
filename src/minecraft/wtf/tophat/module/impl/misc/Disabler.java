@@ -12,7 +12,7 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 
-@ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.MISC)
+@ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.EXPLOIT)
 public class Disabler extends Module {
 
     private final StringSetting mode;
