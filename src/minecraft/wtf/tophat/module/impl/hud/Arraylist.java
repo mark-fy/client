@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
-import static wtf.tophat.utilities.Colors.WHITE_COLOR;
+import static wtf.tophat.utilities.Colors.*;
 
 @ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.HUD)
 public class Arraylist extends Module {
@@ -29,7 +28,7 @@ public class Arraylist extends Module {
 
     public Arraylist() {
         Client.settingManager.add(
-                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown"),
                 hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true),
                 suffix = new BooleanSetting(this, "Suffix", true)
@@ -78,6 +77,9 @@ public class Arraylist extends Module {
             case "Astolfo":
                 rcColor = ColorUtil.blendRainbowColours(counter * 150L);
                 break;
+            case "Brown":
+                rcColor = ColorUtil.fadeBetween(GORGE_COLOR, LIGHT_GORGE_COLOR, counter * 150L);
+                break;
         }
 
         DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 5, y - 1, maxWidth + 2, 1, true, new Color(rcColor));
@@ -98,6 +100,9 @@ public class Arraylist extends Module {
                     break;
                 case "Astolfo":
                     color = ColorUtil.blendRainbowColours(counter * 150L);
+                    break;
+                case "Brown":
+                    color = ColorUtil.fadeBetween(GORGE_COLOR, LIGHT_GORGE_COLOR, counter * 150L);
                     break;
             }
 

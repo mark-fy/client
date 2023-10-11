@@ -61,10 +61,7 @@ public class MaterialClickGUI extends GuiScreen {
 
         renderBlur();
 
-        double width = 350;
-        double height = 350;
-        double x = frameX;
-        double y = frameY;
+        double width = 350, height = 350, x = frameX, y = frameY;
 
         if (isDragging) {
             double newX = mouseX - dragOffsetX;
@@ -87,9 +84,9 @@ public class MaterialClickGUI extends GuiScreen {
         // Drag Bar
         DrawingUtil.rectangle(x, y + 1, width - 1, 15, true, new Color(30, 30, 30));
 
-        boolean mouseHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.getHeight());
+        boolean hoveredOverClose = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.getHeight());
 
-        fr.drawString("X", x + 340, y + 3, mouseHovered ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
+        fr.drawString("X", x + 340, y + 3, hoveredOverClose ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
         fr.drawString(Client.getName().toLowerCase(Locale.ROOT) + " v" + Client.getVersion(), x + 3, y + 3, CategoryUtil.getCategoryColor(selectedCategory));
 
         // Category Box
@@ -105,7 +102,7 @@ public class MaterialClickGUI extends GuiScreen {
             Color textColor;
 
             if (isHovered) {
-                textColor = CategoryUtil.getCategoryColor(category);
+                textColor = Color.LIGHT_GRAY;
             } else if (category == selectedCategory) {
                 textColor = CategoryUtil.getCategoryColor(category);
             } else {
@@ -122,11 +119,15 @@ public class MaterialClickGUI extends GuiScreen {
 
             Color moduleBackgroundColor = isHovered
                     ? module.isEnabled()
-                    ? new Color(55, 55, 55) // Lighter color for hovered and enabled module
-                    : new Color(44, 44, 44) // Lighter color for hovered and disabled module
+                    ? new Color(55, 55, 55)
+                    : new Color(44, 44, 44)
                     : module.isEnabled()
-                    ? new Color(44, 44, 44) // Regular color for enabled module
-                    : new Color(33, 33, 33); // Regular color for disabled module
+                    ? new Color(44, 44, 44)
+                    : new Color(33, 33, 33);
+
+            if(module.equals(expandedModule) && !Client.settingManager.getSettingsByModule(expandedModule).isEmpty()) {
+                moduleBackgroundColor = new Color(44, 44, 44);
+            }
 
             DrawingUtil.rectangle(x + 50, y + 16 + counter, 100, 15, true, moduleBackgroundColor);
             fr.drawStringWithShadow(module.getName(), x + 54, y + 19 + counter, module.isEnabled() ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
@@ -220,6 +221,7 @@ public class MaterialClickGUI extends GuiScreen {
             for (Module.Category category : Module.Category.values()) {
                 if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 10), (float) (y + CategoryUtil.getCategoryY(category)), 36, 36)) {
                     selectedCategory = category;
+                    expandedModule = null;
                 }
             }
 
