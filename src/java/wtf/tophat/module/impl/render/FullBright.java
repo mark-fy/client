@@ -5,8 +5,8 @@ import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 
-@ModuleInfo(name = "Fullbright",desc = "turns up your brightness", category = Module.Category.RENDER)
-public class Fullbright extends Module {
+@ModuleInfo(name = "FullBright",desc = "turns up your brightness", category = Module.Category.RENDER)
+public class FullBright extends Module {
 
     private float oldGamma;
 

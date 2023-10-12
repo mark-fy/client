@@ -346,7 +346,7 @@ public class RenderUtil implements Methods {
         GlStateManager.alphaFunc(GL_GREATER, (float) (limit * .01));
     }
 
-    // This method colors the next avalible texture with a specified alpha value ranging from 0-1
+    // This method colors the next available texture with a specified alpha value ranging from 0-1
     public static void color(int color, float alpha) {
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
@@ -360,7 +360,7 @@ public class RenderUtil implements Methods {
     }
 
     /**
-     * Bind a texture using the specified integer refrence to the texture.
+     * Bind a texture using the specified integer reference to the texture.
      *
      * @see org.lwjgl.opengl.GL13 for more information about texture bindings
      */

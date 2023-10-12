@@ -80,7 +80,7 @@ public class CategoryUtil implements Methods {
 
         for (Module module : Client.moduleManager.getModulesByCategory(category)) {
             String keybindText;
-            int keybindTextWidth = 0;
+            int keybindTextWidth;
 
             if (module == listeningModule) {
                 keybindText = " [...]";

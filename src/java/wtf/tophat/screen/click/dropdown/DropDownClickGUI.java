@@ -19,6 +19,7 @@ import java.util.Locale;
 import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
 import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
+@SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 public class DropDownClickGUI extends GuiScreen {
 
     private Module listeningModule = null;
@@ -65,7 +66,7 @@ public class DropDownClickGUI extends GuiScreen {
             for (Module module : Client.moduleManager.getModulesByCategory(category)) {
 
                 String keybindText;
-                int keybindTextWidth = 0;
+                int keybindTextWidth;
 
                 if (module == listeningModule) {
                     keybindText = " [...]";
@@ -86,11 +87,11 @@ public class DropDownClickGUI extends GuiScreen {
 
                 Color moduleBackgroundColor = isHovered && isNotHoveringOutsideText
                         ? module.isEnabled()
-                        ? new Color(55, 55, 55) // Lighter color for hovered and enabled module
-                        : new Color(44, 44, 44) // Lighter color for hovered and disabled module
+                        ? new Color(55, 55, 55)
+                        : new Color(44, 44, 44)
                         : module.isEnabled()
-                        ? new Color(44, 44, 44) // Regular color for enabled module
-                        : new Color(33, 33, 33); // Regular color for disabled module
+                        ? new Color(44, 44, 44)
+                        : new Color(33, 33, 33);
 
                 DrawingUtil.rectangle(modX, modY, categoryWidth, modHeight, true, moduleBackgroundColor);
 

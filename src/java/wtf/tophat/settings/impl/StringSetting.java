@@ -16,7 +16,7 @@ public class StringSetting extends Setting {
         this.parent = parent;
         this.name = name;
         this.value = value;
-        this.all = new ArrayList<String>(Arrays.asList(all));
+        this.all = new ArrayList<>(Arrays.asList(all));
     }
 
     public List<String> getValues() { return all; }

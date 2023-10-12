@@ -4,7 +4,6 @@ import wtf.tophat.Client;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
 import wtf.tophat.module.base.Module;
-import wtf.tophat.utilities.chat.ChatUtil;
 
 @CommandInfo(name = "Toggle", description = "toggle modules", command = ".toggle <module>")
 public class Toggle extends Command {

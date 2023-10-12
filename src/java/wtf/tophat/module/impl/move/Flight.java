@@ -83,20 +83,18 @@ public class Flight extends Module {
         if(Methods.mc.player == null || Methods.mc.world == null)
             return;
 
-        switch (mode.getValue()) {
-            case "BWPractice":
-                if(event.getPacket() instanceof C0APacketAnimation) {
-                    event.setCancelled(true);
-                }
+        if (mode.getValue().equals("BWPractice")) {
+            if (event.getPacket() instanceof C0APacketAnimation) {
+                event.setCancelled(true);
+            }
 
-                if(event.getPacket() instanceof C19PacketResourcePackStatus) {
-                    event.setCancelled(true);
-                }
+            if (event.getPacket() instanceof C19PacketResourcePackStatus) {
+                event.setCancelled(true);
+            }
 
-                if(event.getPacket() instanceof C14PacketTabComplete) {
-                    event.setCancelled(true);
-                }
-                break;
+            if (event.getPacket() instanceof C14PacketTabComplete) {
+                event.setCancelled(true);
+            }
         }
     }
 

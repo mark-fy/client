@@ -3,7 +3,6 @@ package wtf.tophat.commands.impl;
 import wtf.tophat.Client;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
-import wtf.tophat.utilities.chat.ChatUtil;
 
 @CommandInfo(name = "Help", description = "gives helpful information", command = ".help")
 public class Help extends Command {

@@ -9,7 +9,7 @@ import wtf.tophat.screen.click.material.MaterialClickGUI;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 
-@ModuleInfo(name = "Click GUI",desc = "clicky gui", category = Module.Category.HUD, bind = Keyboard.KEY_RSHIFT)
+@ModuleInfo(name = "Click GUI",desc = "a clicky gui", category = Module.Category.HUD, bind = Keyboard.KEY_RSHIFT)
 public class ClickGUI extends Module {
 
     private final StringSetting mode;

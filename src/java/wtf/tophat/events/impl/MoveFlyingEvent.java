@@ -13,27 +13,27 @@ public final class MoveFlyingEvent extends Event {
         this.friction = f3;
     }
 
-    public final float getStrafe() {
+    public float getStrafe() {
         return this.strafe;
     }
 
-    public final void setStrafe(float f) {
+    public void setStrafe(float f) {
         this.strafe = f;
     }
 
-    public final float getForward() {
+    public float getForward() {
         return this.forward;
     }
 
-    public final void setForward(float f) {
+    public void setForward(float f) {
         this.forward = f;
     }
 
-    public final float getFriction() {
+    public float getFriction() {
         return this.friction;
     }
 
-    public final void setFriction(float f) {
+    public void setFriction(float f) {
         this.friction = f;
     }
 

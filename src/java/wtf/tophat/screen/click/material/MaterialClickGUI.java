@@ -2,7 +2,6 @@ package wtf.tophat.screen.click.material;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
@@ -19,8 +18,6 @@ import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Locale;
 
 import static wtf.tophat.utilities.Colors.*;
@@ -44,7 +41,6 @@ public class MaterialClickGUI extends GuiScreen {
         return false;
     }
 
-    private final Module.Category defaultCategory = Module.Category.COMBAT;
     private Module.Category selectedCategory = Module.Category.COMBAT;
     private Module expandedModule = null;
 
@@ -196,7 +192,7 @@ public class MaterialClickGUI extends GuiScreen {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
 
         if (mouseButton == 0) {

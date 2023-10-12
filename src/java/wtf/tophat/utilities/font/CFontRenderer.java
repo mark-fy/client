@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "ConstantValue"})
 public final class CFontRenderer extends CFont {
 
     private final CharacterData[] boldItalicChars = new CharacterData[256];
@@ -51,7 +51,7 @@ public final class CFontRenderer extends CFont {
         boolean bold = false;
         boolean italic = false;
         boolean strike = false;
-        boolean uline = false;
+        boolean underline = false;
 
         // Scale
         x *= 2;
@@ -98,7 +98,7 @@ public final class CFontRenderer extends CFont {
                 if (colorIndex < 16) {
                     bold = false;
                     italic = false;
-                    uline = false;
+                    underline = false;
                     strike = false;
 
                     currentData = characterData;
@@ -108,12 +108,12 @@ public final class CFontRenderer extends CFont {
                         colorIndex = 15;
                     }
 
-                    int colorcode = colorCode[colorIndex];
+                    int colorCode = this.colorCode[colorIndex];
 
                     GlStateManager.color(
-                            (float) (colorcode >> 16 & 255) / 255.0F,
-                            (float) (colorcode >> 8 & 255) / 255.0F,
-                            (float) (colorcode & 255) / 255.0F,
+                            (float) (colorCode >> 16 & 255) / 255.0F,
+                            (float) (colorCode >> 8 & 255) / 255.0F,
+                            (float) (colorCode & 255) / 255.0F,
                             (float) color.getAlpha() / 255.0F
                     );
 
@@ -131,7 +131,7 @@ public final class CFontRenderer extends CFont {
                 } else if (colorIndex == 18) {
                     strike = true;
                 } else if (colorIndex == 19) {
-                    uline = true;
+                    underline = true;
                 } else if (colorIndex == 20) {
                     italic = true;
 
@@ -146,7 +146,7 @@ public final class CFontRenderer extends CFont {
                 } else {
                     bold = false;
                     italic = false;
-                    uline = false;
+                    underline = false;
                     strike = false;
 
                     GL11.glColor4d(
@@ -171,7 +171,7 @@ public final class CFontRenderer extends CFont {
                     drawLine(x, y + (double) (currentData[character].height / 2), x + (double) currentData[character].width - 8, y + (double) (currentData[character].height / 2));
                 }
 
-                if (uline) {
+                if (underline) {
                     drawLine(x, y + (double) currentData[character].height - 2, x + (double) currentData[character].width - 8, y + (double) currentData[character].height - 2);
                 }
 

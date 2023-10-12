@@ -12,6 +12,7 @@ import java.io.IOException;
 import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
 import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
+@SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 public class UIMainMenu extends GuiScreen {
 
     public UIMainMenu() {}

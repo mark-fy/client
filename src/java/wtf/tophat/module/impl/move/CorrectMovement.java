@@ -3,7 +3,6 @@ package wtf.tophat.module.impl.move;
 import io.github.nevalackin.radbus.Listen;
 import wtf.tophat.Client;
 import wtf.tophat.events.handler.PlayerHandler;
-import wtf.tophat.events.impl.DelayJumpEvent;
 import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
@@ -11,11 +10,11 @@ import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 
 @ModuleInfo(name = "Correct Movement",desc = "correct your movement", category = Module.Category.MOVE)
-public class CorrectMoverment extends Module {
+public class CorrectMovement extends Module {
 
     private final StringSetting mode;
 
-    public CorrectMoverment() {
+    public CorrectMovement() {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Strict", "Strict", "Silent", "Aggressive")
         );

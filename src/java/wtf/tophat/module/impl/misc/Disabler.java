@@ -95,13 +95,11 @@ public class Disabler extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        switch (mode.getValue()) {
-            case "Intave Timer":
-                StringBuilder builder = new StringBuilder();
-                for (int i = 32; i < 256; i++) builder.append((char)i);
-                sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.ACCEPTED));
-                sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.FAILED_DOWNLOAD));
-                break;
+        if (mode.getValue().equals("Intave Timer")) {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 32; i < 256; i++) builder.append((char) i);
+            sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.ACCEPTED));
+            sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.FAILED_DOWNLOAD));
         }
     }
 

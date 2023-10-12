@@ -39,12 +39,10 @@ public class Velocity extends Module {
 
     @Listen
     public void onUpdate(UpdateEvent event) {
-        switch (mode.getValue()) {
-            case "Grim":
-                if (transactionQueue.isEmpty() && grimPacket) {
-                    grimPacket = false;
-                }
-                break;
+        if (mode.getValue().equals("Grim")) {
+            if (transactionQueue.isEmpty() && grimPacket) {
+                grimPacket = false;
+            }
         }
     }
 

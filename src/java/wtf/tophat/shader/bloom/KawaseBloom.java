@@ -65,12 +65,10 @@ public class KawaseBloom implements Methods {
         GL11.glClearColor(0, 0, 0, 0);
         renderFBO(framebufferList.get(1), framebufferTexture, kawaseDown, offset);
 
-        //Downsample
         for (int i = 1; i < iterations; i++) {
             renderFBO(framebufferList.get(i + 1), framebufferList.get(i).framebufferTexture, kawaseDown, offset);
         }
 
-        //Upsample
         for (int i = iterations; i > 1; i--) {
             renderFBO(framebufferList.get(i - 1), framebufferList.get(i).framebufferTexture, kawaseUp, offset);
         }

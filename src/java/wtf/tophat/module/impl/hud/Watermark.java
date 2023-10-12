@@ -22,8 +22,8 @@ import java.awt.*;
 import java.util.Locale;
 
 import static wtf.tophat.utilities.Colors.*;
-import static wtf.tophat.utilities.Colors.LIGHT_GORGE_COLOR;
 
+@SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 @ModuleInfo(name = "Watermark",desc = "displays the client's watermark", category = Module.Category.HUD)
 public class Watermark extends Module {
 

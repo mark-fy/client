@@ -2,8 +2,6 @@ package wtf.tophat.screen;
 
 import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import wtf.tophat.Client;
 import wtf.tophat.screen.alts.AltThread;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
@@ -115,7 +113,7 @@ public class UIAltManager extends GuiScreen {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         try {
             super.mouseClicked(mouseX, mouseY, mouseButton);
         } catch (IOException e) {

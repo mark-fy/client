@@ -17,14 +17,11 @@ import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.events.impl.SlowDownEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
-import wtf.tophat.module.impl.player.Timer;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.TimeUtil;
-
-import java.util.Set;
 
 @ModuleInfo(name = "No Slowdown",desc = "disable slow down effects", category = Module.Category.MOVE)
 public class NoSlowdown extends Module {
@@ -52,7 +49,6 @@ public class NoSlowdown extends Module {
     }
 
     private final TimeUtil intaveTimer = new TimeUtil();
-    private final TimeUtil fyretimer = new TimeUtil();
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -62,21 +58,8 @@ public class NoSlowdown extends Module {
         }
 
         switch (mode.getValue()) {
-            case "Switch":
-                if(mc.player.isUsingItem() && currentItem.getItem() instanceof ItemSword && fyretimer.elapsed(75L)) {
-                    if (event.getState() == Event.State.PRE) {
-                        sendPacketUnlogged(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
-                    }
-
-                    if (event.getState() == Event.State.POST) {
-                        sendPacketUnlogged(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
-                        fyretimer.reset();
-                    }
-                }
-                break;
-
-
             case "Grim":
+            case "Switch":
                 if(event.getState() == Event.State.PRE) {
                     sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
                     sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
@@ -128,15 +111,13 @@ public class NoSlowdown extends Module {
         if(Methods.mc.player == null || Methods.mc.world == null)
             return;
 
-        switch (mode.getValue()) {
-            case "Grim":
-                if (mc.player.isBlocking()) {
-                    sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
-                } else if (mc.player.isUsingItem()) {
-                    sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
-                    sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
-                }
-                break;
+        if (mode.getValue().equals("Grim")) {
+            if (mc.player.isBlocking()) {
+                sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
+            } else if (mc.player.isUsingItem()) {
+                sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
+                sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
+            }
         }
     }
 

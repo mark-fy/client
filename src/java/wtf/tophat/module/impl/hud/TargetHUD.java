@@ -1,7 +1,7 @@
 package wtf.tophat.module.impl.hud;
 
 import io.github.nevalackin.radbus.Listen;
-import net.minecraft.client.gui.ScaledResolution;;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,6 +23,7 @@ import java.awt.*;
 import static wtf.tophat.utilities.Colors.DEFAULT_COLOR;
 import static wtf.tophat.utilities.Colors.WHITE_COLOR;
 
+@SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 @ModuleInfo(name = "Target HUD",desc = "shows your enemy info", category = Module.Category.HUD)
 public class TargetHUD extends Module {
 
@@ -61,7 +62,7 @@ public class TargetHUD extends Module {
         }
 
         Entity targetEntity = mc.pointedEntity;
-        if (targetEntity != null && targetEntity instanceof EntityLivingBase) {
+        if (targetEntity instanceof EntityLivingBase) {
             EntityLivingBase livingEntity = (EntityLivingBase) targetEntity;
             float health = livingEntity.getHealth();
 
