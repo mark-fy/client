@@ -31,6 +31,24 @@ public class RotationUtil implements Methods {
         return new Vec3(f2 * f3, f4, f * f3);
     }
 
+    public static float[] getRotation(Entity entity) {
+        double deltaX = entity.posX + (entity.posX - entity.lastTickPosX) - mc.player.posX,
+               deltaY = entity.posY - 3.5 + entity.getEyeHeight() - mc.player.posY + mc.player.getEyeHeight(),
+               deltaZ = entity.posZ + (entity.posZ - entity.lastTickPosZ) -mc.player.posZ,
+               distance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaZ, 2));
+
+        float yaw = (float) Math.toDegrees(-Math.atan(deltaX / deltaZ)),
+              pitch = (float) -Math.toDegrees(Math.atan(deltaY / distance ));
+
+        if(deltaX < 0 && deltaZ < 0) {
+            yaw = (float) (90 + Math.toDegrees(Math.atan(deltaZ / deltaX)));
+        } else if(deltaX > 0  && deltaZ < 0) {
+            yaw = (float) (-90 + Math.toDegrees(Math.atan(deltaZ / deltaX)));
+        }
+
+        return new float[] {yaw, pitch};
+    }
+
     public static float[] getRotation(Vec3 aimVector) {
         double x = aimVector.xCoord - mc.player.posX;
         double y = aimVector.yCoord - (mc.player.posY + (double) mc.player.getEyeHeight());
