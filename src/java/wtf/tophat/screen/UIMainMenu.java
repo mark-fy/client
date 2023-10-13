@@ -2,6 +2,9 @@ package wtf.tophat.screen;
 
 import net.minecraft.client.gui.*;
 import wtf.tophat.Client;
+import wtf.tophat.screen.guis.UIAltManager;
+import wtf.tophat.screen.guis.UIChangeLog;
+import wtf.tophat.screen.guis.UICredits;
 import wtf.tophat.utilities.font.CFontRenderer;
 import wtf.tophat.utilities.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
@@ -31,8 +34,12 @@ public class UIMainMenu extends GuiScreen {
         this.buttonList.add(new GuiButton(3, buttonX, buttonY, "Alt Manager"));
         buttonY += 20;
         this.buttonList.add(new GuiButton(4, buttonX, buttonY, "Options"));
+
+        this.buttonList.add(new GuiButton(5, 5, this.height - 25, 100, 20, "Changelog"));
+        this.buttonList.add(new GuiButton(6, this.width - 105, this.height - 25, 100, 20, "Credits"));
+
         buttonY += 20;
-        this.buttonList.add(new GuiButton(5, buttonX, buttonY, "Quit"));
+        this.buttonList.add(new GuiButton(7, buttonX, buttonY, "Quit"));
         super.initGui();
     }
 
@@ -52,6 +59,12 @@ public class UIMainMenu extends GuiScreen {
                 mc.displayGuiScreen(new GuiOptions(this, mc.settings));
                 break;
             case 5:
+                mc.displayGuiScreen(new UIChangeLog(this));
+                break;
+            case 6:
+                mc.displayGuiScreen(new UICredits(this));
+                break;
+            case 7:
                 Client.shutdown();
                 break;
         }

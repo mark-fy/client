@@ -1,4 +1,4 @@
-package wtf.tophat.screen;
+package wtf.tophat.screen.guis;
 
 import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
