@@ -26,6 +26,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
+import wtf.tophat.Client;
+import wtf.tophat.module.impl.combat.Killaura;
 
 public class ItemRenderer
 {
@@ -371,7 +373,7 @@ public class ItemRenderer
             {
                 this.renderItemMap(abstractclientplayer, f2, f, f1);
             }
-            else if (abstractclientplayer.getItemInUseCount() > 0)
+            else if (abstractclientplayer.getItemInUseCount() > 0 || (Client.moduleManager.getByClass(Killaura.class).isEnabled() && Client.moduleManager.getByClass(Killaura.class).shouldBlock()))
             {
                 EnumAction enumaction = this.itemToRender.getItemUseAction();
 

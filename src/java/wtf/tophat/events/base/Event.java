@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 public class Event {
 
     private boolean cancelled;
-    public State state;
+    private State state;
 
     public enum State {
         PRE, POST

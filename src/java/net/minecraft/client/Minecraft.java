@@ -175,7 +175,9 @@ import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 import wtf.tophat.Client;
+import wtf.tophat.events.impl.ClickingEvent;
 import wtf.tophat.events.impl.KeyboardEvent;
+import wtf.tophat.events.impl.PostTickEvent;
 import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.screen.UIMainMenu;
 
@@ -2105,6 +2107,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 this.displayGuiScreen(new GuiChat("/"));
             }
 
+            ClickingEvent clickingEvent = new ClickingEvent();
+            clickingEvent.call();
+
             if (this.player.isUsingItem())
             {
                 if (!this.settings.keyBindUseItem.isKeyDown())
@@ -2253,6 +2258,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
+        PostTickEvent postTickEvent = new PostTickEvent();
+        postTickEvent.call();
     }
 
     /**
