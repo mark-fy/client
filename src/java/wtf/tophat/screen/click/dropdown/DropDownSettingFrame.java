@@ -9,6 +9,7 @@ import wtf.tophat.module.impl.hud.ClickGUI;
 import wtf.tophat.module.impl.render.PostProcessing;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.shader.blur.GaussianBlur;
@@ -70,6 +71,16 @@ public class DropDownSettingFrame extends GuiScreen {
         for(Setting setting : Client.settingManager.getSettingsByModule(parent)) {
             if(setting.isHidden())
                 continue;
+
+            if(setting instanceof DividerSetting) {
+                int stringWidth = frBig.getStringWidth(setting.getName().toLowerCase(Locale.ROOT));
+                int centerX = (int) ((width - stringWidth) / 2); // Calculate the center of the screen for the string
+                int textX = (int) (x + centerX);
+
+                DrawingUtil.rectangle(x, y + 18, width, height, true, new Color(33, 33, 33));
+                frBig.drawStringChoose(shadow, setting.getName().toLowerCase(Locale.ROOT), textX, (int) y + 25, Color.WHITE);
+                y += 20;
+            }
 
             if(setting instanceof StringSetting) {
                 DrawingUtil.rectangle(x, y + 18, width, height, true, new Color(33,33,33));
@@ -140,6 +151,8 @@ public class DropDownSettingFrame extends GuiScreen {
                     ((BooleanSetting) setting).toggle();
                 }
 
+                y += 20;
+            } else if(setting instanceof DividerSetting) {
                 y += 20;
             } else if (setting instanceof NumberSetting) {
                 double boxX = x + 5, boxY = y + 40, boxWidth = 185, boxHeight = 11;

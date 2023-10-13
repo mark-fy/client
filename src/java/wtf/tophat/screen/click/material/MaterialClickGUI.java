@@ -8,6 +8,7 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.impl.render.PostProcessing;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.shader.blur.GaussianBlur;
@@ -53,6 +54,7 @@ public class MaterialClickGUI extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         ScaledResolution sr = new ScaledResolution(mc);
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
+        CFontRenderer frBig = CFontUtil.SF_Semibold_20.getRenderer();
         CFontRenderer catfr = CFontUtil.ICONS_50.getRenderer();
 
         renderBlur();
@@ -83,7 +85,7 @@ public class MaterialClickGUI extends GuiScreen {
         boolean hoveredOverClose = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.getHeight());
 
         fr.drawString("X", x + 340, y + 3, hoveredOverClose ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
-        fr.drawString(Client.getName().toLowerCase(Locale.ROOT) + " v" + Client.getVersion(), x + 3, y + 3, CategoryUtil.getCategoryColor(selectedCategory));
+        frBig.drawString(Client.getName().toLowerCase(Locale.ROOT) + " v" + Client.getVersion(), x + 3, y + 3, CategoryUtil.getCategoryColor(selectedCategory));
 
         // Category Box
         DrawingUtil.rectangle(x, y + 15, 50, 334, true, new Color(30, 30, 30));
@@ -152,13 +154,21 @@ public class MaterialClickGUI extends GuiScreen {
 
             Color settingBackgroundColor = isHovered ?
                     new Color(44, 44, 44) :
-                    new Color(30,30,30);
+                    new Color(30, 30, 30);
 
             if (setting.isHidden()) {
                 continue;
             }
 
-            if (setting instanceof StringSetting) {
+            if (setting instanceof DividerSetting) {
+                int stringWidth = frBig.getStringWidth(setting.getName());
+                int centerX = (199 - stringWidth) / 2;
+                int textX = (int) (x + 150 + centerX);
+
+                DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
+                frBig.drawStringWithShadow(setting.getName(), textX, y + offset + 3, Color.WHITE);
+                offset += 15;
+            } else if (setting instanceof StringSetting) {
                 DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
                 fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).getValue(), x + 150, y + offset + 3, Color.WHITE);
                 offset += 15;
@@ -227,17 +237,20 @@ public class MaterialClickGUI extends GuiScreen {
                     continue;
                 }
 
-                if(setting instanceof StringSetting) {
+                if(setting instanceof DividerSetting) {
+                    offset += 15;
+                } else if(setting instanceof StringSetting) {
                     if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
                         ((StringSetting) setting).forward();
                     }
                     offset += 15;
-                }
-                if(setting instanceof BooleanSetting) {
+                } else if(setting instanceof BooleanSetting) {
                     if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
                         ((BooleanSetting) setting).toggle();
                     }
                     offset += 15;
+                } else if(setting instanceof NumberSetting) {
+                    offset += 32;
                 }
             }
 
@@ -265,17 +278,20 @@ public class MaterialClickGUI extends GuiScreen {
                     continue;
                 }
 
-                if(setting instanceof StringSetting) {
+                if(setting instanceof DividerSetting) {
+                    offset += 15;
+                } else if(setting instanceof StringSetting) {
                     if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
                         ((StringSetting) setting).backward();
                     }
                     offset += 15;
-                }
-                if(setting instanceof BooleanSetting) {
+                } else if(setting instanceof BooleanSetting) {
                     if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
                         ((BooleanSetting) setting).toggle();
                     }
                     offset += 15;
+                } else if(setting instanceof NumberSetting) {
+                    offset += 32;
                 }
             }
         }

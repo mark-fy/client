@@ -9,18 +9,23 @@ import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 
 @ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.EXPLOIT)
 public class Disabler extends Module {
 
+    private final DividerSetting modes, spacer;
     private final StringSetting mode;
     private final BooleanSetting verusCombat, c00, c13, c0f, c0c, c0b;
 
     public Disabler() {
         Client.settingManager.add(
+                modes = new DividerSetting(this, "Mode Settings"),
                 mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Verus"),
+                spacer = new DividerSetting(this, "")
+                        .setHidden(() -> mode.compare("Intave Timer")),
                 verusCombat = new BooleanSetting(this, "Verus Combat", false)
                         .setHidden(() -> !mode.compare("Verus")),
                 c00 = new BooleanSetting(this, "C00KeepAlive", false)

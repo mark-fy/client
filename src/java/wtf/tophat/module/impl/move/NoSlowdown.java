@@ -18,6 +18,7 @@ import wtf.tophat.events.impl.SlowDownEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
@@ -26,25 +27,28 @@ import wtf.tophat.utilities.math.TimeUtil;
 @ModuleInfo(name = "No Slowdown",desc = "disable slow down effects", category = Module.Category.MOVE)
 public class NoSlowdown extends Module {
 
+    private final DividerSetting modes, booleans, values;
     private final StringSetting mode;
     private final BooleanSetting sword, food, bows;
     private final NumberSetting swordForward, swordStrafe, foodForward, foodStrafe, bowForward, bowStrafe;
 
     public NoSlowdown() {
         Client.settingManager.add(
+                modes = new DividerSetting(this, "Mode Settings"),
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave"),
 
+                booleans = new DividerSetting(this, "Available Items"),
                 sword = new BooleanSetting(this, "Sword", true),
                 food = new BooleanSetting(this, "Food", true),
                 bows = new BooleanSetting(this, "Bows", true),
 
+                values = new DividerSetting(this, "Item Multipliers"),
                 swordForward = new NumberSetting(this, "Sword Forward", 0, 1, 1, 2).setHidden(() -> !sword.getValue()),
                 swordStrafe = new NumberSetting(this, "Sword Strafe", 0, 1, 1, 2).setHidden(() -> !sword.getValue()),
                 foodForward = new NumberSetting(this, "Food Forward", 0, 1, 1, 2).setHidden(() -> !food.getValue()),
                 foodStrafe = new NumberSetting(this, "Food Strafe", 0, 1, 1, 2).setHidden(() -> !food.getValue()),
                 bowForward = new NumberSetting(this, "Bow Forward", 0, 1, 1, 2).setHidden(() -> !bows.getValue()),
                 bowStrafe = new NumberSetting(this, "Bow Strafe", 0, 1, 1, 2).setHidden(() -> !bows.getValue())
-
         );
     }
 
