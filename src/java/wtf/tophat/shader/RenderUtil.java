@@ -11,7 +11,7 @@ import wtf.tophat.utilities.Methods;
 
 import java.awt.*;
 import static org.lwjgl.opengl.GL11.*;
-import static wtf.tophat.utilities.math.MathUtil.interpolate;
+import static wtf.tophat.utilities.math.InterpolationUtil.interpolate;
 
 public class RenderUtil implements Methods {
 

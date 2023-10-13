@@ -1,6 +1,6 @@
 package wtf.tophat.utilities.render;
 
-import wtf.tophat.utilities.math.MathUtil;
+import wtf.tophat.utilities.math.InterpolationUtil;
 
 import java.awt.*;
 import java.util.Random;
@@ -162,10 +162,10 @@ public class ColorUtil {
 
     public static Color interpolateColorC(Color color1, Color color2, float amount) {
         amount = Math.min(1, Math.max(0, amount));
-        return new Color(MathUtil.interpolateInt(color1.getRed(), color2.getRed(), amount),
-                MathUtil.interpolateInt(color1.getGreen(), color2.getGreen(), amount),
-                MathUtil.interpolateInt(color1.getBlue(), color2.getBlue(), amount),
-                MathUtil.interpolateInt(color1.getAlpha(), color2.getAlpha(), amount));
+        return new Color(InterpolationUtil.interpolateInt(color1.getRed(), color2.getRed(), amount),
+                InterpolationUtil.interpolateInt(color1.getGreen(), color2.getGreen(), amount),
+                InterpolationUtil.interpolateInt(color1.getBlue(), color2.getBlue(), amount),
+                InterpolationUtil.interpolateInt(color1.getAlpha(), color2.getAlpha(), amount));
     }
 
     public static int applyOpacity(int color, float opacity) {

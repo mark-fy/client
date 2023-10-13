@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL13;
 import wtf.tophat.shader.RenderUtil;
 import wtf.tophat.shader.ShaderUtil;
 import wtf.tophat.utilities.Methods;
-import wtf.tophat.utilities.math.MathUtil;
+import wtf.tophat.utilities.math.InterpolationUtil;
 
 import java.nio.FloatBuffer;
 
@@ -31,7 +31,7 @@ public class GaussianBloom implements Methods {
 
         final FloatBuffer weightBuffer = BufferUtils.createFloatBuffer(256);
         for (int i = 0; i <= radius; i++) {
-            weightBuffer.put(MathUtil.calculateGaussianValue(i, radius));
+            weightBuffer.put(InterpolationUtil.calculateGaussianValue(i, radius));
         }
         weightBuffer.rewind();
 
