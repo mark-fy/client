@@ -34,28 +34,23 @@ public class DropDownClickGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
-        CFontRenderer frSemiBold = CFontUtil.SF_Semibold_20.getRenderer();
-        CFontRenderer catfr = CFontUtil.ICONS_24.getRenderer();
+        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer(), frSemiBold = CFontUtil.SF_Semibold_20.getRenderer(), catfr = CFontUtil.ICONS_24.getRenderer();
         boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.hud.ClickGUI.class).fontShadow.getValue();
 
         renderBlur();
 
-        double x = (this.width - CategoryUtil.getTotalCategoryWidth(listeningModule)) / 2.0 - 40;
-        double y = 50;
+        double x = (this.width - CategoryUtil.getTotalCategoryWidth(listeningModule)) / 2.0 - 40, y = 50;
 
         for (Module.Category category : Module.Category.values()) {
             double categoryWidth = CategoryUtil.getMaxModuleNameWidth(category, listeningModule) + 20, categoryHeight = 20;
 
-            double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName().toLowerCase(Locale.ROOT))) / 2 - 2;
-            double categoryTextY = y + 6;
+            double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName().toLowerCase(Locale.ROOT))) / 2 - 2, categoryTextY = y + 6;
 
             double categoryIconX = CategoryUtil.calculateCategoryIconX(category, x, categoryWidth, catfr);
 
             double dropdownMinX = x, dropdownMaxX = x + categoryWidth, dropdownMaxY = y + categoryHeight;
 
             DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor(category));
-
             DrawingUtil.rectangle(x, y, categoryWidth, categoryHeight, true, new Color(20, 20, 20));
 
             catfr.drawStringWithShadow(CategoryUtil.getCategoryLetter(category), categoryIconX, categoryTextY, CategoryUtil.getCategoryColor(category));
@@ -82,10 +77,7 @@ public class DropDownClickGUI extends GuiScreen {
                 double moduleRectWidth = categoryWidth + keybindTextWidth;
 
                 boolean isHovered = mouseX >= modX && mouseX <= modX + categoryWidth && mouseY >= modY && mouseY <= modY + modHeight;
-
-                boolean isNotHoveringOutsideText = mouseX <= modX + categoryWidth;
-
-                Color moduleBackgroundColor = isHovered && isNotHoveringOutsideText
+                Color moduleBackgroundColor = isHovered
                         ? module.isEnabled()
                         ? new Color(55, 55, 55)
                         : new Color(44, 44, 44)
@@ -96,13 +88,10 @@ public class DropDownClickGUI extends GuiScreen {
                 DrawingUtil.rectangle(modX, modY, categoryWidth, modHeight, true, moduleBackgroundColor);
 
                 String moduleName = module.getName().toLowerCase(Locale.ROOT);
-                int moduleNameX = (int) modX + 5;
 
-                fr.drawStringChoose(shadow, moduleName, moduleNameX, (int) (modY + 6), module.isEnabled() ? CategoryUtil.getCategoryColor(category) : Color.WHITE);
+                fr.drawStringChoose(shadow, moduleName, (int) modX + 5, (int) (modY + 6), module.isEnabled() ? CategoryUtil.getCategoryColor(category) : Color.WHITE);
 
-                int keybindX = (int) (modX + moduleRectWidth - keybindTextWidth - 5), keybindY = (int) modY + 6;
-
-                fr.drawStringChoose(shadow, keybindText, keybindX - keybindTextWidth, keybindY, Color.darkGray);
+                fr.drawStringChoose(shadow, keybindText, (int) (modX + moduleRectWidth - keybindTextWidth - 5) - keybindTextWidth, (int) modY + 6, Color.darkGray);
 
                 if (isHovered) {
                     int counter = 0;
@@ -142,12 +131,11 @@ public class DropDownClickGUI extends GuiScreen {
         if (mouseButton == 0 || mouseButton == 1 || mouseButton == 2) {
             for (Module.Category category : Module.Category.values()) {
                 double categoryWidth = CategoryUtil.getMaxModuleNameWidth(category, listeningModule) + 20;
-                double categoryHeight = 20;
-                double modX = x, modY = y + categoryHeight, modHeight = 20;
+                double modX = x, modY = y + 20;
 
                 for (Module module : Client.moduleManager.getModulesByCategory(category)) {
 
-                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) categoryWidth, (float) modHeight)) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) categoryWidth, 20)) {
                         if (mouseButton == 0) {
                             module.toggle();
                         } else if (mouseButton == 1) {

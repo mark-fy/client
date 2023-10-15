@@ -15,6 +15,7 @@ import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
+
 @ModuleInfo(name = "Spider",desc = "lets you climb walls", category = Module.Category.MOVE)
 public class Spider extends Module {
 
@@ -92,5 +93,4 @@ public class Spider extends Module {
     private boolean canClimbWall() {
         return mc.player != null && mc.player.isCollidedHorizontally && !mc.player.isOnLadder() && !mc.player.isInWater() && mc.player.fallDistance < 1.0F;
     }
-
 }

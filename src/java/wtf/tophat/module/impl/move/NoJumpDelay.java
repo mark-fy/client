@@ -16,5 +16,4 @@ public class NoJumpDelay extends Module {
 
         event.setCancelled(true);
     }
-
 }

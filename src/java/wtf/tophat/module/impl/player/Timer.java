@@ -28,5 +28,4 @@ public class Timer extends Module {
         mc.timer.timerSpeed = 1f;
         super.onDisable();
     }
-
 }

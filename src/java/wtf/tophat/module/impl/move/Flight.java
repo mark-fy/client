@@ -1,6 +1,5 @@
 package wtf.tophat.module.impl.move;
 
-import by.radioegor146.nativeobfuscator.Native;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.network.play.client.C14PacketTabComplete;
@@ -19,7 +18,6 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
-@Native
 @ModuleInfo(name = "Flight",desc = "fly like a bird", category = Module.Category.MOVE)
 public class Flight extends Module {
 

@@ -18,5 +18,4 @@ public class AntiInvisibility extends Module {
                     player.setInvisible(false);
                 });
     }
-
 }

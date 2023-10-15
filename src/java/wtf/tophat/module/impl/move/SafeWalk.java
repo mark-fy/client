@@ -16,5 +16,4 @@ public class SafeWalk extends Module {
 
         event.setSafe(mc.player.onGround);
     }
-
 }

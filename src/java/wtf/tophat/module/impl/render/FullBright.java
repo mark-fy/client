@@ -26,5 +26,4 @@ public class FullBright extends Module {
         mc.settings.gammaSetting = this.oldGamma;
         super.onDisable();
     }
-
 }

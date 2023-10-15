@@ -64,6 +64,4 @@ public class Blink extends Module {
         active = true;
         super.onEnable();
     }
-
-
 }

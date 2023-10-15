@@ -104,14 +104,13 @@ public class Speed extends Module {
 
     @Override
     public void onDisable() {
-        hypixelTicks = 0;
         onTicks = 0;
         offTicks = 0;
+        hypixelTicks = 0;
         mc.timer.timerSpeed = 1.0f;
         mc.player.speedInAir = 0.02f;
         mc.settings.keyBindJump.pressed = false;
         KeyBinding.setKeyBindState(mc.settings.keyBindSprint.getKeyCode(), false);
         super.onDisable();
     }
-
 }

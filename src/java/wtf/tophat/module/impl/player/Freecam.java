@@ -75,5 +75,4 @@ public class Freecam extends Module {
         mc.player.capabilities.isFlying = false;
         super.onDisable();
     }
-
 }

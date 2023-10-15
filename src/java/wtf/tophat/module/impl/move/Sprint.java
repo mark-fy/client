@@ -18,7 +18,7 @@ public class Sprint extends Module {
     public Sprint() {
         Client.settingManager.add(
                 legit = new BooleanSetting(this, "Legit", true),
-                omni = new BooleanSetting(this, "Omni", false)
+                omni = new BooleanSetting(this, "All directions", false)
         );
     }
 
