@@ -11,7 +11,6 @@ import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.Methods;
 
 @ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.EXPLOIT)
 public class Disabler extends Module {
@@ -23,21 +22,21 @@ public class Disabler extends Module {
     public Disabler() {
         Client.settingManager.add(
                 modes = new DividerSetting(this, "Mode Settings"),
-                mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Verus"),
+                mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Verus", "NCP Timer"),
                 spacer = new DividerSetting(this, "")
-                        .setHidden(() -> mode.compare("Intave Timer")),
+                        .setHidden(() -> mode.is("Intave Timer") || mode.is("NCP Timer")),
                 verusCombat = new BooleanSetting(this, "Verus Combat", false)
-                        .setHidden(() -> !mode.compare("Verus")),
+                        .setHidden(() -> !mode.is("Verus")),
                 c00 = new BooleanSetting(this, "C00KeepAlive", false)
-                        .setHidden(() -> !mode.compare("Custom")),
+                        .setHidden(() -> !mode.is("Custom")),
                 c13 = new BooleanSetting(this, "C13PlayerAbilities", false)
-                        .setHidden(() -> !mode.compare("Custom")),
+                        .setHidden(() -> !mode.is("Custom")),
                 c0f = new BooleanSetting(this, "C0FConfirmTransaction", false)
-                        .setHidden(() -> !mode.compare("Custom")),
+                        .setHidden(() -> !mode.is("Custom")),
                 c0c = new BooleanSetting(this, "C0CInput", false)
-                        .setHidden(() -> !mode.compare("Custom")),
+                        .setHidden(() -> !mode.is("Custom")),
                 c0b = new BooleanSetting(this, "C0BEntityAction", false)
-                        .setHidden(() -> !mode.compare("Custom"))
+                        .setHidden(() -> !mode.is("Custom"))
         );
     }
 
@@ -46,16 +45,16 @@ public class Disabler extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
-        if (Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
         Packet<?> packet = event.getPacket();
 
-        switch(mode.getValue()) {
+        switch(mode.get()) {
             case "Verus":
-                if(verusCombat.getValue()) {
+                if(verusCombat.get()) {
                     if (packet instanceof C0FPacketConfirmTransaction) {
-                        if (mc.player.isDead) {
+                        if (getDead()) {
                             verusCounter = 0;
                         }
 
@@ -70,23 +69,23 @@ public class Disabler extends Module {
                 }
                 break;
             case "Custom":
-                if(c00.getValue() && packet instanceof C00PacketKeepAlive) {
+                if(c00.get() && packet instanceof C00PacketKeepAlive) {
                     event.setCancelled(true);
                 }
 
-                if(c13.getValue() && packet instanceof C13PacketPlayerAbilities) {
+                if(c13.get() && packet instanceof C13PacketPlayerAbilities) {
                     event.setCancelled(true);
                 }
 
-                if(c0f.getValue() && packet instanceof C0FPacketConfirmTransaction) {
+                if(c0f.get() && packet instanceof C0FPacketConfirmTransaction) {
                     event.setCancelled(true);
                 }
 
-                if(c0c.getValue() && packet instanceof C0CPacketInput) {
+                if(c0c.get() && packet instanceof C0CPacketInput) {
                     event.setCancelled(true);
                 }
 
-                if(c0b.getValue() && packet instanceof C0BPacketEntityAction) {
+                if(c0b.get() && packet instanceof C0BPacketEntityAction) {
                     event.setCancelled(true);
                 }
                 break;
@@ -100,11 +99,18 @@ public class Disabler extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        if (mode.getValue().equals("Intave Timer")) {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 32; i < 256; i++) builder.append((char) i);
-            sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.ACCEPTED));
-            sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.FAILED_DOWNLOAD));
+        switch (mode.get()) {
+            case "Intave Timer":
+                StringBuilder builder = new StringBuilder();
+                for (int i = 32; i < 256; i++) builder.append((char) i);
+                sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.ACCEPTED));
+                sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.FAILED_DOWNLOAD));
+                break;
+            case "NCP Timer":
+                if (mc.player.ticksExisted % 30 == 0) {
+                    sendPacketUnlogged(new C03PacketPlayer.C06PacketPlayerPosLook(getX(), getY() - (getGround() ? 0.1D : 1.1D), getZ(), getYaw(), getPitch(), getGround()));
+                }
+                break;
         }
     }
 
