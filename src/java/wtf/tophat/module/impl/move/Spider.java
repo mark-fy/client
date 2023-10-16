@@ -12,7 +12,6 @@ import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
 
@@ -29,11 +28,11 @@ public class Spider extends Module {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
         if(canClimbWall()) {
-            if (mode.getValue().equals("Vulcan")) {
+            if (mode.get().equals("Vulcan")) {
                 if (packetEvent.getPacket() instanceof C03PacketPlayer) {
                     C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
 
@@ -58,11 +57,11 @@ public class Spider extends Module {
 
     @Listen
     public void onCollisionBoxes(CollisionBoxesEvent collisionBoxesEvent) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
         if(canClimbWall()) {
-            if (mode.getValue().equals("Collision")) {
+            if (mode.get().equals("Collision")) {
                 if (mc.player.motionY > 0) {
                     return;
                 }
@@ -76,7 +75,7 @@ public class Spider extends Module {
     @Listen
     public void onMotion(MotionEvent event) {
         if (canClimbWall()) {
-            switch (mode.getValue()) {
+            switch (mode.get()) {
                 case "Vanilla":
                 case "Vulcan":
                     mc.player.jump();

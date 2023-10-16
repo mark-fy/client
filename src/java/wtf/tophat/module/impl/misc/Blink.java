@@ -9,7 +9,6 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.TimeUtil;
 
 import java.util.ArrayDeque;
@@ -44,12 +43,12 @@ public class Blink extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
-    	if(Methods.mc.player == null || Methods.mc.world == null)
+    	if(getPlayer() == null || getWorld() == null)
     		this.setEnabled(false);
 
-        if (active && (event.getType() == PacketEvent.Type.OUTGOING || incoming.getValue())) {
+        if (active && (event.getType() == PacketEvent.Type.OUTGOING || incoming.get())) {
             outPacketDeque.add(event.getPacket());
-            if (pulse.getValue() && fakeLagTimer.elapsed(pulseDelay.getValue().longValue())) {
+            if (pulse.get() && fakeLagTimer.elapsed(pulseDelay.get().longValue())) {
                 while (!outPacketDeque.isEmpty()) {
                     sendPacketUnlogged(outPacketDeque.poll());
                 }

@@ -14,7 +14,7 @@ public class FakePlayer extends Module {
 
     @Override
     public void onEnable() {
-        if(Methods.mc.player == null || Methods.mc.player.isDead){
+        if(getPlayer() == null || getDead()){
             setEnabled(false);
         }
 
@@ -25,15 +25,15 @@ public class FakePlayer extends Module {
         clonedPlayer.rotationPitch = Methods.mc.player.rotationPitch;
         clonedPlayer.setGameType(WorldSettings.GameType.SURVIVAL);
         clonedPlayer.setHealth(20);
-        Methods.mc.world.addEntityToWorld(-4200, clonedPlayer);
+        getWorld().addEntityToWorld(-4200, clonedPlayer);
         clonedPlayer.onLivingUpdate();
         super.onEnable();
     }
 
     @Override
     public void onDisable() {
-        if (Methods.mc.world != null) {
-            Methods.mc.world.removeEntityFromWorld(-4200);
+        if (getWorld() != null) {
+            getWorld().removeEntityFromWorld(-4200);
         }
         super.onDisable();
     }

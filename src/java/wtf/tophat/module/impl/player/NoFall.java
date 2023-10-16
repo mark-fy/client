@@ -27,7 +27,7 @@ public class NoFall extends Module {
     public void onMotion(MotionEvent event) {
         if(event.getState() == Event.State.PRE) {
             if (mc.player.fallDistance > 3.0 && MoveUtil.isBlockUnder()) {
-                switch (mode.getValue()) {
+                switch (mode.get()) {
                     case "Vanilla":
                         event.setOnGround(true);
                         break;
@@ -48,7 +48,7 @@ public class NoFall extends Module {
         float modulo =  mc.player.fallDistance % 3;
         boolean correctModulo = modulo < 1f && mc.player.fallDistance > 3;
 
-        switch(mode.getValue()) {
+        switch(mode.get()) {
             case "Vulcan":
                 if(event.getPacket() instanceof C03PacketPlayer) {
                     C03PacketPlayer packet = (C03PacketPlayer) event.getPacket();

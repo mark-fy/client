@@ -24,7 +24,7 @@ public class Sprint extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        if(legit.getValue()) {
+        if(legit.get()) {
             mc.settings.keyBindSprint.pressed = true;
         } else {
             if (MoveUtil.getSpeed() != 0) {
@@ -35,7 +35,7 @@ public class Sprint extends Module {
 
     @Listen
     public void onOmniSprint(DirectionSprintCheckEvent event) {
-        if(omni.getValue()) {
+        if(omni.get()) {
             if(MoveUtil.getSpeed() != 0) {
                 event.setSprintCheck(false);
             }

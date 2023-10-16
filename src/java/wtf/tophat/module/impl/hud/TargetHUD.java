@@ -49,7 +49,7 @@ public class TargetHUD extends Module {
         int counter = 0;
         int color = 0;
 
-        switch (this.color.getValue()) {
+        switch (this.color.get()) {
             case "Gradient":
                 color = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
                 break;
@@ -67,7 +67,7 @@ public class TargetHUD extends Module {
             float health = livingEntity.getHealth();
 
             if (health > 0.1) {
-                switch (mode.getValue()) {
+                switch (mode.get()) {
                     case "GameSense":
                         float healthPercentage = Math.min(1.0f, health / livingEntity.getMaxHealth());
                         int sliderWidth = (int) (95 * healthPercentage);
@@ -83,8 +83,8 @@ public class TargetHUD extends Module {
                         DrawingUtil.rectangle(x + 2, y + 38, sliderWidth, 6, true, new Color(60, 60, 60));
                         DrawingUtil.rectangle(x + 2, y + 38, 95, 6, false, new Color(color));
 
-                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.getValue(), livingEntity.getName(), x + 2, y + 10, Color.WHITE);
-                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.getValue(),"Health: " + (int) Math.ceil(health), x + 2, y + 29, Color.WHITE);
+                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.get(), livingEntity.getName(), x + 2, y + 10, Color.WHITE);
+                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.get(),"Health: " + (int) Math.ceil(health), x + 2, y + 29, Color.WHITE);
                         GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, livingEntity.rotationYaw, livingEntity.rotationPitch, livingEntity);
                         break;
                     case "Modern":
@@ -94,7 +94,7 @@ public class TargetHUD extends Module {
                         float healthPercentage1 = Math.min(1.0f, health / livingEntity.getMaxHealth());
                         int sliderWidth1 = (int) (173 * healthPercentage1);
 
-                        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+                        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                             GaussianBlur.startBlur();
                             RoundedUtil.drawRound(x, y, width, height, 8, new Color(13, 60, 123));
                             GaussianBlur.endBlur(8, 2);
@@ -104,7 +104,7 @@ public class TargetHUD extends Module {
                         RoundedUtil.drawRound(x + 6, y + 51, sliderWidth1, 8, 4, new Color(0,255,0,125));
                         RoundedUtil.drawRoundOutline(x + 5, y + 50, 175, 10, 4, 0.30f, new Color(255,255,255,125), new Color(color));
 
-                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.getValue(), livingEntity.getName() + " - " + (int) Math.ceil(health) + "hp", x + 5, y + 5, Color.WHITE);
+                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.get(), livingEntity.getName() + " - " + (int) Math.ceil(health) + "hp", x + 5, y + 5, Color.WHITE);
                         break;
                 }
             }

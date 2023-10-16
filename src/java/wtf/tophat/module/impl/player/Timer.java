@@ -20,7 +20,7 @@ public class Timer extends Module {
 
     @Listen
     public void onUpdate(UpdateEvent updateEvent) {
-        mc.timer.timerSpeed = speed.getValue().floatValue();
+        mc.timer.timerSpeed = speed.get().floatValue();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class ClickGUI extends Module {
 
     @Override
     public void onEnable() {
-        switch (mode.getValue()) {
+        switch (mode.get()) {
             case "Dropdown":
                 mc.displayGuiScreen(new DropDownClickGUI());
                 break;

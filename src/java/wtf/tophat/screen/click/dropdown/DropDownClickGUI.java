@@ -35,7 +35,7 @@ public class DropDownClickGUI extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer(), frSemiBold = CFontUtil.SF_Semibold_20.getRenderer(), catfr = CFontUtil.ICONS_24.getRenderer();
-        boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.hud.ClickGUI.class).fontShadow.getValue();
+        boolean shadow = Client.moduleManager.getByClass(wtf.tophat.module.impl.hud.ClickGUI.class).fontShadow.get();
 
         renderBlur();
 
@@ -172,7 +172,7 @@ public class DropDownClickGUI extends GuiScreen {
     }
 
     private void renderBlur() {
-        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
             GaussianBlur.startBlur();
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
             GaussianBlur.endBlur(10, 2);

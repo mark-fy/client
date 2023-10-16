@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.Display;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
@@ -40,14 +39,6 @@ public class Watermark extends Module {
         setEnabled(true);
     }
 
-    @Override
-    public void onEnable() {
-        if(mode.compare("Floyd")) {
-            Display.setTitle("I can't breathe!");
-        }
-        super.onEnable();
-    }
-
     public void renderIngame() {
         CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
         ScaledResolution sr = new ScaledResolution(mc);
@@ -60,7 +51,7 @@ public class Watermark extends Module {
         int counter = 0;
         int color = 0;
 
-        switch (this.color.getValue()) {
+        switch (this.color.get()) {
             case "Gradient":
                 color = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
                 break;
@@ -75,10 +66,10 @@ public class Watermark extends Module {
                 break;
         }
 
-        switch(mode.getValue()) {
+        switch(mode.get()) {
             case "Floyd": {
                 RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(color));
-                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                     GaussianBlur.startBlur();
                     RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);
@@ -99,11 +90,11 @@ public class Watermark extends Module {
                 DrawingUtil.rectangle(10, 10, strWidth + 1, 10, true, new Color(22, 22, 22));
                 DrawingUtil.rectangle(10, 10, strWidth + 1, 1, true, new Color(color));
 
-                fr.drawStringChoose(fontShadow.getValue(), text, 11, 12, Color.WHITE);
+                fr.drawStringChoose(fontShadow.get(), text, 11, 12, Color.WHITE);
 
                 int textY = scrHeight - 25;
 
-                if (bps.getValue()) {
+                if (bps.get()) {
                     final double motionX = mc.player.posX - mc.player.prevPosX;
                     final double motionZ = mc.player.posZ - mc.player.prevPosZ;
                     double speed = Math.sqrt(motionX * motionX + motionZ * motionZ) * 20 * mc.timer.timerSpeed;
@@ -121,7 +112,7 @@ public class Watermark extends Module {
                     DrawingUtil.rectangle(textX + 4, textY + 4, strWidth1 + 1, 10, true, new Color(22, 22, 22));
                     DrawingUtil.rectangle(textX + 4, textY + 4, strWidth1 + 1, 1, true, new Color(color));
 
-                    fr.drawStringChoose(fontShadow.getValue(), "bps: " + speed, textX + 5, textY + 5, Color.WHITE);
+                    fr.drawStringChoose(fontShadow.get(), "bps: " + speed, textX + 5, textY + 5, Color.WHITE);
                     textY -= 25;
                 }
                 break;
@@ -129,14 +120,14 @@ public class Watermark extends Module {
             case "Modern": {
                 text = Client.getName() + " - " + mc.getSession().getUsername();
                 int strWidth1 = fr.getStringWidth(text);
-                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                     GaussianBlur.startBlur();
                     RoundedUtil.drawRound(5, 5, strWidth1 + 6, 20, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);
                 }
 
                 RoundedUtil.drawRoundOutline(5, 5, strWidth1 + 6, 20, 4, 0.30f, new Color(255, 255, 255, 25), new Color(color));
-                fr.drawStringChoose(fontShadow.getValue(), text, 7, 10, Color.WHITE);
+                fr.drawStringChoose(fontShadow.get(), text, 7, 10, Color.WHITE);
                 break;
             }
         }

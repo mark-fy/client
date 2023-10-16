@@ -21,7 +21,6 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.TimeUtil;
 
 @ModuleInfo(name = "No Slowdown",desc = "disable slow down effects", category = Module.Category.MOVE)
@@ -43,12 +42,12 @@ public class NoSlowdown extends Module {
                 bows = new BooleanSetting(this, "Bows", true),
 
                 values = new DividerSetting(this, "Item Multipliers"),
-                swordForward = new NumberSetting(this, "Sword Forward", 0, 1, 1, 2).setHidden(() -> !sword.getValue()),
-                swordStrafe = new NumberSetting(this, "Sword Strafe", 0, 1, 1, 2).setHidden(() -> !sword.getValue()),
-                foodForward = new NumberSetting(this, "Food Forward", 0, 1, 1, 2).setHidden(() -> !food.getValue()),
-                foodStrafe = new NumberSetting(this, "Food Strafe", 0, 1, 1, 2).setHidden(() -> !food.getValue()),
-                bowForward = new NumberSetting(this, "Bow Forward", 0, 1, 1, 2).setHidden(() -> !bows.getValue()),
-                bowStrafe = new NumberSetting(this, "Bow Strafe", 0, 1, 1, 2).setHidden(() -> !bows.getValue())
+                swordForward = new NumberSetting(this, "Sword Forward", 0, 1, 1, 2).setHidden(() -> !sword.get()),
+                swordStrafe = new NumberSetting(this, "Sword Strafe", 0, 1, 1, 2).setHidden(() -> !sword.get()),
+                foodForward = new NumberSetting(this, "Food Forward", 0, 1, 1, 2).setHidden(() -> !food.get()),
+                foodStrafe = new NumberSetting(this, "Food Strafe", 0, 1, 1, 2).setHidden(() -> !food.get()),
+                bowForward = new NumberSetting(this, "Bow Forward", 0, 1, 1, 2).setHidden(() -> !bows.get()),
+                bowStrafe = new NumberSetting(this, "Bow Strafe", 0, 1, 1, 2).setHidden(() -> !bows.get())
         );
     }
 
@@ -61,7 +60,7 @@ public class NoSlowdown extends Module {
             return;
         }
 
-        switch (mode.getValue()) {
+        switch (mode.get()) {
             case "Grim":
             case "Switch":
                 if(event.getState() == Event.State.PRE) {
@@ -86,36 +85,36 @@ public class NoSlowdown extends Module {
 
     @Listen
     public void onSlow(SlowDownEvent event) {
-        ItemStack currentItem = mc.player.getCurrentEquippedItem();
-        if (currentItem == null || !mc.player.isUsingItem() || !isMoving()) {
+        ItemStack currentItem = getPlayer().getCurrentEquippedItem();
+        if (currentItem == null || !getPlayer().isUsingItem() || !isMoving()) {
             return;
         }
 
-        if(sword.getValue() && currentItem.getItem() instanceof ItemSword) {
+        if(sword.get() && currentItem.getItem() instanceof ItemSword) {
             event.setSprint(true);
-            event.setForward(swordForward.getValue().floatValue());
-            event.setStrafe(swordStrafe.getValue().floatValue());
+            event.setForward(swordForward.get().floatValue());
+            event.setStrafe(swordStrafe.get().floatValue());
         }
 
-        if(food.getValue() && currentItem.getItem() instanceof ItemFood) {
+        if(food.get() && currentItem.getItem() instanceof ItemFood) {
             event.setSprint(true);
-            event.setForward(foodForward.getValue().floatValue());
-            event.setStrafe(foodStrafe.getValue().floatValue());
+            event.setForward(foodForward.get().floatValue());
+            event.setStrafe(foodStrafe.get().floatValue());
         }
 
-        if(bows.getValue() && currentItem.getItem() instanceof ItemBow) {
+        if(bows.get() && currentItem.getItem() instanceof ItemBow) {
             event.setSprint(true);
-            event.setForward(bowForward.getValue().floatValue());
-            event.setStrafe(bowStrafe.getValue().floatValue());
+            event.setForward(bowForward.get().floatValue());
+            event.setStrafe(bowStrafe.get().floatValue());
         }
     }
 
     @Listen
     public void onTick(RunTickEvent event) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
-        if (mode.getValue().equals("Grim")) {
+        if (mode.get().equals("Grim")) {
             if (mc.player.isBlocking()) {
                 sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
             } else if (mc.player.isUsingItem()) {

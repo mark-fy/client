@@ -38,23 +38,23 @@ public class Value extends Command {
                             BooleanSetting booleanSetting = (BooleanSetting) setting;
                             Optional<Boolean> optional = BooleanParser.parse(newValue);
                             if (optional != null) {
-                                booleanSetting.setValue(optional.get());
+                                booleanSetting.set(optional.get());
                                 sendChat(String.format("Value set to %s", newValue), true);
                             } else {
                                 sendChat(String.format("Could not parse value %s", newValue), true);
                             }
                         } else if (setting instanceof NumberSetting) {
                             NumberSetting numberSetting = (NumberSetting) setting;
-                            Number result = NumberParser.parse(newValue, numberSetting.getValue().getClass());
+                            Number result = NumberParser.parse(newValue, numberSetting.get().getClass());
                             if (result != null) {
-                                numberSetting.setValue(result);
+                                numberSetting.set(result);
                                 sendChat(String.format("Value set to %s", newValue), true);
                             } else {
                                 sendChat(String.format("Could not parse value %s", newValue), true);
                             }
                         } else if (setting instanceof StringSetting) {
                             StringSetting stringSetting = (StringSetting) setting;
-                            stringSetting.setValue(newValue);
+                            stringSetting.set(newValue);
                             sendChat(String.format("Value set to %s", newValue), true);
                         }
                         break;

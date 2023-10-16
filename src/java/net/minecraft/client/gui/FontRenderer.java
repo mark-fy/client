@@ -410,7 +410,7 @@ public class FontRenderer implements IResourceManagerReloadListener
         }
 
         //Custom Scoreboard
-        if(Client.moduleManager.getByClass(CustomScoreboard.class).isEnabled() && Client.moduleManager.getByClass(CustomScoreboard.class).customIp.getValue()) {
+        if(Client.moduleManager.getByClass(CustomScoreboard.class).isEnabled() && Client.moduleManager.getByClass(CustomScoreboard.class).customIp.get()) {
             text = text.replace(EnumChatFormatting.YELLOW + "www.hypixel.net", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);
             text = text.replace(EnumChatFormatting.YELLOW + "BlocksMC.com", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);
             text = text.replace(EnumChatFormatting.YELLOW + "jartexnetwork.com", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);

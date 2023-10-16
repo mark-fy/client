@@ -21,9 +21,9 @@ public class StringSetting extends Setting {
 
     public List<String> getValues() { return all; }
 
-    public String getValue() { return value; }
+    public String get() { return value; }
 
-    public void setValue(String value) {
+    public void set(String value) {
         onChange(this.value, value);
         change(value);
     }
@@ -36,9 +36,9 @@ public class StringSetting extends Setting {
         int maximum = all.size();
 
         if (current < maximum - 1) {
-            setValue(all.get(current + 1));
+            set(all.get(current + 1));
         } else {
-            setValue(all.get(0));
+            set(all.get(0));
         }
 
     }
@@ -48,14 +48,14 @@ public class StringSetting extends Setting {
         int maximum = all.size();
 
         if (current > 0) {
-            setValue(all.get(current - 1));
+            set(all.get(current - 1));
         } else {
-            setValue(all.get(maximum - 1));
+            set(all.get(maximum - 1));
         }
     }
 
 
-    public boolean compare(String input) { return value.equalsIgnoreCase(input); }
+    public boolean is(String input) { return value.equalsIgnoreCase(input); }
 
     public void onChange(String old, String current) {}
 

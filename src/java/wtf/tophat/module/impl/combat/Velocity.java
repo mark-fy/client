@@ -12,7 +12,6 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.Methods;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -27,9 +26,9 @@ public class Velocity extends Module {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
-                        .setHidden(() -> !mode.compare("Simple")),
+                        .setHidden(() -> !mode.is("Simple")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)
-                        .setHidden(() -> !mode.compare("Simple"))
+                        .setHidden(() -> !mode.is("Simple"))
         );
     }
 
@@ -39,7 +38,7 @@ public class Velocity extends Module {
 
     @Listen
     public void onUpdate(UpdateEvent event) {
-        if (mode.getValue().equals("Grim")) {
+        if (mode.get().equals("Grim")) {
             if (transactionQueue.isEmpty() && grimPacket) {
                 grimPacket = false;
             }
@@ -48,19 +47,19 @@ public class Velocity extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
-        switch (mode.getValue()) {
+        switch (mode.get()) {
             case "Simple":
                 if (event.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) event.getPacket();
                     if (packet.getEntityID() == mc.player.getEntityId()) {
-                        if (horizontal.getValue().doubleValue() == 0 && vertical.getValue().doubleValue() == 0)
+                        if (horizontal.get().doubleValue() == 0 && vertical.get().doubleValue() == 0)
                             event.setCancelled(true);
-                        packet.setMotionX((int) (packet.getMotionX() * (horizontal.getValue().doubleValue() / 100D)));
-                        packet.setMotionY((int) (packet.getMotionY() * (vertical.getValue().doubleValue() / 100D)));
-                        packet.setMotionZ((int) (packet.getMotionZ() * (horizontal.getValue().doubleValue() / 100D)));
+                        packet.setMotionX((int) (packet.getMotionX() * (horizontal.get().doubleValue() / 100D)));
+                        packet.setMotionY((int) (packet.getMotionY() * (vertical.get().doubleValue() / 100D)));
+                        packet.setMotionZ((int) (packet.getMotionZ() * (horizontal.get().doubleValue() / 100D)));
                     }
                 }
                 break;
@@ -68,11 +67,11 @@ public class Velocity extends Module {
                 if (event.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) event.getPacket();
                     if (packet.getEntityID() == mc.player.getEntityId()) {
-                        if (horizontal.getValue().doubleValue() == 0 && vertical.getValue().doubleValue() == 0)
+                        if (horizontal.get().doubleValue() == 0 && vertical.get().doubleValue() == 0)
                             event.setCancelled(true);
-                        packet.setMotionX((int) (packet.getMotionX() * (-horizontal.getValue().doubleValue() / 100D)));
-                        packet.setMotionY((int) (packet.getMotionY() * (-vertical.getValue().doubleValue() / 100D)));
-                        packet.setMotionZ((int) (packet.getMotionZ() * (-horizontal.getValue().doubleValue() / 100D)));
+                        packet.setMotionX((int) (packet.getMotionX() * (-horizontal.get().doubleValue() / 100D)));
+                        packet.setMotionY((int) (packet.getMotionY() * (-vertical.get().doubleValue() / 100D)));
+                        packet.setMotionZ((int) (packet.getMotionZ() * (-horizontal.get().doubleValue() / 100D)));
                     }
                 }
                 break;

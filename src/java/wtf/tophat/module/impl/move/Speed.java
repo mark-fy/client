@@ -10,7 +10,6 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
 @ModuleInfo(name = "Speed", desc = "move faster", category = Module.Category.MOVE)
@@ -23,7 +22,7 @@ public class Speed extends Module {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus"),
                 speed = new NumberSetting(this, "Speed", 0, 3, 1, 2)
-                        .setHidden(() -> !mode.compare("Vanilla"))
+                        .setHidden(() -> !mode.is("Vanilla"))
         );
     }
 
@@ -35,21 +34,21 @@ public class Speed extends Module {
 
     @Listen
     public void onTick(RunTickEvent event) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
-        onTicks = mc.player.onGround ? ++onTicks : 0;
-        offTicks = mc.player.onGround ? 0 : ++offTicks;
+        onTicks = getGround() ? ++onTicks : 0;
+        offTicks = getGround() ? 0 : ++offTicks;
     }
 
     @Listen
     public void onMotion(MotionEvent event) {
         if(event.getState() == Event.State.PRE) {
-            switch (mode.getValue()) {
+            switch (mode.get()) {
                 case "Verus":
                     if(event.getState() == Event.State.PRE) {
                         if (isMoving()) {
-                            if (mc.player.onGround) {
+                            if (getGround()) {
                                 mc.player.jump();
                                 MoveUtil.setSpeed(0.48);
                             } else {
@@ -65,7 +64,7 @@ public class Speed extends Module {
                         mc.timer.timerSpeed = 1;
                     } else {
                         mc.timer.timerSpeed = (float) (1 + Math.random() / 30);
-                        if(mc.player.onGround) {
+                        if(getGround()) {
                             hypixelTicks = 0;
                             mc.player.jump();
                             MoveUtil.strafe(0.418f);
@@ -90,8 +89,8 @@ public class Speed extends Module {
                     }
                     break;
                 case "Vanilla":
-                    MoveUtil.setSpeed(speed.getValue().floatValue());
-                    if(isMoving() && mc.player.onGround) {
+                    MoveUtil.setSpeed(speed.get().floatValue());
+                    if(isMoving() && getGround()) {
                         mc.player.jump();
                     } else if(!isMoving()) {
                         mc.player.motionX = 0.0;

@@ -15,7 +15,6 @@ import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.movement.MoveUtil;
 
 @ModuleInfo(name = "Flight",desc = "fly like a bird", category = Module.Category.MOVE)
@@ -28,7 +27,7 @@ public class Flight extends Module {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Collision", "Verus", "BWPractice"),
                 speed = new NumberSetting(this, "Speed", 0, 4, 1, 2)
-                        .setHidden(() -> !mode.compare("Vanilla"))
+                        .setHidden(() -> !mode.is("Vanilla"))
         );
     }
 
@@ -37,11 +36,11 @@ public class Flight extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        switch ((mode.getValue())){
+        switch ((mode.get())){
             case "Verus":
                 if(event.getState() == Event.State.PRE) {
                     if (!mc.settings.keyBindJump.isKeyDown()) {
-                        if (mc.player.onGround) {
+                        if (getGround()) {
                             mc.player.motionY = 0.42f;
                             up = true;
                         } else if (up) {
@@ -60,14 +59,14 @@ public class Flight extends Module {
                 mc.player.motionY = 0;
 
                 if (Keyboard.isKeyDown(mc.settings.keyBindJump.getKeyCode())) {
-                    mc.player.motionY = speed.getValue().floatValue();
+                    mc.player.motionY = speed.get().floatValue();
                 }
 
                 if (Keyboard.isKeyDown(mc.settings.keyBindSneak.getKeyCode())) {
-                    mc.player.motionY = -speed.getValue().floatValue();
+                    mc.player.motionY = -speed.get().floatValue();
                 }
 
-                MoveUtil.setSpeed(speed.getValue().floatValue());
+                MoveUtil.setSpeed(speed.get().floatValue());
                 break;
             case "BWPractice":
                 mc.player.motionY = 0.0D;
@@ -78,10 +77,10 @@ public class Flight extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
-        if (mode.getValue().equals("BWPractice")) {
+        if (mode.get().equals("BWPractice")) {
             if (event.getPacket() instanceof C0APacketAnimation) {
                 event.setCancelled(true);
             }
@@ -98,10 +97,10 @@ public class Flight extends Module {
 
     @Listen
     public void onCollision(CollisionBoxesEvent event) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
-        switch (mode.getValue()) {
+        switch (mode.get()) {
             case "Verus":
                 event.setBoundingBox(new AxisAlignedBB(-5, -1, -5, 5, 1, 5).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ()));
                 break;

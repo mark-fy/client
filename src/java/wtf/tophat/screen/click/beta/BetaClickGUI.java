@@ -4,7 +4,6 @@ import net.minecraft.client.gui.GuiScreen;
 import wtf.tophat.Client;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.impl.render.PostProcessing;
-import wtf.tophat.screen.click.dropdown.DropDownSettingFrame;
 import wtf.tophat.shader.RenderUtil;
 import wtf.tophat.shader.blur.GaussianBlur;
 import wtf.tophat.utilities.font.CFontRenderer;
@@ -72,7 +71,7 @@ public class BetaClickGUI extends GuiScreen {
     }
 
     private void drawBlur(double x, double y, double width, double height) {
-        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
             GaussianBlur.startBlur();
             DrawingUtil.rectangle(x, y, width, height, true, new Color(0, 0, 0));
             GaussianBlur.endBlur(10, 2);

@@ -3,16 +3,10 @@ package wtf.tophat.module.impl.combat;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.C02PacketUseEntity;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
@@ -69,7 +63,7 @@ public class Killaura extends Module {
                     .collect(Collectors.toList());
 
             targets = targets.stream().filter(
-                    ent -> ent.getDistanceToEntity(mc.player) < distance.getValue().floatValue()
+                    ent -> ent.getDistanceToEntity(mc.player) < distance.get().floatValue()
                             && ent != mc.player
                             && !ent.isDead
                             && !ent.isInvisible()
@@ -78,7 +72,7 @@ public class Killaura extends Module {
                             && !ent.getName().equalsIgnoreCase(""))
                     .collect(Collectors.toList());
 
-            switch (sortingMode.getValue()) {
+            switch (sortingMode.get()) {
                 case "Distance":
                     targets.sort(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(mc.player)));
                     break;
@@ -87,16 +81,16 @@ public class Killaura extends Module {
                     break;
             }
 
-            if(onlyPlayers.getValue())
+            if(onlyPlayers.get())
                 targets = targets.stream().filter(EntityPlayer.class::isInstance).collect(Collectors.toList());
 
             if(!targets.isEmpty()) {
                 EntityLivingBase target = targets.get(0);
 
-                block(autoBlockMode.getValue());
+                block(autoBlockMode.get());
 
-                if(attackTimer.elapsed(1000 / cps.getValue().intValue(), true) && mc.currentScreen == null) {
-                    swing(clientSwing.getValue(), target);
+                if(attackTimer.elapsed(1000 / cps.get().intValue(), true) && mc.currentScreen == null) {
+                    swing(clientSwing.get(), target);
                 }
             }
         }
@@ -126,7 +120,7 @@ public class Killaura extends Module {
         if(mc.player.getHeldItem() == null)
             return false;
 
-        if(!autoBlockMode.compare("Fake"))
+        if(!autoBlockMode.is("Fake"))
             return false;
 
         return mc.player.swingProgress > 0;
@@ -134,13 +128,16 @@ public class Killaura extends Module {
 
     @Listen
     public void onRotations(RotationEvent event) {
+        if (getPlayer() == null || getWorld() == null)
+            return;
+
         if(!targets.isEmpty()) {
             EntityLivingBase target = targets.get(0);
 
             event.setYaw(RotationUtil.getRotation(target)[0]);
             event.setPitch(RotationUtil.getRotation(target)[1]);
 
-            if(lockView.getValue()) {
+            if(lockView.get()) {
                 mc.player.rotationYaw = RotationUtil.getRotation(target)[0];
                 mc.player.rotationPitch = RotationUtil.getRotation(target)[1];
             }

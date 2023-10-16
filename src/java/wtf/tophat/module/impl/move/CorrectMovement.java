@@ -7,7 +7,6 @@ import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.module.base.Module;
 import wtf.tophat.module.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.Methods;
 
 @ModuleInfo(name = "Correct Movement",desc = "correct your movement", category = Module.Category.MOVE)
 public class CorrectMovement extends Module {
@@ -22,12 +21,12 @@ public class CorrectMovement extends Module {
 
     @Listen
     public void onTick(RunTickEvent event) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if (getPlayer() == null || getWorld() == null)
             return;
 
         PlayerHandler.moveFix = isEnabled();
         if(isEnabled()) {
-            switch (mode.getValue()) {
+            switch (mode.get()) {
                 case "Strict":
                     PlayerHandler.currentMode = PlayerHandler.MoveFixMode.STRICT;
                     break;

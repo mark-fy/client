@@ -170,15 +170,15 @@ public class MaterialClickGUI extends GuiScreen {
                 offset += 15;
             } else if (setting instanceof StringSetting) {
                 DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
-                fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).getValue(), x + 150, y + offset + 3, Color.WHITE);
+                fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).get(), x + 150, y + offset + 3, Color.WHITE);
                 offset += 15;
             } else if (setting instanceof BooleanSetting) {
                 DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
-                fr.drawStringWithShadow(setting.getName() + ": " + ((BooleanSetting) setting).getValue(), x + 150, y + offset + 3, Color.WHITE);
+                fr.drawStringWithShadow(setting.getName() + ": " + ((BooleanSetting) setting).get(), x + 150, y + offset + 3, Color.WHITE);
                 offset += 15;
             } else if (setting instanceof NumberSetting) {
                 NumberSetting numberSetting = (NumberSetting) setting;
-                double currentValue = numberSetting.getValue().doubleValue(), minValue = numberSetting.getMinimum().doubleValue(), maxValue = numberSetting.getMaximum().doubleValue();
+                double currentValue = numberSetting.get().doubleValue(), minValue = numberSetting.min().doubleValue(), maxValue = numberSetting.max().doubleValue();
                 int decimalPoints = numberSetting.decimalPoints;
 
                 double randoValue = ((currentValue - minValue) / (maxValue - minValue)) * (185 - 6);
@@ -298,7 +298,7 @@ public class MaterialClickGUI extends GuiScreen {
     }
 
     private void renderBlur() {
-        if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.getValue()) {
+        if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
             GaussianBlur.startBlur();
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0, 0, 0));
             GaussianBlur.endBlur(10, 2);

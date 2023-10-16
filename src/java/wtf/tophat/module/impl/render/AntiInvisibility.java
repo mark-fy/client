@@ -11,7 +11,7 @@ public class AntiInvisibility extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        mc.world.playerEntities.stream()
+        getWorld().playerEntities.stream()
                 .filter(player -> player != mc.player && player.isPotionActive(Potion.invisibility))
                 .forEach(player -> {
                     player.removePotionEffect(Potion.invisibility.getId());
