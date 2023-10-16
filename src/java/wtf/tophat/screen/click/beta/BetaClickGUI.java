@@ -36,11 +36,12 @@ public class BetaClickGUI extends GuiScreen {
             drawBlur(x, y, width, 20);
             frSemiBold.drawString(category.getName(), x + 5, 25, Color.WHITE);
 
-            double modX = x, modY = 45;
-            drawBlur(modX, 40, 100, Client.moduleManager.getModulesByCategory(category).size() * 20);
+            double modY = 45;
+            drawBlur(x, 40, 100, Client.moduleManager.getModulesByCategory(category).size() * 20);
             for (Module module : Client.moduleManager.getModulesByCategory(category)) {
 
                 fr.drawString(module.getName(), x + 5, modY, module.isEnabled() ? new Color(DEFAULT_COLOR) : Color.WHITE);
+
                 modY += 20;
             }
 
@@ -54,10 +55,10 @@ public class BetaClickGUI extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         float x = 110, width = 100;
         for (Module.Category category : Module.Category.values()) {
-            float modX = x, modY = 45, modHeight = 20;
+            float modY = 45, modHeight = 20;
 
             for (Module module : Client.moduleManager.getModulesByCategory(category)) {
-                if(RenderUtil.isHovered((float) mouseX, (float) mouseY, modX, modY, width, modHeight)) {
+                if(RenderUtil.isHovered((float) mouseX, (float) mouseY, x, modY, width, modHeight)) {
                     if(mouseButton == 0) {
                         module.toggle();
                     }
