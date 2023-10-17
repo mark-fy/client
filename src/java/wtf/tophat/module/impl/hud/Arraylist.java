@@ -24,15 +24,17 @@ import static wtf.tophat.utilities.Colors.*;
 @ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.HUD)
 public class Arraylist extends Module {
 
-    private final StringSetting color;
+    private final StringSetting color, suffixMode;
     private final BooleanSetting hideVisualModules, fontShadow, suffix;
 
     public Arraylist() {
         Client.settingManager.add(
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown"),
+                suffix = new BooleanSetting(this, "Suffix", true),
+                suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s")
+                        .setHidden(() -> !suffix.get()),
                 hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true),
-                fontShadow = new BooleanSetting(this, "Font Shadow", true),
-                suffix = new BooleanSetting(this, "Suffix", true)
+                fontShadow = new BooleanSetting(this, "Font Shadow", true)
         );
         setEnabled(true);
     }
@@ -88,8 +90,6 @@ public class Arraylist extends Module {
             String moduleName = module.getName();
             String modeText = "";
 
-            moduleName = moduleName.toLowerCase(Locale.ROOT);
-
             int color = 0;
 
             switch (this.color.get()) {
@@ -110,7 +110,20 @@ public class Arraylist extends Module {
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
                 if (setting instanceof StringSetting) {
                     if (suffix.get()) {
-                        modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).get() + "]";
+                        switch (suffixMode.get()) {
+                            case "n [s]":
+                                modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).get() + "]";
+                                break;
+                            case "n (s)":
+                                modeText = EnumChatFormatting.WHITE + " (" + ((StringSetting) setting).get() + ")";
+                                break;
+                            case "n - s":
+                                modeText = EnumChatFormatting.WHITE + " - " + ((StringSetting) setting).get();
+                                break;
+                            case "n s":
+                                modeText = EnumChatFormatting.WHITE + " " + ((StringSetting) setting).get();
+                                break;
+                        }
                     }
                     break;
                 }
@@ -133,16 +146,27 @@ public class Arraylist extends Module {
         if (suffix.get()) {
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
                 if (setting instanceof StringSetting) {
-                    modeText = " [" + ((StringSetting) setting).get() + "]";
+                    switch (suffixMode.get()) {
+                        case "n [s]":
+                            modeText = " [" + ((StringSetting) setting).get() + "]";
+                            break;
+                        case "n (s)":
+                            modeText = " (" + ((StringSetting) setting).get() + ")";
+                            break;
+                        case "n - s":
+                            modeText = " - " + ((StringSetting) setting).get();
+                            break;
+                        case "n s":
+                            modeText = " " + ((StringSetting) setting).get();
+                            break;
+                    }
                     break;
                 }
             }
         }
 
-        moduleName = moduleName.toLowerCase(Locale.ROOT);
-
         String fullText = moduleName + modeText;
-        return fr.getStringWidth(fullText);
+        return fr.getStringWidth(fullText) + 1;
     }
 
     @Override
