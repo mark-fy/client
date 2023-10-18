@@ -1,14 +1,9 @@
 package wtf.tophat.utilities.player.rotations;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.*;
 import wtf.tophat.utilities.Methods;
 
 public class RotationUtil implements Methods {
-
-    public static Vec3 getBestVector(Vec3 look, AxisAlignedBB axisAlignedBB) {
-        return new Vec3(MathHelper.clamp_double(look.xCoord, axisAlignedBB.minX, axisAlignedBB.maxX), MathHelper.clamp_double(look.yCoord, axisAlignedBB.minY, axisAlignedBB.maxY), MathHelper.clamp_double(look.zCoord, axisAlignedBB.minZ, axisAlignedBB.maxZ));
-    }
 
     public static float[] getRotation(Entity entity) {
         double deltaX = entity.posX + (entity.posX - entity.lastTickPosX) - mc.player.posX,
