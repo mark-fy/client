@@ -48,7 +48,7 @@ import net.minecraft.world.World;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.handler.PlayerHandler;
 import wtf.tophat.events.impl.*;
-import wtf.tophat.utilities.movement.MoveUtil;
+import wtf.tophat.utilities.player.movement.MoveUtil;
 
 import java.util.ArrayList;
 

@@ -9,7 +9,7 @@ import wtf.tophat.events.impl.ChatEvent;
 import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.utilities.Methods;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.utilities.chat.ChatUtil;
+import wtf.tophat.utilities.player.chat.ChatUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;

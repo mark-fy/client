@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import wtf.tophat.shader.GLUtil;
-import wtf.tophat.shader.RenderUtil;
+import wtf.tophat.utilities.render.shaders.GLUtil;
+import wtf.tophat.utilities.render.shaders.RenderUtil;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 

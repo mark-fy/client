@@ -2,10 +2,10 @@ package wtf.tophat.utilities.render;
 
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
-import wtf.tophat.module.base.Module;
+import wtf.tophat.modules.base.Module;
 import wtf.tophat.utilities.Methods;
-import wtf.tophat.utilities.font.CFontRenderer;
-import wtf.tophat.utilities.font.CFontUtil;
+import wtf.tophat.utilities.render.font.CFontRenderer;
+import wtf.tophat.utilities.render.font.CFontUtil;
 
 import java.awt.*;
 import java.util.Arrays;

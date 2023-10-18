@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.Display;
 import wtf.tophat.commands.base.CommandManager;
 import wtf.tophat.events.base.EventManager;
-import wtf.tophat.module.base.ModuleManager;
+import wtf.tophat.modules.base.ModuleManager;
 import wtf.tophat.settings.base.SettingManager;
 
 public enum Client {

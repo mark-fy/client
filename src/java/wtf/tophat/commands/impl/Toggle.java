@@ -3,7 +3,7 @@ package wtf.tophat.commands.impl;
 import wtf.tophat.Client;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
-import wtf.tophat.module.base.Module;
+import wtf.tophat.modules.base.Module;
 
 @CommandInfo(name = "Toggle", description = "toggle modules", command = ".toggle <module>")
 public class Toggle extends Command {

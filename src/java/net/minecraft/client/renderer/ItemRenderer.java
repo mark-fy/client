@@ -27,7 +27,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.Client;
-import wtf.tophat.module.impl.combat.Killaura;
+import wtf.tophat.modules.impl.combat.Killaura;
 
 public class ItemRenderer
 {

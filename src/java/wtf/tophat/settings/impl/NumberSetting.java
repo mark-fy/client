@@ -1,6 +1,6 @@
 package wtf.tophat.settings.impl;
 
-import wtf.tophat.module.base.Module;
+import wtf.tophat.modules.base.Module;
 import wtf.tophat.settings.base.Setting;
 
 public class NumberSetting extends Setting {

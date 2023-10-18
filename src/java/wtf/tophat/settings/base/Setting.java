@@ -1,6 +1,6 @@
 package wtf.tophat.settings.base;
 
-import wtf.tophat.module.base.Module;
+import wtf.tophat.modules.base.Module;
 
 import java.util.function.BooleanSupplier;
 

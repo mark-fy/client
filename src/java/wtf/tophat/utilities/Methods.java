@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
-import wtf.tophat.utilities.chat.ChatUtil;
+import wtf.tophat.utilities.player.chat.ChatUtil;
 
 public interface Methods {
 

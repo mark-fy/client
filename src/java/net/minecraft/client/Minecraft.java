@@ -179,7 +179,7 @@ import wtf.tophat.events.impl.ClickingEvent;
 import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.events.impl.PostTickEvent;
 import wtf.tophat.events.impl.RunTickEvent;
-import wtf.tophat.screen.UIMainMenu;
+import wtf.tophat.menus.UIMainMenu;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {

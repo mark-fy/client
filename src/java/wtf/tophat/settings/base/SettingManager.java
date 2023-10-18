@@ -1,7 +1,7 @@
 package wtf.tophat.settings.base;
 
 import de.florianmichael.rclasses.storage.Storage;
-import wtf.tophat.module.base.Module;
+import wtf.tophat.modules.base.Module;
 
 import java.util.List;
 import java.util.stream.Collectors;

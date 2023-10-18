@@ -2,7 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import net.minecraft.client.resources.I18n;
-import wtf.tophat.screen.UIMainMenu;
+import wtf.tophat.menus.UIMainMenu;
 
 public class GuiMemoryErrorScreen extends GuiScreen
 {

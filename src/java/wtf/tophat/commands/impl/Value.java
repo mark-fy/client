@@ -3,13 +3,13 @@ package wtf.tophat.commands.impl;
 import wtf.tophat.Client;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
-import wtf.tophat.module.base.Module;
+import wtf.tophat.modules.base.Module;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.parser.BooleanParser;
-import wtf.tophat.utilities.parser.NumberParser;
+import wtf.tophat.utilities.math.parser.BooleanParser;
+import wtf.tophat.utilities.math.parser.NumberParser;
 
 import java.util.Optional;
 

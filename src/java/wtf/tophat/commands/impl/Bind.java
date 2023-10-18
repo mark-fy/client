@@ -4,7 +4,7 @@ import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
-import wtf.tophat.module.base.Module;
+import wtf.tophat.modules.base.Module;
 
 import java.util.Locale;
 

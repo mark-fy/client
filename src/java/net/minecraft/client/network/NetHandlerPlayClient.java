@@ -207,7 +207,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import wtf.tophat.events.handler.PlayerHandler;
 import wtf.tophat.events.impl.PacketEvent;
-import wtf.tophat.screen.UIMainMenu;
+import wtf.tophat.menus.UIMainMenu;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient
 {
