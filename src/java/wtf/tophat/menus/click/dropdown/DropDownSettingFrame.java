@@ -56,7 +56,6 @@ public class DropDownSettingFrame extends GuiScreen {
 
         renderBlur();
 
-        Color color = new Color(0,85,255);
         Color colorLighter = new Color(122, 168, 255);
 
         double x = (width - 200) / 2.0, y = 50;
