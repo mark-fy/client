@@ -9,6 +9,9 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public interface Methods {
 
     Minecraft mc = Minecraft.getMinecraft();
@@ -33,6 +36,13 @@ public interface Methods {
         mc.click();
         if(doubleClick)
             mc.click();
+    }
+
+
+    static String getCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date currentDate = new Date();
+        return dateFormat.format(currentDate);
     }
 
     default double getX() { return mc.player.posX; }

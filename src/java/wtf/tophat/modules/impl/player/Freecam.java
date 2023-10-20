@@ -23,7 +23,7 @@ public class Freecam extends Module {
 
     @Listen
     public void onCollision(CollisionBoxesEvent event) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if(getPlayer() == null || getWorld() == null)
             return;
 
         event.setCancelled(true);
@@ -31,7 +31,7 @@ public class Freecam extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
-        if(Methods.mc.player == null || Methods.mc.world == null)
+        if(getPlayer() == null || getWorld() == null)
             return;
 
         if(event.getPacket() instanceof C03PacketPlayer) {
@@ -41,7 +41,7 @@ public class Freecam extends Module {
 
     @Override
     public void onEnable() {
-        if(Methods.mc.player == null || Methods.mc.player.isDead){
+        if(getPlayer() == null || getDead()){
             setEnabled(false);
         }
 
@@ -65,9 +65,11 @@ public class Freecam extends Module {
 
     @Override
     public void onDisable() {
-        if (Methods.mc.world != null) {
-            Methods.mc.world.removeEntityFromWorld(-4200);
+        if (getPlayer() == null || getWorld() == null) {
+            return;
         }
+
+        mc.world.removeEntityFromWorld(-4200);
 
         mc.player.setPositionAndRotation(pos.xCoord, pos.yCoord, pos.zCoord, rots.getX(), rots.getY());
 

@@ -3,6 +3,8 @@ package wtf.tophat.modules.base;
 import wtf.tophat.Client;
 import wtf.tophat.utilities.Methods;
 
+import java.io.IOException;
+
 public class Module implements Methods {
 
     public String name = this.getClass().getAnnotation(ModuleInfo.class).name();
@@ -31,16 +33,16 @@ public class Module implements Methods {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
 
-        if(isEnabled()) {
-            if(mc.world != null || mc.player != null) {
+        try {
+            if (isEnabled()) {
                 onEnable();
                 Client.eventManager.subscribe(this);
-            }
-        } else {
-            if(mc.world != null || mc.player != null) {
+            } else {
                 onDisable();
                 Client.eventManager.unsubscribe(this);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

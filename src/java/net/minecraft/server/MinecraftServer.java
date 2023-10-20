@@ -76,6 +76,7 @@ import net.minecraft.world.storage.WorldInfo;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import wtf.tophat.config.impl.Save;
 
 public abstract class MinecraftServer implements Runnable, ICommandSender, IThreadListener, IPlayerUsage
 {
@@ -442,6 +443,7 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
      */
     protected void saveAllWorlds(boolean dontLog)
     {
+        Save.save("default", "tophat");
         if (!this.worldIsBeingDeleted)
         {
             for (WorldServer worldserver : this.worldServers)
