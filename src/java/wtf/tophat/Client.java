@@ -10,6 +10,11 @@ import wtf.tophat.modules.base.ModuleManager;
 import wtf.tophat.settings.base.SettingManager;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public enum Client {
 
     INSTANCE();
@@ -44,12 +49,14 @@ public enum Client {
         Minecraft.getMinecraft().settings.limitFramerate = 144;
         Minecraft.getMinecraft().settings.fullScreen = false;
 
-        printL(Load.load("default", "tophat"));
+        createFolder("tophat");
+        createFolder("tophat/configs");
+        load();
     }
 
     public static void shutdown() {
+        save();
         printL("Shutting down TopHat!");
-        printL(Save.save("default", "tophat"));
         Minecraft.getMinecraft().shutdownMinecraftApplet();
     }
 
@@ -71,6 +78,28 @@ public enum Client {
                 case 2: // WARNING
                     ChatUtil.addChatMessage("§eWarning: §r" + message, true);
                     break;
+            }
+        }
+    }
+
+    public static void load() {
+        printL(Load.load("default", "tophat"));
+        printL(Load.load("tophat"));
+    }
+
+    public static void save() {
+        printL(Save.save("default", "tophat"));
+        printL(Save.save("tophat"));
+    }
+
+    private static void createFolder(String name) {
+        Path directoryPath = Paths.get(name);
+        if (!Files.exists(directoryPath)) {
+            try {
+                Files.createDirectory(directoryPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                printL("Failed to create the directory.");
             }
         }
     }

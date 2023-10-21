@@ -76,5 +76,37 @@ public class Save extends Config {
         return String.format("Config saved as §e%s§r.", name);
     }
 
+    public static String save(String location) {
+        JsonObject rootObject = new JsonObject();
+
+        // Add module keybinds
+        for (Module.Category category : Module.Category.values()) {
+            JsonObject categoryModules = new JsonObject();
+
+            for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+                JsonObject moduleObject = new JsonObject();
+                moduleObject.addProperty("Keybind", module.getKeyCode());
+
+                categoryModules.add(module.getName(), moduleObject);
+            }
+
+            // Only add the category if it has modules
+            if (!categoryModules.entrySet().isEmpty()) {
+                rootObject.add(category.getName(), categoryModules);
+            }
+        }
+
+        // Create a Gson instance with pretty printing
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try (FileWriter writer = new FileWriter(location + "/keybinds.json")) {
+            gson.toJson(rootObject, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Failed to save the keybinds.";
+        }
+
+        return "Keybindings were saved successfully.";
+    }
 
 }

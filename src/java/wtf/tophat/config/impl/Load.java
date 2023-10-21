@@ -82,4 +82,40 @@ public class Load extends Config {
         }
     }
 
+    public static String load(String location) {
+        File configFile = new File(location + "/keybinds.json");
+
+        if (!configFile.exists() || !configFile.isFile()) {
+            return "Keybind file not found: " + configFile.getAbsolutePath();
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject rootObject = parser.parse(reader).getAsJsonObject();
+
+            for (Module.Category category : Module.Category.values()) {
+                if (rootObject.has(category.getName())) {
+                    JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
+
+                    for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+                        if (categoryModules.has(module.getName())) {
+                            JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
+
+                            // Load module keybinds
+                            if (moduleObject.has("Keybind")) {
+                                int keycode = moduleObject.get("Keybind").getAsInt();
+                                module.setKeyCode(keycode);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return "Keybindings were successfully loaded.";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Failed to load the config: " + e.getMessage();
+        }
+    }
+
 }
