@@ -21,7 +21,7 @@ public class Speed extends Module {
     public Speed() {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus"),
-                speed = new NumberSetting(this, "Speed", 0, 3, 1, 2)
+                speed = new NumberSetting(this, "Speed", 0, 3, 0.29, 2)
                         .setHidden(() -> !mode.is("Vanilla"))
         );
     }
