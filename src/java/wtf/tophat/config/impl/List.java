@@ -5,12 +5,12 @@ import wtf.tophat.config.base.ConfigInfo;
 
 import java.io.File;
 
-@ConfigInfo(name = "list", description = "get a string list of available configs")
+@ConfigInfo(name = "list", description = "get a list of configs")
 public class List extends Config {
 
-    public static String getConfigs(String location) {
+    public static String list(String location) {
         File configDirectory = new File(location);
-        File[] files = configDirectory.listFiles();
+        File[] files = configDirectory.listFiles((dir, name) -> name.endsWith(".json"));
 
         if (files == null || files.length == 0) {
             return "No config files found.";
@@ -18,9 +18,7 @@ public class List extends Config {
 
         StringBuilder configNames = new StringBuilder("§e");
         for (File file : files) {
-            if (file.isFile() && file.getName().endsWith(".json")) {
-                configNames.append(file.getName(), 0, file.getName().length() - 5).append("§r, §e");
-            }
+            configNames.append(file.getName(), 0, file.getName().length() - 5).append("§r, §e");
         }
 
         if (configNames.length() > 4) {
@@ -29,5 +27,4 @@ public class List extends Config {
 
         return String.format("Available configs: §e%s§r.", configNames);
     }
-
 }

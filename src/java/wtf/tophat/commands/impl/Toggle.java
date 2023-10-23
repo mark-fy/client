@@ -5,18 +5,15 @@ import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
 import wtf.tophat.modules.base.Module;
 
+import java.util.Arrays;
+
 @CommandInfo(name = "Toggle", description = "toggle modules", command = ".toggle <module>")
 public class Toggle extends Command {
 
     @Override
     public void onCommand(String[] args, String command) {
         if (args.length >= 2) {
-            StringBuilder moduleNameBuilder = new StringBuilder();
-            for (int i = 1; i < args.length; i++) {
-                moduleNameBuilder.append(args[i]).append(" ");
-            }
-            String moduleName = moduleNameBuilder.toString().trim();
-
+            String moduleName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
             Module module = Client.moduleManager.getModule(moduleName);
 
             if (module != null) {

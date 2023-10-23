@@ -6,26 +6,22 @@ import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
 import wtf.tophat.modules.base.Module;
 
+import java.util.Arrays;
 import java.util.Locale;
 
-@CommandInfo(name = "Bind", description = "binds modules to keys", command = ".bind <module> <key>")
+@CommandInfo(name = "Bind", description = "bind modules to keys", command = ".bind <module> <key>")
 public class Bind extends Command {
 
     @Override
     public void onCommand(String[] args, String command) {
         if (args.length >= 3) {
-            StringBuilder moduleNameBuilder = new StringBuilder();
-            for (int i = 1; i < args.length - 1; i++) {
-                moduleNameBuilder.append(args[i]).append(" ");
-            }
-            String moduleName = moduleNameBuilder.toString().trim();
-
+            String moduleName = String.join(" ", Arrays.copyOfRange(args, 1, args.length - 1));
             String keyName = args[args.length - 1];
-
             Module module = Client.moduleManager.getModule(moduleName);
 
             if (module != null) {
-                module.setKeyCode(Keyboard.getKeyIndex(keyName.toUpperCase(Locale.ROOT)));
+                int keyCode = Keyboard.getKeyIndex(keyName.toUpperCase(Locale.ROOT));
+                module.setKeyCode(keyCode);
                 sendChat(String.format("Bound %s to %s", module.getName(), Keyboard.getKeyName(module.getKeyCode())), true);
             } else {
                 sendChat(String.format("Module %s not found", moduleName), true);
@@ -36,5 +32,4 @@ public class Bind extends Command {
 
         super.onCommand(args, command);
     }
-
 }

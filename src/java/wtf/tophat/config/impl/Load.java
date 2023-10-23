@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-@ConfigInfo(name = "load", description = "load module states")
+@ConfigInfo(name = "load", description = "load configs")
 public class Load extends Config {
 
     public static String load(String name, String location) {
@@ -24,50 +24,40 @@ public class Load extends Config {
         }
 
         try (FileReader reader = new FileReader(configFile)) {
-            JsonParser parser = new JsonParser();
-            JsonObject rootObject = parser.parse(reader).getAsJsonObject();
+            JsonObject rootObject = new JsonParser().parse(reader).getAsJsonObject();
+            JsonObject clientInfo = rootObject.getAsJsonObject("TopHat");
+            String version = clientInfo.get("Version").getAsString();
 
-            // Load Client information
-            if (rootObject.has("TopHat")) {
-                JsonObject clientInfo = rootObject.getAsJsonObject("TopHat");
-                String version = clientInfo.get("Version").getAsString();
-                //String date = clientInfo.get("Date").getAsString();
-
-                if(!version.equalsIgnoreCase(Client.getVersion())) {
-                    Client.printC("Config was made in a different version of the client!", 2);
-                }
+            if (!version.equalsIgnoreCase(Client.getVersion())) {
+                Client.printC("Config was made in a different version of the client!", 2);
             }
 
-            // Load module settings
             for (Module.Category category : Module.Category.values()) {
-                if (rootObject.has(category.getName())) {
-                    JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
+                JsonObject categoryModules = rootObject.getAsJsonObject(category.name());
 
-                    for (Module module : Client.moduleManager.getModulesByCategory(category)) {
-                        if (categoryModules.has(module.getName())) {
-                            JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
+                for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+                    JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
 
-                            // Load module enabled state
-                            if (moduleObject.has("Enabled")) {
-                                boolean enabled = moduleObject.get("Enabled").getAsBoolean();
-                                module.setEnabled(enabled);
-                            }
+                    if (moduleObject.has("Enabled")) {
+                        boolean enabled = moduleObject.get("Enabled").getAsBoolean();
+                        module.setEnabled(enabled);
+                    }
 
-                            // Load setting values
-                            for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
-                                if (moduleObject.has("Settings") && moduleObject.getAsJsonObject("Settings").has(setting.getName())) {
-                                    if (setting instanceof DividerSetting) {
-                                        continue;
-                                    } else if (setting instanceof StringSetting) {
-                                        String value = moduleObject.getAsJsonObject("Settings").get(setting.getName()).getAsString();
-                                        ((StringSetting) setting).set(value);
-                                    } else if (setting instanceof BooleanSetting) {
-                                        boolean value = moduleObject.getAsJsonObject("Settings").get(setting.getName()).getAsBoolean();
-                                        ((BooleanSetting) setting).set(value);
-                                    } else if(setting instanceof NumberSetting) {
-                                        Number value = moduleObject.getAsJsonObject("Settings").get(setting.getName()).getAsNumber();
-                                        ((NumberSetting) setting).set(value);
-                                    }
+                    for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
+                        if (moduleObject.has("Settings")) {
+                            JsonObject settingObject = moduleObject.getAsJsonObject("Settings");
+                            if (settingObject.has(setting.getName())) {
+                                if (setting instanceof DividerSetting) {
+                                    continue;
+                                } else if (setting instanceof StringSetting) {
+                                    String value = settingObject.get(setting.getName()).getAsString();
+                                    ((StringSetting) setting).set(value);
+                                } else if (setting instanceof BooleanSetting) {
+                                    boolean value = settingObject.get(setting.getName()).getAsBoolean();
+                                    ((BooleanSetting) setting).set(value);
+                                } else if (setting instanceof NumberSetting) {
+                                    Number value = settingObject.get(setting.getName()).getAsNumber();
+                                    ((NumberSetting) setting).set(value);
                                 }
                             }
                         }
@@ -75,7 +65,7 @@ public class Load extends Config {
                 }
             }
 
-            return "Config " + name + " was loaded.";
+            return String.format("Config §e%s§r was loaded.", name);
         } catch (IOException e) {
             e.printStackTrace();
             return "Failed to load the config: " + e.getMessage();
@@ -90,23 +80,17 @@ public class Load extends Config {
         }
 
         try (FileReader reader = new FileReader(configFile)) {
-            JsonParser parser = new JsonParser();
-            JsonObject rootObject = parser.parse(reader).getAsJsonObject();
+            JsonObject rootObject = new JsonParser().parse(reader).getAsJsonObject();
 
             for (Module.Category category : Module.Category.values()) {
-                if (rootObject.has(category.getName())) {
-                    JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
+                JsonObject categoryModules = rootObject.getAsJsonObject(category.name());
 
-                    for (Module module : Client.moduleManager.getModulesByCategory(category)) {
-                        if (categoryModules.has(module.getName())) {
-                            JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
+                for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+                    JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
 
-                            // Load module keybinds
-                            if (moduleObject.has("Keybind")) {
-                                int keycode = moduleObject.get("Keybind").getAsInt();
-                                module.setKeyCode(keycode);
-                            }
-                        }
+                    if (moduleObject.has("Keybind")) {
+                        int keycode = moduleObject.get("Keybind").getAsInt();
+                        module.setKeyCode(keycode);
                     }
                 }
             }
@@ -117,5 +101,4 @@ public class Load extends Config {
             return "Failed to load the config: " + e.getMessage();
         }
     }
-
 }
