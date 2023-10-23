@@ -33,7 +33,7 @@ public class Load extends Config {
             }
 
             for (Module.Category category : Module.Category.values()) {
-                JsonObject categoryModules = rootObject.getAsJsonObject(category.name());
+                JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
 
                 for (Module module : Client.moduleManager.getModulesByCategory(category)) {
                     JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
@@ -83,7 +83,7 @@ public class Load extends Config {
             JsonObject rootObject = new JsonParser().parse(reader).getAsJsonObject();
 
             for (Module.Category category : Module.Category.values()) {
-                JsonObject categoryModules = rootObject.getAsJsonObject(category.name());
+                JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
 
                 for (Module module : Client.moduleManager.getModulesByCategory(category)) {
                     JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());

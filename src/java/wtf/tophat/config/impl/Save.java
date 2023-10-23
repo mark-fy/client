@@ -57,7 +57,7 @@ public class Save extends Config {
 
             // Only add the category if it has modules
             if (!categoryModules.entrySet().isEmpty()) {
-                rootObject.add(category.name(), categoryModules);
+                rootObject.add(category.getName(), categoryModules);
             }
         }
 
