@@ -2,9 +2,13 @@ package wtf.tophat.menus.guis;
 
 import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import wtf.tophat.accounts.AccountManager;
 import wtf.tophat.menus.alts.AltThread;
+import wtf.tophat.utilities.render.DrawingUtil;
 import wtf.tophat.utilities.render.font.CFontRenderer;
 import wtf.tophat.utilities.render.font.CFontUtil;
+import wtf.tophat.utilities.render.shaders.RenderUtil;
 
 import java.awt.*;
 import java.io.IOException;
@@ -32,7 +36,9 @@ public class UIAltManager extends GuiScreen {
 
         this.buttonList.add(new GuiButton(0, buttonX, buttonY, "Login"));
         buttonY += 20;
-        this.buttonList.add(new GuiButton(1, buttonX, buttonY, "Cancel"));
+        this.buttonList.add(new GuiButton(1, buttonX, buttonY, "Add"));
+        buttonY += 20;
+        this.buttonList.add(new GuiButton(2, buttonX, buttonY, "Cancel"));
 
         this.username = new GuiTextField(1, mc.fontRenderer, fieldX, fieldY, 200, 20);
         fieldY += 25;
@@ -56,6 +62,13 @@ public class UIAltManager extends GuiScreen {
                 this.thread.start();
                 break;
             case 1:
+                if (this.password.getText().isEmpty()) {
+                    AccountManager.save(this.username.getText(), "", true, "tophat");
+                } else if(!this.password.getText().isEmpty() && !this.username.getText().isEmpty()) {
+                    AccountManager.save(this.username.getText(), this.password.getText(), false, "tophat");
+                }
+                break;
+            case 2:
                 mc.displayGuiScreen(parent);
                 break;
         }
@@ -76,7 +89,6 @@ public class UIAltManager extends GuiScreen {
         int fieldX = this.width / 2 - 100;
         int fieldY = this.height / 2 - 80;
 
-        fr.drawString(mc.getSession().getUsername(), 5, 5, Color.WHITE);
         this.username.drawTextBox();
         this.password.drawTextBox();
 
@@ -89,6 +101,38 @@ public class UIAltManager extends GuiScreen {
         if (this.password.getText().isEmpty()) {
             mc.fontRenderer.drawString("Password", fieldX + 4, fieldY + 31, -7829368);
         }
+
+        DrawingUtil.rectangle(0, 0, 160, this.height, true, new Color(0, 0, 0, 100));
+        fr.drawString(mc.getSession().getUsername(), 5, 5, Color.WHITE);
+        DrawingUtil.rectangle(0, 15, 160, 1, true, Color.WHITE);
+
+        String accounts = AccountManager.getAccounts("tophat");
+        String[] accountStrings = accounts.split(",");
+
+        int accountY = 25;
+        for (String accountString : accountStrings) {
+            boolean isHovered = DrawingUtil.hovered(mouseX, mouseY, 0, accountY - 8, 160, 29);
+            DrawingUtil.rectangle(0, accountY - 8, 160, 29, true, isHovered ? new Color(40, 40, 40, 100) : new Color(0, 0, 0, 100));
+
+            String[] parts = accountString.split(":");
+            if (parts.length >= 2) {
+                String username = parts[0];
+                String passwordOrStatus = parts[1];
+
+                fr.drawString(username, 5, accountY - 5, Color.WHITE);
+
+                if (!passwordOrStatus.equalsIgnoreCase("offline")) {
+                    String passwordAsterisks = createAsteriskString(passwordOrStatus);
+                    fr.drawString(passwordAsterisks, 5, accountY + 7, Color.LIGHT_GRAY);
+                } else {
+                    fr.drawString("offline", 5, accountY + 7, Color.LIGHT_GRAY);
+                }
+
+                accountY += 30;
+            }
+        }
+
+        fr.drawString("Tip: to delete an account, left click it.", this.width - fr.getStringWidth("Tip: to delete an account, left click it.") - 15, this.height - 25, Color.WHITE);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -122,6 +166,28 @@ public class UIAltManager extends GuiScreen {
 
         this.username.mouseClicked(mouseX, mouseY, mouseButton);
         this.password.mouseClicked(mouseX, mouseY, mouseButton);
+
+        int accountY = 25;
+        String accounts = AccountManager.getAccounts("tophat");
+        String[] accountStrings = accounts.split(",");
+        for (String accountString : accountStrings) {
+            String[] parts = accountString.split(":");
+            String username = parts[0];
+            String passwordOrStatus = parts[1];
+            if (DrawingUtil.hovered(mouseX, mouseY, 0, accountY - 8, 160, 29)) {
+                if(mouseButton == 0) {
+                    this.username.setText(username);
+                    if (!passwordOrStatus.equalsIgnoreCase("offline")) {
+                        this.password.setText(passwordOrStatus);
+                    } else {
+                        this.password.setText("");
+                    }
+                } else if(mouseButton == 1) {
+                    AccountManager.deleteAccount(username, "tophat");
+                }
+            }
+            accountY += 30;
+        }
     }
 
     @Override
@@ -133,5 +199,13 @@ public class UIAltManager extends GuiScreen {
     public void updateScreen() {
         this.username.updateCursorCounter();
         this.password.updateCursorCounter();
+    }
+
+    private String createAsteriskString(String input) {
+        StringBuilder asterisks = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            asterisks.append('*');
+        }
+        return asterisks.toString();
     }
 }

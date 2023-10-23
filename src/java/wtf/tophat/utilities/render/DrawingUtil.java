@@ -2,12 +2,13 @@ package wtf.tophat.utilities.render;
 
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
+import wtf.tophat.utilities.Methods;
 
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class DrawingUtil {
+public class DrawingUtil implements Methods {
 
     public static void push() {
         GL11.glPushMatrix();
