@@ -37,11 +37,11 @@ public class Killaura extends Module {
         Client.settingManager.add(
                 modes = new DividerSetting(this, "Mode Settings"),
                 sortingMode = new StringSetting(this, "Sorting Mode", "Distance", "Distance", "Health"),
-                autoBlockMode = new StringSetting(this, "Auto-Block Mode","None", "Fake", "Vanilla"),
+                autoBlockMode = new StringSetting(this, "Auto-Block Mode","None", "None", "Fake", "Vanilla"),
 
                 values = new DividerSetting(this, "General Settings"),
                 distance = new NumberSetting(this, "Distance", 0f ,10f, 4f, 1),
-                cps = new NumberSetting(this,"CPS", 0, 20, 12, 0),
+                cps = new NumberSetting(this,"CPS", 1, 20, 12, 0),
 
                 toggleables = new DividerSetting(this, "Other Settings"),
                 clientSwing = new BooleanSetting(this, "Client-side Swing", true),
@@ -53,6 +53,9 @@ public class Killaura extends Module {
     // Targets
     public List<EntityLivingBase> targets = null;
     private final TimeUtil attackTimer = new TimeUtil();
+
+    // Bots
+    private AntiBot antiBot;
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -79,6 +82,24 @@ public class Killaura extends Module {
                 case "Health":
                     targets.sort(Comparator.comparingDouble(EntityLivingBase::getHealth));
                     break;
+            }
+
+            if (antiBot.isEnabled()) {
+                switch (antiBot.mode.get()) {
+                    case "Custom":
+                        if (antiBot.flying.get() && !targets.isEmpty() && targets.get(0).ticksExisted > 20) {
+                            EntityLivingBase target = targets.get(0);
+
+                            if (target.isAirBorne) {
+                                targets.remove(0);
+                            }
+
+                            if(target.posY % 1.0 > 0.9) {
+                                targets.remove(0);
+                            }
+                        }
+                        break;
+                }
             }
 
             if(onlyPlayers.get())
@@ -147,12 +168,14 @@ public class Killaura extends Module {
     @Override
     public void onEnable() {
         targets = null;
+        antiBot = Client.moduleManager.getByClass(AntiBot.class);
         super.onEnable();
     }
 
     @Override
     public void onDisable() {
         targets = null;
+        antiBot = null;
         super.onDisable();
     }
 }
