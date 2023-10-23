@@ -19,8 +19,8 @@ public class ClickGUI extends Module {
 
     public ClickGUI() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Style", "Dropdown", "Dropdown", "Material", "Beta"),
-                fontShadow = new BooleanSetting(this, "Font Shadow", true)
+                mode = new StringSetting(this, "Style", "Dropdown", "Dropdown", "Material", "Concept"),
+                fontShadow = new BooleanSetting(this, "Font Shadow", true).setHidden(() -> !mode.is("Dropdown"))
         );
     }
 
@@ -33,7 +33,7 @@ public class ClickGUI extends Module {
             case "Material":
                 mc.displayGuiScreen(new MaterialClickGUI());
                 break;
-            case "Beta":
+            case "Concept":
                 mc.displayGuiScreen(new BetaClickGUI());
                 break;
         }
