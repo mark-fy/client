@@ -2,34 +2,38 @@ package wtf.tophat.commands.impl;
 
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
-import wtf.tophat.config.impl.List;
-import wtf.tophat.config.impl.Load;
-import wtf.tophat.config.impl.Save;
+import wtf.tophat.config.impl.*;
 
-@CommandInfo(name = "Config", description = "save or load configs", command = ".config <save/load/list> <config name>")
+@CommandInfo(name = "Config", description = "manage configs", command = ".config <save/load/list/delete> <config name>")
 public class Config extends Command {
 
     @Override
     public void onCommand(String[] args, String command) {
-        if (args.length >= 3) {
-            String configName = args[2];
+        if (args.length >= 2) {
+            String subCommand = args[1];
+            String configName = args.length >= 3 ? args[2] : "";
 
-            if (args[1].equalsIgnoreCase("save")) {
-                sendChat(Save.save(configName, "tophat/configs"), true);
-            } else if (args[1].equalsIgnoreCase("load")) {
-                sendChat(Load.load(configName, "tophat/configs"), true);
-            } else {
-                sendChat("Usage: .config <save/load/list> <config name>", true);
-            }
-        } else if(args.length == 2) {
-            if (args[1].equalsIgnoreCase("list")) {
-                sendChat(List.getConfigs("tophat/configs"), true);
-            } else {
-                sendChat("Usage: .config <save/load/list> <config name>", true);
+            switch (subCommand.toLowerCase()) {
+                case "save":
+                    sendChat(Save.save(configName, "tophat/configs"), true);
+                    break;
+                case "load":
+                    sendChat(Load.load(configName, "tophat/configs"), true);
+                    break;
+                case "delete":
+                    sendChat(Delete.delete(configName, "tophat/configs"), true);
+                    break;
+                case "list":
+                    sendChat(List.list("tophat/configs"), true);
+                    break;
+                default:
+                    sendChat("Usage: .config <save/load/list/delete> <config name>", true);
+                    break;
             }
         } else {
-            sendChat("Usage: .config <save/load/list> <config name>", true);
+            sendChat("Usage: .config <save/load/list/delete> <config name>", true);
         }
+
         super.onCommand(args, command);
     }
 }
