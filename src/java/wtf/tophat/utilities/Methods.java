@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
+import net.minecraft.util.Timer;
 import wtf.tophat.Client;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 
@@ -25,6 +26,7 @@ public interface Methods {
     WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 
     default EntityPlayerSP getPlayer() { return mc.player; }
+    default Timer getMCTimer() { return mc.timer; }
     default WorldClient getWorld() { return mc.world; }
 
     default boolean isMoving() { return mc.player.moveForward != 0 || mc.player.moveStrafing != 0; }

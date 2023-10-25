@@ -5,60 +5,43 @@ import wtf.tophat.utilities.player.movement.MoveUtil;
 
 public class Player implements Methods {
 
-    public void setSpeed(double speed) {
-        MoveUtil.setSpeed(speed);
-    }
+    // Methods
 
-    public void setX(int x) {
-        getPlayer().setPositionAndUpdate(getX() + x, getY(), getZ());
-    }
+    public void jump() { getPlayer().jump(); }
+    public void swing() { getPlayer().swingItem(); }
 
-    public void setY(int y) {
-        getPlayer().setPositionAndUpdate(getX(), getY() + y, getZ());
-    }
+    // Setters
 
-    public void setZ(int z) {
-        getPlayer().setPositionAndUpdate(getX(), getY(), getZ() + z);
-    }
+    public void setSpeed(double speed) { MoveUtil.setSpeed(speed); }
+    public void setX(double x) { getPlayer().setPositionAndUpdate(getX() + x, getY(), getZ()); }
+    public void setY(double y) { getPlayer().setPositionAndUpdate(getX(), getY() + y, getZ()); }
+    public void setZ(double z) { getPlayer().setPositionAndUpdate(getX(), getY(), getZ() + z); }
+    public void setPitch(float pitch) { getPlayer().rotationPitch += pitch; }
+    public void setYaw(float yaw) { getPlayer().rotationYaw += yaw; }
+    public void setMotionX(double x) { getPlayer().motionX = x; }
+    public void setMotionY(double y) { getPlayer().motionY = y; }
+    public void setMotionZ(double z) { getPlayer().motionZ = z; }
+    public void setGround(boolean ground) { getPlayer().onGround = ground; }
+    public void setSprint(boolean sprint) { getPlayer().setSprinting(sprint); }
+    public void setFallDistance(float distance) { getPlayer().fallDistance = distance; }
 
-    public void setPitch(float pitch) {
-        getPlayer().rotationPitch += pitch;
-    }
+    //Getters
 
-    public void setYaw(float yaw) {
-        getPlayer().rotationYaw += yaw;
-    }
-
-    public void setMotionX(double x) {
-        getPlayer().motionX = x;
-    }
-
-    public void setMotionY(double y) {
-        getPlayer().motionY = y;
-    }
-
-    public void setMotionZ(double z) {
-        getPlayer().motionZ = z;
-    }
-
-    public void setGround(boolean ground) {
-        getPlayer().onGround = ground;
-    }
-
-    public boolean getGround() {
-        return getPlayer().onGround;
-    }
-
-    public void setSprint(boolean sprint) {
-        getPlayer().setSprinting(sprint);
-    }
-
-    public void jump() {
-        getPlayer().jump();
-    }
-
-    public void swing() {
-        getPlayer().swingItem();
-    }
+    public boolean getGround() { return getPlayer().onGround; }
+    public double getSpeed() { return MoveUtil.getSpeed(); }
+    public double getBaseSpeed() { return MoveUtil.getBaseSpeed(); }
+    public double getX() { return getPlayer().posX; }
+    public double getY() { return getPlayer().posY; }
+    public double getZ() { return getPlayer().posZ; }
+    public double getMotionX() { return getPlayer().motionX; }
+    public double getMotionY() { return getPlayer().motionY; }
+    public double getMotionZ() { return getPlayer().motionZ; }
+    public float getPitch() { return getPlayer().rotationPitch; }
+    public float getYaw() { return getPlayer().rotationYaw; }
+    public boolean getCollidedH() { return getPlayer().isCollidedHorizontally; }
+    public boolean getCollidedV() { return getPlayer().isCollidedVertically; }
+    public boolean getCollided() { return getPlayer().isCollided; }
+    public boolean getDead() { return getPlayer().isDead; }
+    public float getFallDistance() { return getPlayer().fallDistance; }
 
 }

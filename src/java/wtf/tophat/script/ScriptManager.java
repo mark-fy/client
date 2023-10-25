@@ -2,8 +2,7 @@ package wtf.tophat.script;
 
 import wtf.tophat.Client;
 import wtf.tophat.events.impl.UpdateEvent;
-import wtf.tophat.script.methods.Chat;
-import wtf.tophat.script.methods.Player;
+import wtf.tophat.script.methods.*;
 import wtf.tophat.utilities.Methods;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.jse.*;
@@ -41,6 +40,15 @@ public class ScriptManager {
 
             LuaValue playerMethods = CoerceJavaToLua.coerce(new Player());
             globals.set("player", playerMethods);
+
+            LuaValue worldMethods = CoerceJavaToLua.coerce(new World());
+            globals.set("world", worldMethods);
+
+            LuaValue mouseMethods = CoerceJavaToLua.coerce(new Mouse());
+            globals.set("mouse", mouseMethods);
+
+            LuaValue packetMethods = CoerceJavaToLua.coerce(new Packet());
+            globals.set("packet", packetMethods);
 
             LuaValue chunk = globals.loadfile(scriptFilePath);
             chunk.call();
