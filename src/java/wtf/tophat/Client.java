@@ -1,6 +1,7 @@
 package wtf.tophat;
 
 import net.minecraft.client.Minecraft;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import wtf.tophat.commands.base.CommandManager;
 import wtf.tophat.config.ConfigManager;
@@ -23,7 +24,7 @@ public enum Client {
 
     static {
         name = "TopHat";
-        version = "0.0.4";
+        version = "0.0.5";
     }
 
     Client() {}
@@ -60,7 +61,6 @@ public enum Client {
     public static void shutdown() {
         save();
         printL("Shutting down TopHat!");
-        Minecraft.getMinecraft().shutdownMinecraftApplet();
     }
 
     public static void printL(String message) {

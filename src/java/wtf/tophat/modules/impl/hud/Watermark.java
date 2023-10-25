@@ -1,6 +1,7 @@
 package wtf.tophat.modules.impl.hud;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
@@ -12,8 +13,6 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.render.shaders.RoundedUtil;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
-import wtf.tophat.utilities.render.font.CFontRenderer;
-import wtf.tophat.utilities.render.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
@@ -40,7 +39,7 @@ public class Watermark extends Module {
     }
 
     public void renderIngame() {
-        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
+        FontRenderer fr = mc.fontRenderer;
         ScaledResolution sr = new ScaledResolution(mc);
 
         int scrWidth = sr.getScaledWidth();
@@ -75,7 +74,7 @@ public class Watermark extends Module {
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                fr.drawString("Breathe - " + Client.getVersion(), 15 ,6, Color.WHITE);
+                fr.drawString("Breathe - " + Client.getVersion(), 15 ,6, -1);
                 mc.getTextureManager().bindTexture(new ResourceLocation("tophat/gorge.png"));
                 Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
                 break;
@@ -90,7 +89,7 @@ public class Watermark extends Module {
                 DrawingUtil.rectangle(10, 10, strWidth + 1, 10, true, new Color(22, 22, 22));
                 DrawingUtil.rectangle(10, 10, strWidth + 1, 1, true, new Color(color));
 
-                fr.drawStringChoose(fontShadow.get(), text, 11, 12, Color.WHITE);
+                fr.drawStringChoose(fontShadow.get(), text, 11, 12, -1);
 
                 int textY = scrHeight - 25;
 
@@ -112,7 +111,7 @@ public class Watermark extends Module {
                     DrawingUtil.rectangle(textX + 4, textY + 4, strWidth1 + 1, 10, true, new Color(22, 22, 22));
                     DrawingUtil.rectangle(textX + 4, textY + 4, strWidth1 + 1, 1, true, new Color(color));
 
-                    fr.drawStringChoose(fontShadow.get(), "bps: " + speed, textX + 5, textY + 5, Color.WHITE);
+                    fr.drawStringChoose(fontShadow.get(), "bps: " + speed, textX + 5, textY + 5, -1);
                     textY -= 25;
                 }
                 break;
@@ -127,7 +126,7 @@ public class Watermark extends Module {
                 }
 
                 RoundedUtil.drawRoundOutline(5, 5, strWidth1 + 6, 20, 4, 0.30f, new Color(255, 255, 255, 25), new Color(color));
-                fr.drawStringChoose(fontShadow.get(), text, 7, 10, Color.WHITE);
+                fr.drawStringChoose(fontShadow.get(), text, 7, 10, -1);
                 break;
             }
         }

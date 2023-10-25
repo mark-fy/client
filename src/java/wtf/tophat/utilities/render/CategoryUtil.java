@@ -1,37 +1,16 @@
 package wtf.tophat.utilities.render;
 
+import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.utilities.Methods;
-import wtf.tophat.utilities.render.font.CFontRenderer;
-import wtf.tophat.utilities.render.font.CFontUtil;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Locale;
 
 public class CategoryUtil implements Methods {
-
-    public static double calculateCategoryIconX(Module.Category category, double x, double width, CFontRenderer catfr) {
-        double categoryIconX;
-
-        if (category == Module.Category.COMBAT) {
-            categoryIconX = x + (width - (double) catfr.getStringWidth(getCategoryLetter(category))) / 2 - 2 - 45;
-        } else if (category == Module.Category.MOVE) {
-            categoryIconX = x + (width - (double) catfr.getStringWidth(getCategoryLetter(category))) / 2 - 2 - 55;
-        } else if (category == Module.Category.RENDER) {
-            categoryIconX = x + (width - (double) catfr.getStringWidth(getCategoryLetter(category))) / 2 - 2 - 50;
-        } else if (category == Module.Category.PLAYER) {
-            categoryIconX = x + (width - (double) catfr.getStringWidth(getCategoryLetter(category))) / 2 - 2 - 33;
-        } else if(category == Module.Category.HUD) {
-            categoryIconX = x + (width - (double) catfr.getStringWidth(getCategoryLetter(category))) / 2 - 2 - 60;
-        } else {
-            categoryIconX = x + (width - (double) catfr.getStringWidth(getCategoryLetter(category))) / 2 - 2 - 45;
-        }
-
-        return categoryIconX;
-    }
 
     public static String getCategoryLetter(Module.Category category) {
         if(category.equals(Module.Category.COMBAT)) {
@@ -48,7 +27,22 @@ public class CategoryUtil implements Methods {
             return "b";
     }
 
-    public static Color getCategoryColor(Module.Category category) {
+    public static int getCategoryColor(Module.Category category) {
+        if(category == Module.Category.COMBAT) {
+            return new Color(230, 77, 62).getRGB();
+        } else if(category == Module.Category.MOVE) {
+            return new Color(48, 203, 116).getRGB();
+        } else if(category == Module.Category.RENDER) {
+            return new Color(245, 155, 27).getRGB();
+        } else if(category == Module.Category.PLAYER) {
+            return new Color(141, 67, 169).getRGB();
+        } else if(category == Module.Category.HUD) {
+            return new Color(56, 0, 196).getRGB();
+        } else
+            return new Color(75, 145, 190).getRGB();
+    }
+
+    public static Color getCategoryColor1(Module.Category category) {
         if(category == Module.Category.COMBAT) {
             return new Color(230, 77, 62);
         } else if(category == Module.Category.MOVE) {
@@ -75,7 +69,7 @@ public class CategoryUtil implements Methods {
     }
 
     public static double getMaxModuleNameWidth(Module.Category category, Module listeningModule) {
-        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
+        FontRenderer fr = mc.fontRenderer;
         double maxModuleNameWidth = 0;
 
         for (Module module : Client.moduleManager.getModulesByCategory(category)) {

@@ -12,6 +12,7 @@ import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.crash.CrashReport;
@@ -47,6 +48,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import wtf.tophat.events.impl.SafeWalkEvent;
+import wtf.tophat.events.impl.StrafeEvent;
 
 public abstract class Entity implements ICommandSender
 {
@@ -1224,26 +1226,37 @@ public abstract class Entity implements ICommandSender
     /**
      * Used in both water and by flying objects
      */
-    public void moveFlying(float strafe, float forward, float friction)
-    {
+    public void moveFlying(float strafe, float forward, float friction) {
+        StrafeEvent strafeEvent = new StrafeEvent(strafe, forward, friction, this.rotationYaw, this.rotationPitch);
+
+        if(this instanceof EntityPlayerSP) {
+            strafeEvent.call();
+        }
+
+        if(strafeEvent.isCancelled()) {
+            return;
+        }
+
+        strafe = strafeEvent.getStrafe();
+        forward = strafeEvent.getForward();
+        friction = strafeEvent.getFriction();
+
         float f = strafe * strafe + forward * forward;
 
-        if (f >= 1.0E-4F)
-        {
+        if (f >= 1.0E-4F) {
             f = MathHelper.sqrt_float(f);
 
-            if (f < 1.0F)
-            {
+            if (f < 1.0F) {
                 f = 1.0F;
             }
 
             f = friction / f;
             strafe = strafe * f;
             forward = forward * f;
-            float f1 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
-            float f2 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
-            this.motionX += (double)(strafe * f2 - forward * f1);
-            this.motionZ += (double)(forward * f2 + strafe * f1);
+            float yawSin = MathHelper.sin(strafeEvent.getYaw() * (float)Math.PI / 180.0F);
+            float yawCos = MathHelper.cos(strafeEvent.getYaw() * (float)Math.PI / 180.0F);
+            this.motionX += strafe * yawCos - forward * yawSin;
+            this.motionZ += forward * yawCos + strafe * yawSin;
         }
     }
 

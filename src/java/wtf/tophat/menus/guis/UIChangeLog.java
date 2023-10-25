@@ -1,9 +1,8 @@
 package wtf.tophat.menus.guis;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import wtf.tophat.utilities.render.font.CFontRenderer;
-import wtf.tophat.utilities.render.font.CFontUtil;
 
 import java.awt.*;
 import java.io.IOException;
@@ -38,22 +37,22 @@ public class UIChangeLog extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        CFontRenderer frBig = CFontUtil.SF_Regular_32.getRenderer();
-        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
+        FontRenderer fr = mc.fontRenderer;
         this.drawDefaultBackground();
 
         List<String> changes = new ArrayList<String>();
 
-        changes.add("TopHat v0.0.4");
-        changes.add("+ basic killaura");
-        changes.add("+ divider settings");
+        changes.add("TopHat v0.0.5");
+        changes.add("+ account manager");
+        changes.add("+ config system");
+        changes.add("+ script system");
+        changes.add("+ antibot module");
         changes.add("");
-        changes.add("* fixed clickgui settings");
 
-        frBig.drawString(changes.get(0), 5, 5, Color.WHITE);
+        fr.drawString(changes.get(0), 5, 5, -1);
         int counter = 10;
         for(String change : changes) {
-            if(change.equalsIgnoreCase("TopHat v0.0.4"))
+            if(change.equalsIgnoreCase("TopHat v0.0.5"))
                 continue;
             fr.drawString(change, 15, 15 + counter, getColor(change));
             counter += 10;
@@ -61,14 +60,14 @@ public class UIChangeLog extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    private Color getColor(String character) {
+    private int getColor(String character) {
         if(character.contains("+"))
-            return new Color(0,255,0);
+            return new Color(0,255,0).getRGB();
         else if(character.contains("*"))
-            return new Color(255,255,0);
+            return new Color(255,255,0).getRGB();
         else if(character.contains("-"))
-            return new Color(255,0,0);
-        return Color.WHITE;
+            return new Color(255,0,0).getRGB();
+        return Color.WHITE.getRGB();
     }
 
 }

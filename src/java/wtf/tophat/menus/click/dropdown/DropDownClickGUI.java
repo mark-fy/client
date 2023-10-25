@@ -1,13 +1,12 @@
 package wtf.tophat.menus.click.dropdown;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.Client;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.impl.render.PostProcessing;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
-import wtf.tophat.utilities.render.font.CFontRenderer;
-import wtf.tophat.utilities.render.font.CFontUtil;
 import wtf.tophat.utilities.render.CategoryUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
@@ -34,7 +33,7 @@ public class DropDownClickGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer(), frSemiBold = CFontUtil.SF_Semibold_20.getRenderer(), catfr = CFontUtil.ICONS_24.getRenderer();
+        FontRenderer fr = mc.fontRenderer;
         boolean shadow = Client.moduleManager.getByClass(wtf.tophat.modules.impl.hud.ClickGUI.class).fontShadow.get();
 
         renderBlur();
@@ -46,15 +45,12 @@ public class DropDownClickGUI extends GuiScreen {
 
             double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName().toLowerCase(Locale.ROOT))) / 2 - 2, categoryTextY = y + 6;
 
-            double categoryIconX = CategoryUtil.calculateCategoryIconX(category, x, categoryWidth, catfr);
-
             double dropdownMinX = x, dropdownMaxX = x + categoryWidth, dropdownMaxY = y + categoryHeight;
 
-            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor(category));
+            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor1(category));
             DrawingUtil.rectangle(x, y, categoryWidth, categoryHeight, true, new Color(20, 20, 20));
 
-            catfr.drawStringWithShadow(CategoryUtil.getCategoryLetter(category), categoryIconX, categoryTextY, CategoryUtil.getCategoryColor(category));
-            frSemiBold.drawStringChoose(shadow, category.getName().toLowerCase(Locale.ROOT), (int) categoryTextX, (int) categoryTextY, Color.WHITE);
+            fr.drawStringChoose(shadow, category.getName().toLowerCase(Locale.ROOT), (int) categoryTextX, (int) categoryTextY, -1);
 
             double modX = x, modY = y + categoryHeight, modHeight = 20;
 
@@ -89,9 +85,9 @@ public class DropDownClickGUI extends GuiScreen {
 
                 String moduleName = module.getName().toLowerCase(Locale.ROOT);
 
-                fr.drawStringChoose(shadow, moduleName, (int) modX + 5, (int) (modY + 6), module.isEnabled() ? CategoryUtil.getCategoryColor(category) : Color.WHITE);
+                fr.drawStringChoose(shadow, moduleName, (int) modX + 5, (int) (modY + 6), module.isEnabled() ? CategoryUtil.getCategoryColor(category) : Color.WHITE.getRGB());
 
-                fr.drawStringChoose(shadow, keybindText, (int) (modX + moduleRectWidth - keybindTextWidth - 5) - keybindTextWidth, (int) modY + 6, Color.darkGray);
+                fr.drawStringChoose(shadow, keybindText, (int) (modX + moduleRectWidth - keybindTextWidth - 5) - keybindTextWidth, (int) modY + 6, Color.darkGray.getRGB());
 
                 if (isHovered) {
                     int counter = 0;
@@ -106,7 +102,7 @@ public class DropDownClickGUI extends GuiScreen {
                     DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 10, true, new Color(22,22,22));
                     DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 1, true, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
 
-                    fr.drawStringChoose(shadow, text, 11, this.height - 28, Color.WHITE);
+                    fr.drawStringChoose(shadow, text, 11, this.height - 28, Color.WHITE.getRGB());
                     counter++;
                 }
 
@@ -115,7 +111,7 @@ public class DropDownClickGUI extends GuiScreen {
 
             dropdownMaxY = modY;
 
-            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor(category));
+            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor1(category));
 
             x += categoryWidth + 15;
         }

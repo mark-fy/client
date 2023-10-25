@@ -1,6 +1,7 @@
 package wtf.tophat.modules.impl.hud;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
@@ -14,7 +15,6 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.render.shaders.RoundedUtil;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
-import wtf.tophat.utilities.render.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
@@ -41,6 +41,7 @@ public class TargetHUD extends Module {
     @Listen
     public void on2D(Render2DEvent event) {
         ScaledResolution sr = event.getScaledResolution();
+        FontRenderer fr = mc.fontRenderer;
 
         int centerX = sr.getScaledWidth() / 2, centerY = sr.getScaledHeight() / 2;
 
@@ -83,8 +84,8 @@ public class TargetHUD extends Module {
                         DrawingUtil.rectangle(x + 2, y + 38, sliderWidth, 6, true, new Color(60, 60, 60));
                         DrawingUtil.rectangle(x + 2, y + 38, 95, 6, false, new Color(color));
 
-                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.get(), livingEntity.getName(), x + 2, y + 10, Color.WHITE);
-                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.get(),"Health: " + (int) Math.ceil(health), x + 2, y + 29, Color.WHITE);
+                        fr.drawString(livingEntity.getName(), x + 2, y + 10, -1);
+                        fr.drawString("Health: " + (int) Math.ceil(health), x + 2, y + 29, -1);
                         GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, livingEntity.rotationYaw, livingEntity.rotationPitch, livingEntity);
                         break;
                     case "Modern":
@@ -104,7 +105,7 @@ public class TargetHUD extends Module {
                         RoundedUtil.drawRound(x + 6, y + 51, sliderWidth1, 8, 4, new Color(0,255,0,125));
                         RoundedUtil.drawRoundOutline(x + 5, y + 50, 175, 10, 4, 0.30f, new Color(255,255,255,125), new Color(color));
 
-                        CFontUtil.SF_Regular_20.getRenderer().drawStringChoose(fontShadow.get(), livingEntity.getName() + " - " + (int) Math.ceil(health) + "hp", x + 5, y + 5, Color.WHITE);
+                        fr.drawString(livingEntity.getName() + " - " + (int) Math.ceil(health) + "hp", x + 5, y + 5, -1);
                         break;
                 }
             }

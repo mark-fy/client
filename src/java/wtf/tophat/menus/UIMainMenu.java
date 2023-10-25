@@ -4,9 +4,6 @@ import net.minecraft.client.gui.*;
 import wtf.tophat.Client;
 import wtf.tophat.menus.guis.UIAltManager;
 import wtf.tophat.menus.guis.UIChangeLog;
-import wtf.tophat.menus.guis.UICredits;
-import wtf.tophat.utilities.render.font.CFontRenderer;
-import wtf.tophat.utilities.render.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 
 import java.awt.*;
@@ -62,10 +59,10 @@ public class UIMainMenu extends GuiScreen {
                 mc.displayGuiScreen(new UIChangeLog(this));
                 break;
             case 6:
-                mc.displayGuiScreen(new UICredits(this));
+                //mc.displayGuiScreen(new UICredits(this));
                 break;
             case 7:
-                Client.shutdown();
+                mc.shutdownMinecraftApplet();
                 break;
         }
         super.actionPerformed(button);
@@ -73,23 +70,16 @@ public class UIMainMenu extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        CFontRenderer fr = CFontUtil.SF_Regular_32.getRenderer();
-        CFontRenderer frSmall = CFontUtil.SF_Regular_20.getRenderer();
+        FontRenderer fr = mc.fontRenderer;
         int counter = 0;
         this.drawDefaultBackground();
 
         int x = width / 2 - fr.getStringWidth(Client.getName()) / 2;
-        int y = height / 2 - fr.getHeight() / 2 - 45;
+        int y = height / 2 - fr.FONT_HEIGHT / 2 - 45;
 
-        fr.drawString(Client.getName(), x, y, Color.WHITE);
-        frSmall.drawString("v" + Client.getVersion(), x + 48, y + 14, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
+        fr.drawString(Client.getName(), x, y, -1);
+        fr.drawString("v" + Client.getVersion(), x + 48, y + 14, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)).getRGB());
         counter++;
         super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-
-        super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 }

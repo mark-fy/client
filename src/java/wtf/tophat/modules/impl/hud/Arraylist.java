@@ -1,5 +1,6 @@
 package wtf.tophat.modules.impl.hud;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.EnumChatFormatting;
 import wtf.tophat.Client;
@@ -8,8 +9,6 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.render.font.CFontRenderer;
-import wtf.tophat.utilities.render.font.CFontUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
@@ -24,7 +23,7 @@ import static wtf.tophat.utilities.render.Colors.*;
 public class Arraylist extends Module {
 
     private final StringSetting color, suffixMode;
-    private final BooleanSetting hideVisualModules, fontShadow, suffix;
+    private final BooleanSetting hideVisualModules, suffix;
 
     public Arraylist() {
         Client.settingManager.add(
@@ -32,15 +31,14 @@ public class Arraylist extends Module {
                 suffix = new BooleanSetting(this, "Suffix", true),
                 suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s")
                         .setHidden(() -> !suffix.get()),
-                hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true),
-                fontShadow = new BooleanSetting(this, "Font Shadow", true)
+                hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true)
         );
         setEnabled(true);
     }
 
     public void renderIngame() {
         ScaledResolution sr = new ScaledResolution(mc);
-        CFontRenderer fr = CFontUtil.SF_Semibold_20.getRenderer();
+        FontRenderer fr = mc.fontRenderer;
 
         List<Module> enabledModules = Client.moduleManager.getEnabledModules()
                 .stream()
@@ -129,16 +127,16 @@ public class Arraylist extends Module {
             }
 
             String fullText = moduleName + modeText;
-            DrawingUtil.rectangle(sr.getScaledWidth() - fr.getStringWidth(fullText) - 6 - 2, y, fr.getStringWidth(fullText) + 5, fr.getHeight() + 3, true, new Color(0, 0, 0, 128));
-            fr.drawStringChoose(fontShadow.get(), fullText, sr.getScaledWidth() - 7 - fr.getStringWidth(fullText), y + (fr.getHeight() + 2 - fr.getHeight()) / 2, new Color(color));
-            DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 4 + maxWidth, y, 1, fr.getHeight() + 3, true, new Color(color));
+            DrawingUtil.rectangle(sr.getScaledWidth() - fr.getStringWidth(fullText) - 6 - 2, y, fr.getStringWidth(fullText) + 5, fr.FONT_HEIGHT + 2, true, new Color(0, 0, 0, 128));
+            fr.drawString(fullText, sr.getScaledWidth() - 7 - fr.getStringWidth(fullText), y + (fr.FONT_HEIGHT + 2 - fr.FONT_HEIGHT) / 2 + 1, new Color(color).getRGB());
+            DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 4 + maxWidth, y, 1, fr.FONT_HEIGHT + 2, true, new Color(color));
 
             y += 11;
             counter++;
         }
     }
 
-    private int calculateTotalWidth(Module module, CFontRenderer fr) {
+    private int calculateTotalWidth(Module module, FontRenderer fr) {
         String moduleName = module.getName();
         String modeText = "";
 
@@ -147,16 +145,16 @@ public class Arraylist extends Module {
                 if (setting instanceof StringSetting) {
                     switch (suffixMode.get()) {
                         case "n [s]":
-                            modeText = " [" + ((StringSetting) setting).get() + "]";
+                            modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).get() + "]";
                             break;
                         case "n (s)":
-                            modeText = " (" + ((StringSetting) setting).get() + ")";
+                            modeText = EnumChatFormatting.WHITE + " (" + ((StringSetting) setting).get() + ")";
                             break;
                         case "n - s":
-                            modeText = " - " + ((StringSetting) setting).get();
+                            modeText = EnumChatFormatting.WHITE + " - " + ((StringSetting) setting).get();
                             break;
                         case "n s":
-                            modeText = " " + ((StringSetting) setting).get();
+                            modeText = EnumChatFormatting.WHITE + " " + ((StringSetting) setting).get();
                             break;
                     }
                     break;

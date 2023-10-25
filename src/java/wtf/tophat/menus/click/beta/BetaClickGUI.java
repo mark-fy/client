@@ -1,5 +1,6 @@
 package wtf.tophat.menus.click.beta;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import wtf.tophat.Client;
 import wtf.tophat.modules.base.Module;
@@ -7,8 +8,6 @@ import wtf.tophat.modules.impl.render.PostProcessing;
 import wtf.tophat.menus.click.dropdown.DropDownSettingFrame;
 import wtf.tophat.utilities.render.shaders.RenderUtil;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
-import wtf.tophat.utilities.render.font.CFontRenderer;
-import wtf.tophat.utilities.render.font.CFontUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;
@@ -28,20 +27,19 @@ public class BetaClickGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        CFontRenderer fr = CFontUtil.SF_Regular_20.getRenderer();
-        CFontRenderer frSemiBold = CFontUtil.SF_Semibold_20.getRenderer();
+        FontRenderer fr = mc.fontRenderer;
 
         double x = 110, y = 20, width = 100;
 
         for (Module.Category category : Module.Category.values()) {
             drawBlur(x, y, width, 20);
-            frSemiBold.drawString(category.getName(), x + 5, 25, Color.WHITE);
+            fr.drawString(category.getName(), (int) (x + 5), 25, -1);
 
             double modY = 45;
             drawBlur(x, 40, 100, Client.moduleManager.getModulesByCategory(category).size() * 20);
             for (Module module : Client.moduleManager.getModulesByCategory(category)) {
 
-                fr.drawString(module.getName(), x + 5, modY, module.isEnabled() ? new Color(DEFAULT_COLOR) : Color.WHITE);
+                fr.drawString(module.getName(), (int) (x + 5), (int) modY, module.isEnabled() ? new Color(DEFAULT_COLOR).getRGB() : -1);
 
                 modY += 20;
             }
