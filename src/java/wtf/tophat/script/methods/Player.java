@@ -29,15 +29,15 @@ public class Player implements Methods {
         getPlayer().rotationYaw += yaw;
     }
 
-    public void setMotionX(float x) {
+    public void setMotionX(double x) {
         getPlayer().motionX = x;
     }
 
-    public void setMotionY(float y) {
+    public void setMotionY(double y) {
         getPlayer().motionY = y;
     }
 
-    public void setMotionZ(float z) {
+    public void setMotionZ(double z) {
         getPlayer().motionZ = z;
     }
 
