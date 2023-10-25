@@ -1,7 +1,6 @@
 package wtf.tophat.events.base;
 
 import io.github.nevalackin.radbus.PubSub;
-import wtf.tophat.events.base.Event;
 
 public class EventManager {
 
@@ -15,7 +14,7 @@ public class EventManager {
         eventPubSub.unsubscribe(o);
     }
 
-    public void publish(Event o) {
+    public void post(Event o) {
         eventPubSub.publish(o);
     }
 

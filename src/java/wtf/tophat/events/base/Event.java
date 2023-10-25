@@ -43,7 +43,7 @@ public class Event {
 
     public void call() {
         setCancelled(false);
-        Client.eventManager.publish(this);
+        Client.eventManager.post(this);
     }
 
     public boolean isCancelled() {
