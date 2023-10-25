@@ -89,7 +89,7 @@ public class ScriptManager {
                         onTickFunc.call();
                     }
                 };
-                tickTimer.scheduleAtFixedRate(timerTask, 0, 1000);
+                tickTimer.scheduleAtFixedRate(timerTask, 0, 50);
                 enabledScripts.add(name);
             }
         } catch (Exception e) {
