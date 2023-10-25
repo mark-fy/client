@@ -3,17 +3,16 @@ package wtf.tophat;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.Display;
 import wtf.tophat.commands.base.CommandManager;
+import wtf.tophat.config.ConfigManager;
 import wtf.tophat.config.impl.Load;
 import wtf.tophat.config.impl.Save;
 import wtf.tophat.events.base.EventManager;
 import wtf.tophat.modules.base.ModuleManager;
+import wtf.tophat.script.ScriptManager;
 import wtf.tophat.settings.base.SettingManager;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import static wtf.tophat.utilities.Methods.createFolder;
 
 public enum Client {
 
@@ -34,23 +33,27 @@ public enum Client {
     public static String getVersion() { return version; }
 
     public static final ModuleManager moduleManager = new ModuleManager();
+    public static final SettingManager settingManager = new SettingManager();
     public static final CommandManager commandManager = new CommandManager();
     public static final EventManager eventManager = new EventManager();
-    public static final SettingManager settingManager = new SettingManager();
+    public static final ConfigManager configManager = new ConfigManager();
+    public static final ScriptManager scriptManager = new ScriptManager();
 
     public static void startup() {
         printL("Starting Client...");
         Display.setTitle(getName() + " v" + getVersion());
+        createFolder("tophat");
 
         moduleManager.init();
         commandManager.init();
         settingManager.init();
+        configManager.init();
+        scriptManager.init();
+
         Minecraft.getMinecraft().settings.guiScale = 2;
         Minecraft.getMinecraft().settings.limitFramerate = 144;
         Minecraft.getMinecraft().settings.fullScreen = false;
 
-        createFolder("tophat");
-        createFolder("tophat/configs");
         load();
     }
 
@@ -92,15 +95,5 @@ public enum Client {
         printL(Save.save("tophat"));
     }
 
-    private static void createFolder(String name) {
-        Path directoryPath = Paths.get(name);
-        if (!Files.exists(directoryPath)) {
-            try {
-                Files.createDirectory(directoryPath);
-            } catch (IOException e) {
-                e.printStackTrace();
-                printL("Failed to create the directory.");
-            }
-        }
-    }
+
 }

@@ -7,8 +7,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
+import wtf.tophat.Client;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -52,5 +57,17 @@ public interface Methods {
     default float getPitch() { return mc.player.rotationPitch; }
     default boolean getGround() { return mc.player.onGround; }
     default boolean getDead() { return mc.player.isDead; }
+
+     static void createFolder(String name) {
+        Path directoryPath = Paths.get(name);
+        if (!Files.exists(directoryPath)) {
+            try {
+                Files.createDirectory(directoryPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Client.printL("Failed to create the directory.");
+            }
+        }
+    }
 
 }
