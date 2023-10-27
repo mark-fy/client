@@ -79,6 +79,7 @@ public class Watermark extends Module {
                 Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
                 break;
             }
+            /** this is shit */
             case "Watermark (flagged)": {
                 RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(color));
                 if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
