@@ -409,4 +409,33 @@ public class AxisAlignedBB
     {
         return Double.isNaN(this.minX) || Double.isNaN(this.minY) || Double.isNaN(this.minZ) || Double.isNaN(this.maxX) || Double.isNaN(this.maxY) || Double.isNaN(this.maxZ);
     }
+
+    public double getDistanceTo(Vec3 vec) {
+        double deltaX = 0.0;
+        double deltaY = 0.0;
+        double deltaZ = 0.0;
+        if (vec.xCoord > this.maxX) {
+            deltaX = vec.xCoord - this.maxX;
+        }
+        if (vec.xCoord < this.minX) {
+            deltaX = this.minX - vec.xCoord;
+        }
+        if (vec.yCoord > this.maxY) {
+            deltaY = vec.yCoord - this.maxY;
+        }
+        if (vec.yCoord < this.minY) {
+            deltaY = this.minY - vec.yCoord;
+        }
+        if (vec.zCoord > this.maxZ) {
+            deltaZ = vec.zCoord - this.maxZ;
+        }
+        if (vec.zCoord < this.minZ) {
+            deltaZ = this.minZ - vec.zCoord;
+        }
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+    }
+
+    public AxisAlignedBB offset(BlockPos blockPos) {
+        return new AxisAlignedBB(this.minX + blockPos.getX(), this.minY + blockPos.getY(), this.minZ + blockPos.getZ(), this.maxX + blockPos.getX(), this.maxY + blockPos.getY(), this.maxZ + blockPos.getZ());
+    }
 }

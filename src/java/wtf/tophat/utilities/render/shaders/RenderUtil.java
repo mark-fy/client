@@ -3,8 +3,10 @@ package wtf.tophat.utilities.render.shaders;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import wtf.tophat.utilities.Methods;
@@ -31,6 +33,19 @@ public class RenderUtil implements Methods {
 
     public static boolean needsNewFramebuffer(Framebuffer framebuffer) {
         return framebuffer == null || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight;
+    }
+
+    public static void drawItemStack(ItemStack stack, int x, int y, float scale)
+    {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x - scale*1.5, y - scale*1.5, 1);
+        GlStateManager.scale(scale, scale, 1);
+        GlStateManager.translate(-x - scale*1.5, -y - scale*1.5, 1);
+
+        RenderHelper.enableGUIStandardItemLighting();
+        mc.getRenderItem().renderItemIntoGUI(stack, x, y);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.popMatrix();
     }
 
     public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight) {

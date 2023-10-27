@@ -51,6 +51,7 @@ import wtf.tophat.events.impl.*;
 import wtf.tophat.utilities.player.movement.MoveUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -92,6 +93,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     /** the last sprinting state sent to the server */
     private boolean serverSprintState;
+
+    public double floatingTickCount;
 
     /**
      * Reset to 0 every time position is sent to the server, used to send periodic updates every 20 ticks even when the
@@ -1143,5 +1146,15 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
         }
         return new float[] { floats[1], floats[0] };
+    }
+
+    public boolean sendTeleportPackets(List<Vec3> path, boolean safe, boolean onGround) {
+        if (this.mc.player.floatingTickCount <= (double)(79 - path.size()) || !safe) {
+            for (Vec3 vec3 : path) {
+                this.mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(vec3.xCoord, vec3.yCoord, vec3.zCoord, onGround));
+            }
+            return true;
+        }
+        return false;
     }
 }

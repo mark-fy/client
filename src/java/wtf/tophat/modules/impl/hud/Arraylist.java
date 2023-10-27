@@ -29,7 +29,7 @@ public class Arraylist extends Module {
         Client.settingManager.add(
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown"),
                 suffix = new BooleanSetting(this, "Suffix", true),
-                suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s")
+                suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s", "n > s", "n $ s", "n % s", "n # s")
                         .setHidden(() -> !suffix.get()),
                 hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true)
         );
@@ -120,6 +120,18 @@ public class Arraylist extends Module {
                             case "n s":
                                 modeText = EnumChatFormatting.WHITE + " " + ((StringSetting) setting).get();
                                 break;
+                            case "n > s":
+                                modeText = EnumChatFormatting.WHITE + " > " + ((StringSetting) setting).get();
+                                break;
+                            case "n $ s":
+                                modeText = EnumChatFormatting.WHITE + " $ " + ((StringSetting) setting).get();
+                                break;
+                            case "n % s":
+                                modeText = EnumChatFormatting.WHITE + " % " + ((StringSetting) setting).get();
+                                break;
+                            case "n # s":
+                                modeText = EnumChatFormatting.WHITE + " # " + ((StringSetting) setting).get();
+                                break;
                         }
                     }
                     break;
@@ -155,6 +167,18 @@ public class Arraylist extends Module {
                             break;
                         case "n s":
                             modeText = EnumChatFormatting.WHITE + " " + ((StringSetting) setting).get();
+                            break;
+                        case "n > s":
+                            modeText = EnumChatFormatting.WHITE + " > " + ((StringSetting) setting).get();
+                            break;
+                        case "n $ s":
+                            modeText = EnumChatFormatting.WHITE + " $ " + ((StringSetting) setting).get();
+                            break;
+                        case "n % s":
+                            modeText = EnumChatFormatting.WHITE + " % " + ((StringSetting) setting).get();
+                            break;
+                        case "n # s":
+                            modeText = EnumChatFormatting.WHITE + " # " + ((StringSetting) setting).get();
                             break;
                     }
                     break;

@@ -30,7 +30,7 @@ public class Watermark extends Module {
 
     public Watermark() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern", "Floyd"),
+                mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern", "Floyd", "Watermark (flagged)"),
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true),
                 bps = new BooleanSetting(this, "Blocks per Second", true)
@@ -79,6 +79,19 @@ public class Watermark extends Module {
                 Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
                 break;
             }
+            case "Watermark (flagged)": {
+                RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(color));
+                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+                    GaussianBlur.startBlur();
+                    RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(13, 60, 123));
+                    GaussianBlur.endBlur(8, 2);
+                }
+
+                fr.drawString("TopHat - " + Client.getVersion(), 15 ,6, -1);
+                mc.getTextureManager().bindTexture(new ResourceLocation("tophat/logo.png"));
+                Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
+                break;
+            }
             case "GameSense": {
                 int strWidth = fr.getStringWidth(text);
 
@@ -119,14 +132,27 @@ public class Watermark extends Module {
             case "Modern": {
                 text = Client.getName() + " - " + mc.getSession().getUsername();
                 int strWidth1 = fr.getStringWidth(text);
+                int x = 5;
+                int y = 5;
+                int height = 20;
+                int padding = 6;
+                int extraWidth = 2;
+                int cornerRadius = 8;
+                Color backgroundColor = new Color(13, 60, 123);
+                Color outlineColor = new Color(255, 255, 255, 25);
+                int textOffset = 4;
+
                 if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                     GaussianBlur.startBlur();
-                    RoundedUtil.drawRound(5, 5, strWidth1 + 6, 20, 8, new Color(13, 60, 123));
+                    int totalWidth = strWidth1 + padding + extraWidth * 2;
+                    RoundedUtil.drawRound(x, y, totalWidth, height, cornerRadius, backgroundColor);
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                RoundedUtil.drawRoundOutline(5, 5, strWidth1 + 6, 20, 4, 0.30f, new Color(255, 255, 255, 25), new Color(color));
-                fr.drawStringChoose(fontShadow.get(), text, 7, 10, -1);
+                int outlineX = x - extraWidth;
+                int outlineWidth = strWidth1 + padding + extraWidth * 2;
+                RoundedUtil.drawRoundOutline(outlineX, y, outlineWidth, height, cornerRadius, 0.30f, outlineColor, new Color(color));
+                fr.drawStringChoose(fontShadow.get(), text, x + textOffset - 1, y + 6, -1);
                 break;
             }
         }
