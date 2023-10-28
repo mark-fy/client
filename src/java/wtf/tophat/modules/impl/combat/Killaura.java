@@ -1,14 +1,11 @@
 package wtf.tophat.modules.impl.combat;
 
-import com.google.common.eventbus.Subscribe;
 import io.github.nevalackin.radbus.Listen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
-import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.modules.impl.player.Scaffold;
@@ -23,10 +20,10 @@ import java.util.ArrayList;
 
 @ModuleInfo(name = "Killaura", desc = "kills entities", category = Module.Category.COMBAT)
 public class Killaura extends Module {
+
     private final Stopwatch timer = new Stopwatch();
-    private final Stopwatch hurtTimer = new Stopwatch();
     private final StringSetting rotate;
-    private final NumberSetting cps, distance;
+    private final NumberSetting minCps, maxCps, minDistance, maxDistance;
 
     private EntityLivingBase lastTarget;
     private double lastHealth;
@@ -35,13 +32,13 @@ public class Killaura extends Module {
 
     public static ArrayList<EntityLivingBase> totalTargets = new ArrayList<EntityLivingBase>();
 
-    // the settings are  fucking weird, so re-add Min Range, Max Range, Min CPS and Max CPS and other settings, settings are weird with me
-
     public Killaura(){
         Client.settingManager.add(
                 rotate = new StringSetting(this, "Rotate", "Pre", "Pre", "Post", "Dynamic"),
-                cps = new NumberSetting(this, "CPS", 1, 20, 14, 2),
-                distance = new NumberSetting(this, "Range", 2, 6, 3.4, 2)
+                minCps = new NumberSetting(this, "Min CPS", 1, 20, 12, 1),
+                maxCps = new NumberSetting(this, "Max CPS", 1, 20, 17, 1),
+                minDistance = new NumberSetting(this, "Min Range", 2, 6, 3.4, 1),
+                maxDistance = new NumberSetting(this, "Max Range", 2, 6, 4.5, 1)
         );
     }
 
@@ -62,7 +59,7 @@ public class Killaura extends Module {
     public void onMotion(MotionEvent e) {
         if (Client.moduleManager.getByClass(Scaffold.class).isEnabled())
             return;
-        double range = (double)distance.get();
+        double range = MathUtil.randomNumber(minDistance.get().doubleValue(), maxDistance.get().doubleValue());
         target = EntityUtil.getClosestEntity(range);
 
         if (target != null) {
@@ -77,7 +74,7 @@ public class Killaura extends Module {
 
             float[] rotations = RotationUtil.getRotation(target);
             float rot0 = (float) (rotations[0] + MathUtil.randomNumber(-5, 5));
-            float rot1 = (float) (rotations[1] + + MathUtil.randomNumber(-8, 4));
+            float rot1 = (float) (rotations[1] + MathUtil.randomNumber(-8, 4));
 
             switch (rotate.get()){
                 case "Pre":
@@ -101,15 +98,13 @@ public class Killaura extends Module {
             }
 
             if (e.getState() == Event.State.PRE) {
-                if (timer.timeElapsed((long) (1000 / (int)cps.get()))) {
+                if (timer.timeElapsed(1000 / MathUtil.getRandInt(minCps.get().intValue(), maxCps.get().intValue()))) {
                     attack(target);
                     timer.resetTime();
                 }
             }
         }
     }
-
-    ScaledResolution sr = new ScaledResolution(mc);
 
     public void attack(Entity entity) {
         mc.player.swingItem();

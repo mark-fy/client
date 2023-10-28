@@ -736,7 +736,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     /**
      * sets up projection, view effects, camera position/rotation
      */
-    private void setupCameraTransform(float partialTicks, int pass)
+    public void setupCameraTransform(float partialTicks, int pass)
     {
         this.farPlaneDistance = (float)(this.mc.settings.renderDistanceChunks * 16);
         GlStateManager.matrixMode(5889);

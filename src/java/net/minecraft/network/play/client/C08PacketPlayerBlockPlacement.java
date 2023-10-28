@@ -7,8 +7,8 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.util.BlockPos;
 
-public class C08PacketPlayerBlockPlacement implements Packet<INetHandlerPlayServer>
-{
+public class C08PacketPlayerBlockPlacement
+        implements Packet<INetHandlerPlayServer> {
     private static final BlockPos field_179726_a = new BlockPos(-1, -1, -1);
     private BlockPos position;
     private int placedBlockDirection;
@@ -17,17 +17,18 @@ public class C08PacketPlayerBlockPlacement implements Packet<INetHandlerPlayServ
     private float facingY;
     private float facingZ;
 
-    public C08PacketPlayerBlockPlacement()
-    {
+    public C08PacketPlayerBlockPlacement() {
     }
 
-    public C08PacketPlayerBlockPlacement(ItemStack stackIn)
-    {
-        this(field_179726_a, 255, stackIn, 0.0F, 0.0F, 0.0F);
+    public C08PacketPlayerBlockPlacement(ItemStack stackIn) {
+        this(field_179726_a, 255, stackIn, 0.0f, 0.0f, 0.0f);
     }
 
-    public C08PacketPlayerBlockPlacement(BlockPos positionIn, int placedBlockDirectionIn, ItemStack stackIn, float facingXIn, float facingYIn, float facingZIn)
-    {
+    public C08PacketPlayerBlockPlacement(ItemStack stackIn, BlockPos pos) {
+        this(pos, 255, stackIn, 0.0f, 0.0f, 0.0f);
+    }
+
+    public C08PacketPlayerBlockPlacement(BlockPos positionIn, int placedBlockDirectionIn, ItemStack stackIn, float facingXIn, float facingYIn, float facingZIn) {
         this.position = positionIn;
         this.placedBlockDirection = placedBlockDirectionIn;
         this.stack = stackIn != null ? stackIn.copy() : null;

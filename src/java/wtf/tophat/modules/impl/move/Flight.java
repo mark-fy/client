@@ -25,7 +25,7 @@ public class Flight extends Module {
 
     public Flight() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Collision", "Verus", "BWPractice"),
+                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "BWPractice"),
                 speed = new NumberSetting(this, "Speed", 0, 4, 1, 2)
                         .setHidden(() -> !mode.is("Vanilla"))
         );
@@ -55,7 +55,7 @@ public class Flight extends Module {
                     MoveUtil.setSpeed(mc.settings.keyBindJump.isKeyDown() ? 0 : 0.33);
                 }
                 break;
-            case "Vanilla":
+            case "Motion":
                 mc.player.motionY = 0;
 
                 if (Keyboard.isKeyDown(mc.settings.keyBindJump.getKeyCode())) {

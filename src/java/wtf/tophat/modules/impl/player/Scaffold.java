@@ -35,7 +35,6 @@ import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 public class Scaffold extends Module {
 
     private final StringSetting rotationMode;
-    private final NumberSetting delay;
 
     private static final List<Block> invalidBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.tnt, Blocks.chest,
             Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tnt, Blocks.enchanting_table, Blocks.carpet,
@@ -61,8 +60,7 @@ public class Scaffold extends Module {
 
     public Scaffold(){
         Client.settingManager.add(
-                rotationMode = new StringSetting(this, "Rotations Mode", "Forward", "Forward"),
-                delay = new NumberSetting(this, "Delay", 0, 500, 0, 0)
+                rotationMode = new StringSetting(this, "Rotations Mode", "Forward", "Forward")
         );
     }
 
@@ -171,7 +169,7 @@ public class Scaffold extends Module {
                 }
             }
         } else {
-            if (blockInfo != null && timer.timeElapsed(delay.get().longValue()) && slot != -1) {
+            if (blockInfo != null && timer.timeElapsed(0) && slot != -1) {
                 final Vec3d hitVec = getVec3d(blockInfo.position, blockInfo.face);
                 final EntitySnowball snowball = new EntitySnowball(mc.world, hitVec.xCoord, hitVec.yCoord, hitVec.zCoord);
                 if (!mc.player.canEntityBeSeen(snowball))

@@ -153,7 +153,6 @@ public class Watermark extends Module {
                 int outlineWidth = strWidth1 + padding + extraWidth * 2;
                 RoundedUtil.drawRoundOutline(outlineX, y, outlineWidth, height, cornerRadius, 0.30f, outlineColor, new Color(color));
                 fr.drawStringChoose(fontShadow.get(), text, x + textOffset - 1, y + 6, -1);
-                break;
             }
         }
 
