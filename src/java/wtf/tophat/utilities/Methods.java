@@ -29,7 +29,7 @@ public interface Methods {
     default Timer getMCTimer() { return mc.timer; }
     default WorldClient getWorld() { return mc.world; }
 
-    default boolean isMoving() { return mc.player.moveForward != 0 || mc.player.moveStrafing != 0; }
+    static boolean isMoving() { return mc.player.moveForward != 0 || mc.player.moveStrafing != 0; }
 
     default void sendPacket(Packet<? extends INetHandler> packet) { mc.player.sendQueue.send(packet); }
 

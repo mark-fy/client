@@ -21,6 +21,7 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
+import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.TimeUtil;
 
 @ModuleInfo(name = "No Slowdown",desc = "disable slow down effects", category = Module.Category.MOVE)
@@ -56,7 +57,7 @@ public class NoSlowdown extends Module {
     @Listen
     public void onMotion(MotionEvent event) {
         ItemStack currentItem = mc.player.getCurrentEquippedItem();
-        if (currentItem == null || !mc.player.isUsingItem() || !isMoving()) {
+        if (currentItem == null || !mc.player.isUsingItem() || !Methods.isMoving()) {
             return;
         }
 
@@ -86,7 +87,7 @@ public class NoSlowdown extends Module {
     @Listen
     public void onSlow(SlowDownEvent event) {
         ItemStack currentItem = getPlayer().getCurrentEquippedItem();
-        if (currentItem == null || !getPlayer().isUsingItem() || !isMoving()) {
+        if (currentItem == null || !getPlayer().isUsingItem() || !Methods.isMoving()) {
             return;
         }
 

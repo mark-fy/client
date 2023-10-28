@@ -22,15 +22,18 @@ import static wtf.tophat.utilities.render.Colors.*;
 @ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.HUD)
 public class Arraylist extends Module {
 
-    private final StringSetting color, suffixMode;
-    private final BooleanSetting hideVisualModules, suffix;
+    private final StringSetting color, suffixMode, barMode;
+    private final BooleanSetting hideVisualModules, suffix, bar;
 
     public Arraylist() {
         Client.settingManager.add(
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown"),
                 suffix = new BooleanSetting(this, "Suffix", true),
-                suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s", "n > s", "n $ s", "n % s", "n # s")
+                suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s", "n > s", "n $ s", "n % s", "n # s", "n | s", "n -> s", "n » s")
                         .setHidden(() -> !suffix.get()),
+                bar = new BooleanSetting(this, "Bar", true),
+                barMode = new StringSetting(this, "Bar Type", "both", "top", "right", "both")
+                        .setHidden(() -> !bar.get()),
                 hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true)
         );
         setEnabled(true);
@@ -132,6 +135,15 @@ public class Arraylist extends Module {
                             case "n # s":
                                 modeText = EnumChatFormatting.WHITE + " # " + ((StringSetting) setting).get();
                                 break;
+                            case "n | s":
+                                modeText = EnumChatFormatting.WHITE + " | " + ((StringSetting) setting).get();
+                                break;
+                            case "n -> s":
+                                modeText = EnumChatFormatting.WHITE + " -> " + ((StringSetting) setting).get();
+                                break;
+                            case "n » s":
+                                modeText = EnumChatFormatting.WHITE + " » " + ((StringSetting) setting).get();
+                                break;
                         }
                     }
                     break;
@@ -179,6 +191,15 @@ public class Arraylist extends Module {
                             break;
                         case "n # s":
                             modeText = EnumChatFormatting.WHITE + " # " + ((StringSetting) setting).get();
+                            break;
+                        case "n | s":
+                            modeText = EnumChatFormatting.WHITE + " | " + ((StringSetting) setting).get();
+                            break;
+                        case "n -> s":
+                            modeText = EnumChatFormatting.WHITE + " -> " + ((StringSetting) setting).get();
+                            break;
+                        case "n » s":
+                            modeText = EnumChatFormatting.WHITE + " » " + ((StringSetting) setting).get();
                             break;
                     }
                     break;

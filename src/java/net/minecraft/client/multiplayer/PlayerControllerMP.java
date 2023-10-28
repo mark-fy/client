@@ -28,6 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
+import wtf.tophat.utilities.vector.Vec3d;
 
 public class PlayerControllerMP
 {
@@ -386,6 +387,56 @@ public class PlayerControllerMP
             this.netClientHandler.send(new C09PacketHeldItemChange(this.currentPlayerItem));
         }
     }
+
+    public boolean onPlayerRightClick3d(EntityPlayerSP player, WorldClient worldIn, ItemStack heldStack, BlockPos hitPos,
+                                        EnumFacing side, Vec3d hitVec) {
+        syncCurrentPlayItem();
+        float f = (float) (hitVec.xCoord - (double) hitPos.getX());
+        float f1 = (float) (hitVec.yCoord - (double) hitPos.getY());
+        float f2 = (float) (hitVec.zCoord - (double) hitPos.getZ());
+        boolean flag = false;
+
+        if (!mc.world.getWorldBorder().contains(hitPos)) {
+            return false;
+        } else {
+            if (currentGameType != WorldSettings.GameType.SPECTATOR) {
+                IBlockState iblockstate = worldIn.getBlockState(hitPos);
+
+                if ((!player.isSneaking() || player.getHeldItem() == null) && iblockstate.getBlock()
+                        .onBlockActivated(worldIn, hitPos, iblockstate, player, side, f, f1, f2)) {
+                    flag = true;
+                }
+
+                if (!flag && heldStack != null && heldStack.getItem() instanceof ItemBlock) {
+                    ItemBlock itemblock = (ItemBlock) heldStack.getItem();
+
+                    if (!itemblock.canPlaceBlockOnSide(worldIn, hitPos, side, player, heldStack)) {
+                    }
+                }
+            }
+
+            netClientHandler.send(new C08PacketPlayerBlockPlacement(hitPos, side.getIndex(),
+                    null, f, f1, f2));
+
+            if (!flag && currentGameType != WorldSettings.GameType.SPECTATOR) {
+                if (heldStack == null) {
+                    return false;
+                } else if (currentGameType.isCreative()) {
+                    int i = heldStack.getMetadata();
+                    int j = heldStack.stackSize;
+                    boolean flag1 = heldStack.onItemUse(player, worldIn, hitPos, side, f, f1, f2);
+                    heldStack.setItemDamage(i);
+                    heldStack.stackSize = j;
+                    return flag1;
+                } else {
+                    return heldStack.onItemUse(player, worldIn, hitPos, side, f, f1, f2);
+                }
+            } else {
+                return true;
+            }
+        }
+    }
+
 
     public boolean onPlayerRightClick(EntityPlayerSP player, WorldClient worldIn, ItemStack heldStack, BlockPos hitPos, EnumFacing side, Vec3 hitVec)
     {

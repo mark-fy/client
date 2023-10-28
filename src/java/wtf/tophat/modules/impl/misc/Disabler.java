@@ -12,12 +12,14 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.StringSetting;
 
+import java.util.ArrayList;
+
 @ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.EXPLOIT)
 public class Disabler extends Module {
 
     private final DividerSetting modes, spacer;
     private final StringSetting mode;
-    private final BooleanSetting verusCombat, c00, c13, c0f, c0c, c0b;
+    private final BooleanSetting verusCombat, c00, c13, c0f, c0c, c0b, c03;
 
     public Disabler() {
         Client.settingManager.add(
@@ -36,12 +38,17 @@ public class Disabler extends Module {
                 c0c = new BooleanSetting(this, "C0CInput", false)
                         .setHidden(() -> !mode.is("Custom")),
                 c0b = new BooleanSetting(this, "C0BEntityAction", false)
+                        .setHidden(() -> !mode.is("Custom")),
+                c03 = new BooleanSetting(this, "C03PacketPlayer", false)
                         .setHidden(() -> !mode.is("Custom"))
         );
     }
 
     // Verus Combat
     private int verusCounter;
+
+    ArrayList<Packet> transactions = new ArrayList<Packet>();
+    int currentTransaction = 0;
 
     @Listen
     public void onPacket(PacketEvent event) {
@@ -88,6 +95,9 @@ public class Disabler extends Module {
                 if(c0b.get() && packet instanceof C0BPacketEntityAction) {
                     event.setCancelled(true);
                 }
+                if(c03.get() && packet instanceof C03PacketPlayer) {
+                    event.setCancelled(true);
+                }
                 break;
             case "Intave Timer":
                 if(packet instanceof C19PacketResourcePackStatus) {
@@ -117,12 +127,15 @@ public class Disabler extends Module {
     @Override
     public void onEnable() {
         verusCounter = 0;
+        mc.player.ticksExisted = 0;
         super.onEnable();
     }
 
     @Override
     public void onDisable() {
         verusCounter = 0;
+        transactions.clear();
+        currentTransaction = 0;
         super.onDisable();
     }
 }

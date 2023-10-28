@@ -3,6 +3,7 @@ package wtf.tophat.utilities.player.movement;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.util.vector.Vector2f;
 import wtf.tophat.utilities.Methods;
 
 public class MoveUtil implements Methods {
@@ -38,6 +39,18 @@ public class MoveUtil implements Methods {
 
     public static double getSpeed() {
         return mc.player == null ? 0 : Math.sqrt(mc.player.motionX * mc.player.motionX + mc.player.motionZ * mc.player.motionZ);
+    }
+
+    public static float getMoveYaw(float yaw) {
+        Vector2f from = new Vector2f((float) mc.player.lastTickPosX, (float) mc.player.lastTickPosZ),
+                to = new Vector2f((float) mc.player.posX, (float) mc.player.posZ),
+                diff = new Vector2f(to.x - from.x, to.y - from.y);
+
+        double x = diff.x, z = diff.y;
+        if (x != 0 && z != 0) {
+            yaw = (float) Math.toDegrees((Math.atan2(-x, z) + MathHelper.PI2) % MathHelper.PI2);
+        }
+        return yaw;
     }
 
     public static double getBaseSpeed() {

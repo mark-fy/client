@@ -1,5 +1,7 @@
 package wtf.tophat.utilities.math;
 
+import java.util.Random;
+
 public class MathUtil {
 
     public static final float PI = (float) Math.PI;
@@ -15,6 +17,14 @@ public class MathUtil {
 
     public static float roundToFloat(double d) {
         return (float) ((double) Math.round(d * 1.0E8D) / 1.0E8D);
+    }
+
+    public static double randomNumber(final double max, final double min) {
+        return Math.random() * (max - min) + min;
+    }
+
+    public static int getRandInt(final int min, final int max) {
+        return new Random().nextInt(max - min + 1) + min;
     }
 
     static {

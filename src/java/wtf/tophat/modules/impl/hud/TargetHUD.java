@@ -1,29 +1,23 @@
 package wtf.tophat.modules.impl.hud;
 
 import io.github.nevalackin.radbus.Listen;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import org.lwjgl.opengl.GL11;
 import wtf.tophat.Client;
 import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
+import wtf.tophat.modules.impl.combat.Killaura;
 import wtf.tophat.modules.impl.render.PostProcessing;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.render.shaders.RenderUtil;
 import wtf.tophat.utilities.render.shaders.RoundedUtil;
-import wtf.tophat.utilities.render.shaders.bloom.KawaseBloom;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
@@ -36,6 +30,8 @@ import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 @SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 @ModuleInfo(name = "Target HUD", desc = "shows your enemy info", category = Module.Category.HUD)
 public class TargetHUD extends Module {
+
+    private double healthBarWidth;
 
     private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
@@ -75,7 +71,7 @@ public class TargetHUD extends Module {
                     break;
             }
 
-            Entity targetEntity = mc.pointedEntity;
+            Entity targetEntity = Killaura.target;
             if (targetEntity instanceof EntityLivingBase) {
                 EntityLivingBase livingEntity = (EntityLivingBase) targetEntity;
                 float health = livingEntity.getHealth();
@@ -176,61 +172,12 @@ public class TargetHUD extends Module {
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled()) {
-                    stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
-                    stencilFramebuffer.framebufferClear();
-                    stencilFramebuffer.bindFramebuffer(false);
-                    stencilFramebuffer.unbindFramebuffer();
-                    KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, 8, 10);
-                }
-
                 RoundedUtil.drawRoundOutline(x, y, width, height, 8, 0.30f, new Color(255, 255, 255, 25), new Color(color));
                 RoundedUtil.drawRound(x + 6, y + 51, sliderWidth1, 8, 4, new Color(0, 255, 0, 125));
                 RoundedUtil.drawRoundOutline(x + 5, y + 50, 175, 10, 4, 0.30f, new Color(255, 255, 255, 125), new Color(color));
 
                 fr.drawString("???" + " - " + "???" + "hp", x + 5, y + 5, -1);
                 break;
-            case "Exhibition":
-                Gui.drawRect2(x, y, x+width, y+height, 0xFF0a0a0a);
-                double increment = .5;
-                Gui.drawRect2(x+increment, y+increment, x+width-increment, y+height-increment, 0xFF3c3c3c);
-                increment = 1;
-                Gui.drawRect2(x+increment, y+increment, x+width-increment, y+height-increment, 0xFF222222);
-                increment = 2.5;
-                Gui.drawRect2(x+increment, y+increment, x+width-increment, y+height-increment, 0xFF3c3c3c);
-                increment = 3;
-                Gui.drawRect2(x+increment, y+increment, x+width-increment, y+height-increment, 0xFF161616);
-
-                Gui.drawRect2(x+increment+1.5, y+increment+1.5, x-increment+43.5, y-increment+43.5, 0xFF0a0a0a);
-                increment = 3.5;
-                Gui.drawRect2(x+increment+1.5, y+increment+1.5, x-increment+43.5, y-increment+43.5, 0xFF303030);
-                increment = 4;
-                Gui.drawRect2(x+increment+1.5, y+increment+1.5, x-increment+43.5, y-increment+43.5, 0xFF111111);
-
-                GlStateManager.color(1, 1, 1, 1);
-
-                float hue = 1000 / 360;
-                hue *= 20 * 8;
-                hue *= 0.001f;
-
-                Gui.drawRect2(x+42, y+14.5, x+104, y+18.5, 0xFF000000);
-                Gui.drawRect2(x+42.5, y+15, x+103.5, y+18, color);
-                Gui.drawRect2(x+42.5, y+15, x+103.5, y+18, 0xC0000000);
-                Gui.drawRect2(x+42.5, y+15, x+42.5+(61/20)*20, y+18, color);
-
-                double permove = 6.1;
-
-                for(int index = 0; index+1 < 10; index++) {
-                    Gui.drawRect2(x+42.5 + permove + index * permove, y+14.5, x+43 + permove+ index * permove, y+18.5, 0xFF000000);
-                }
-
-                int realdex = 0;
-
-                mc.fontRenderer.drawStringWithShadow("???", x+42, (float) (y+5.5), -1);
-
-                GlStateManager.scale(0.5,0.5,1);
-                mc.fontRenderer.drawString("HP: " + "???" + " | Dist: " + "???", 2*(x+42.9F), 2*(y+20), -1, false);
-                GlStateManager.scale(2,2,1);
         }
     }
 }

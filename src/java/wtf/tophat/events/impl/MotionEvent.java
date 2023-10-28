@@ -29,13 +29,18 @@ public class MotionEvent extends Event {
 
     public void setZ(double z) { this.z = z; }
 
-    public float getYaw() { return yaw; }
-
-    public void setYaw(float yaw) { this.yaw = yaw; }
-
-    public float getPitch() { return pitch; }
-
-    public void setPitch(float pitch) { this.pitch = pitch; }
+    public float getYaw() {
+        return yaw;
+    }
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
+    public float getPitch() {
+        return pitch;
+    }
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
 
     public boolean isOnGround() { return onGround; }
 

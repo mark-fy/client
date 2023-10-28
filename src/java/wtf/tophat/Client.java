@@ -1,7 +1,6 @@
 package wtf.tophat;
 
 import net.minecraft.client.Minecraft;
-import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import wtf.tophat.commands.base.CommandManager;
 import wtf.tophat.config.ConfigManager;

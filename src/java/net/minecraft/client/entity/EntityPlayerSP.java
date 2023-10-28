@@ -222,93 +222,58 @@ public class EntityPlayerSP extends AbstractClientPlayer
         motionEvent.setState(Event.State.PRE);
         motionEvent.call();
 
-        boolean flag = this.isSprinting();
-
+        boolean flag = isSprinting();
         if (flag != this.serverSprintState) {
-            if (flag)
-            {
-                this.sendQueue.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SPRINTING));
+            if (flag) {
+                this.sendQueue.send(new C0BPacketEntityAction((Entity)this, C0BPacketEntityAction.Action.START_SPRINTING));
+            } else {
+                this.sendQueue.send(new C0BPacketEntityAction((Entity)this, C0BPacketEntityAction.Action.STOP_SPRINTING));
             }
-            else
-            {
-                this.sendQueue.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SPRINTING));
-            }
-
-            PlayerHandler.shouldSprintReset = false;
-
             this.serverSprintState = flag;
         }
-
-        boolean flag1 = this.isSneaking();
-
-        if (flag1 != this.serverSneakState)
-        {
-            if (flag1)
-            {
-                this.sendQueue.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SNEAKING));
+        boolean flag1 = isSneaking();
+        if (flag1 != this.serverSneakState) {
+            if (flag1) {
+                this.sendQueue.send(new C0BPacketEntityAction((Entity)this, C0BPacketEntityAction.Action.START_SNEAKING));
+            } else {
+                this.sendQueue.send(new C0BPacketEntityAction((Entity)this, C0BPacketEntityAction.Action.STOP_SNEAKING));
             }
-            else
-            {
-                this.sendQueue.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SNEAKING));
-            }
-
             this.serverSneakState = flag1;
         }
-
-        if (this.isCurrentViewEntity())
-        {
-            double xDiff = motionEvent.getX() - this.lastReportedPosX;
-            double yDiff = motionEvent.getY() - this.lastReportedPosY;
-            double zDiff = motionEvent.getZ() - this.lastReportedPosZ;
-
-            double yawDiff   = motionEvent.getYaw() - this.lastReportedYaw;
-            double pitchDiff = motionEvent.getPitch() - this.lastReportedPitch;
-
-            boolean moving = xDiff * xDiff + yDiff * yDiff + zDiff * zDiff > 9.0E-4D || this.positionUpdateTicks >= 20;
-            boolean looking = yawDiff != 0.0D || pitchDiff != 0.0D;
-
-            if (this.ridingEntity == null)
-            {
-                if (moving && looking)
-                {
+        if (isCurrentViewEntity()) {
+            double d0 = motionEvent.getX() - this.lastReportedPosX;
+            double d1 = motionEvent.getY() - this.lastReportedPosY;
+            double d2 = motionEvent.getZ() - this.lastReportedPosZ;
+            double d3 = (motionEvent.getYaw() - this.lastReportedYaw);
+            double d4 = (motionEvent.getPitch() - this.lastReportedPitch);
+            boolean flag2 = (d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || this.positionUpdateTicks >= 20);
+            boolean flag3 = (d3 != 0.0D || d4 != 0.0D);
+            if (this.ridingEntity == null) {
+                if (flag2 && flag3) {
                     this.sendQueue.send(new C03PacketPlayer.C06PacketPlayerPosLook(motionEvent.getX(), motionEvent.getY(), motionEvent.getZ(), motionEvent.getYaw(), motionEvent.getPitch(), motionEvent.isOnGround()));
-                }
-                else if (moving)
-                {
+                } else if (flag2) {
                     this.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(motionEvent.getX(), motionEvent.getY(), motionEvent.getZ(), motionEvent.isOnGround()));
-                }
-                else if (looking)
-                {
+                } else if (flag3) {
                     this.sendQueue.send(new C03PacketPlayer.C05PacketPlayerLook(motionEvent.getYaw(), motionEvent.getPitch(), motionEvent.isOnGround()));
-                }
-                else
-                {
+                } else {
                     this.sendQueue.send(new C03PacketPlayer(motionEvent.isOnGround()));
                 }
-            }
-            else
-            {
+            } else {
                 this.sendQueue.send(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, motionEvent.getYaw(), motionEvent.getPitch(), motionEvent.isOnGround()));
-                moving = false;
+                flag2 = false;
             }
-
-            ++this.positionUpdateTicks;
-
-            if (moving)
-            {
+            this.positionUpdateTicks++;
+            if (flag2) {
                 this.lastReportedPosX = motionEvent.getX();
                 this.lastReportedPosY = motionEvent.getY();
                 this.lastReportedPosZ = motionEvent.getZ();
                 this.positionUpdateTicks = 0;
             }
-
-            if (looking)
-            {
+            if (flag3) {
                 this.lastReportedYaw = motionEvent.getYaw();
                 this.lastReportedPitch = motionEvent.getPitch();
             }
         }
-
         motionEvent.setState(Event.State.POST);
         motionEvent.call();
     }

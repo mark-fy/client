@@ -373,7 +373,7 @@ public class ItemRenderer
             {
                 this.renderItemMap(abstractclientplayer, f2, f, f1);
             }
-            else if (abstractclientplayer.getItemInUseCount() > 0 || (Client.moduleManager.getByClass(Killaura.class).isEnabled() && Client.moduleManager.getByClass(Killaura.class).shouldBlock()))
+            else if (abstractclientplayer.getItemInUseCount() > 0)
             {
                 EnumAction enumaction = this.itemToRender.getItemUseAction();
 

@@ -12,6 +12,7 @@ public class C0CPacketInput implements Packet<INetHandlerPlayServer>
 
     /** Positive for forward, negative for backward */
     private float forwardSpeed;
+
     private boolean jumping;
     private boolean sneaking;
 
@@ -82,6 +83,11 @@ public class C0CPacketInput implements Packet<INetHandlerPlayServer>
     public boolean isJumping()
     {
         return this.jumping;
+    }
+
+    public void setJumping(boolean jumping)
+    {
+        this.jumping = jumping;
     }
 
     public boolean isSneaking()

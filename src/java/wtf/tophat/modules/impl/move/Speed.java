@@ -10,6 +10,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
+import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.player.movement.MoveUtil;
 
 @ModuleInfo(name = "Speed", desc = "move faster", category = Module.Category.MOVE)
@@ -47,7 +48,7 @@ public class Speed extends Module {
             switch (mode.get()) {
                 case "Verus":
                     if(event.getState() == Event.State.PRE) {
-                        if (isMoving()) {
+                        if (Methods.isMoving()) {
                             if (getGround()) {
                                 mc.player.jump();
                                 MoveUtil.setSpeed(0.48);
@@ -90,9 +91,9 @@ public class Speed extends Module {
                     break;
                 case "Vanilla":
                     MoveUtil.setSpeed(speed.get().floatValue());
-                    if(isMoving() && getGround()) {
+                    if(Methods.isMoving() && getGround()) {
                         mc.player.jump();
-                    } else if(!isMoving()) {
+                    } else if(!Methods.isMoving()) {
                         mc.player.motionX = 0.0;
                         mc.player.motionZ = 0.0;
                     }
