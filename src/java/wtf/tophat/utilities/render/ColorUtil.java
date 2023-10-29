@@ -5,6 +5,8 @@ import wtf.tophat.utilities.math.InterpolationUtil;
 import java.awt.*;
 import java.util.Random;
 
+import static wtf.tophat.utilities.math.MathUtil.clamp;
+
 public class ColorUtil {
 
     public static final int[] RAINBOW_COLORS = {
@@ -26,6 +28,10 @@ public class ColorUtil {
             0xFFFF0000,
             0xFF800000
     };
+
+    public static Color withAlpha(final Color color, final int alpha) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) clamp(0, 255, alpha));
+    }
 
     public static int blendCzechiaColours(final double progress) {
         return blendColours(CZECHIA_COLORS, progress);
