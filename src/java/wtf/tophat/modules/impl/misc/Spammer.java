@@ -29,7 +29,7 @@ public final class Spammer extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        String spammerText = "You should buy TopHat @ tophat?wtf";
+        String spammerText = "buy TopHat @ tophat?wtf";
 
         if (spammerText != null && delayTimer.timeElapsed(bypass.get() ? 2000 : delay.get().longValue())) {
 

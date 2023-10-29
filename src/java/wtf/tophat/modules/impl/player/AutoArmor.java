@@ -17,7 +17,7 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.time.Stopwatch;
 
-@ModuleInfo(name = "AutoArmor", desc = "take the best armor automatically in your inventory",category = Module.Category.PLAYER)
+@ModuleInfo(name = "Auto Armor", desc = "automatically equip the best armor",category = Module.Category.PLAYER)
 public class AutoArmor extends Module {
     Stopwatch timer = new Stopwatch();
 
@@ -71,26 +71,22 @@ public class AutoArmor extends Module {
 
     public static boolean isBestArmor(ItemStack stack, int type) {
         float prot = getProtection(stack);
-        String strType = "";
-        if (type == 1) {
-            strType = "helmet";
-        } else if (type == 2) {
-            strType = "chestplate";
-        } else if (type == 3) {
-            strType = "leggings";
-        } else if (type == 4) {
-            strType = "boots";
-        }
-        if (!stack.getUnlocalizedName().contains(strType)) {
+        String[] typeNames = {"", "helmet", "chestplate", "leggings", "boots"};
+        String strType = (type >= 1 && type <= 4) ? typeNames[type] : "";
+
+        if (strType.isEmpty() || !stack.getUnlocalizedName().contains(strType)) {
             return false;
         }
+
         for (int i = 5; i < 45; i++) {
             if (Minecraft.getMinecraft().player.inventoryContainer.getSlot(i).getHasStack()) {
                 ItemStack is = Minecraft.getMinecraft().player.inventoryContainer.getSlot(i).getStack();
-                if (getProtection(is) > prot && is.getUnlocalizedName().contains(strType))
+                if (is.getUnlocalizedName().contains(strType) && getProtection(is) > prot) {
                     return false;
+                }
             }
         }
+
         return true;
     }
 

@@ -2,11 +2,9 @@ package wtf.tophat.modules.impl.hud;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import wtf.tophat.Client;
@@ -30,10 +28,6 @@ import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 @SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 @ModuleInfo(name = "Target HUD", desc = "shows your enemy info", category = Module.Category.HUD)
 public class TargetHUD extends Module {
-
-    private double healthBarWidth;
-
-    private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
     private final StringSetting mode, color;
     private final BooleanSetting fontShadow;
@@ -79,9 +73,6 @@ public class TargetHUD extends Module {
                 if (health > 0.1) {
                     switch (mode.get()) {
                         case "GameSense":
-                            float healthPercentage = Math.min(1.0f, health / livingEntity.getMaxHealth());
-                            int sliderWidth = (int) (95 * healthPercentage);
-
                             DrawingUtil.rectangle(x - 6, y, width + 11, height + 20, true, new Color(5, 5, 5));
                             DrawingUtil.rectangle(x - 5, y + 1, width + 9, height + 18, true, new Color(60, 60, 60));
                             DrawingUtil.rectangle(x - 4, y + 2, width + 7, height + 16, true, new Color(40, 40, 40));
@@ -147,7 +138,6 @@ public class TargetHUD extends Module {
         switch (mode.get()) {
             case "GameSense":
                 float healthPercentage = Math.min(1.0f, 20 / 20);
-                int sliderWidth = (int) (95 * healthPercentage);
 
                 DrawingUtil.rectangle(x - 6, y, width + 11, height + 20, true, new Color(5, 5, 5));
                 DrawingUtil.rectangle(x - 5, y + 1, width + 9, height + 18, true, new Color(60, 60, 60));

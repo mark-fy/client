@@ -10,7 +10,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.utilities.time.Stopwatch;
 
-@ModuleInfo(name = "AutoHypixel", desc = "join automatically the game when you finish / lost a game", category = Module.Category.EXPLOIT)
+@ModuleInfo(name = "Auto Hypixel", desc = "automatically navigate inside hypixel", category = Module.Category.EXPLOIT)
 public class AutoHypixel extends Module {
 
     public String knownMode, knownType;

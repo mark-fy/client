@@ -15,7 +15,7 @@ import wtf.tophat.utilities.render.shaders.RoundedUtil;
 
 import java.awt.*;
 
-@ModuleInfo(name = "Nametags", desc = "shows player name", category = Module.Category.RENDER)
+@ModuleInfo(name = "Nametags", desc = "renders better nametags", category = Module.Category.RENDER)
 public class Nametags extends Module {
 
     private final NumberSetting scaling;

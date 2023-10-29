@@ -13,7 +13,7 @@ import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 
-@ModuleInfo(name = "AutoPot", desc = "automatically throw useful potions at your feet", category = Module.Category.COMBAT)
+@ModuleInfo(name = "Auto Pot", desc = "automatically throw potions at your feet", category = Module.Category.COMBAT)
 public class AutoPot extends Module {
 
     @Listen
@@ -35,11 +35,6 @@ public class AutoPot extends Module {
             mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(stack, new BlockPos(-1, -1, -1)));
             this.switchToSlot(this.mc.player.inventory.currentItem);
         }
-    }
-
-    @Override
-    public void onDisable() {
-        super.onDisable();
     }
 
     private void switchToSlot(int slot) {

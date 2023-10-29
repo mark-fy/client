@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
@@ -20,14 +19,11 @@ import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
-import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.network.ServerUtil;
 import wtf.tophat.utilities.player.movement.MoveUtil;
-import wtf.tophat.utilities.player.rotations.RotationUtil;
-import wtf.tophat.utilities.player.scaffold.ScaffoldUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.time.Stopwatch;
 import wtf.tophat.utilities.vector.Vec3d;
@@ -35,7 +31,6 @@ import wtf.tophat.utilities.vector.Vec3d;
 import java.util.Arrays;
 import java.util.List;
 
-import static wtf.tophat.utilities.player.scaffold.ScaffoldUtil.getYLevel;
 import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
 import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 
@@ -63,9 +58,7 @@ public class Scaffold extends Module {
     private final Stopwatch timer = new Stopwatch();
     private BlockData blockInfo;
     private int slot, newSlot, oldSlot;
-    private float yaw;
-    private float pitch;
-    private float y;
+    private float yaw, pitch, y;
 
     public Scaffold(){
         Client.settingManager.add(
@@ -197,6 +190,7 @@ public class Scaffold extends Module {
                     rotations = new float[]{MoveUtil.getMoveYaw(motionEvent.getYaw()) - 180, y};
                     motionEvent.setYaw(rotations[0]);
                     motionEvent.setPitch(rotations[1]);
+                    break;
             }
 
             if(tower.get()) {
@@ -357,17 +351,17 @@ public class Scaffold extends Module {
 
     @Override
     public void onEnable() {
-        super.onEnable();
         timer.resetTime();
         y = 80;
+        super.onEnable();
     }
 
     @Override
     public void onDisable() {
-        super.onEnable();
         if (ServerUtil.onHypixel()) {
             mc.player.inventory.currentItem = 0;
         }
+        super.onDisable();
     }
 
     public static class BlockData {

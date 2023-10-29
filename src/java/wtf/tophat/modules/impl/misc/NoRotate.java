@@ -8,7 +8,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 
-@ModuleInfo(name = "NoRotate", desc = "prevents servers from rotating you", category = Module.Category.EXPLOIT)
+@ModuleInfo(name = "No Rotate", desc = "prevents servers from rotating you", category = Module.Category.EXPLOIT)
 public final class NoRotate extends Module {
 
     private final StringSetting mode;
@@ -21,7 +21,9 @@ public final class NoRotate extends Module {
 
     @Listen
     public void onPacket(PacketEvent e) {
-        if (mc.player == null) return;
+        if (getPlayer() == null || getWorld() == null)
+            return;
+
         if (e.getPacket() instanceof S08PacketPlayerPosLook) {
             S08PacketPlayerPosLook packet = (S08PacketPlayerPosLook) e.getPacket();
             switch (mode.get()) {

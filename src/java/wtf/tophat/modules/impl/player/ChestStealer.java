@@ -16,7 +16,7 @@ import wtf.tophat.utilities.time.Stopwatch;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-@ModuleInfo(name = "ChestStealer", desc = "steal chest automatically", category = Module.Category.PLAYER)
+@ModuleInfo(name = "Chest Stealer", desc = "steal from chests automatically", category = Module.Category.PLAYER)
 public class ChestStealer extends Module {
 
     public Stopwatch timer = new Stopwatch();
@@ -85,12 +85,10 @@ public class ChestStealer extends Module {
         return true;
     }
 
+    @Override
     public void onEnable() {
-        super.onEnable();
         timer.resetTime();
-    }
 
-    public void onDisable() {
-        super.onDisable();
+        super.onEnable();
     }
 }

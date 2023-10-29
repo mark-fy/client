@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL11;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
-import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.events.impl.Render3DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -34,9 +33,6 @@ public class Killaura extends Module {
     private final NumberSetting minCps, maxCps, minDistance, maxDistance;
     private final BooleanSetting render;
 
-    private EntityLivingBase lastTarget;
-    private double lastHealth;
-
     public static boolean blocking;
 
     public static ArrayList<EntityLivingBase> totalTargets = new ArrayList<EntityLivingBase>();
@@ -48,7 +44,7 @@ public class Killaura extends Module {
                 maxCps = new NumberSetting(this, "Max CPS", 1, 20, 17, 1),
                 minDistance = new NumberSetting(this, "Min Range", 2, 6, 3.4, 1),
                 maxDistance = new NumberSetting(this, "Max Range", 2, 6, 4.5, 1),
-                render = new BooleanSetting(this, "Render", true)
+                render = new BooleanSetting(this, "Jello Circle", true)
         );
     }
 
@@ -56,11 +52,6 @@ public class Killaura extends Module {
     public void onDisable() {
         blocking = false;
         super.onDisable();
-    }
-
-    @Override
-    public void onEnable() {
-        super.onEnable();
     }
 
     public static EntityLivingBase target = null;
@@ -126,7 +117,7 @@ public class Killaura extends Module {
         if(render.get()) {
             final float partialTicks = mc.timer.renderPartialTicks;
 
-            EntityLivingBase player = (EntityLivingBase) this.target;
+            EntityLivingBase player = this.target;
 
             final Color color = new Color(255, 255, 255);
 

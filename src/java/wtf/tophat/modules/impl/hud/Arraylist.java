@@ -152,7 +152,7 @@ public class Arraylist extends Module {
 
             String fullText = moduleName + modeText;
             DrawingUtil.rectangle(sr.getScaledWidth() - fr.getStringWidth(fullText) - 6 - 2, y, fr.getStringWidth(fullText) + 5, fr.FONT_HEIGHT + 2, true, new Color(0, 0, 0, 128));
-            fr.drawString(fullText, sr.getScaledWidth() - 7 - fr.getStringWidth(fullText), y + (fr.FONT_HEIGHT + 2 - fr.FONT_HEIGHT) / 2 + 1, new Color(color).getRGB());
+            fr.drawString(fullText, sr.getScaledWidth() - 5 - fr.getStringWidth(fullText), y + (fr.FONT_HEIGHT + 2 - fr.FONT_HEIGHT) / 2 + 1, new Color(color).getRGB());
             DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 4 + maxWidth, y, 1, fr.FONT_HEIGHT + 2, true, new Color(color));
 
             y += 11;
