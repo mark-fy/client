@@ -11,7 +11,7 @@ public class DamageUtil implements Methods {
         if (mc.player == null) return;
         double x = mc.player.posX, y = mc.player.posY, z = mc.player.posZ;
         switch (type) {
-            case WATCHDOG:
+            case OLDNCP:
                 for(int i = 0; i < 49; i++) {
                     mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(mc.player.posX, mc.player.posY + 0.0625, mc.player.posZ, false));
                     mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(mc.player.posX, mc.player.posY, mc.player.posZ, false));
@@ -27,6 +27,6 @@ public class DamageUtil implements Methods {
     }
 
     public enum DamageType {
-        WATCHDOG, VANILLA
+        OLDNCP, VANILLA
     }
 }

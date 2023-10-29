@@ -57,6 +57,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
 {
     public final NetHandlerPlayClient sendQueue;
     private final StatFileWriter statWriter;
+    public int offGroundTicks;
+    public int onGroundTicks;
 
     /**
      * The last X position which was transmitted to the server, used to determine when the X position changes and needs
@@ -218,6 +220,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void onUpdateWalkingPlayer(float yaw, float pitch)
     {
+        if (this.onGround) {
+            this.offGroundTicks = 0;
+            ++this.onGroundTicks;
+        } else {
+            this.onGroundTicks = 0;
+            ++this.offGroundTicks;
+        }
         MotionEvent motionEvent = new MotionEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
         motionEvent.setState(Event.State.PRE);
         motionEvent.call();

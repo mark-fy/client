@@ -103,7 +103,7 @@ public class Flight extends Module {
                         event.setY(event.getY() - y);
                     }
                 } else if (mc.player.onGround) {
-                    DamageUtil.damage(DamageUtil.DamageType.WATCHDOG);
+                    DamageUtil.damage(DamageUtil.DamageType.OLDNCP);
                     mc.player.jump();
                     hasDamaged = true;
                 }

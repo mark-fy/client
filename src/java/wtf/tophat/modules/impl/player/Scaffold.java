@@ -17,9 +17,13 @@ import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
+import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
+import wtf.tophat.utilities.Methods;
+import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.network.ServerUtil;
+import wtf.tophat.utilities.player.movement.MoveUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.time.Stopwatch;
 import wtf.tophat.utilities.vector.Vec3d;
@@ -34,7 +38,8 @@ import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 @ModuleInfo(name = "Scaffold",desc = "place blocks under feet", category = Module.Category.PLAYER)
 public class Scaffold extends Module {
 
-    private final StringSetting rotationMode;
+    private final StringSetting rotationMode, towerMode;
+    private final BooleanSetting tower;
 
     private static final List<Block> invalidBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.tnt, Blocks.chest,
             Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tnt, Blocks.enchanting_table, Blocks.carpet,
@@ -60,7 +65,10 @@ public class Scaffold extends Module {
 
     public Scaffold(){
         Client.settingManager.add(
-                rotationMode = new StringSetting(this, "Rotations Mode", "Forward", "Forward")
+                rotationMode = new StringSetting(this, "Rotations Mode", "Forward", "Forward"),
+                tower = new BooleanSetting(this, "Tower", false),
+                towerMode = new StringSetting(this, "Tower Mode", "NCP", "NCP", "Vulcan", "Verus")
+                        .setHidden(() -> !tower.get())
         );
     }
 
@@ -149,6 +157,34 @@ public class Scaffold extends Module {
                     motionEvent.setYaw(yaw);
                     motionEvent.setPitch(pitch);
                     break;
+            }
+
+            if(tower.get()) {
+                switch (towerMode.get()) {
+                    case "NCP":
+                        if (mc.settings.keyBindJump.isKeyDown()) {
+                            if (!Methods.isMoving() || MoveUtil.getSpeed() < 0.16) {
+                                if (mc.player.onGround) {
+                                    mc.player.motionY = 0.42;
+                                } else if (mc.player.motionY < 0.23) {
+                                    mc.player.setPosition(mc.player.posX, (int) mc.player.posY, mc.player.posZ);
+                                    mc.player.motionY = 0.42;
+                                }
+                            }
+                        }
+                        break;
+                    case "Vulcan":
+                        if (mc.settings.keyBindJump.isKeyDown() && mc.player.offGroundTicks > 3) {
+                            mc.player.onGround = true;
+                            mc.player.motionY = MathUtil.randomNumber(0.47F, 0.50F);
+                        }
+                        break;
+                    case "Verus":
+                        if (mc.settings.keyBindJump.isKeyDown() && mc.player.ticksExisted % 2 == 0) {
+                            mc.player.motionY = 0.42f;
+                        }
+                        break;
+                }
             }
 
             slot = -1;
