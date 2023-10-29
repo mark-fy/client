@@ -21,7 +21,7 @@ public class Speed extends Module {
 
     public Speed() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "Old NCP"),
                 speed = new NumberSetting(this, "Speed", 0, 3, 0.29, 2)
                         .setHidden(() -> !mode.is("Vanilla"))
         );
@@ -47,7 +47,7 @@ public class Speed extends Module {
         if(event.getState() == Event.State.PRE) {
             switch (mode.get()) {
                 case "Verus":
-                    if(event.getState() == Event.State.PRE) {
+                    if (event.getState() == Event.State.PRE) {
                         if (Methods.isMoving()) {
                             if (getGround()) {
                                 mc.player.jump();
@@ -61,22 +61,22 @@ public class Speed extends Module {
                     }
                     break;
                 case "Hypixel":
-                    if(MoveUtil.getSpeed() == 0) {
+                    if (MoveUtil.getSpeed() == 0) {
                         mc.timer.timerSpeed = 1;
                     } else {
                         mc.timer.timerSpeed = (float) (1 + Math.random() / 30);
-                        if(getGround()) {
+                        if (getGround()) {
                             hypixelTicks = 0;
                             mc.player.jump();
                             MoveUtil.strafe(0.418f);
                         } else {
                             hypixelTicks++;
                             mc.player.motionY -= 0.0008;
-                            if(hypixelTicks == 1) {
+                            if (hypixelTicks == 1) {
                                 mc.player.motionY -= 0.002;
                             }
 
-                            if(hypixelTicks == 8) {
+                            if (hypixelTicks == 8) {
                                 mc.player.motionY -= 0.003;
                             }
                         }
@@ -91,9 +91,9 @@ public class Speed extends Module {
                     break;
                 case "Vanilla":
                     MoveUtil.setSpeed(speed.get().floatValue());
-                    if(Methods.isMoving() && getGround()) {
+                    if (Methods.isMoving() && getGround()) {
                         mc.player.jump();
-                    } else if(!Methods.isMoving()) {
+                    } else if (!Methods.isMoving()) {
                         mc.player.motionX = 0.0;
                         mc.player.motionZ = 0.0;
                     }

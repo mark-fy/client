@@ -28,6 +28,15 @@ public class MoveUtil implements Methods {
         return new double[] { motionX, motionZ };
     }
 
+    public static double getBaseMoveSpeed() {
+        double baseSpeed = 0.2873D;
+        if (mc.player.isPotionActive(Potion.moveSpeed)) {
+            int amplifier = mc.player.getActivePotionEffect(Potion.moveSpeed).getAmplifier();
+            baseSpeed *= (1.0D + 0.2D * (amplifier + 1));
+        }
+        return baseSpeed;
+    }
+
     public static float getSpeedBoost(float times) {
         float boost = (float) ((getBaseSpeed() - 0.2875F) * times);
         if(0 > boost) {
