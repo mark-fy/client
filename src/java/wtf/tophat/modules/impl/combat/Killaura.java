@@ -4,6 +4,8 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C02PacketUseEntity;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
@@ -17,6 +19,7 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.entity.EntityUtil;
 import wtf.tophat.utilities.math.MathUtil;
+import wtf.tophat.utilities.misc.RayCast;
 import wtf.tophat.utilities.player.rotations.RotationUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.shaders.RenderUtil;
@@ -24,92 +27,82 @@ import wtf.tophat.utilities.time.Stopwatch;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @ModuleInfo(name = "Killaura", desc = "kills entities", category = Module.Category.COMBAT)
 public class Killaura extends Module {
 
-    private final Stopwatch timer = new Stopwatch();
-    private final StringSetting rotate;
-    private final NumberSetting minCps, maxCps, minDistance, maxDistance;
-    private final BooleanSetting render;
+    public final Stopwatch timer = new Stopwatch();
+    public final StringSetting sort, autoblockMode;
+    public final NumberSetting minCps, maxCps, range;
+    public final BooleanSetting render, autoblock;
 
-    public static boolean blocking;
+    public static EntityLivingBase target = null;
 
-    public static ArrayList<EntityLivingBase> totalTargets = new ArrayList<EntityLivingBase>();
+    public List<EntityLivingBase> targets = new ArrayList<>();
 
     public Killaura(){
         Client.settingManager.add(
-                rotate = new StringSetting(this, "Rotate", "Pre", "Pre", "Post", "Dynamic"),
+                sort = new StringSetting(this, "Sort", "Distance", "Distance", "Health"),
                 minCps = new NumberSetting(this, "Min CPS", 1, 20, 12, 1),
                 maxCps = new NumberSetting(this, "Max CPS", 1, 20, 17, 1),
-                minDistance = new NumberSetting(this, "Min Range", 2, 6, 3.4, 1),
-                maxDistance = new NumberSetting(this, "Max Range", 2, 6, 4.5, 1),
-                render = new BooleanSetting(this, "Jello Circle", true)
+                range = new NumberSetting(this, "Range", 2, 6, 3.4, 1),
+                render = new BooleanSetting(this, "Jello Circle", true),
+                autoblock = new BooleanSetting(this, "Auto Block", true),
+                autoblockMode = new StringSetting(this, "Mode", "Fake", "Fake")
+                        .setHidden(() -> !autoblock.get())
         );
     }
 
-    @Override
-    public void onDisable() {
-        blocking = false;
-        super.onDisable();
+    private void targetsSort() {
+        switch (sort.get()){
+            case "Health":
+                this.targets.sort(Comparator.comparingDouble(EntityLivingBase::getHealth));
+                break;
+            case "Distance":
+                this.targets.sort((o1, o2) -> (int)(o1.getDistanceToEntity(mc.player) - o2.getDistanceToEntity(mc.player)));
+                break;
+        }
     }
-
-    public static EntityLivingBase target = null;
 
     @Listen
     public void onMotion(MotionEvent e) {
         if (Client.moduleManager.getByClass(Scaffold.class).isEnabled())
             return;
-        double range = MathUtil.randomNumber(minDistance.get().doubleValue(), maxDistance.get().doubleValue());
-        target = EntityUtil.getClosestEntity(range);
+        target = EntityUtil.getClosestEntity(range.get().doubleValue());
 
         if (target != null) {
-
-            if(mc.getNetHandler().doneLoadingTerrain) {
-                if (!totalTargets.contains(target)) {
-                    totalTargets.add(target);
-                }
-            } else {
-                totalTargets.clear();
-            }
-
-            float[] rotations = RotationUtil.getRotation(target);
-            float rot0 = (float) (rotations[0] + MathUtil.randomNumber(-5, 5));
-            float rot1 = (float) (rotations[1] + MathUtil.randomNumber(-8, 4));
-
-            switch (rotate.get()){
-                case "Pre":
-                    if(e.getState() == Event.State.PRE) {
-                        e.setYaw(rot0);
-                        e.setPitch(rot1);
-                    }
-                    break;
-                case "Post":
-                    if(e.getState() == Event.State.POST) {
-                        e.setYaw(rot0);
-                        e.setPitch(rot1);
-                    }
-                    break;
-                case "Dynamic":
-                    if(e.getState() == Event.State.PRE && e.getState() == Event.State.POST){
-                        e.setYaw(rot0);
-                        e.setPitch(rot1);
-                    }
-                    break;
-            }
-
             if (e.getState() == Event.State.PRE) {
-                if (timer.timeElapsed(1000 / MathUtil.getRandInt(minCps.get().intValue(), maxCps.get().intValue()))) {
-                    attack(target);
-                    timer.resetTime();
+                if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled()) {
+                    EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, range.get().doubleValue(), getTarget());
+                    if (p == null)
+                        return;
+
+                    float[] rotations = RotationUtil.getRotation(target);
+
+                    e.setYaw(rotations[0]);
+                    e.setPitch(rotations[1]);
+
+                    targetsSort();
+                    if (this.timer.timeElapsed((long) (1000.0D / MathUtil.randomNumber(minCps.get().doubleValue(), maxCps.get().doubleValue())))) {
+                        mc.player.swingItem();
+                        mc.player.sendQueue.send(new C02PacketUseEntity(p, C02PacketUseEntity.Action.ATTACK));
+                        this.timer.resetTime();
+                    }
                 }
             }
         }
     }
 
-    public void attack(Entity entity) {
-        mc.player.swingItem();
-        mc.playerController.attackEntity(mc.player, entity);
+    public Entity getTarget() {
+        for (Entity o : mc.world.loadedEntityList) {
+            if (o instanceof net.minecraft.entity.player.EntityPlayer && !(o instanceof net.minecraft.entity.passive.EntityVillager))
+                if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled() && !o.isDead && o != mc.player)
+                    if (mc.player.getDistanceToEntity(o) <= (mc.player.canEntityBeSeen(o) ? range.get().doubleValue() : 3.1D))
+                        return o;
+        }
+        return null;
     }
 
     @Listen
