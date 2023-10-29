@@ -45,7 +45,6 @@ public interface Methods {
             mc.click();
     }
 
-
     static String getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date currentDate = new Date();
@@ -58,6 +57,11 @@ public interface Methods {
     default float getYaw() { return mc.player.rotationYaw; }
     default float getPitch() { return mc.player.rotationPitch; }
     default boolean getGround() { return mc.player.onGround; }
+
+    default boolean canClimbWall() {
+        return getPlayer() != null && getPlayer().isCollidedHorizontally && !getPlayer().isOnLadder() && !getPlayer().isInWater() && getPlayer().fallDistance < 1.0F;
+    }
+
     default boolean getDead() { return mc.player.isDead; }
 
      static void createFolder(String name) {
@@ -71,5 +75,4 @@ public interface Methods {
             }
         }
     }
-
 }

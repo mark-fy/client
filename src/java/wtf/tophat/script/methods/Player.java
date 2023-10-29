@@ -27,6 +27,7 @@ public class Player implements Methods {
 
     //Getters
 
+    public boolean isMoving() { return isMoving(); }
     public boolean getGround() { return getPlayer().onGround; }
     public double getSpeed() { return MoveUtil.getSpeed(); }
     public double getBaseSpeed() { return MoveUtil.getBaseSpeed(); }
@@ -43,5 +44,11 @@ public class Player implements Methods {
     public boolean getCollided() { return getPlayer().isCollided; }
     public boolean getDead() { return getPlayer().isDead; }
     public float getFallDistance() { return getPlayer().fallDistance; }
+    public int getTicksExisted() { return getPlayer().ticksExisted; }
+    public boolean canClimbWall() { return canClimbWall(); }
+    public boolean isOnLadder() { return getPlayer().isOnLadder(); }
+    public boolean isInWater() { return getPlayer().isInWater(); }
+    public boolean isInLava() { return getPlayer().isInLava(); }
+    public boolean isImmuneFromFire() { return getPlayer().isImmuneToFire(); }
 
 }

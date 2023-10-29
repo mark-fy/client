@@ -11,5 +11,6 @@ public class World implements Methods {
     // Getters
 
     public float getGameSpeed() { return getMCTimer().timerSpeed; }
+    public String getDate() { return Methods.getCurrentDate(); }
 
 }
