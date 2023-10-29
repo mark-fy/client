@@ -11,22 +11,17 @@ public class DamageUtil implements Methods {
         if (mc.player == null) return;
         double x = mc.player.posX, y = mc.player.posY, z = mc.player.posZ;
         switch (type) {
-            case OLDNCP:
-                for(int i = 0; i < 49; i++) {
-                    mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(mc.player.posX, mc.player.posY + 0.0625, mc.player.posZ, false));
-                    mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(mc.player.posX, mc.player.posY, mc.player.posZ, false));
+            case NCP:
+                for (int i = 0; i <= MoveUtil.getMaxFallDist() / 0.0625; i++) {
+                    mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(x, y + 0.0625, z, false));
+                    mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
                 }
-                mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(mc.player.posX, mc.player.posY, mc.player.posZ, true));
-                break;
-            case VANILLA:
-                mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(x, y + 3.01, z, false));
-                mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
-                mc.player.sendQueue.send(new C03PacketPlayer(true));
+                mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, true));
                 break;
         }
     }
 
     public enum DamageType {
-        OLDNCP, VANILLA
+        NCP
     }
 }

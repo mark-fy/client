@@ -8,8 +8,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
 import org.apache.commons.lang3.RandomUtils;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
@@ -24,6 +26,8 @@ import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.network.ServerUtil;
 import wtf.tophat.utilities.player.movement.MoveUtil;
+import wtf.tophat.utilities.player.rotations.RotationUtil;
+import wtf.tophat.utilities.player.scaffold.ScaffoldUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.time.Stopwatch;
 import wtf.tophat.utilities.vector.Vec3d;
@@ -39,7 +43,7 @@ import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 public class Scaffold extends Module {
 
     private final StringSetting rotationMode, towerMode;
-    private final BooleanSetting tower;
+    private final BooleanSetting tower, slow;
 
     private static final List<Block> invalidBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.tnt, Blocks.chest,
             Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tnt, Blocks.enchanting_table, Blocks.carpet,
@@ -65,8 +69,9 @@ public class Scaffold extends Module {
 
     public Scaffold(){
         Client.settingManager.add(
-                rotationMode = new StringSetting(this, "Rotations Mode", "Forward", "Forward"),
+                rotationMode = new StringSetting(this, "Rotations Mode", "Forward", "Forward", "45", "Watchdog"),
                 tower = new BooleanSetting(this, "Tower", false),
+                slow = new BooleanSetting(this, "Slow", true),
                 towerMode = new StringSetting(this, "Tower Mode", "NCP", "NCP", "Vulcan", "Verus")
                         .setHidden(() -> !tower.get())
         );
@@ -120,6 +125,12 @@ public class Scaffold extends Module {
     public void onMotion(MotionEvent motionEvent) {
         mc.player.setSprinting(false);
 
+        if(slow.get()) {
+            if (Methods.isMoving() && mc.player.onGround) {
+                MoveUtil.setSpeed(0.10f);
+            }
+        }
+
         if (motionEvent.getState() == Event.State.PRE) {
             int tempSlot = getBlockSlot();
 
@@ -139,6 +150,8 @@ public class Scaffold extends Module {
 
             blockInfo = null;
 
+            float[] rotations = new float[]{0, 0};
+
             switch (rotationMode.get()) {
                 case "Forward":
                     float rotationYaw = mc.player.rotationYaw;
@@ -157,6 +170,33 @@ public class Scaffold extends Module {
                     motionEvent.setYaw(yaw);
                     motionEvent.setPitch(pitch);
                     break;
+                case "45":
+                    float val;
+                    if (Methods.isMoving()) {
+                        float f = MoveUtil.getMoveYaw(motionEvent.getYaw()) - 180;
+                        float[] numbers = new float[]{-135, -90, -45, 0, 45, 90, 135, 180};
+                        float lastDiff = 999;
+                        val = f;
+                        for (float v : numbers) {
+                            float diff = Math.abs(v - f);
+                            if (diff < lastDiff) {
+                                lastDiff = diff;
+                                val = v;
+                            }
+                        }
+                    } else {
+                        val = rotations[0];
+                    }
+                    rotations = new float[]{
+                            (val + MathHelper.wrapAngleTo180_float(mc.player.prevRotationYawHead)) / 2.0F,
+                            (77 + MathHelper.wrapAngleTo180_float(mc.player.prevRotationPitchHead)) / 2.0F};
+                    motionEvent.setYaw(rotations[0]);
+                    motionEvent.setPitch(rotations[1]);
+                    break;
+                case "Watchdog":
+                    rotations = new float[]{MoveUtil.getMoveYaw(motionEvent.getYaw()) - 180, y};
+                    motionEvent.setYaw(rotations[0]);
+                    motionEvent.setPitch(rotations[1]);
             }
 
             if(tower.get()) {

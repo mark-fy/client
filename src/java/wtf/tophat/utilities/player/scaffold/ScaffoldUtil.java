@@ -12,4 +12,5 @@ public class ScaffoldUtil implements Methods {
         }
         return mc.player.posY - 1.0 >= 0.0D && Math.max(mc.player.posY, 0.0D) - Math.min(mc.player.posY, 0.0D) <= 3.0 && !mc.settings.keyBindJump.isKeyDown() ? 0.0D : mc.player.posY - 1.0;
     }
+
 }

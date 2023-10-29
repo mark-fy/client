@@ -1,9 +1,12 @@
 package wtf.tophat.utilities.player.movement;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.util.vector.Vector2f;
+import wtf.tophat.Client;
+import wtf.tophat.modules.impl.player.Scaffold;
 import wtf.tophat.utilities.Methods;
 
 public class MoveUtil implements Methods {
@@ -27,6 +30,11 @@ public class MoveUtil implements Methods {
         final double motionZ = forward * friction * f2 + strafe * friction * f1;
         return new double[] { motionX, motionZ };
     }
+
+    public static float getMaxFallDist() {
+        return mc.player.getMaxFallHeight() + (mc.player.isPotionActive(Potion.jump) ? mc.player.getActivePotionEffect(Potion.jump).getAmplifier() + 1 : 0);
+    }
+
 
     public static double getBaseMoveSpeed() {
         double baseSpeed = 0.2873D;
@@ -144,10 +152,6 @@ public class MoveUtil implements Methods {
         mc.player.motionZ = mc.player.movementInput.moveForward * movementSpeed * Math.cos(Math.toRadians(mc.player.rotationYaw)) - mc.player.movementInput.moveStrafe * movementSpeed * -Math.sin(Math.toRadians(mc.player.rotationYaw));
     }
 
-    public static float getDirection() {
-        return getDirection(mc.player.moveForward, mc.player.moveStrafing, mc.player.rotationYaw);
-    }
-
     public static float getDirection(float forward, float strafing, float yaw) {
         if (forward == 0.0 && strafing == 0.0) return yaw;
         boolean reversed = (forward < 0.0);
@@ -161,4 +165,68 @@ public class MoveUtil implements Methods {
         return yaw;
     }
 
+    public static float getDirection() {
+        return getDirection(mc.player.moveForward, mc.player.moveStrafing, mc.player.rotationYaw);
+    }
+
+    // Rise 6 MoveUtil :
+    public static int depthStriderLevel() {
+        return EnchantmentHelper.getDepthStriderModifier(mc.player);
+    }
+    public static double getAllowedHorizontalDistance() {
+        double horizontalDistance;
+        boolean useBaseModifiers = false;
+        if (mc.player.isInWater() || mc.player.isInLava()) {
+            horizontalDistance = MOD_SWIM * WALK_SPEED;
+
+            final int depthStriderLevel = depthStriderLevel();
+            if (depthStriderLevel > 0) {
+                horizontalDistance *= MOD_DEPTH_STRIDER[depthStriderLevel];
+                useBaseModifiers = true;
+            }
+        } else if (mc.player.isSneaking()) {
+            horizontalDistance = MOD_SNEAK * WALK_SPEED;
+        } else {
+            horizontalDistance = WALK_SPEED;
+            useBaseModifiers = true;
+        }
+        if (useBaseModifiers) {
+            if (canSprint(false)) {
+                horizontalDistance *= MOD_SPRINTING;
+            }
+
+            final Scaffold scaffold = Client.moduleManager.getByClass(Scaffold.class);
+
+            if (mc.player.isPotionActive(Potion.moveSpeed) && mc.player.getActivePotionEffect(Potion.moveSpeed).getDuration() > 0) {
+                horizontalDistance *= 1 + (0.2 * (mc.player.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1));
+            }
+
+            if (mc.player.isPotionActive(Potion.moveSlowdown)) {
+                horizontalDistance = 0.29;
+            }
+        }
+        return horizontalDistance;
+    }
+    public static boolean enoughMovementForSprinting() {
+        return Math.abs(mc.player.moveForward) >= 0.8F || Math.abs(mc.player.moveStrafing) >= 0.8F;
+    }
+    public static boolean canSprint(final boolean legit) {
+        return (legit ? mc.player.moveForward >= 0.8F
+                && !mc.player.isCollidedHorizontally
+                && (mc.player.getFoodStats().getFoodLevel() > 6 || mc.player.capabilities.allowFlying)
+                && !mc.player.isPotionActive(Potion.blindness)
+                && !mc.player.isUsingItem()
+                && !mc.player.isSneaking()
+                : enoughMovementForSprinting());
+    }
+    public static final double WALK_SPEED = 0.221;
+    public static final double MOD_SPRINTING = 1.3F;
+    public static final double MOD_SNEAK = 0.3F;
+    public static final double MOD_SWIM = 0.115F / WALK_SPEED;
+    public static final double[] MOD_DEPTH_STRIDER = {
+            1.0F,
+            0.1645F / MOD_SWIM / WALK_SPEED,
+            0.1995F / MOD_SWIM / WALK_SPEED,
+            1.0F / MOD_SWIM,
+    };
 }

@@ -1,6 +1,7 @@
 package wtf.tophat.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.network.play.client.C19PacketResourcePackStatus;
@@ -40,7 +41,7 @@ public class Flight extends Module {
 
     // Old NCP
     int ticks;
-    double OldNCPSpeed = 0.2873F;
+    double OldNCPSpeed = 0.2800F;
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -103,7 +104,7 @@ public class Flight extends Module {
                         event.setY(event.getY() - y);
                     }
                 } else if (mc.player.onGround) {
-                    DamageUtil.damage(DamageUtil.DamageType.OLDNCP);
+                    DamageUtil.damage(DamageUtil.DamageType.NCP);
                     mc.player.jump();
                     hasDamaged = true;
                 }
@@ -150,7 +151,7 @@ public class Flight extends Module {
     public void onEnable(){
         switch (mode.get()) {
             case "Old NCP":
-                OldNCPSpeed = 1.6;
+                OldNCPSpeed = 1.4;
         }
         hasDamaged = false;
     }
@@ -158,10 +159,10 @@ public class Flight extends Module {
     @Override
     public void onDisable() {
         up = false;
-        super.onDisable();
         switch (mode.get()){
             case "Old NCP":
                 mc.player.motionX = mc.player.motionZ = 0;
         }
+        super.onDisable();
     }
 }

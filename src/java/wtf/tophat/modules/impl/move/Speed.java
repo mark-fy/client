@@ -2,9 +2,12 @@ package wtf.tophat.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.network.play.client.C0BPacketEntityAction;
+import net.minecraft.potion.Potion;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
+import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -21,7 +24,7 @@ public class Speed extends Module {
 
     public Speed() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "Old NCP"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "New NCP"),
                 speed = new NumberSetting(this, "Speed", 0, 3, 0.29, 2)
                         .setHidden(() -> !mode.is("Vanilla"))
         );
@@ -98,7 +101,47 @@ public class Speed extends Module {
                         mc.player.motionZ = 0.0;
                     }
                     break;
+                case "New NCP":
+                    if (event.getState().equals(Event.State.POST) || !Methods.isMoving() || (mc.player.isInLava() && mc.player.isInWater())) {
+                        return;
+                    }
+
+                    if(mc.player.hurtTime >1) {
+                        MoveUtil.strafe(
+                                MoveUtil.getSpeed() * 1.2F
+                        );
+                    }
+
+                    if (mc.player.onGround) {
+                        MoveUtil.strafe(
+                                MoveUtil.getBaseMoveSpeed()
+                        );
+                        mc.player.jump();
+
+                        if (mc.player.isPotionActive(Potion.moveSpeed)) {
+                            MoveUtil.strafe(
+                                    MoveUtil.getSpeed() * 1.2F
+                            );
+                        }
+                    }
+
+                    mc.timer.timerSpeed = (float) (1.075F - (Math.random() - 0.5) / 100.0F);
+
+
+                    MoveUtil.strafe(
+                            MoveUtil.getSpeed() - (float) (Math.random() - 0.5F) / 100.0F
+                    );
             }
+        }
+    }
+
+    @Listen
+    public void onPacket(PacketEvent event){
+        switch (mode.get()) {
+            case "New NCP":
+                if (event.getPacket() instanceof C0BPacketEntityAction) {
+                    event.setCancelled(true);
+                }
         }
     }
 
@@ -107,9 +150,14 @@ public class Speed extends Module {
         onTicks = 0;
         offTicks = 0;
         hypixelTicks = 0;
-        mc.timer.timerSpeed = 1.0f;
         mc.settings.keyBindJump.pressed = false;
+        mc.timer.timerSpeed = 1.0f;
         KeyBinding.setKeyBindState(mc.settings.keyBindSprint.getKeyCode(), false);
+        switch (mode.get()){
+            case "New NCP":
+                mc.player.motionX = 0;
+                mc.player.motionZ = 0;
+        }
         super.onDisable();
     }
 }
