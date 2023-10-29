@@ -36,6 +36,8 @@ public class MaterialClickGUI extends GuiScreen {
         super.initGui();
     }
 
+    private NumberSetting currentDraggingSetting = null; // Added this variable
+
     @Override
     public boolean doesGuiPauseGame() {
         return false;
@@ -92,7 +94,7 @@ public class MaterialClickGUI extends GuiScreen {
             float categoryX = (float) (x + adjustment);
             float categoryY = (float) (y + CategoryUtil.getCategoryY(category));
 
-            boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY - 2, 36, 36);
+            boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY + 4, 36, 12);
 
             int textColor;
 
@@ -104,7 +106,7 @@ public class MaterialClickGUI extends GuiScreen {
                 textColor = Color.WHITE.getRGB();
             }
 
-            fr.drawStringWithShadow(CategoryUtil.getCategoryLetter(category), categoryX + 2, categoryY + 4, textColor);
+            fr.drawStringWithShadow(category.getName(), categoryX - 2, categoryY + 4, textColor);
         }
 
         int counter = 0;
@@ -167,11 +169,11 @@ public class MaterialClickGUI extends GuiScreen {
                 offset += 15;
             } else if (setting instanceof StringSetting) {
                 DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
-                fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).get(), (float) (x + 150), (float) (y + offset + 3), Color.WHITE.getRGB());
+                fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).get(), (float) (x + 152), (float) (y + offset + 3), Color.WHITE.getRGB());
                 offset += 15;
             } else if (setting instanceof BooleanSetting) {
                 DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
-                fr.drawStringWithShadow(setting.getName() + ": " + ((BooleanSetting) setting).get(), (float) (x + 150), (float) (y + offset + 3), Color.WHITE.getRGB());
+                fr.drawStringWithShadow(setting.getName() + ": " + ((BooleanSetting) setting).get(), (float) (x + 152), (float) (y + offset + 3), Color.WHITE.getRGB());
                 offset += 15;
             } else if (setting instanceof NumberSetting) {
                 NumberSetting numberSetting = (NumberSetting) setting;
@@ -185,15 +187,13 @@ public class MaterialClickGUI extends GuiScreen {
 
                 String formattedValue = String.format(Locale.ROOT, setting.getName() + ": %." + decimalPoints + "f", currentValue);
 
-                fr.drawStringWithShadow(formattedValue, (float) (x + 150), (float) (y + offset + 3), Color.WHITE.getRGB());
+                fr.drawStringWithShadow(formattedValue, (float) (x + 152), (float) (y + offset + 3), Color.WHITE.getRGB());
 
                 DrawingUtil.rectangle(x + 154, y + offset + 15, 185, 11, true, new Color(0, 0, 0));
-                //The slider that will move along with the slider pointer when it is dragged.
                 DrawingUtil.rectangle(x + 154, y + offset + 15, randoValue, 11, true, new Color(60, 60, 60));
-                // Slider Pointer
-                DrawingUtil.rectangle(sliderPosition, y + offset + 15, 6, 11, true, new Color(ColorUtil.fadeBetween(WHITE_COLOR, LIGHT_GRAY_COLOR, counter * 150L)));
+                DrawingUtil.rectangle(sliderPosition, y + offset + 15, 6, 11, true, CategoryUtil.getCategoryColor1(selectedCategory));
                 DrawingUtil.rectangle(x + 154, y + offset + 15, 185, 11, false, Color.WHITE);
-                offset += 32;
+                offset = handleNumberSetting((NumberSetting) setting, x, y, offset, mouseX, mouseY);
             }
         }
     }
@@ -214,7 +214,7 @@ public class MaterialClickGUI extends GuiScreen {
             }
 
             int counter = 0;
-            for(Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+            for (Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
                 if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
                     module.toggle();
                 }
@@ -222,7 +222,7 @@ public class MaterialClickGUI extends GuiScreen {
             }
 
             for (Module.Category category : Module.Category.values()) {
-                if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 10), (float) (y + CategoryUtil.getCategoryY(category)), 36, 36)) {
+                if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 10), (float) (y + CategoryUtil.getCategoryY(category)), 36, 12)) {
                     selectedCategory = category;
                     expandedModule = null;
                 }
@@ -230,24 +230,24 @@ public class MaterialClickGUI extends GuiScreen {
 
             int offset = 16;
             for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
-                if(setting.isHidden()) {
+                if (setting.isHidden()) {
                     continue;
                 }
 
-                if(setting instanceof DividerSetting) {
+                if (setting instanceof DividerSetting) {
                     offset += 15;
-                } else if(setting instanceof StringSetting) {
-                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
+                } else if (setting instanceof StringSetting) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 151), (float) (y + offset), 199, 15)) {
                         ((StringSetting) setting).forward();
                     }
                     offset += 15;
-                } else if(setting instanceof BooleanSetting) {
-                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
+                } else if (setting instanceof BooleanSetting) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 151), (float) (y + offset), 199, 15)) {
                         ((BooleanSetting) setting).toggle();
                     }
                     offset += 15;
-                } else if(setting instanceof NumberSetting) {
-                    offset += 32;
+                } else if (setting instanceof NumberSetting) {
+                    offset = handleNumberSettingClick((NumberSetting) setting, x, y, offset, mouseX, mouseY, mouseButton);
                 }
             }
 
@@ -257,12 +257,12 @@ public class MaterialClickGUI extends GuiScreen {
             }
         }
 
-        if(mouseButton == 1) {
+        if (mouseButton == 1) {
             double x = frameX;
             double y = frameY;
 
             int counter = 0;
-            for(Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+            for (Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
                 if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
                     expandedModule = module;
                 }
@@ -271,27 +271,47 @@ public class MaterialClickGUI extends GuiScreen {
 
             int offset = 15;
             for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
-                if(setting.isHidden()) {
+                if (setting.isHidden()) {
                     continue;
                 }
 
-                if(setting instanceof DividerSetting) {
+                if (setting instanceof DividerSetting) {
                     offset += 15;
-                } else if(setting instanceof StringSetting) {
-                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
+                } else if (setting instanceof StringSetting) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 151), (float) (y + offset), 199, 15)) {
                         ((StringSetting) setting).backward();
                     }
                     offset += 15;
-                } else if(setting instanceof BooleanSetting) {
-                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 150), (float) (y + offset), 199, 15)) {
+                } else if (setting instanceof BooleanSetting) {
+                    if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 151), (float) (y + offset), 199, 15)) {
                         ((BooleanSetting) setting).toggle();
                     }
                     offset += 15;
-                } else if(setting instanceof NumberSetting) {
+                } else if (setting instanceof NumberSetting) {
                     offset += 32;
                 }
             }
         }
+    }
+
+    @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        if (currentDraggingSetting != null && Mouse.isButtonDown(0)) {
+            double sliderX = frameX + 154;
+            double sliderWidth = 185;
+            if (mouseX >= sliderX && mouseX <= sliderX + sliderWidth) {
+                handleSliderDrag(mouseX, sliderX, sliderWidth);
+            }
+        }
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        if (currentDraggingSetting != null && state == 0) {
+            currentDraggingSetting = null;
+        }
+        super.mouseReleased(mouseX, mouseY, state);
     }
 
     private void renderBlur() {
@@ -300,5 +320,45 @@ public class MaterialClickGUI extends GuiScreen {
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0, 0, 0));
             GaussianBlur.endBlur(10, 2);
         }
+    }
+
+    private int handleNumberSetting(NumberSetting setting, double x, double y, int offset, int mouseX, int mouseY) {
+        double minValue = setting.min().doubleValue();
+        double maxValue = setting.max().doubleValue();
+        double randoValue = ((setting.get().doubleValue() - minValue) / (maxValue - minValue)) * (185 - 6);
+        double sliderPosition = x + 154 + randoValue;
+
+        if(Mouse.isButtonDown(0)) {
+            if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 154, (float) y + offset + 15, 185, 11)) {
+                if (mouseX < sliderPosition) {
+                    currentDraggingSetting = setting;
+                    handleSliderDrag(mouseX, x + 154, 185);
+                } else if (mouseX > sliderPosition + 6) {
+                    currentDraggingSetting = setting;
+                    handleSliderDrag(mouseX, x + 154, 185);
+                }
+            }
+        }
+
+        return offset + 32;
+    }
+
+    private int handleNumberSettingClick(NumberSetting setting, double x, double y, int offset, int mouseX, int mouseY, int mouseButton) {
+        if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 154, (float) y + offset + 15, 185, 11)) {
+            if (Mouse.isButtonDown(mouseButton)) {
+                currentDraggingSetting = setting;
+                handleSliderDrag(mouseX, x + 154, 185);
+            }
+        }
+        return offset + 32;
+    }
+
+    private void handleSliderDrag(int mouseX, double sliderX, double sliderWidth) {
+        double relativeX = mouseX - sliderX;
+        double range = currentDraggingSetting.max().doubleValue() - currentDraggingSetting.min().doubleValue();
+        double newValue = currentDraggingSetting.min().doubleValue() + (relativeX / (sliderWidth - 6)) * range;
+        newValue = Math.min(currentDraggingSetting.max().doubleValue(), Math.max(currentDraggingSetting.min().doubleValue(), newValue));
+        newValue = Math.round(newValue * Math.pow(10, currentDraggingSetting.decimalPoints)) / Math.pow(10, currentDraggingSetting.decimalPoints);
+        currentDraggingSetting.set(newValue);
     }
 }

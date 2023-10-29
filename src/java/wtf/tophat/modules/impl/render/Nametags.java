@@ -62,7 +62,7 @@ public class Nametags extends Module {
         double distance = camera.getDistance(x + mc.getRenderManager().viewerPosX, y + mc.getRenderManager().viewerPosY, z + mc.getRenderManager().viewerPosZ);
         int width = mc.fontRenderer.getStringWidth(displayTag) / 2;
         int height = mc.fontRenderer.FONT_HEIGHT;
-        double scale = ((double)scaling.get() * (distance * 11)) / 1050d;
+        double scale = (scaling.get().doubleValue() * (distance * 11)) / 1050d;
         if (distance <= 8.0 && this.smartScale.get()) {
             scale = 0.0245d;
         }

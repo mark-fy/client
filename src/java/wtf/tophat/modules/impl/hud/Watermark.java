@@ -74,7 +74,7 @@ public class Watermark extends Module {
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                fr.drawString("Breathe - " + Client.getVersion(), 15 ,6, -1);
+                fr.drawString("TopHat - " + Client.getVersion(), 15 ,6, -1);
                 mc.getTextureManager().bindTexture(new ResourceLocation("tophat/gorge.png"));
                 Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
                 break;
@@ -153,6 +153,7 @@ public class Watermark extends Module {
                 int outlineWidth = strWidth1 + padding + extraWidth * 2;
                 RoundedUtil.drawRoundOutline(outlineX, y, outlineWidth, height, cornerRadius, 0.30f, outlineColor, new Color(color));
                 fr.drawStringChoose(fontShadow.get(), text, x + textOffset - 1, y + 6, -1);
+                break;
             }
         }
 

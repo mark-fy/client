@@ -127,7 +127,7 @@ public class Disabler extends Module {
     @Override
     public void onEnable() {
         verusCounter = 0;
-        mc.player.ticksExisted = 0;
+        getPlayer().ticksExisted = 0;
         super.onEnable();
     }
 

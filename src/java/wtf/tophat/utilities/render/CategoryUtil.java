@@ -98,7 +98,7 @@ public class CategoryUtil implements Methods {
 
     public static int getCategoryY(Module.Category category) {
         int index = Arrays.asList(Module.Category.values()).indexOf(category);
-        return 20 + index * 48;
+        return 20 + index * 12;
     }
 
 }
