@@ -16,6 +16,7 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.Methods;
+import wtf.tophat.utilities.player.DamageUtil;
 import wtf.tophat.utilities.player.movement.MoveUtil;
 
 @ModuleInfo(name = "Flight",desc = "fly like a bird", category = Module.Category.MOVE)
@@ -32,12 +33,14 @@ public class Flight extends Module {
         );
     }
 
+    private boolean hasDamaged;
+
     // Verus
     private boolean up;
 
     // Old NCP
     int ticks;
-    float OldNCPSpeed = 0.2873F;
+    double OldNCPSpeed = 0.2873F;
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -78,21 +81,31 @@ public class Flight extends Module {
                 MoveUtil.setSpeed(0.2f);
                 break;
             case "Old NCP":
-                OldNCPSpeed = 0.2873f;
-                mc.player.motionY = 0;
-                mc.player.setPosition(mc.player.posX, mc.player.posY - 1.0e-4, mc.player.posZ);
-                MoveUtil.setSpeed(OldNCPSpeed);
-                OldNCPSpeed -= OldNCPSpeed/15;
-                if (mc.player.movementInput.jump)
-                    mc.player.motionY += 0.3;
-                else if (mc.player.movementInput.sneak)
-                    mc.player.motionY -= 0.3;
-                if (OldNCPSpeed < 0.2873 || !Methods.isMoving()) {
-                    OldNCPSpeed = 0.2873f;
-                }
-                if (mc.player.onGround) {
-                    OldNCPSpeed = 1.5f;
+                if (hasDamaged) {
+                    event.setOnGround(true);
+                    double baseSpeed = MoveUtil.getBaseMoveSpeed();
+                    if (!Methods.isMoving() || mc.player.isCollidedHorizontally) {
+                        OldNCPSpeed = baseSpeed;
+                    }
+                    if (OldNCPSpeed > baseSpeed) {
+                        OldNCPSpeed -= OldNCPSpeed / 159.0;
+                    }
+
+                    OldNCPSpeed = Math.max(baseSpeed, OldNCPSpeed);
+
+                    if (event.getState().equals(Event.State.PRE)) {
+                        mc.timer.timerSpeed = 1;
+                        if (Methods.isMoving()) {
+                            MoveUtil.setSpeed(OldNCPSpeed);
+                        }
+                        mc.player.motionY = 0;
+                        double y = 1.0E-10;
+                        event.setY(event.getY() - y);
+                    }
+                } else if (mc.player.onGround) {
+                    DamageUtil.damage(DamageUtil.DamageType.WATCHDOG);
                     mc.player.jump();
+                    hasDamaged = true;
                 }
         }
     }
@@ -134,8 +147,21 @@ public class Flight extends Module {
     }
 
     @Override
+    public void onEnable(){
+        switch (mode.get()) {
+            case "Old NCP":
+                OldNCPSpeed = 1.6;
+        }
+        hasDamaged = false;
+    }
+
+    @Override
     public void onDisable() {
         up = false;
         super.onDisable();
+        switch (mode.get()){
+            case "Old NCP":
+                mc.player.motionX = mc.player.motionZ = 0;
+        }
     }
 }
