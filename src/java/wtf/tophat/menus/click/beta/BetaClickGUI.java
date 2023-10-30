@@ -73,7 +73,7 @@ public class BetaClickGUI extends GuiScreen implements Methods {
             }
 
             int moduleOffset = 20;
-            for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+            for (Module module : Client.moduleManager.getModulesByCategory(listeningToCategory)) {
                 float modX = x + 60, modY = y + moduleOffset;
                 boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, modX, modY, 232, 20);
 
