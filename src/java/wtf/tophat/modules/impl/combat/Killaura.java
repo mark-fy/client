@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@ModuleInfo(name = "Killaura", desc = "kills entities", category = Module.Category.COMBAT)
+@ModuleInfo(name = "Kill Aura", desc = "kills entities", category = Module.Category.COMBAT)
 public class Killaura extends Module {
 
     public final TimeUtil timer = new TimeUtil();

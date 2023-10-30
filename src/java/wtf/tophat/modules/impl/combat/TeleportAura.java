@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.github.nevalackin.radbus.Listen;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +14,6 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.Vec3;
 import wtf.tophat.Client;
 import wtf.tophat.events.impl.MotionEvent;
-import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -24,17 +21,19 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.entity.EntityUtil;
 import wtf.tophat.utilities.misc.PathUtil;
 
-@ModuleInfo(name = "TpAura", desc = "attack entities with infinity range", category = Module.Category.COMBAT)
-public class TpAura extends Module {
-    public EntityLivingBase target;
-    public final List<Vec3> path = new ArrayList<Vec3>();
-    public final NumberSetting range = new NumberSetting(this, "Range", 5.0, 100.0, 50.0, 1);
-    public final BooleanSetting onlyPlayer = new BooleanSetting(this, "Only Player", true);
+@ModuleInfo(name = "Teleport Aura", desc = "attack entities with infinity range", category = Module.Category.COMBAT)
+public class TeleportAura extends Module {
 
-    public TpAura() {
+    public EntityLivingBase target;
+    public final List<Vec3> path = new ArrayList<>();
+
+    private final NumberSetting range;
+    private final BooleanSetting onlyPlayer;
+
+    public TeleportAura() {
         Client.settingManager.add(
-                range,
-                onlyPlayer
+                range = new NumberSetting(this, "Range", 5.0, 100.0, 50.0, 1),
+                onlyPlayer = new BooleanSetting(this, "Only Player", true)
         );
     }
 
@@ -42,6 +41,7 @@ public class TpAura extends Module {
     public void onEnable() {
         path.clear();
         target = null;
+        super.onEnable();
     }
 
     @Listen
@@ -55,13 +55,19 @@ public class TpAura extends Module {
         LinkedList<Entity> entities = new LinkedList<>(targets);
         entities.sort(new EntityUtil.RangeSorter());
 
+        if(targets == null) return;
+
         for (Entity entity : entities) {
             double deltaX = mc.player.posX - entity.posX;
             double deltaY = mc.player.posY - entity.posY;
             double deltaZ = mc.player.posZ - entity.posZ;
             if (mc.player == entity || onlyPlayer.get() && !(entity instanceof EntityPlayer) || !(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) <= range.get().doubleValue() || !(entity instanceof EntityLivingBase)))
                 continue;
+
             target = (EntityLivingBase) entity;
+
+            if(target == null) return;
+
             if (mc.player.ticksExisted % 1 == 0) {
                 List<Vec3> blinkPath = PathUtil.findBlinkPath(target.posX, target.posY, target.posZ, 8.0);
                 path.clear();
