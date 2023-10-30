@@ -22,7 +22,7 @@ import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
-import wtf.tophat.utilities.math.TimeUtil;
+import wtf.tophat.utilities.time.TimeUtil;
 
 @ModuleInfo(name = "No Slowdown",desc = "disable slow down effects", category = Module.Category.MOVE)
 public class NoSlowdown extends Module {
