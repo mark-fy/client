@@ -180,6 +180,7 @@ import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.events.impl.PostTickEvent;
 import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.menus.UIMainMenu;
+import wtf.tophat.modules.impl.render.BlockAnimations;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
@@ -1470,28 +1471,36 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private void sendClickBlockToController(boolean leftClick)
-    {
-        if (!leftClick)
-        {
+    public void sendClickBlockToController(boolean leftClick) {
+        if (!leftClick) {
             this.leftClickCounter = 0;
         }
 
-        if (this.leftClickCounter <= 0 && !this.player.isUsingItem())
-        {
-            if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-            {
-                BlockPos blockpos = this.objectMouseOver.getBlockPos();
+        if(Client.moduleManager.getByClass(BlockAnimations.class).isEnabled() && Client.moduleManager.getByClass(BlockAnimations.class).blockHit.get()) {
+            if (this.leftClickCounter <= 0) {
+                if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                    BlockPos blockpos = this.objectMouseOver.getBlockPos();
 
-                if (this.world.getBlockState(blockpos).getBlock().getMaterial() != Material.air && this.playerController.onPlayerDamageBlock(blockpos, this.objectMouseOver.sideHit))
-                {
-                    this.effectRenderer.addBlockHitEffects(blockpos, this.objectMouseOver.sideHit);
-                    this.player.swingItem();
+                    if (this.world.getBlockState(blockpos).getBlock().getMaterial() != Material.air && this.playerController.onPlayerDamageBlock(blockpos, this.objectMouseOver.sideHit)) {
+                        this.effectRenderer.addBlockHitEffects(blockpos, this.objectMouseOver.sideHit);
+                        this.player.swingItem();
+                    }
+                } else {
+                    this.playerController.resetBlockRemoving();
                 }
             }
-            else
-            {
-                this.playerController.resetBlockRemoving();
+        } else {
+            if (this.leftClickCounter <= 0 && !this.player.isUsingItem()) {
+                if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                    BlockPos blockpos = this.objectMouseOver.getBlockPos();
+
+                    if (this.world.getBlockState(blockpos).getBlock().getMaterial() != Material.air && this.playerController.onPlayerDamageBlock(blockpos, this.objectMouseOver.sideHit)) {
+                        this.effectRenderer.addBlockHitEffects(blockpos, this.objectMouseOver.sideHit);
+                        this.player.swingItem();
+                    }
+                } else {
+                    this.playerController.resetBlockRemoving();
+                }
             }
         }
     }

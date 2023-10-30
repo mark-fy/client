@@ -50,7 +50,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import wtf.tophat.Client;
 import wtf.tophat.events.impl.DelayJumpEvent;
+import wtf.tophat.modules.impl.render.HitAnimations;
 
 public abstract class EntityLivingBase extends Entity
 {
@@ -1337,9 +1339,16 @@ public abstract class EntityLivingBase extends Entity
      * Returns an integer indicating the end point of the swing animation, used by {@link #swingProgress} to provide a
      * progress indicator. Takes dig speed enchantments into account.
      */
-    private int getArmSwingAnimationEnd()
-    {
-        return this.isPotionActive(Potion.digSpeed) ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1 : (this.isPotionActive(Potion.digSlowdown) ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2 : 6);
+    private int getArmSwingAnimationEnd() {
+        double swingSpeed = Client.moduleManager.getByClass(HitAnimations.class).isEnabled()
+                ? 1.0 / Client.moduleManager.getByClass(HitAnimations.class).swingSpeed.get().doubleValue()
+                : 1.0;
+
+        return this.isPotionActive(Potion.digSpeed)
+                ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1
+                : (int) ((this.isPotionActive(Potion.digSlowdown)
+                ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2
+                : 6) * swingSpeed);
     }
 
     /**
