@@ -4,6 +4,7 @@ import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.accounts.AccountManager;
 import wtf.tophat.menus.alts.AltThread;
+import wtf.tophat.menus.guis.microsoft.GuiLoginMicrosoft;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;
@@ -33,6 +34,8 @@ public class UIAltManager extends GuiScreen {
         this.buttonList.add(new GuiButton(0, buttonX, buttonY, "Login"));
         buttonY += 20;
         this.buttonList.add(new GuiButton(1, buttonX, buttonY, "Add"));
+        buttonY += 20;
+        this.buttonList.add(new GuiButton(3, buttonX, buttonY, "Microsoft"));
         buttonY += 20;
         this.buttonList.add(new GuiButton(2, buttonX, buttonY, "Cancel"));
 
@@ -66,6 +69,9 @@ public class UIAltManager extends GuiScreen {
                 break;
             case 2:
                 mc.displayGuiScreen(parent);
+                break;
+            case 3:
+                mc.displayGuiScreen(new GuiLoginMicrosoft());
                 break;
         }
         super.actionPerformed(button);

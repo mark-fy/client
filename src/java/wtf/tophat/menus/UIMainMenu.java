@@ -4,6 +4,7 @@ import net.minecraft.client.gui.*;
 import wtf.tophat.Client;
 import wtf.tophat.menus.guis.UIAltManager;
 import wtf.tophat.menus.guis.UIChangeLog;
+import wtf.tophat.menus.guis.microsoft.GuiLoginMicrosoft;
 import wtf.tophat.utilities.render.ColorUtil;
 
 import java.awt.*;
