@@ -8,7 +8,7 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.math.MathUtil;
-import wtf.tophat.utilities.time.Stopwatch;
+import wtf.tophat.utilities.time.TimeUtil;
 
 @ModuleInfo(name = "Spammer", desc = "spam a text in the chat", category = Module.Category.EXPLOIT)
 public final class Spammer extends Module {
@@ -25,20 +25,19 @@ public final class Spammer extends Module {
     }
 
 
-    private final Stopwatch delayTimer = new Stopwatch();
+    private TimeUtil timer = new TimeUtil();
 
     @Listen
     public void onMotion(MotionEvent event) {
         String spammerText = "buy TopHat @ tophat?wtf";
 
-        if (spammerText != null && delayTimer.timeElapsed(bypass.get() ? 2000 : delay.get().longValue())) {
-
+        if (timer.elapsed(bypass.get() ? 2000 : delay.get().longValue())) {
             if (antispam.get()) {
                 spammerText += " " + MathUtil.getRandInt(10, 100000);
             }
 
             mc.player.sendChatMessage(spammerText);
-            delayTimer.resetTime();
+            timer.reset();
         }
     }
 

@@ -25,7 +25,7 @@ import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.network.ServerUtil;
 import wtf.tophat.utilities.player.movement.MoveUtil;
 import wtf.tophat.utilities.render.ColorUtil;
-import wtf.tophat.utilities.time.Stopwatch;
+import wtf.tophat.utilities.time.TimeUtil;
 import wtf.tophat.utilities.vector.Vec3d;
 
 import java.util.Arrays;
@@ -55,7 +55,7 @@ public class Scaffold extends Module {
             Blocks.double_stone_slab2, Blocks.tripwire, Blocks.tripwire_hook, Blocks.tallgrass, Blocks.dispenser,
             Blocks.command_block, Blocks.web);
 
-    private final Stopwatch timer = new Stopwatch();
+    private TimeUtil timer = new TimeUtil();
     private BlockData blockInfo;
     private int slot, newSlot, oldSlot;
     private float yaw, pitch, y;
@@ -239,7 +239,7 @@ public class Scaffold extends Module {
                 }
             }
         } else {
-            if (blockInfo != null && timer.timeElapsed(0) && slot != -1) {
+            if (blockInfo != null && timer.elapsed(0) && slot != -1) {
                 final Vec3d hitVec = getVec3d(blockInfo.position, blockInfo.face);
                 final EntitySnowball snowball = new EntitySnowball(mc.world, hitVec.xCoord, hitVec.yCoord, hitVec.zCoord);
                 if (!mc.player.canEntityBeSeen(snowball))
@@ -351,7 +351,6 @@ public class Scaffold extends Module {
 
     @Override
     public void onEnable() {
-        timer.resetTime();
         y = 80;
         super.onEnable();
     }

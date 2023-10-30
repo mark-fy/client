@@ -8,13 +8,13 @@ import net.minecraft.util.StringUtils;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
-import wtf.tophat.utilities.time.Stopwatch;
+import wtf.tophat.utilities.time.TimeUtil;
 
 @ModuleInfo(name = "Auto Hypixel", desc = "automatically navigate inside hypixel", category = Module.Category.EXPLOIT)
 public class AutoHypixel extends Module {
 
     public String knownMode, knownType;
-    public Stopwatch delay = new Stopwatch();
+    private TimeUtil timer = new TimeUtil();
 
     @Listen
     public void onPacket(PacketEvent e) {
@@ -41,7 +41,7 @@ public class AutoHypixel extends Module {
             String message = ((S45PacketTitle) e.getPacket()).getMessage().getUnformattedText();
             if (message.equals("YOU DIED!") || message.equals("GAME END") || message.equals("VICTORY!") || message.equals("You are now a spectator!")) {
                 if (knownType != null && knownMode != null) {
-                    if (delay.hasTimeElapsed(2000, true)) {
+                    if (timer.elapsed(2000, true)) {
                         mc.player.sendChatMessage("/play " + knownType + "_" + knownMode);
                     }
                 }

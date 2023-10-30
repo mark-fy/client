@@ -23,7 +23,7 @@ import wtf.tophat.utilities.misc.RayCast;
 import wtf.tophat.utilities.player.rotations.RotationUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.shaders.RenderUtil;
-import wtf.tophat.utilities.time.Stopwatch;
+import wtf.tophat.utilities.time.TimeUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.List;
 @ModuleInfo(name = "Killaura", desc = "kills entities", category = Module.Category.COMBAT)
 public class Killaura extends Module {
 
-    public final Stopwatch timer = new Stopwatch();
+    public final TimeUtil timer = new TimeUtil();
     public final StringSetting sort, autoblockMode;
     public final NumberSetting minCps, maxCps, range;
     public final BooleanSetting render, autoblock;
@@ -70,6 +70,7 @@ public class Killaura extends Module {
     public void onMotion(MotionEvent e) {
         if (Client.moduleManager.getByClass(Scaffold.class).isEnabled())
             return;
+
         target = EntityUtil.getClosestEntity(range.get().doubleValue());
 
         if (target != null) {
@@ -85,10 +86,10 @@ public class Killaura extends Module {
                     e.setPitch(rotations[1]);
 
                     targetsSort();
-                    if (this.timer.timeElapsed((long) (1000.0D / MathUtil.randomNumber(minCps.get().doubleValue(), maxCps.get().doubleValue())))) {
+                    if (this.timer.elapsed((long) (1000.0D / MathUtil.randomNumber(minCps.get().doubleValue(), maxCps.get().doubleValue())))) {
                         mc.player.swingItem();
                         mc.player.sendQueue.send(new C02PacketUseEntity(p, C02PacketUseEntity.Action.ATTACK));
-                        this.timer.resetTime();
+                        this.timer.reset();
                     }
                 }
             }
@@ -108,17 +109,17 @@ public class Killaura extends Module {
     @Listen
     public void onRender3D(Render3DEvent event){
         if(render.get()) {
-            final float partialTicks = mc.timer.renderPartialTicks;
+            float partialTicks = mc.timer.renderPartialTicks;
 
-            EntityLivingBase player = this.target;
+            EntityLivingBase player = target;
 
-            final Color color = new Color(255, 255, 255);
+            Color color = new Color(255, 255, 255);
 
             if (mc.getRenderManager() == null || player == null) return;
 
-            final double x = player.prevPosX + (player.posX - player.prevPosX) * partialTicks - (mc.getRenderManager()).renderPosX;
-            final double y = player.prevPosY + (player.posY - player.prevPosY) * partialTicks + Math.sin(System.currentTimeMillis() / 2E+2) + 1 - (mc.getRenderManager()).renderPosY;
-            final double z = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks - (mc.getRenderManager()).renderPosZ;
+            double x = player.prevPosX + (player.posX - player.prevPosX) * partialTicks - (mc.getRenderManager()).renderPosX;
+            double y = player.prevPosY + (player.posY - player.prevPosY) * partialTicks + Math.sin(System.currentTimeMillis() / 2E+2) + 1 - (mc.getRenderManager()).renderPosY;
+            double z = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks - (mc.getRenderManager()).renderPosZ;
 
             GL11.glPushMatrix();
             GL11.glDisable(3553);

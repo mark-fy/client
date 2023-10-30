@@ -11,7 +11,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.item.ItemUtil;
-import wtf.tophat.utilities.time.Stopwatch;
+import wtf.tophat.utilities.time.TimeUtil;
 
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @ModuleInfo(name = "Chest Stealer", desc = "steal from chests automatically", category = Module.Category.PLAYER)
 public class ChestStealer extends Module {
 
-    public Stopwatch timer = new Stopwatch();
+    private TimeUtil timer = new TimeUtil();
 
     private final NumberSetting delay;
 
@@ -44,11 +44,11 @@ public class ChestStealer extends Module {
                 }
                 for (index = 0; index < chest.getLowerChestInventory().getSizeInventory(); ++index) {
                     final ItemStack stack = chest.getLowerChestInventory().getStackInSlot(index);
-                    if (stack != null && timer.timeElapsed(delay2 - ThreadLocalRandom.current().nextInt(0, 250))) {
+                    if (stack != null && timer.elapsed(delay2 - ThreadLocalRandom.current().nextInt(0, 250))) {
                         boolean trash = !ItemUtil.isTrash(stack);
                         if (trash) {
                             mc.playerController.windowClick(chest.inventorySlots.windowId, index, 0, 1, player);
-                            timer.resetTime();
+                            timer.reset();
                             break;
                         }
                     }
@@ -83,12 +83,5 @@ public class ChestStealer extends Module {
             }
         }
         return true;
-    }
-
-    @Override
-    public void onEnable() {
-        timer.resetTime();
-
-        super.onEnable();
     }
 }

@@ -20,7 +20,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.time.Stopwatch;
+import wtf.tophat.utilities.time.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -31,7 +31,7 @@ public class InventoryManager extends Module {
     public final NumberSetting delay, blockcap;
     public final BooleanSetting food, sort, archery, sword, invcleaner, uhc, inventoryonly;
 
-    private Stopwatch timer = new Stopwatch();
+    private TimeUtil timer = new TimeUtil();
 
     private int lastSlot;
 
@@ -72,7 +72,7 @@ public class InventoryManager extends Module {
         }
 
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory || mc.currentScreen instanceof GuiChat) {
-            if (timer.timeElapsed(delay2)) {
+            if (timer.elapsed(delay2)) {
 
                 if (!mc.player.inventoryContainer.getSlot(weaponSlot).getHasStack()) {
                     getBestWeapon(weaponSlot);
@@ -83,20 +83,20 @@ public class InventoryManager extends Module {
                 }
             }
             if (sort.get()) {
-                if (timer.timeElapsed(delay2)) {
+                if (timer.elapsed(delay2)) {
                     getBestPickaxe(pickaxeSlot);
                     getBestShovel(shovelSlot);
                     getBestAxe(axeSlot);
                 }
             }
 
-            if (timer.timeElapsed(delay2) && invcleaner.get() && !mc.player.isUsingItem())
+            if (timer.elapsed(delay2) && invcleaner.get() && !mc.player.isUsingItem())
                 for (int i = 9; i < 45; i++) {
                     if (mc.player.inventoryContainer.getSlot(i).getHasStack()) {
                         ItemStack is = mc.player.inventoryContainer.getSlot(i).getStack();
                         if (shouldDrop(is, i)) {
                             drop(i);
-                            timer.resetTime();
+                            timer.reset();
                             if (delay2 > 0)
                                 break;
                         }
@@ -150,7 +150,7 @@ public class InventoryManager extends Module {
 
                 if (isBestWeapon(is) && swordDamage > 0 && (is.getItem() instanceof ItemSword || !sword.get())) {
                     swap(i, slot - 36);
-                    timer.resetTime();
+                    timer.reset();
                     break;
                 }
             }
@@ -308,7 +308,7 @@ public class InventoryManager extends Module {
             if (isBestPickaxe(is) && pickaxeSlot != i) {
                 if (!isBestWeapon(is) && shouldSwap(slot, pickaxeSlot - 36, this::isBestPickaxe)) {
                     swap(i, pickaxeSlot - 36);
-                    timer.resetTime();
+                    timer.reset();
 
                     if (delay.get().longValue() > 0)
                         return;
@@ -329,7 +329,7 @@ public class InventoryManager extends Module {
             if (isBestShovel(is) && shovelSlot != i) {
                 if (!isBestWeapon(is) && shouldSwap(slot, shovelSlot - 36, this::isBestShovel)) {
                     swap(i, shovelSlot - 36);
-                    timer.resetTime();
+                    timer.reset();
 
                     if (delay.get().longValue() > 0)
                         return;
@@ -350,7 +350,7 @@ public class InventoryManager extends Module {
             if (isBestAxe(is) && axeSlot != i) {
                 if (!isBestWeapon(is) && shouldSwap(slot, axeSlot - 36, stack -> isBestAxe(stack) && !isBestWeapon(stack))) {
                     swap(i, axeSlot - 36);
-                    timer.resetTime();
+                    timer.reset();
 
                     if (delay.get().longValue() > 0)
                         return;

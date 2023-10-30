@@ -15,12 +15,12 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.time.Stopwatch;
+import wtf.tophat.utilities.time.TimeUtil;
 
 @ModuleInfo(name = "Auto Armor", desc = "automatically equip the best armor",category = Module.Category.PLAYER)
 public class AutoArmor extends Module {
-    Stopwatch timer = new Stopwatch();
 
+    private TimeUtil timer = new TimeUtil();
     public final NumberSetting delay;
     public final BooleanSetting inventoryonly;
 
@@ -37,7 +37,7 @@ public class AutoArmor extends Module {
             return;
         }
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory || mc.currentScreen instanceof GuiChat) {
-            if (timer.timeElapsed(delay.get().longValue())) {
+            if (timer.elapsed(delay.get().longValue())) {
                 getBestArmor();
             }
         }
@@ -60,7 +60,7 @@ public class AutoArmor extends Module {
                     ItemStack is = mc.player.inventoryContainer.getSlot(i).getStack();
                     if (isBestArmor(is, type) && getProtection(is) > 0) {
                         shiftClick(i);
-                        timer.resetTime();
+                        timer.reset();
                         if ((delay.get()).longValue() > 0)
                             return;
                     }

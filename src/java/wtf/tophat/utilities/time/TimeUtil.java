@@ -1,4 +1,4 @@
-package wtf.tophat.utilities.math;
+package wtf.tophat.utilities.time;
 
 public class TimeUtil {
 
