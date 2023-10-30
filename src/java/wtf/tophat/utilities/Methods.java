@@ -54,7 +54,7 @@ public interface Methods {
     default double getX() { return mc.player.posX; }
     default double getY() { return mc.player.posY; }
     default double getZ() { return mc.player.posZ; }
-    default float getYaw() { return mc.player.rotationYaw; }
+    static float getYaw() { return mc.player.rotationYaw; }
     default float getPitch() { return mc.player.rotationPitch; }
     default boolean getGround() { return mc.player.onGround; }
 

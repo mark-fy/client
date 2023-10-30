@@ -1,9 +1,11 @@
 package wtf.tophat.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.MathHelper;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
@@ -15,6 +17,8 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.player.movement.MoveUtil;
+
+import java.util.Random;
 
 @ModuleInfo(name = "Speed", desc = "move faster", category = Module.Category.MOVE)
 public class Speed extends Module {
@@ -159,5 +163,43 @@ public class Speed extends Module {
                 mc.player.motionZ = 0;
         }
         super.onDisable();
+    }
+
+    public static float getDirection(float rotationYaw) {
+        float left = Minecraft.getMinecraft().settings.keyBindLeft.pressed ? Minecraft.getMinecraft().settings.keyBindBack.pressed ? 45 : Minecraft.getMinecraft().settings.keyBindForward.pressed ? -45 : -90 : 0;
+        float right = Minecraft.getMinecraft().settings.keyBindRight.pressed ? Minecraft.getMinecraft().settings.keyBindBack.pressed ? -45 : Minecraft.getMinecraft().settings.keyBindForward.pressed ? 45 : 90 : 0;
+        float back = Minecraft.getMinecraft().settings.keyBindBack.pressed ? +180 : 0;
+        float yaw = left + right + back;
+        return rotationYaw + yaw;
+    }
+
+    public static float getDirection() {
+        Minecraft mc = Minecraft.getMinecraft();
+        float var1 = mc.player.rotationYaw;
+
+        if (mc.player.moveForward < 0.0F) {
+            var1 += 180.0F;
+        }
+
+        float forward = 1.0F;
+
+        if (mc.player.moveForward < 0.0F) {
+            final float strafe = (float) MathHelper.getRandomDoubleInRange(new Random(), -0.50, -0.55);
+            forward = -strafe;
+        } else if (mc.player.moveForward > 0.0F) {
+            final float strafe2 = (float) MathHelper.getRandomDoubleInRange(new Random(), 0.50, 0.55);
+            forward = strafe2;
+        }
+
+        if (mc.player.moveStrafing > 0.0F) {
+            var1 -= 90.0F * forward;
+        }
+
+        if (mc.player.moveStrafing < 0.0F) {
+            var1 += 90.0F * forward;
+        }
+
+        var1 *= 0.017453292F;
+        return var1;
     }
 }

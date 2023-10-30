@@ -1,15 +1,20 @@
 package wtf.tophat.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraft.network.play.server.S27PacketExplosion;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
+import net.minecraft.util.MovingObjectPosition;
 import wtf.tophat.Client;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
+import wtf.tophat.modules.impl.move.Speed;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 
@@ -24,7 +29,7 @@ public class Velocity extends Module {
 
     public Velocity() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim"),
+                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Intave", "Cubecraft"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
                         .setHidden(() -> !mode.is("Simple")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)
@@ -91,6 +96,65 @@ public class Velocity extends Module {
                         if (!grimPacket || transactionQueue.isEmpty()) return;
                         if (transactionQueue.remove(((C0FPacketConfirmTransaction) event.getPacket()).getUid()))
                             event.setCancelled(true);
+                    }
+                }
+                break;
+            case "Matrix":
+                if (event.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity s12 = (S12PacketEntityVelocity) event.getPacket();
+                    if (mc.player != null && s12.getEntityID() == mc.player.getEntityId()) {
+                        s12.motionX *= 5 / 100.0;
+                        s12.motionZ *= 5 / 100.0;
+                        s12.motionY *= 100 / 100.0;
+                    }
+                }
+                break;
+            case "C0F Cancel":
+                if (event.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity s12 = (S12PacketEntityVelocity) event.getPacket();
+                    if (mc.player != null && s12.getEntityID() == mc.player.getEntityId()) {
+                        event.setCancelled(true);
+                    }
+                }
+                if (event.getPacket() instanceof S27PacketExplosion) {
+                    event.setCancelled(true);
+                }
+                break;
+            case "Legit":
+                if (event.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity s12 = (S12PacketEntityVelocity) event.getPacket();
+                    if (mc.player != null && s12.getEntityID() == mc.player.getEntityId()) {
+                        if (mc.player.hurtTime == 9) {
+                            KeyBinding.setKeyBindState(mc.settings.keyBindJump.getKeyCode(), true);
+                        } else {
+                            KeyBinding.setKeyBindState(mc.settings.keyBindJump.getKeyCode(), false);
+                        }
+                    }
+                }
+                break;
+            // prolly doesn't work but eyyyyyy
+            case "Intave":
+                if (mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY) && mc.player.hurtTime > 0) {
+                    mc.player.motionX *= 0.6D;
+                    mc.player.motionZ *= 0.6D;
+                    mc.player.setSprinting(false);
+                }
+                break;
+            case "Cubecraft":
+                if (mc.player.hurtTime != 0) {
+                    if(mc.player.onGround){
+                        mc.player.motionY = 0.42F;
+                        mc.timer.timerSpeed = 1F;
+                        Minecraft.getMinecraft().settings.keyBindJump.pressed = true;
+                    } else {
+                        boolean boost2 = (Math.abs(mc.player.rotationYawHead - mc.player.rotationYaw) < 90.0F);
+                        mc.timer.timerSpeed = 1F;
+                        double currentSpeed = Math.sqrt(mc.player.motionX * mc.player.motionX + mc.player.motionZ * mc.player.motionZ);
+                        double speed = boost2 ? 1 : 1D;
+                        double direction = Speed.getDirection();
+                        mc.player.motionX = -Math.sin(direction) * speed * currentSpeed;
+                        mc.player.motionZ = Math.cos(direction) * speed * currentSpeed;
+
                     }
                 }
                 break;
