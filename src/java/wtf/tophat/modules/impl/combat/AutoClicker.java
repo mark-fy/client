@@ -8,16 +8,16 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.time.Stopwatch;
 
-@ModuleInfo(name = "AutoClicker", desc = "enables you to make more cps", category = Module.Category.COMBAT)
+@ModuleInfo(name = "Auto Clicker", desc = "clicks the mouse for you", category = Module.Category.COMBAT)
 public class AutoClicker extends Module {
 
-    private NumberSetting cps = new NumberSetting(this, "CPS",  1, 50, 10, 1);
+    private NumberSetting cps;
 
     private Stopwatch timer = new Stopwatch();
 
     public AutoClicker() {
         Client.settingManager.add(
-                cps
+                cps = new NumberSetting(this, "CPS", 1, 50, 10, 1)
         );
     }
 

@@ -50,18 +50,18 @@ public class UIAltManager extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
             case 0:
-                if (this.password.getText().isEmpty()) {
-                    this.thread = new AltThread(this.username.getText(), "", true);
-                } else if(!this.password.getText().isEmpty() && !this.username.getText().isEmpty()) {
-                    this.thread = new AltThread(this.username.getText(), this.password.getText(), true);
+                if (password.getText().isEmpty()) {
+                    thread = new AltThread(username.getText(), "", true);
+                } else if(!password.getText().isEmpty() && !username.getText().isEmpty()) {
+                    thread = new AltThread(username.getText(), password.getText(), true);
                 }
-                this.thread.start();
+                thread.start();
                 break;
             case 1:
-                if (this.password.getText().isEmpty()) {
-                    AccountManager.save(this.username.getText(), "", true, "tophat");
-                } else if(!this.password.getText().isEmpty() && !this.username.getText().isEmpty()) {
-                    AccountManager.save(this.username.getText(), this.password.getText(), false, "tophat");
+                if (password.getText().isEmpty()) {
+                    AccountManager.save(username.getText(), "", true, "tophat");
+                } else if(!password.getText().isEmpty() && !username.getText().isEmpty()) {
+                    AccountManager.save(username.getText(), password.getText(), false, "tophat");
                 }
                 break;
             case 2:

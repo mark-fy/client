@@ -75,15 +75,14 @@ public class MaterialClickGUI extends GuiScreen {
 
         // Main Frame
         DrawingUtil.rectangle(x, y, width, height, true, new Color(20, 20, 20));
-        // Border
-        DrawingUtil.rectangle(x, y, width, height, false, CategoryUtil.getCategoryColor1(selectedCategory));
+        DrawingUtil.rectangle(x, y, width, height, false, CategoryUtil.getCategoryColor(selectedCategory));
 
         // Drag Bar
         DrawingUtil.rectangle(x, y + 1, width - 1, 15, true, new Color(30, 30, 30));
 
         boolean hoveredOverClose = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.FONT_HEIGHT);
 
-        fr.drawString("X", (int) (x + 340), (int) (y + 3), hoveredOverClose ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE.getRGB());
+        fr.drawString("X", (float) (x + 340), (float) y + 3, hoveredOverClose ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
         fr.drawString(Client.getName().toLowerCase(Locale.ROOT) + " v" + Client.getVersion(), (int) (x + 3), (int) (y + 3), CategoryUtil.getCategoryColor(selectedCategory));
 
         // Category Box
@@ -96,14 +95,14 @@ public class MaterialClickGUI extends GuiScreen {
 
             boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, categoryX - 2, categoryY + 4, 36, 12);
 
-            int textColor;
+            Color textColor;
 
             if (isHovered) {
-                textColor = Color.LIGHT_GRAY.getRGB();
+                textColor = Color.LIGHT_GRAY;
             } else if (category == selectedCategory) {
                 textColor = CategoryUtil.getCategoryColor(category);
             } else {
-                textColor = Color.WHITE.getRGB();
+                textColor = Color.WHITE;
             }
 
             fr.drawStringWithShadow(category.getName(), categoryX - 2, categoryY + 4, textColor);
@@ -127,7 +126,7 @@ public class MaterialClickGUI extends GuiScreen {
             }
 
             DrawingUtil.rectangle(x + 50, y + 16 + counter, 100, 15, true, moduleBackgroundColor);
-            fr.drawStringWithShadow(module.getName(), (float) (x + 54), (float) (y + 19 + counter), module.isEnabled() ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE.getRGB());
+            fr.drawStringWithShadow(module.getName(), (float) (x + 54), (float) (y + 19 + counter), module.isEnabled() ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
 
             if (isHovered) {
                 String text = (module.getDesc()).toLowerCase(Locale.ROOT);
@@ -140,7 +139,7 @@ public class MaterialClickGUI extends GuiScreen {
                 DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 10, true, new Color(22,22,22));
                 DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 1, true, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
 
-                fr.drawStringWithShadow(text, 11, this.height - 28, Color.WHITE.getRGB());
+                fr.drawStringWithShadow(text, 11, this.height - 28, Color.WHITE);
             }
 
             counter += 15;
@@ -165,15 +164,15 @@ public class MaterialClickGUI extends GuiScreen {
                 int textX = (int) (x + 150 + centerX);
 
                 DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
-                fr.drawStringWithShadow(setting.getName(), (float) textX, (float) (y + offset + 3), Color.WHITE.getRGB());
+                fr.drawStringWithShadow(setting.getName(), (float) textX, (float) y + offset + 3, Color.WHITE);
                 offset += 15;
             } else if (setting instanceof StringSetting) {
                 DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
-                fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).get(), (float) (x + 152), (float) (y + offset + 3), Color.WHITE.getRGB());
+                fr.drawStringWithShadow(setting.getName() + ": " + ((StringSetting) setting).get(), (float) x + 152, (float) y + offset + 3, Color.WHITE);
                 offset += 15;
             } else if (setting instanceof BooleanSetting) {
                 DrawingUtil.rectangle(x + 150, y + offset, 199, 15, true, settingBackgroundColor);
-                fr.drawStringWithShadow(setting.getName() + ": " + ((BooleanSetting) setting).get(), (float) (x + 152), (float) (y + offset + 3), Color.WHITE.getRGB());
+                fr.drawStringWithShadow(setting.getName() + ": " + ((BooleanSetting) setting).get(), (float) x + 152, (float) y + offset + 3, Color.WHITE);
                 offset += 15;
             } else if (setting instanceof NumberSetting) {
                 NumberSetting numberSetting = (NumberSetting) setting;
@@ -187,11 +186,11 @@ public class MaterialClickGUI extends GuiScreen {
 
                 String formattedValue = String.format(Locale.ROOT, setting.getName() + ": %." + decimalPoints + "f", currentValue);
 
-                fr.drawStringWithShadow(formattedValue, (float) (x + 152), (float) (y + offset + 3), Color.WHITE.getRGB());
+                fr.drawStringWithShadow(formattedValue, (float) x + 152, (float) y + offset + 3, Color.WHITE);
 
                 DrawingUtil.rectangle(x + 154, y + offset + 15, 185, 11, true, new Color(0, 0, 0));
                 DrawingUtil.rectangle(x + 154, y + offset + 15, randoValue, 11, true, new Color(60, 60, 60));
-                DrawingUtil.rectangle(sliderPosition, y + offset + 15, 6, 11, true, CategoryUtil.getCategoryColor1(selectedCategory));
+                DrawingUtil.rectangle(sliderPosition, y + offset + 15, 6, 11, true, CategoryUtil.getCategoryColor(selectedCategory));
                 DrawingUtil.rectangle(x + 154, y + offset + 15, 185, 11, false, Color.WHITE);
                 offset = handleNumberSetting((NumberSetting) setting, x, y, offset, mouseX, mouseY);
             }

@@ -47,10 +47,10 @@ public class DropDownClickGUI extends GuiScreen {
 
             double dropdownMinX = x, dropdownMaxX = x + categoryWidth, dropdownMaxY = y + categoryHeight;
 
-            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor1(category));
+            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor(category));
             DrawingUtil.rectangle(x, y, categoryWidth, categoryHeight, true, new Color(20, 20, 20));
 
-            fr.drawStringChoose(shadow, category.getName().toLowerCase(Locale.ROOT), (int) categoryTextX, (int) categoryTextY, -1);
+            fr.drawStringOptional(shadow, category.getName().toLowerCase(Locale.ROOT), (float) categoryTextX, (float) categoryTextY, Color.WHITE);
 
             double modX = x, modY = y + categoryHeight, modHeight = 20;
 
@@ -85,9 +85,9 @@ public class DropDownClickGUI extends GuiScreen {
 
                 String moduleName = module.getName().toLowerCase(Locale.ROOT);
 
-                fr.drawStringChoose(shadow, moduleName, (int) modX + 5, (int) (modY + 6), module.isEnabled() ? CategoryUtil.getCategoryColor(category) : Color.WHITE.getRGB());
+                fr.drawStringOptional(shadow, moduleName, (float) (modX + 5), (float) (modY + 6), module.isEnabled() ? CategoryUtil.getCategoryColor(category) : Color.WHITE);
 
-                fr.drawStringChoose(shadow, keybindText, (int) (modX + moduleRectWidth - keybindTextWidth - 5) - keybindTextWidth, (int) modY + 6, Color.darkGray.getRGB());
+                fr.drawStringOptional(shadow, keybindText, (float) ((modX + moduleRectWidth - keybindTextWidth - 5) - keybindTextWidth), (float) (modY + 6), Color.darkGray);
 
                 if (isHovered) {
                     int counter = 0;
@@ -102,7 +102,7 @@ public class DropDownClickGUI extends GuiScreen {
                     DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 10, true, new Color(22,22,22));
                     DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 1, true, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
 
-                    fr.drawStringChoose(shadow, text, 11, this.height - 28, Color.WHITE.getRGB());
+                    fr.drawStringOptional(shadow, text, 11, this.height - 28, Color.WHITE);
                     counter++;
                 }
 
@@ -111,7 +111,7 @@ public class DropDownClickGUI extends GuiScreen {
 
             dropdownMaxY = modY;
 
-            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor1(category));
+            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor(category));
 
             x += categoryWidth + 15;
         }

@@ -38,6 +38,8 @@ public class Load extends Config {
                 for (Module module : Client.moduleManager.getModulesByCategory(category)) {
                     JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
 
+                    Client.printL("Module: " + module.getName()); // For debugging
+
                     if (moduleObject.has("Enabled")) {
                         boolean enabled = moduleObject.get("Enabled").getAsBoolean();
                         module.setEnabled(enabled);

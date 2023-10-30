@@ -74,7 +74,7 @@ public class Watermark extends Module {
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                fr.drawString("TopHat - " + Client.getVersion(), 15 ,6, -1);
+                fr.drawString("TopHat - " + Client.getVersion(), 15 ,6, Color.WHITE);
                 mc.getTextureManager().bindTexture(new ResourceLocation("tophat/gorge.png"));
                 Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
                 break;
@@ -87,7 +87,7 @@ public class Watermark extends Module {
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                fr.drawString("TopHat - " + Client.getVersion(), 15 ,6, -1);
+                fr.drawString("TopHat - " + Client.getVersion(), 15 ,6, Color.WHITE);
                 mc.getTextureManager().bindTexture(new ResourceLocation("tophat/logo.png"));
                 Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
                 break;
@@ -102,7 +102,7 @@ public class Watermark extends Module {
                 DrawingUtil.rectangle(10, 10, strWidth + 1, 10, true, new Color(22, 22, 22));
                 DrawingUtil.rectangle(10, 10, strWidth + 1, 1, true, new Color(color));
 
-                fr.drawStringChoose(fontShadow.get(), text, 11, 12, -1);
+                fr.drawStringOptional(fontShadow.get(), text, 11, 12, Color.WHITE);
 
                 int textY = scrHeight - 25;
 
@@ -124,7 +124,7 @@ public class Watermark extends Module {
                     DrawingUtil.rectangle(textX + 4, textY + 4, strWidth1 + 1, 10, true, new Color(22, 22, 22));
                     DrawingUtil.rectangle(textX + 4, textY + 4, strWidth1 + 1, 1, true, new Color(color));
 
-                    fr.drawStringChoose(fontShadow.get(), "bps: " + speed, textX + 5, textY + 5, -1);
+                    fr.drawStringOptional(fontShadow.get(), "bps: " + speed, textX + 5, textY + 5, Color.WHITE);
                     textY -= 25;
                 }
                 break;
@@ -152,7 +152,7 @@ public class Watermark extends Module {
                 int outlineX = x - extraWidth;
                 int outlineWidth = strWidth1 + padding + extraWidth * 2;
                 RoundedUtil.drawRoundOutline(outlineX, y, outlineWidth, height, cornerRadius, 0.30f, outlineColor, new Color(color));
-                fr.drawStringChoose(fontShadow.get(), text, x + textOffset - 1, y + 6, -1);
+                fr.drawStringOptional(fontShadow.get(), text, x + textOffset - 1, y + 6, Color.WHITE);
                 break;
             }
         }

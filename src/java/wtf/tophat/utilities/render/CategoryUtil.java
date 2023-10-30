@@ -27,22 +27,7 @@ public class CategoryUtil implements Methods {
             return "b";
     }
 
-    public static int getCategoryColor(Module.Category category) {
-        if(category == Module.Category.COMBAT) {
-            return new Color(230, 77, 62).getRGB();
-        } else if(category == Module.Category.MOVE) {
-            return new Color(48, 203, 116).getRGB();
-        } else if(category == Module.Category.RENDER) {
-            return new Color(245, 155, 27).getRGB();
-        } else if(category == Module.Category.PLAYER) {
-            return new Color(141, 67, 169).getRGB();
-        } else if(category == Module.Category.HUD) {
-            return new Color(56, 0, 196).getRGB();
-        } else
-            return new Color(75, 145, 190).getRGB();
-    }
-
-    public static Color getCategoryColor1(Module.Category category) {
+    public static Color getCategoryColor(Module.Category category) {
         if(category == Module.Category.COMBAT) {
             return new Color(230, 77, 62);
         } else if(category == Module.Category.MOVE) {

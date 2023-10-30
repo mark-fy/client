@@ -28,8 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.Client;
-import wtf.tophat.modules.impl.combat.Killaura;
-import wtf.tophat.modules.impl.render.Animations;
 
 public class ItemRenderer
 {
@@ -356,17 +354,12 @@ public class ItemRenderer
     /**
      * Renders the active item in the player's hand when in first person mode. Args: partialTickTime
      */
-    public void renderItemInFirstPerson(float partialTicks)
-    {
-        float equipProgress = 1.0f - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
-        AbstractClientPlayer abstractclientplayer = this.mc.player;
-        float swingProgress = abstractclientplayer.getSwingProgress(partialTicks);
+    public void renderItemInFirstPerson(float partialTicks) {
         float f = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
+        AbstractClientPlayer abstractclientplayer = this.mc.player;
         float f1 = abstractclientplayer.getSwingProgress(partialTicks);
         float f2 = abstractclientplayer.prevRotationPitch + (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch) * partialTicks;
         float f3 = abstractclientplayer.prevRotationYaw + (abstractclientplayer.rotationYaw - abstractclientplayer.prevRotationYaw) * partialTicks;
-        final float f6 = MathHelper.sin((float)(MathHelper.sqrt_float(swingProgress) * 3.1));
-        final float var9 = MathHelper.sin(MathHelper.sqrt_float(f1) * (float) Math.PI);
         this.rotateArroundXAndY(f2, f3);
         this.setLightMapFromPlayer(abstractclientplayer);
         this.rotateWithPlayerRotations((EntityPlayerSP)abstractclientplayer, partialTicks);
@@ -375,13 +368,11 @@ public class ItemRenderer
 
         if (this.itemToRender != null)
         {
-            Killaura aura = (Killaura) Client.moduleManager.getByClass(Killaura.class);
             if (this.itemToRender.getItem() == Items.filled_map)
             {
                 this.renderItemMap(abstractclientplayer, f2, f, f1);
             }
-            else if (abstractclientplayer.getItemInUseCount() > 0 || aura != null && aura.target != null && Client.moduleManager.getByClass(Killaura.class).isEnabled() && Client.moduleManager.getByClass(Killaura.class).autoblock.get() && Client.moduleManager.getByClass(Killaura.class).autoblockMode.get().equalsIgnoreCase("Fake") && mc.player.getHeldItem() != null && mc.player.getHeldItem().getItem() instanceof ItemSword)
-            {
+            else if (abstractclientplayer.getItemInUseCount() > 0) {
                 EnumAction enumaction = this.itemToRender.getItemUseAction();
 
                 switch (enumaction)
@@ -397,42 +388,9 @@ public class ItemRenderer
                         break;
 
                     case BLOCK:
-                        //if(!Client.moduleManager.getByClass(Animations.class).isEnabled()) {
-                            //this.transformFirstPersonItem(f, 0.0F);
-                            //this.doBlockTransformations();
-                            //break;
-                        //}
-                        this.transformFirstPersonItem(f / 2, 0.0f);
-                        GL11.glTranslatef(0.1F, 0.4F, -0.1F);
-                        GL11.glRotated(-var9 * 30.0F, var9 / 2, 0.0F, 9.0F);
-                        GL11.glRotated(-var9 * 50.0F, 0.8F, var9 / 2, 0F);
+                        this.transformFirstPersonItem(f, 0.0F);
                         this.doBlockTransformations();
                         break;
-                        /**
-                        switch (Client.moduleManager.getByClass(Animations.class).mode.get()){
-                            case "1.7":
-                                this.transformFirstPersonItem(f, f2 + f / 3.0f);
-                                this.doBlockTransformations();
-                                GlStateManager.translate(0.1, 0.0, 0.0);
-                                break;
-                            case "Exhibition":
-                                this.transformFirstPersonItem(f / 2, 0.0f);
-                                GL11.glTranslatef(0.1F, 0.4F, -0.1F);
-                                GL11.glRotated(-var9 * 30.0F, var9 / 2, 0.0F, 9.0F);
-                                GL11.glRotated(-var9 * 50.0F, 0.8F, var9 / 2, 0F);
-                                this.doBlockTransformations();
-                                break;
-
-                            case "Sigma":
-                                final float funny2 = MathHelper.sin(MathHelper.sqrt_float(f2) * 3.1415927f);
-                                this.transformFirstPersonItem(0.0f, 0.0f);
-                                GlStateManager.scale(0.8f, 0.8f, 0.8f);
-                                GlStateManager.translate(0.0f, 0.1f, 0.0f);
-                                this.doBlockTransformations();
-                                GlStateManager.rotate(funny2 * 35.0f / 2.0f, 0.0f, 1.0f, 1.5f);
-                                GlStateManager.rotate(-funny2 * 190.0f / 4.0f, 1.0f, 0.5f, 0.0f);
-                                break;
-                        }**/
 
                     case BOW:
                         this.transformFirstPersonItem(f, 0.0F);
@@ -441,10 +399,7 @@ public class ItemRenderer
             }
             else
             {
-                if(!Client.moduleManager.getByClass(Animations.class).smooth.get()) {
-                    this.doItemUsedTransformations(f1);
-                }
-
+                this.doItemUsedTransformations(f1);
                 this.transformFirstPersonItem(f, f1);
             }
 

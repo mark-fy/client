@@ -2,18 +2,9 @@ package wtf.tophat.menus.click.beta;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
-import wtf.tophat.Client;
-import wtf.tophat.modules.base.Module;
-import wtf.tophat.modules.impl.render.PostProcessing;
-import wtf.tophat.menus.click.dropdown.DropDownSettingFrame;
-import wtf.tophat.utilities.render.shaders.RenderUtil;
-import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
-import wtf.tophat.utilities.render.DrawingUtil;
+import wtf.tophat.utilities.render.shaders.RoundedUtil;
 
 import java.awt.*;
-import java.io.IOException;
-
-import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
 
 public class BetaClickGUI extends GuiScreen {
 
@@ -29,56 +20,12 @@ public class BetaClickGUI extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontRenderer fr = mc.fontRenderer;
 
-        double x = 110, y = 20, width = 100;
+        float x = 50, y = 50, width = 300, height = 300;
 
-        for (Module.Category category : Module.Category.values()) {
-            drawBlur(x, y, width, 20);
-            fr.drawString(category.getName(), (int) (x + 5), 25, -1);
-
-            double modY = 45;
-            drawBlur(x, 40, 100, Client.moduleManager.getModulesByCategory(category).size() * 20);
-            for (Module module : Client.moduleManager.getModulesByCategory(category)) {
-
-                fr.drawString(module.getName(), (int) (x + 5), (int) modY, module.isEnabled() ? new Color(DEFAULT_COLOR).getRGB() : -1);
-
-                modY += 20;
-            }
-
-            x += width + 25;
-        }
+        RoundedUtil.drawRound(x, y, width, height, 8, new Color(20, 20, 20));
+        fr.drawString("TopHat", x, y, Color.WHITE);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        float x = 110, width = 100;
-        for (Module.Category category : Module.Category.values()) {
-            float modY = 45, modHeight = 20;
-
-            for (Module module : Client.moduleManager.getModulesByCategory(category)) {
-                if(RenderUtil.isHovered((float) mouseX, (float) mouseY, x, modY, width, modHeight)) {
-                    if(mouseButton == 0) {
-                        module.toggle();
-                    } else if(mouseButton == 1) {
-                        mc.displayGuiScreen(new DropDownSettingFrame(this, module));
-                    }
-                }
-                modY += 20;
-            }
-            x += width + 25;
-        }
-
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    private void drawBlur(double x, double y, double width, double height) {
-        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
-            GaussianBlur.startBlur();
-            DrawingUtil.rectangle(x, y, width, height, true, new Color(0, 0, 0));
-            GaussianBlur.endBlur(10, 2);
-        }
-        DrawingUtil.rectangle(x, y, width, height, true, new Color(0, 0, 0, 150));
     }
 
 }

@@ -31,12 +31,9 @@ public class UIMainMenu extends GuiScreen {
         this.buttonList.add(new GuiButton(3, buttonX, buttonY, "Alt Manager"));
         buttonY += 20;
         this.buttonList.add(new GuiButton(4, buttonX, buttonY, "Options"));
-
-        this.buttonList.add(new GuiButton(5, 5, this.height - 25, 100, 20, "Changelog"));
-        this.buttonList.add(new GuiButton(6, this.width - 105, this.height - 25, 100, 20, "Credits"));
-
+        this.buttonList.add(new GuiButton(5, this.width - 105, this.height - 25, 100, 20, "Changelog"));
         buttonY += 20;
-        this.buttonList.add(new GuiButton(7, buttonX, buttonY, "Quit"));
+        this.buttonList.add(new GuiButton(6, buttonX, buttonY, "Quit"));
         super.initGui();
     }
 
@@ -59,9 +56,6 @@ public class UIMainMenu extends GuiScreen {
                 mc.displayGuiScreen(new UIChangeLog(this));
                 break;
             case 6:
-                //mc.displayGuiScreen(new UICredits(this));
-                break;
-            case 7:
                 mc.shutdownMinecraftApplet();
                 break;
         }
@@ -78,7 +72,7 @@ public class UIMainMenu extends GuiScreen {
         int y = height / 2 - fr.FONT_HEIGHT / 2 - 45;
 
         fr.drawString(Client.getName(), x, y, -1);
-        fr.drawString("v" + Client.getVersion(), x + 48, y + 14, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)).getRGB());
+        fr.drawString("v" + Client.getVersion(), x + 32, y + 14, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)).getRGB());
         counter++;
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

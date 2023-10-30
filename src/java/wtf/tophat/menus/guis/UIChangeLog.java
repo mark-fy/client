@@ -49,7 +49,7 @@ public class UIChangeLog extends GuiScreen {
         changes.add("+ antibot module");
         changes.add("");
 
-        fr.drawString(changes.get(0), 5, 5, -1);
+        fr.drawString(changes.get(0), 5, 5, Color.WHITE);
         int counter = 10;
         for(String change : changes) {
             if(change.equalsIgnoreCase("TopHat v0.0.5"))
@@ -60,14 +60,14 @@ public class UIChangeLog extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    private int getColor(String character) {
+    private Color getColor(String character) {
         if(character.contains("+"))
-            return new Color(0,255,0).getRGB();
+            return new Color(0,255,0);
         else if(character.contains("*"))
-            return new Color(255,255,0).getRGB();
+            return new Color(255,255,0);
         else if(character.contains("-"))
-            return new Color(255,0,0).getRGB();
-        return Color.WHITE.getRGB();
+            return new Color(255,0,0);
+        return Color.WHITE;
     }
 
 }

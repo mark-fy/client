@@ -3,6 +3,8 @@ package net.minecraft.client.gui;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -323,12 +325,11 @@ public class FontRenderer implements IResourceManagerReloadListener
         }
     }
 
-
-    public void drawStringChoose(boolean shadow, String text, int x, int y, int color) {
+    public void drawStringOptional(boolean shadow, String text, float x, float y, Color color) {
         if(shadow) {
             this.drawStringWithShadow(text, x, y, color);
         } else {
-            this.drawString(text, x, y, color);
+            this.drawString(text, (int) x, (int) y, color);
         }
     }
 
@@ -338,6 +339,22 @@ public class FontRenderer implements IResourceManagerReloadListener
     public int drawStringWithShadow(String text, float x, float y, int color)
     {
         return this.drawString(text, x, y, color, true);
+    }
+
+    /**
+     * Draws the specified string with a shadow using the java.awt.Paint color method.
+     */
+    public int drawStringWithShadow(String text, float x, float y, Color color)
+    {
+        return this.drawString(text, x, y, color.getRGB(), true);
+    }
+
+    /**
+     * Draws the specified string using the java.awt.Paint color method.
+     */
+    public int drawString(String text, float x, float y, Color color)
+    {
+        return this.drawString(text, x, y, color.getRGB(), false);
     }
 
     /**
