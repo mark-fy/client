@@ -29,7 +29,7 @@ public class Velocity extends Module {
 
     public Velocity() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Intave", "Cubecraft"),
+                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Cubecraft"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
                         .setHidden(() -> !mode.is("Simple")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)
@@ -130,14 +130,6 @@ public class Velocity extends Module {
                             KeyBinding.setKeyBindState(mc.settings.keyBindJump.getKeyCode(), false);
                         }
                     }
-                }
-                break;
-            // prolly doesn't work but eyyyyyy
-            case "Intave":
-                if (mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY) && mc.player.hurtTime > 0) {
-                    mc.player.motionX *= 0.6D;
-                    mc.player.motionZ *= 0.6D;
-                    mc.player.setSprinting(false);
                 }
                 break;
             case "Cubecraft":
