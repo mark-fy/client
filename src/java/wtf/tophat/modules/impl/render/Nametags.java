@@ -44,7 +44,6 @@ public class Nametags extends Module {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void renderNameTag(EntityPlayer player, double x, double y, double z, float delta) {
@@ -80,7 +79,6 @@ public class Nametags extends Module {
         GlStateManager.enableBlend();
 
         GlStateManager.disableBlend();
-        int d = mc.fontRenderer.getStringWidth(displayTag) / 4;
         RoundedUtil.drawRound(-width-5, -15, width*2+8, height+4, 0, new Color(0, 0, 0, 179));
         mc.fontRenderer.drawStringWithShadow(displayTag, -width - 1, -12, this.getDisplayColour(player));
         camera.posX = originalPositionX;
