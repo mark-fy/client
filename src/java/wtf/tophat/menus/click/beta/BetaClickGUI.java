@@ -2,6 +2,7 @@ package wtf.tophat.menus.click.beta;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Mouse;
 import wtf.tophat.Client;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.utilities.Methods;
@@ -11,6 +12,7 @@ import wtf.tophat.utilities.render.shaders.RoundedUtil;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 public class BetaClickGUI extends GuiScreen implements Methods {
 
@@ -24,6 +26,7 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
     private Module.Category listeningToCategory = Module.Category.COMBAT;
     private Module listeningToModule = null;
+    private int firstVisibleModule = 0;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -47,9 +50,17 @@ public class BetaClickGUI extends GuiScreen implements Methods {
         }
 
         int moduleOffset = 20;
-        for(Module module : Client.moduleManager.getModulesByCategory(listeningToCategory)) {
+
+        // module box
+        // RoundedUtil.drawRound(x + 57, y + 15, 240, 255, 8, new Color(20, 20, 20));
+
+        List<Module> modules = Client.moduleManager.getModulesByCategory(listeningToCategory);
+        int maxVisibleModules = getMaxVisibleModules();
+
+        for (int i = firstVisibleModule; i < firstVisibleModule + maxVisibleModules && i < modules.size(); i++) {
+            Module module = modules.get(i);
             float modX = x + 60, modY = y + moduleOffset;
-            boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, x + 60, modY, 232, 20);
+            boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, modX, modY, 232, 20);
 
             RoundedUtil.drawRound(modX, modY, 232, 20, 4, hoveredMod ? new Color(38,38,38) : new Color(36,36,36));
             fr.drawString(module.getName(), x + 65, modY + 7, Color.WHITE);
@@ -76,7 +87,11 @@ public class BetaClickGUI extends GuiScreen implements Methods {
         }
 
         int moduleOffset = 20;
-        for (Module module : Client.moduleManager.getModulesByCategory(listeningToCategory)) {
+        List<Module> modules = Client.moduleManager.getModulesByCategory(listeningToCategory);
+        int maxVisibleModules = getMaxVisibleModules();
+
+        for (int i = firstVisibleModule; i < firstVisibleModule + maxVisibleModules && i < modules.size(); i++) {
+            Module module = modules.get(i);
             float modX = x + 60, modY = y + moduleOffset;
             boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, modX, modY, 232, 20);
 
@@ -91,4 +106,20 @@ public class BetaClickGUI extends GuiScreen implements Methods {
         }
     }
 
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+
+        int scroll = Integer.signum(Mouse.getEventDWheel());
+
+        if (scroll != 0) {
+            firstVisibleModule = Math.max(0, Math.min(firstVisibleModule - scroll, Client.moduleManager.getModulesByCategory(listeningToCategory).size() - getMaxVisibleModules()));
+        }
+    }
+
+    private int getMaxVisibleModules() {
+        int availableHeight = 255;
+        int moduleHeight = 25;
+        return availableHeight / moduleHeight;
+    }
 }
