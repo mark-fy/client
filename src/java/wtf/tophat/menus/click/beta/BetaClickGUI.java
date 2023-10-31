@@ -5,6 +5,11 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.Client;
 import wtf.tophat.modules.base.Module;
+import wtf.tophat.settings.base.Setting;
+import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.DividerSetting;
+import wtf.tophat.settings.impl.NumberSetting;
+import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.render.CategoryUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
@@ -28,11 +33,21 @@ public class BetaClickGUI extends GuiScreen implements Methods {
     private Module listeningToModule = null;
     private int firstVisibleModule = 0;
 
+    private boolean isDragging = false;
+    private int dragX, dragY;
+    private float x = 50, y = 50;
+
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontRenderer fr = Methods.mc.fontRenderer;
 
-        float x = 50, y = 50, width = 300, height = 285;
+        float width = 300, height = 285;
+
+        if (isDragging) {
+            x = mouseX - dragX;
+            y = mouseY - dragY;
+        }
 
         RoundedUtil.drawRound(x, y, width, height, 8, new Color(30, 30, 30));
         fr.drawString("TopHat", x + 10, y + 10, Color.WHITE);
@@ -51,9 +66,6 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
         int moduleOffset = 20;
 
-        // module box
-        // RoundedUtil.drawRound(x + 57, y + 15, 240, 255, 8, new Color(20, 20, 20));
-
         List<Module> modules = Client.moduleManager.getModulesByCategory(listeningToCategory);
         int maxVisibleModules = getMaxVisibleModules();
 
@@ -67,6 +79,32 @@ public class BetaClickGUI extends GuiScreen implements Methods {
             fr.drawString("X", modX + 232 - 10, modY + 7, module.isEnabled() ? Color.GREEN : Color.RED);
 
             moduleOffset += 25;
+
+            if(listeningToModule == module && Client.settingManager.getSettingsByModule(listeningToModule).size() != 0) {
+                RoundedUtil.drawRound(x + 305, y, 200, 285, 8, new Color(30,30,30));
+                RoundedUtil.drawRound(x + 307, y + 2, 196, 281, 8, new Color(36,36,36));
+
+                int settingOffset = 20;
+
+                for(Setting setting : Client.settingManager.getSettingsByModule(listeningToModule)) {
+                    if(setting instanceof DividerSetting) {
+                        RoundedUtil.drawRound(x + 320, y + settingOffset + 7, 35, 2, 2, Color.WHITE);
+                        RoundedUtil.drawRound(x + fr.getStringWidth(setting.getName()) + 375, y + settingOffset + 7, 35, 2, 2, Color.WHITE);
+                        fr.drawString(setting.getName(), x + 370, y + 5 + settingOffset, Color.WHITE);
+                        settingOffset += 20;
+                    } else if(setting instanceof StringSetting) {
+                        fr.drawString(setting.getName() + ": " + ((StringSetting) setting).get(), x + 310, y + 5 + settingOffset, Color.WHITE);
+                        settingOffset += 20;
+                    } else if(setting instanceof NumberSetting) {
+                        fr.drawString(setting.getName() + ": " + ((NumberSetting) setting).get(), x + 310, y + 5 + settingOffset, Color.WHITE);
+                        settingOffset += 20;
+                    }else if(setting instanceof BooleanSetting) {
+                        fr.drawString(setting.getName(), x + 310, y + 5 + settingOffset, Color.WHITE);
+                        fr.drawString("X", x + 490, y + 5 + settingOffset, ((BooleanSetting) setting).get() ? Color.GREEN : Color.RED);
+                        settingOffset += 15;
+                    }
+                }
+            }
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -74,7 +112,15 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        float x = 50, y = 50, width = 300, height = 285;
+        float width = 300, height = 285;
+
+        boolean isInsideMainRoundBox = DrawingUtil.hovered(mouseX, mouseY, x, y, width, height);
+
+        if (isInsideMainRoundBox && mouseButton == 0) {
+            isDragging = true;
+            dragX = (int) (mouseX - x);
+            dragY = (int) (mouseY - y);
+        }
 
         int categoryOffset = 40;
         for (Module.Category category : Module.Category.values()) {
@@ -99,7 +145,11 @@ public class BetaClickGUI extends GuiScreen implements Methods {
                 if (mouseButton == 0) {
                     module.toggle();
                 } else if (mouseButton == 1) {
-                    listeningToModule = module;
+                    if (listeningToModule == module) {
+                        listeningToModule = null;
+                    } else {
+                        listeningToModule = module;
+                    }
                 }
             }
             moduleOffset += 25;
@@ -107,14 +157,25 @@ public class BetaClickGUI extends GuiScreen implements Methods {
     }
 
     @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        if (isDragging && state == 0) { // Check for left-click (mouse button 0)
+            x = mouseX - dragX;
+            y = mouseY - dragY;
+        }
+
+        isDragging = false;
+        super.mouseReleased(mouseX, mouseY, state);
+    }
+
+    @Override
     public void handleMouseInput() throws IOException {
-        super.handleMouseInput();
 
         int scroll = Integer.signum(Mouse.getEventDWheel());
 
         if (scroll != 0) {
             firstVisibleModule = Math.max(0, Math.min(firstVisibleModule - scroll, Client.moduleManager.getModulesByCategory(listeningToCategory).size() - getMaxVisibleModules()));
         }
+        super.handleMouseInput();
     }
 
     private int getMaxVisibleModules() {
