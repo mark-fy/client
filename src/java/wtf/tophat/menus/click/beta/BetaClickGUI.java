@@ -43,19 +43,19 @@ public class BetaClickGUI extends GuiScreen implements Methods {
             RoundedUtil.drawRound(hoveredCat ? x + 12 : category == listeningToCategory ? x + 12 : x + 10, y + categoryOffset, 32, 32, 8, CategoryUtil.getCategoryColor(category));
             //fr.drawString(category.getName(), x + 10, y + categoryOffset + 10, Color.WHITE);
 
-            int moduleOffset = 20;
-            for(Module module : Client.moduleManager.getModulesByCategory(listeningToCategory)) {
-                float modX = x + 60, modY = y + moduleOffset;
-                boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, x + 60, modY, 232, 20);
-
-                RoundedUtil.drawRound(modX, modY, 232, 20, 4, hoveredMod ? new Color(38,38,38) : new Color(36,36,36));
-                fr.drawString(module.getName(), x + 65, modY + 7, Color.WHITE);
-                fr.drawString("X", modX + 232 - 10, modY + 7, module.isEnabled() ? Color.GREEN : Color.RED);
-
-                moduleOffset += 25;
-            }
-
             categoryOffset += 40;
+        }
+
+        int moduleOffset = 20;
+        for(Module module : Client.moduleManager.getModulesByCategory(listeningToCategory)) {
+            float modX = x + 60, modY = y + moduleOffset;
+            boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, x + 60, modY, 232, 20);
+
+            RoundedUtil.drawRound(modX, modY, 232, 20, 4, hoveredMod ? new Color(38,38,38) : new Color(36,36,36));
+            fr.drawString(module.getName(), x + 65, modY + 7, Color.WHITE);
+            fr.drawString("X", modX + 232 - 10, modY + 7, module.isEnabled() ? Color.GREEN : Color.RED);
+
+            moduleOffset += 25;
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -72,23 +72,23 @@ public class BetaClickGUI extends GuiScreen implements Methods {
                 listeningToCategory = category;
             }
 
-            int moduleOffset = 20;
-            for (Module module : Client.moduleManager.getModulesByCategory(listeningToCategory)) {
-                float modX = x + 60, modY = y + moduleOffset;
-                boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, modX, modY, 232, 20);
-
-                if (hoveredMod) {
-                    if (mouseButton == 0) {
-                        module.toggle();
-                        this.sendChat("enabled: " + module.getName());
-                    } else if (mouseButton == 1) {
-                        listeningToModule = module;
-                    }
-                }
-                moduleOffset += 25;
-            }
-
             categoryOffset += 40;
+        }
+
+        int moduleOffset = 20;
+        for (Module module : Client.moduleManager.getModulesByCategory(listeningToCategory)) {
+            float modX = x + 60, modY = y + moduleOffset;
+            boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, modX, modY, 232, 20);
+
+            if (hoveredMod) {
+                if (mouseButton == 0) {
+                    module.toggle();
+                    this.sendChat("enabled: " + module.getName());
+                } else if (mouseButton == 1) {
+                    listeningToModule = module;
+                }
+            }
+            moduleOffset += 25;
         }
     }
 

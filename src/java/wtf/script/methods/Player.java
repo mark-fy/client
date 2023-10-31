@@ -1,4 +1,4 @@
-package wtf.tophat.script.methods;
+package wtf.script.methods;
 
 import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.player.movement.MoveUtil;

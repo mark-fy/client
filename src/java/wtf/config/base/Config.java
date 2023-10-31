@@ -1,4 +1,4 @@
-package wtf.tophat.config.base;
+package wtf.config.base;
 
 import wtf.tophat.utilities.Methods;
 

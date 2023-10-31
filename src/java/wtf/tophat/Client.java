@@ -3,12 +3,12 @@ package wtf.tophat;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.Display;
 import wtf.tophat.commands.base.CommandManager;
-import wtf.tophat.config.ConfigManager;
-import wtf.tophat.config.impl.Load;
-import wtf.tophat.config.impl.Save;
+import wtf.config.ConfigManager;
+import wtf.config.impl.Load;
+import wtf.config.impl.Save;
 import wtf.tophat.events.base.EventManager;
 import wtf.tophat.modules.base.ModuleManager;
-import wtf.tophat.script.ScriptManager;
+import wtf.script.ScriptManager;
 import wtf.tophat.settings.base.SettingManager;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 

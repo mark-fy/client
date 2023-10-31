@@ -1,11 +1,11 @@
-package wtf.tophat.config.impl;
+package wtf.config.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import wtf.tophat.Client;
-import wtf.tophat.config.base.Config;
-import wtf.tophat.config.base.ConfigInfo;
+import wtf.config.base.Config;
+import wtf.config.base.ConfigInfo;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.DividerSetting;

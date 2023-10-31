@@ -1,4 +1,4 @@
-package wtf.tophat.accounts;
+package wtf.accounts;
 
 import com.google.gson.*;
 

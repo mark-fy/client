@@ -1,4 +1,4 @@
-package wtf.tophat.script.methods;
+package wtf.script.methods;
 
 public class Chat implements wtf.tophat.utilities.Methods {
 

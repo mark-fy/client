@@ -1,7 +1,7 @@
-package wtf.tophat.config.impl;
+package wtf.config.impl;
 
-import wtf.tophat.config.base.Config;
-import wtf.tophat.config.base.ConfigInfo;
+import wtf.config.base.Config;
+import wtf.config.base.ConfigInfo;
 
 import java.io.File;
 

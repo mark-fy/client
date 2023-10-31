@@ -2,7 +2,7 @@ package wtf.tophat.menus.guis;
 
 import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.accounts.AccountManager;
+import wtf.accounts.AccountManager;
 import wtf.tophat.menus.alts.AltThread;
 import wtf.tophat.utilities.render.DrawingUtil;
 

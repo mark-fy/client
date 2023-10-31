@@ -1,7 +1,6 @@
-package wtf.tophat.script;
+package wtf.script;
 
-import wtf.tophat.Client;
-import wtf.tophat.events.impl.UpdateEvent;
+import wtf.script.methods.*;
 import wtf.tophat.script.methods.*;
 import wtf.tophat.utilities.Methods;
 import org.luaj.vm2.*;

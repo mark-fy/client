@@ -2,7 +2,7 @@ package wtf.tophat.commands.impl;
 
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
-import wtf.tophat.config.impl.*;
+import wtf.config.impl.*;
 
 @CommandInfo(name = "Config", description = "manage configs", command = ".config <save/load/list/delete> <config name>")
 public class Config extends Command {

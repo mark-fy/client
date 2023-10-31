@@ -1,10 +1,10 @@
-package wtf.tophat.config.impl;
+package wtf.config.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import wtf.tophat.Client;
-import wtf.tophat.config.base.Config;
-import wtf.tophat.config.base.ConfigInfo;
+import wtf.config.base.Config;
+import wtf.config.base.ConfigInfo;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.*;
