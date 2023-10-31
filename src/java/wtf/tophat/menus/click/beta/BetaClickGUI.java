@@ -83,7 +83,6 @@ public class BetaClickGUI extends GuiScreen implements Methods {
             if (hoveredMod) {
                 if (mouseButton == 0) {
                     module.toggle();
-                    this.sendChat("enabled: " + module.getName());
                 } else if (mouseButton == 1) {
                     listeningToModule = module;
                 }
