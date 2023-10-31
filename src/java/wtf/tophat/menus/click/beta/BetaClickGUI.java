@@ -19,6 +19,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
+import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
+
 public class BetaClickGUI extends GuiScreen implements Methods {
 
     @Override
@@ -75,33 +77,39 @@ public class BetaClickGUI extends GuiScreen implements Methods {
             boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, modX, modY, 232, 20);
 
             RoundedUtil.drawRound(modX, modY, 232, 20, 4, hoveredMod ? new Color(38,38,38) : new Color(36,36,36));
-            fr.drawString(module.getName(), x + 65, modY + 7, Color.WHITE);
+            fr.drawString(module.getName(), x + 65, modY + 7, listeningToModule == module ? Color.LIGHT_GRAY : Color.WHITE);
             fr.drawString("X", modX + 232 - 10, modY + 7, module.isEnabled() ? Color.GREEN : Color.RED);
 
             moduleOffset += 25;
 
             if(listeningToModule == module && Client.settingManager.getSettingsByModule(listeningToModule).size() != 0) {
                 RoundedUtil.drawRound(x + 305, y, 200, 285, 8, new Color(30,30,30));
-                RoundedUtil.drawRound(x + 307, y + 2, 196, 281, 8, new Color(36,36,36));
 
-                int settingOffset = 20;
+                int settingOffset = 5;
 
                 for(Setting setting : Client.settingManager.getSettingsByModule(listeningToModule)) {
                     if(setting instanceof DividerSetting) {
-                        RoundedUtil.drawRound(x + 320, y + settingOffset + 7, 35, 2, 2, Color.WHITE);
-                        RoundedUtil.drawRound(x + fr.getStringWidth(setting.getName()) + 375, y + settingOffset + 7, 35, 2, 2, Color.WHITE);
                         fr.drawString(setting.getName(), x + 370, y + 5 + settingOffset, Color.WHITE);
                         settingOffset += 20;
                     } else if(setting instanceof StringSetting) {
-                        fr.drawString(setting.getName() + ": " + ((StringSetting) setting).get(), x + 310, y + 5 + settingOffset, Color.WHITE);
+                        RoundedUtil.drawRound(x + 310, y + settingOffset + 1, 190, 15, 2, new Color(38,38,38));
+                        fr.drawString(setting.getName() + ": " + ((StringSetting) setting).get() , x + 313, y + 5 + settingOffset, Color.WHITE);
                         settingOffset += 20;
                     } else if(setting instanceof NumberSetting) {
-                        fr.drawString(setting.getName() + ": " + ((NumberSetting) setting).get(), x + 310, y + 5 + settingOffset, Color.WHITE);
+                        RoundedUtil.drawRound(x + 310, y + settingOffset + 1, 190, 35, 2, new Color(38,38,38));
+                        RoundedUtil.drawRound(x + 312, y + settingOffset + 25, 186, 2, 2, Color.WHITE);
+                        RoundedUtil.drawRound(x + 312, y + settingOffset + 25, 40, 2, 2,  CategoryUtil.getCategoryColor(listeningToModule.getCategory()));
+                        RoundedUtil.drawRound(x + 350, y + settingOffset + 21, 2, 10, 1, Color.DARK_GRAY);
+                        fr.drawString(setting.getName() + ": " + ((NumberSetting) setting).get(), x + 313, y + 5 + settingOffset, Color.WHITE);
+                        settingOffset += 40;
+                    } else if(setting instanceof BooleanSetting) {
+                        RoundedUtil.drawRound(x + 310, y + settingOffset + 1, 190, 15, 2, new Color(38,38,38));
+                        fr.drawString(setting.getName(), x + 313, y + 5 + settingOffset, Color.WHITE);
+
+                        RoundedUtil.drawRound(x + 472, (float) (y + settingOffset + 2.5), 25, 12, 5, ((BooleanSetting) setting).get() ? CategoryUtil.getCategoryColor(listeningToModule.getCategory()) : new Color(60,60,60));
+                        RoundedUtil.drawRound(((BooleanSetting) setting).get() ? x + 486 : x + 473, (float) (y + settingOffset + 3.5), 10, 10, 4, Color.WHITE);
+
                         settingOffset += 20;
-                    }else if(setting instanceof BooleanSetting) {
-                        fr.drawString(setting.getName(), x + 310, y + 5 + settingOffset, Color.WHITE);
-                        fr.drawString("X", x + 490, y + 5 + settingOffset, ((BooleanSetting) setting).get() ? Color.GREEN : Color.RED);
-                        settingOffset += 15;
                     }
                 }
             }
@@ -152,13 +160,40 @@ public class BetaClickGUI extends GuiScreen implements Methods {
                     }
                 }
             }
+
+            if(listeningToModule == module && Client.settingManager.getSettingsByModule(listeningToModule).size() != 0) {
+                int settingOffset = 5;
+
+                for(Setting setting : Client.settingManager.getSettingsByModule(listeningToModule)) {
+
+                    boolean hoveredSetting = DrawingUtil.hovered(mouseX, mouseY, x + 310, y + settingOffset + 1, 190, 15);
+
+                    if(setting instanceof DividerSetting) {
+                        settingOffset += 20;
+                    } else if(setting instanceof StringSetting) {
+                        if(mouseButton == 0 && hoveredSetting) {
+                            ((StringSetting) setting).forward();
+                        } else if(mouseButton == 1 && hoveredSetting) {
+                            ((StringSetting) setting).backward();
+                        }
+                        settingOffset += 20;
+                    } else if(setting instanceof NumberSetting) {
+                        settingOffset += 40;
+                    } else if(setting instanceof BooleanSetting) {
+                        if(mouseButton == 0 && hoveredSetting) {
+                            ((BooleanSetting) setting).toggle();
+                        }
+                        settingOffset += 20;
+                    }
+                }
+            }
             moduleOffset += 25;
         }
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-        if (isDragging && state == 0) { // Check for left-click (mouse button 0)
+        if (isDragging && state == 0) {
             x = mouseX - dragX;
             y = mouseY - dragY;
         }
