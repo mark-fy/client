@@ -27,13 +27,12 @@ public class TeleportAura extends Module {
     public EntityLivingBase target;
     public final List<Vec3> path = new ArrayList<>();
 
-    private final NumberSetting minRange, maxRange;
+    private final NumberSetting range;
     private final BooleanSetting onlyPlayer;
 
     public TeleportAura() {
         Client.settingManager.add(
-                minRange = new NumberSetting(this, "Min", 4.0, 100.0, 49.0, 1),
-                maxRange = new NumberSetting(this, "Min", 5.0, 100.0, 50.0, 1),
+                range = new NumberSetting(this, "Range", 5.0, 100.0, 50.0, 1),
                 onlyPlayer = new BooleanSetting(this, "Only Player", true)
         );
     }
@@ -56,23 +55,18 @@ public class TeleportAura extends Module {
         LinkedList<Entity> entities = new LinkedList<>(targets);
         entities.sort(new EntityUtil.RangeSorter());
 
-        if (targets == null) return;
+        if(targets == null) return;
 
         for (Entity entity : entities) {
             double deltaX = mc.player.posX - entity.posX;
             double deltaY = mc.player.posY - entity.posY;
             double deltaZ = mc.player.posZ - entity.posZ;
-            double sqrted = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-            if (mc.player == entity || (onlyPlayer.get() && !(entity instanceof EntityPlayer)) ||
-                    !(sqrted <= maxRange.get().doubleValue() &&
-                            entity instanceof EntityLivingBase &&
-                            sqrted >= minRange.get().doubleValue())) {
+            if (mc.player == entity || onlyPlayer.get() && !(entity instanceof EntityPlayer) || !(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) <= range.get().doubleValue() || !(entity instanceof EntityLivingBase)))
                 continue;
-            }
 
             target = (EntityLivingBase) entity;
 
-            if (target == null) return;
+            if(target == null) return;
 
             if (mc.player.ticksExisted % 1 == 0) {
                 List<Vec3> blinkPath = PathUtil.findBlinkPath(target.posX, target.posY, target.posZ, 8.0);

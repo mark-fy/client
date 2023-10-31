@@ -13,45 +13,46 @@ import net.minecraft.util.Vec3;
  * thx for helping for the raycast alan the gamer
  */
 public class RayCast {
-
-    public static Entity raycast(Minecraft mc, double minRange, double maxRange, Entity entity) {
-        if (entity == null)
+    public static Entity raycast(Minecraft mc, double r3, Entity entiy) {
+        if (entiy == null)
             return null;
-        Entity player = mc.player;
-        Vec3 posVector = entity.getPositionVector().add(new Vec3(0, entity.getEyeHeight(), 0));
-        Vec3 newPosVector = mc.player.getPositionVector().add(new Vec3(0, mc.player.getEyeHeight(), 0));
+        Entity var2 = mc.player;
+        Vec3 var9 = entiy.getPositionVector().add(new Vec3(0, entiy.getEyeHeight(), 0));
+        Vec3 var7 = mc.player.getPositionVector().add(new Vec3(0, mc.player.getEyeHeight(), 0));
+        Vec3 var10 = null;
+        float var11 = 1.0F;
         AxisAlignedBB a = mc.player.getEntityBoundingBox()
-                .addCoord(posVector.xCoord - newPosVector.xCoord, posVector.yCoord - newPosVector.yCoord, posVector.zCoord - newPosVector.zCoord)
-                .expand(1.0F, 1.0F, 1.0F);
-        List entityList = mc.world.getEntitiesWithinAABBExcludingEntity(player, a);
-        double minDistance = minRange + 0.5f;
-        double maxDistance = maxRange + 0.5f;
-        for (int i = 0; i < entityList.size(); ++i) {
-            Entity entity2 = (Entity) entityList.get(i);
+                .addCoord(var9.xCoord - var7.xCoord, var9.yCoord - var7.yCoord, var9.zCoord - var7.zCoord)
+                .expand(var11, var11, var11);
+        List var12 = mc.world.getEntitiesWithinAABBExcludingEntity(var2, a);
+        double var13 = r3 + 0.5f;
+        Entity b = null;
+        for (int var15 = 0; var15 < var12.size(); ++var15) {
+            Entity var16 = (Entity) var12.get(var15);
 
-            if (entity2.canBeCollidedWith()) {
-                float collisionBorderSize = entity2.getCollisionBorderSize();
-                AxisAlignedBB alignedBB = entity2.getEntityBoundingBox().expand(collisionBorderSize, collisionBorderSize,
-                        collisionBorderSize);
-                MovingObjectPosition objectPosition = alignedBB.calculateIntercept(newPosVector, posVector);
+            if (var16.canBeCollidedWith()) {
+                float var17 = var16.getCollisionBorderSize();
+                AxisAlignedBB var18 = var16.getEntityBoundingBox().expand((double) var17, (double) var17,
+                        (double) var17);
+                MovingObjectPosition var19 = var18.calculateIntercept(var7, var9);
 
-                if (alignedBB.isVecInside(newPosVector)) {
-                    if (0.0D < minDistance || minDistance == 0.0D) {
-                        minDistance = 0.0D;
+                if (var18.isVecInside(var7)) {
+                    if (0.0D < var13 || var13 == 0.0D) {
+                        b = var16;
+                        var10 = var19 == null ? var7 : var19.hitVec;
+                        var13 = 0.0D;
                     }
-                } else if (objectPosition != null) {
-                    double distanceTo = newPosVector.distanceTo(objectPosition.hitVec);
+                } else if (var19 != null) {
+                    double var20 = var7.distanceTo(var19.hitVec);
 
-                    if (distanceTo < minDistance || minDistance == 0.0D) {
-                        minDistance = distanceTo;
+                    if (var20 < var13 || var13 == 0.0D) {
+                        b = var16;
+                        var10 = var19.hitVec;
+                        var13 = var20;
                     }
-                }
-                if (minDistance <= maxDistance) {
-                    return entity2;
                 }
             }
         }
-        return null;
+        return b;
     }
-
 }

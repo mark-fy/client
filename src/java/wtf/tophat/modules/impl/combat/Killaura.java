@@ -4,12 +4,8 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C02PacketUseEntity;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
@@ -39,8 +35,8 @@ public class Killaura extends Module {
 
     public final TimeUtil timer = new TimeUtil();
     public final StringSetting sort, autoblockMode;
-    public final NumberSetting minCps, maxCps, minRange, maxRange;
-    public final BooleanSetting render;
+    public final NumberSetting minCps, maxCps, range;
+    public final BooleanSetting render, autoblock;
 
     public static EntityLivingBase target = null;
 
@@ -49,12 +45,13 @@ public class Killaura extends Module {
     public Killaura(){
         Client.settingManager.add(
                 sort = new StringSetting(this, "Sort", "Distance", "Distance", "Health"),
-                autoblockMode = new StringSetting(this, "Auto Block", "None", "None", "Vanilla", "Intave", "AAC", "NCP", "Grim"),
                 minCps = new NumberSetting(this, "Min CPS", 1, 20, 12, 1),
                 maxCps = new NumberSetting(this, "Max CPS", 1, 20, 17, 1),
-                minRange = new NumberSetting(this, "Min Range", 0, 6, 3.4, 1),
-                maxRange = new NumberSetting(this, "Max Range", 1, 6, 3.5, 1),
-                render = new BooleanSetting(this, "Jello Circle", true)
+                range = new NumberSetting(this, "Range", 2, 6, 3.4, 1),
+                render = new BooleanSetting(this, "Jello Circle", true),
+                autoblock = new BooleanSetting(this, "Auto Block", true),
+                autoblockMode = new StringSetting(this, "Mode", "Fake", "Fake")
+                        .setHidden(() -> !autoblock.get())
         );
     }
 
@@ -74,12 +71,12 @@ public class Killaura extends Module {
         if (Client.moduleManager.getByClass(Scaffold.class).isEnabled())
             return;
 
-        target = EntityUtil.getClosestEntity(minRange.get().doubleValue(), maxRange.get().doubleValue());
+        target = EntityUtil.getClosestEntity(range.get().doubleValue());
 
         if (target != null) {
             if (e.getState() == Event.State.PRE) {
                 if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled()) {
-                    EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, minRange.get().doubleValue(), maxRange.get().doubleValue(), getTarget());
+                    EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, range.get().doubleValue(), getTarget());
                     if (p == null)
                         return;
 
@@ -89,32 +86,10 @@ public class Killaura extends Module {
                     e.setPitch(rotations[1]);
 
                     targetsSort();
-                    if (timer.elapsed((long) (1000.0D / MathUtil.randomNumber(minCps.get().doubleValue(), maxCps.get().doubleValue())))) {
+                    if (this.timer.elapsed((long) (1000.0D / MathUtil.randomNumber(minCps.get().doubleValue(), maxCps.get().doubleValue())))) {
                         mc.player.swingItem();
                         mc.player.sendQueue.send(new C02PacketUseEntity(p, C02PacketUseEntity.Action.ATTACK));
-
-                        ItemStack currentItem = mc.player.getHeldItem();
-                        switch (autoblockMode.get()) {
-                            case "Vanilla":
-                                mc.playerController.sendUseItem(getPlayer(), getWorld(), currentItem);
-                                break;
-                            case "NCP":
-                                mc.player.setItemInUse(currentItem, 32767);
-                                break;
-                            case "AAC":
-                                if (mc.player.ticksExisted % 2 == 0) {
-                                    mc.playerController.interactWithEntitySendPacket(getPlayer(), p);
-                                    mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));
-                                }
-                                break;
-                            case "Grim":
-                            case "Intave":
-                                mc.playerController.interactWithEntitySendPacket(getPlayer(), p);
-                                mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));
-                                break;
-                        }
-
-                        timer.reset();
+                        this.timer.reset();
                     }
                 }
             }
@@ -123,17 +98,10 @@ public class Killaura extends Module {
 
     public Entity getTarget() {
         for (Entity o : mc.world.loadedEntityList) {
-            if (o instanceof EntityPlayer && !(o instanceof EntityVillager)) {
-                if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled() && !o.isDead && o != mc.player) {
-                    double distanceToEntity = mc.player.getDistanceToEntity(o);
-
-                    if (distanceToEntity >= minRange.get().doubleValue() && distanceToEntity <= maxRange.get().doubleValue()) {
-                        if (mc.player.canEntityBeSeen(o)) {
-                            return o;
-                        }
-                    }
-                }
-            }
+            if (o instanceof net.minecraft.entity.player.EntityPlayer && !(o instanceof net.minecraft.entity.passive.EntityVillager))
+                if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled() && !o.isDead && o != mc.player)
+                    if (mc.player.getDistanceToEntity(o) <= (mc.player.canEntityBeSeen(o) ? range.get().doubleValue() : 3.1D))
+                        return o;
         }
         return null;
     }

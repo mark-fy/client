@@ -31,8 +31,8 @@ public class AimAssist extends Module {
                 horizontalSpeed = new NumberSetting(this, "Horizontal Aim Speed", 0, 7, 0.5, 2),
                 verticalSpeed = new NumberSetting(this, "Vertical Aim Speed", 0, 7, 0.5, 2),
                 cameraShake = new NumberSetting(this, "Camera Shake Amount", 0, 5, 0.2, 1),
-                minRange = new NumberSetting(this, "Min Range", 0, 10, 3.1, 1),
-                maxRange = new NumberSetting(this, "Max Range", 1, 10, 3.9, 1),
+                minRange = new NumberSetting(this, "Min Range", 0, 10, 3, 1),
+                maxRange = new NumberSetting(this, "Max Range", 1, 10, 5, 1),
                 swordCheck = new BooleanSetting(this,"Sword Only", false),
                 clickAim = new BooleanSetting(this, "Click Aim", true)
         );
