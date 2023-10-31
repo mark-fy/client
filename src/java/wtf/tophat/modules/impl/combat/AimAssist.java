@@ -1,11 +1,16 @@
 package wtf.tophat.modules.impl.combat;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSword;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
@@ -14,70 +19,98 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.player.PlayerUtil;
-import wtf.tophat.utilities.player.rotations.RotationUtil;
-import wtf.tophat.utilities.time.TimeUtil;
 
-@ModuleInfo(name = "AimAssist", desc = "assist your aim automatically (goofy)", category = Module.Category.COMBAT)
+@ModuleInfo(name = "Aim Assist", desc = "assists aiming at players", category = Module.Category.COMBAT)
 public class AimAssist extends Module {
-    public TimeUtil timer;
 
-    private final BooleanSetting teams;
-    private final BooleanSetting swordCheck;
-    private final BooleanSetting clickAim;
-    private final NumberSetting aimDist;
-    private final NumberSetting aimSpeed;
+    private final NumberSetting horizontalSpeed, verticalSpeed, cameraShake, minRange, maxRange;
+    private final BooleanSetting swordCheck, clickAim;
 
     public AimAssist() {
         Client.settingManager.add(
-                teams = new BooleanSetting(this,"Teams Check", true),
+                horizontalSpeed = new NumberSetting(this, "Horizontal Aim Speed", 0, 7, 0.5, 2),
+                verticalSpeed = new NumberSetting(this, "Vertical Aim Speed", 0, 7, 0.5, 2),
+                cameraShake = new NumberSetting(this, "Camera Shake Amount", 0, 5, 0.2, 1),
+                minRange = new NumberSetting(this, "Min Range", 0, 10, 3, 1),
+                maxRange = new NumberSetting(this, "Max Range", 1, 10, 5, 1),
                 swordCheck = new BooleanSetting(this,"Sword Only", false),
-                clickAim = new BooleanSetting(this, "Click Aim", true),
-                aimDist = new NumberSetting(this, "Aim Distance", 1.0, 10.0, 3.6, 1),
-                aimSpeed = new NumberSetting(this, "Aim Distance", 1.0, 10.0, 3.6, 1)
+                clickAim = new BooleanSetting(this, "Click Aim", true)
         );
     }
 
     @Listen
     public void onMotionUpdate(MotionEvent event) {
-        if (event.getState().equals(Event.State.PRE)) {
-            final float var = (float) ThreadLocalRandom.current().nextDouble(0.7f, 0.8f);
-            for (final Object theObject : mc.world.loadedEntityList) {
-                if (theObject instanceof EntityPlayer && theObject != mc.player) {
-                    final EntityPlayer entityplayer = (EntityPlayer)theObject;
-                    if (swordCheck.get()) {
-                        if (mc.player.getHeldItem() == null) {
-                            continue;
-                        }
-                        if (!(mc.player.getHeldItem().getItem() instanceof ItemSword)) {
-                            continue;
-                        }
-                    }
-                    if (entityplayer == mc.player) {
-                        continue;
-                    }
-                    if (clickAim.get() && !Mouse.isButtonDown(0)) {
-                        continue;
-                    }
-                    if (PlayerUtil.isOnSameTeam(entityplayer) && teams.get()) {
-                        continue;
-                    }
-                    if (mc.player.getDistanceToEntity(entityplayer) > aimDist.get().doubleValue()) {
-                        continue;
-                    }
-                    final float[] rot = RotationUtil.getNeededRotations(entityplayer);
-                    if (mc.player.rotationYaw <= rot[0] - 12.0f || mc.player.rotationYaw >= rot[0] + 12.0f) {
-                        if (mc.player.rotationYaw > rot[0]) {
-                            mc.player.rotationYaw -= aimSpeed.get().doubleValue() / var;
-                        }
-                        else {
-                            mc.player.rotationYaw += aimSpeed.get().doubleValue() / var;
-                        }
-                    }
-                    mc.player.rotationYaw *= ThreadLocalRandom.current().nextDouble(0.9999f, 1.0001f);
-                    mc.player.rotationPitch *= ThreadLocalRandom.current().nextDouble(0.99f, 1.01f);
-                }
+        if (event.getState() == Event.State.PRE) {
+            List<EntityLivingBase> targets = mc.world.loadedEntityList.stream()
+                    .filter(entity -> entity instanceof EntityLivingBase)
+                    .map(entity -> (EntityLivingBase) entity)
+                    .filter(entityLivingBase -> {
+                        double distanceToPlayer = entityLivingBase.getDistanceToEntity(mc.player);
+                        return distanceToPlayer >= minRange.get().doubleValue()
+                                && distanceToPlayer <= maxRange.get().doubleValue()
+                                && entityLivingBase != mc.player
+                                && !entityLivingBase.isDead
+                                && entityLivingBase.getHealth() > 0
+                                && !entityLivingBase.isInvisible()
+                                && !entityLivingBase.getName().isEmpty()
+                                && !entityLivingBase.getName().contains(" ");
+                    })
+                    .sorted(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(mc.player)))
+                    .collect(Collectors.toList());
+
+            if (!targets.isEmpty()) {
+                EntityLivingBase target = targets.get(0);
+                aim(target);
             }
         }
+    }
+
+    public void aim(EntityLivingBase entityLivingBase) {
+        ItemStack heldItem = getPlayer().getHeldItem();
+        if (mc.currentScreen == null && heldItem != null) {
+
+            if (swordCheck.get() && heldItem.getItem() instanceof ItemSword) {
+                setRotations(entityLivingBase);
+            } else {
+                setRotations(entityLivingBase);
+            }
+        }
+    }
+
+    public void setRotations(EntityLivingBase e) {
+        float[] rotations = getRotations(e);
+
+        if (clickAim.get()) {
+            if (Mouse.isButtonDown(0)) {
+                getPlayer().rotationYaw = rotations[0];
+               getPlayer().rotationPitch = rotations[1];
+            }
+        } else {
+            getPlayer().rotationYaw = rotations[0];
+            getPlayer().rotationPitch = rotations[1];
+        }
+    }
+
+    private float[] getRotations(Entity entity) {
+        float rotationSpeedX = horizontalSpeed.get().floatValue();
+        float rotationSpeedY = verticalSpeed.get().floatValue();
+        float cameraShakeSpeed = (float) (Math.random() * cameraShake.get().floatValue());
+
+        double deltaX = entity.posX - getPlayer().posX;
+        double deltaY = entity.posY - 3.5 + entity.getEyeHeight() - getPlayer().posY + getPlayer().getEyeHeight();
+        double deltaZ = entity.posZ - getPlayer().posZ;
+
+        float yaw = (float) Math.toDegrees(Math.atan2(deltaZ, deltaX)) - 90.0F;
+        float pitch = (float) -Math.toDegrees(Math.atan2(deltaY, Math.sqrt(deltaX * deltaX + deltaZ * deltaZ)));
+
+        float deltaYaw = MathHelper.wrapAngleTo180_float(yaw - getPlayer().rotationYaw);
+        float deltaPitch = MathHelper.wrapAngleTo180_float(pitch - getPlayer().rotationPitch);
+
+        deltaYaw = Math.min(rotationSpeedX, Math.max(-rotationSpeedX, deltaYaw));
+        deltaPitch = Math.min(rotationSpeedY, Math.max(-rotationSpeedY, deltaPitch));
+        yaw = getPlayer().rotationYaw + deltaYaw + cameraShakeSpeed;
+        pitch = getPlayer().rotationPitch + deltaPitch + cameraShakeSpeed;
+
+        return new float[]{yaw, pitch};
     }
 }
