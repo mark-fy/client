@@ -164,24 +164,29 @@ public class UIAltManager extends GuiScreen {
 
         int accountY = 25;
         String accounts = AccountManager.getAccounts("tophat");
-        String[] accountStrings = accounts.split(",");
-        for (String accountString : accountStrings) {
-            String[] parts = accountString.split(":");
-            String username = parts[0];
-            String passwordOrStatus = parts[1];
-            if (DrawingUtil.hovered(mouseX, mouseY, 0, accountY - 8, 160, 29)) {
-                if(mouseButton == 0) {
-                    this.username.setText(username);
-                    if (!passwordOrStatus.equalsIgnoreCase("offline")) {
-                        this.password.setText(passwordOrStatus);
-                    } else {
-                        this.password.setText("");
+
+        if (!accounts.isEmpty()) {
+            String[] accountStrings = accounts.split(",");
+            for (String accountString : accountStrings) {
+                String[] parts = accountString.split(":");
+                if (parts.length >= 2) {
+                    String username = parts[0];
+                    String passwordOrStatus = parts[1];
+                    if (DrawingUtil.hovered(mouseX, mouseY, 0, accountY - 8, 160, 29)) {
+                        if (mouseButton == 0) {
+                            this.username.setText(username);
+                            if (!passwordOrStatus.equalsIgnoreCase("offline")) {
+                                this.password.setText(passwordOrStatus);
+                            } else {
+                                this.password.setText("");
+                            }
+                        } else if (mouseButton == 1) {
+                            AccountManager.deleteAccount(username, "tophat");
+                        }
                     }
-                } else if(mouseButton == 1) {
-                    AccountManager.deleteAccount(username, "tophat");
+                    accountY += 30;
                 }
             }
-            accountY += 30;
         }
     }
 
