@@ -24,22 +24,22 @@ import net.minecraft.util.Vec3;
 
 public class EntityUtil implements Methods {
 
-    public static EntityLivingBase getClosestEntity(double range) {
-        double dist = range;
-        EntityLivingBase target = null;
+    public static EntityLivingBase getClosestEntity(double minRange, double maxRange) {
+        double closestDistance = maxRange;
+        EntityLivingBase closestEntity = null;
         for (Entity entity : Minecraft.getMinecraft().world.loadedEntityList) {
             if (entity instanceof EntityLivingBase) {
                 EntityLivingBase player = (EntityLivingBase) entity;
                 if (canAttack(player)) {
-                    double currentDist = mc.player.getDistanceToEntity(player);
-                    if (currentDist <= dist) {
-                        dist = currentDist;
-                        target = player;
+                    double currentDistance = mc.player.getDistanceToEntity(player);
+                    if (currentDistance >= minRange && currentDistance <= maxRange && currentDistance < closestDistance) {
+                        closestDistance = currentDistance;
+                        closestEntity = player;
                     }
                 }
             }
         }
-        return target;
+        return closestEntity;
     }
 
     public static boolean canAttack(Entity entity) {
