@@ -13,7 +13,7 @@ import wtf.tophat.utilities.player.DamageUtil;
 import wtf.tophat.utilities.player.movement.MoveUtil;
 import wtf.tophat.utilities.time.TimeUtil;
 
-@ModuleInfo(name = "LongJump", desc = "jump better", category = Module.Category.MOVE)
+@ModuleInfo(name = "Long Jump", desc = "perform longer jumps", category = Module.Category.MOVE)
 public class LongJump extends Module {
 
     public final StringSetting mode;
@@ -126,22 +126,19 @@ public class LongJump extends Module {
                 mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(mc.player.posX, mc.player.posY, mc.player.posZ, false));
                 mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(mc.player.posX, mc.player.posY, mc.player.posZ, true));
                 break;
-        }
-        launched = false;
-        wasLaunched = false;
-        jumped = false;
-        timer.reset();
-
-        switch (mode.get()) {
             case "Verus":
                 if (!mc.player.onGround) {
                     toggle();
                     return;
                 }
-                timer.setTimer(0.3f);
+                TimeUtil.setTimer(0.3f);
                 DamageUtil.damage(DamageUtil.DamageType.VERUS);
                 break;
         }
+        launched = false;
+        wasLaunched = false;
+        jumped = false;
+        timer.reset();
         hasJumped = false;
         stage = 0;
         super.onEnable();
