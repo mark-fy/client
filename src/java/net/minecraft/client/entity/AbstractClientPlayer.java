@@ -78,6 +78,12 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
     }
 
+    public void setLocationCape(ResourceLocation locationCape)
+    {
+        NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
+        networkplayerinfo.setLocationCape(locationCape);
+    }
+
     public static ThreadDownloadImageData getDownloadImageSkin(ResourceLocation resourceLocationIn, String username)
     {
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
