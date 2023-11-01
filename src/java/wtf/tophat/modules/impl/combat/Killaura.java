@@ -55,7 +55,7 @@ public class Killaura extends Module {
                 minRange = new NumberSetting(this, "Min Range", 0, 6, 3.4, 1),
                 maxRange = new NumberSetting(this, "Max Range", 1, 6, 3.5, 1),
                 inGUI = new BooleanSetting(this, "Attack in GUI", false),
-                render = new BooleanSetting(this, "Target ES", true)
+                render = new BooleanSetting(this, "Target ESP", true)
         );
     }
 
