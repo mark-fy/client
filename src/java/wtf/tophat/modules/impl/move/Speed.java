@@ -179,8 +179,8 @@ public class Speed extends Module {
         offTicks = 0;
         hypixelTicks = 0;
         mc.settings.keyBindJump.pressed = false;
-        mc.player.speedInAir = 0.02F;
-        mc.timer.timerSpeed = 1.0f;
+        getPlayer().speedInAir = 0.02F;
+        getMCTimer().timerSpeed = 1.0f;
         KeyBinding.setKeyBindState(mc.settings.keyBindSprint.getKeyCode(), false);
         switch (mode.get()){
             case "New NCP":
