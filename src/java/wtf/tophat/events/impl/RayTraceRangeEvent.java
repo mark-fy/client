@@ -5,9 +5,7 @@ import wtf.tophat.utilities.Methods;
 
 public class RayTraceRangeEvent extends Event implements Methods {
 
-    private float blockReachDistance;
-    private float rayTraceRange;
-    private float range;
+    private float blockReachDistance, rayTraceRange, range;
 
     public RayTraceRangeEvent(final float range) {
         this.blockReachDistance = RayTraceRangeEvent.mc.playerController.getBlockReachDistance();
