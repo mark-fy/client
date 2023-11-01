@@ -68,7 +68,7 @@ public class Watermark extends Module {
 
         switch(mode.get()) {
             case "Exhibition": {
-                fr.drawStringWithShadow(String.format("E§7xhibition [§f%s§7] [§f%s FPS§7] [§f%s ms§7]", getCurrentTime(), Minecraft.getDebugFPS(), "18"), 3, 4, new Color(157,6,99));
+                fr.drawStringWithShadow(String.format("E§7xhibition [§f%s§7] [§f%s FPS§7] [§f%s ms§7]", getCurrentTime(), Minecraft.getDebugFPS(), getPing()), 3, 4, new Color(157,6,99));
                 fr.drawStringWithShadow(String.format("XYZ: §f%s, %s, %s §7b/s: §f%s", Math.round(getX()), Math.round(getY()), Math.round(getZ()), getBPS()), 3, sr.getScaledHeight() - 10, new Color(170,170,170));
                 fr.drawStringWithShadow(String.format("Release Build - §f§l%s§7 - User", Client.getVersion()), sr.getScaledWidth() - fr.getStringWidth("Release Build - §f§l" + Client.getVersion() + "§7 - User") + 5, sr.getScaledHeight() - 10, new Color(170,170,170));
                 break;

@@ -3,6 +3,7 @@ package wtf.tophat.utilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.network.INetHandler;
@@ -66,6 +67,23 @@ public interface Methods {
     default float getBPS() {
         float squareMotion = (float)(MathUtil.square(mc.player.motionX) + MathUtil.square(mc.player.motionZ));
         return (float)MathUtil.round(Math.sqrt(squareMotion) * 20.0D * mc.timer.timerSpeed, (int) 2.0D);
+    }
+
+    default int getPing() {
+        NetworkPlayerInfo networkPlayerInfo = null;
+        try {
+            networkPlayerInfo = mc.getNetHandler().getPlayerInfoMap().stream().filter(player ->
+                            player.getGameProfile().getId().toString().equals(this.mc.getNetHandler().getGameProfile().getId().toString()))
+                    .findFirst().orElse(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (networkPlayerInfo != null) {
+            return networkPlayerInfo.getResponseTime();
+        } else {
+            return -1;
+        }
     }
 
     default boolean getDead() { return mc.player.isDead; }

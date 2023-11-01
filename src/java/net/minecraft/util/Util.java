@@ -12,26 +12,21 @@ public class Util
         return s.contains("win") ? Util.EnumOS.WINDOWS : (s.contains("mac") ? Util.EnumOS.OSX : (s.contains("solaris") ? Util.EnumOS.SOLARIS : (s.contains("sunos") ? Util.EnumOS.SOLARIS : (s.contains("linux") ? Util.EnumOS.LINUX : (s.contains("unix") ? Util.EnumOS.LINUX : Util.EnumOS.UNKNOWN)))));
     }
 
-    public static <V> V runTask(FutureTask<V> task, Logger logger)
+    public static <V> void runTask(FutureTask<V> task, Logger logger)
     {
         try
         {
             task.run();
-            return task.get();
+            task.get();
         }
-        catch (ExecutionException executionexception)
+        catch (ExecutionException | InterruptedException executionexception)
         {
-            logger.fatal((String)"Error executing task", (Throwable)executionexception);
-        }
-        catch (InterruptedException interruptedexception)
-        {
-            logger.fatal((String)"Error executing task", (Throwable)interruptedexception);
+            logger.fatal("Error executing task", executionexception);
         }
 
-        return (V)null;
     }
 
-    public static enum EnumOS
+    public enum EnumOS
     {
         LINUX,
         SOLARIS,
