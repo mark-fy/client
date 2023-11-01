@@ -14,7 +14,7 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.player.inventory.InvUtil;
 
-@ModuleInfo(name = "AutoGApple", desc = "eat gapple automatically for you", category = Module.Category.COMBAT)
+@ModuleInfo(name = "Auto GApple", desc = "eats gapples for you", category = Module.Category.COMBAT)
 public class AutoGApple extends Module {
 
     public final NumberSetting slotValue;
