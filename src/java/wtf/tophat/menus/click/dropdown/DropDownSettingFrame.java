@@ -128,6 +128,9 @@ public class DropDownSettingFrame extends GuiScreen {
         double x = (width - 200) / 2.0, y = 50;
 
         for (Setting setting : Client.settingManager.getSettingsByModule(parent)) {
+            if(setting.isHidden())
+                continue;
+
             if (setting instanceof StringSetting) {
                 double boxX = x + 192 - fr.getStringWidth(((StringSetting) setting).get()), boxY = y + 22, boxWidth = fr.getStringWidth(((StringSetting) setting).get()) + 3, boxHeight = 11;
 
