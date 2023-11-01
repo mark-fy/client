@@ -1,8 +1,6 @@
 package wtf.tophat.utilities.time;
 
-import wtf.tophat.utilities.Methods;
-
-public class TimeUtil implements Methods {
+public class TimeUtil {
 
     private long lastMS = System.currentTimeMillis();
 
@@ -23,19 +21,4 @@ public class TimeUtil implements Methods {
     public boolean elapsed(long time) { return System.currentTimeMillis() - lastMS > time; }
 
     public long getLastMS() { return lastMS; }
-
-    // MISC:
-    public static float DEFAULT_TIMER = 1.0F;
-
-    public static void setTimer(float timer) {
-        setDoTimer(timer, 0);
-    }
-
-    private static void setDoTimer(float timer, int ticks) {
-        if (ticks == 0) {
-            mc.timer.timerSpeed = timer;
-        } else {
-            mc.timer.timerSpeed = mc.player.ticksExisted % ticks == 0 ? timer : DEFAULT_TIMER;
-        }
-    }
 }

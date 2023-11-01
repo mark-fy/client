@@ -31,22 +31,10 @@ public class MoveUtil implements Methods {
         return new double[] { motionX, motionZ };
     }
 
-    public static boolean isOnGround(double height) {
-        return !mc.world.getCollidingBoundingBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0, -height, 0)).isEmpty();
-    }
-
     public static float getMaxFallDist() {
         return mc.player.getMaxFallHeight() + (mc.player.isPotionActive(Potion.jump) ? mc.player.getActivePotionEffect(Potion.jump).getAmplifier() + 1 : 0);
     }
 
-    public static void addFriction() {
-        addFriction(0.91);
-    }
-
-    public static void addFriction(double friction) {
-        mc.player.motionX *= friction;
-        mc.player.motionZ *= friction;
-    }
 
     public static double getBaseMoveSpeed() {
         double baseSpeed = 0.2873D;
