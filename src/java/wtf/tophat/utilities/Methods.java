@@ -9,6 +9,7 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.util.Timer;
 import wtf.tophat.Client;
+import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 
 import java.io.IOException;
@@ -60,6 +61,11 @@ public interface Methods {
 
     default boolean canClimbWall() {
         return getPlayer() != null && getPlayer().isCollidedHorizontally && !getPlayer().isOnLadder() && !getPlayer().isInWater() && getPlayer().fallDistance < 1.0F;
+    }
+
+    default float getBPS() {
+        float squareMotion = (float)(MathUtil.square(mc.player.motionX) + MathUtil.square(mc.player.motionZ));
+        return (float)MathUtil.round(Math.sqrt(squareMotion) * 20.0D * mc.timer.timerSpeed, (int) 2.0D);
     }
 
     default boolean getDead() { return mc.player.isDead; }

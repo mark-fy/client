@@ -1,8 +1,12 @@
 package wtf.tophat.utilities.math;
 
+import wtf.tophat.utilities.Methods;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
-public class MathUtil {
+public class MathUtil implements Methods {
 
     public static final float PI = (float) Math.PI;
     private static final float[] ASIN_TABLE = new float[65536];
@@ -37,8 +41,36 @@ public class MathUtil {
         }
     }
 
-    public static double clamp(double min, double max, double n) {
-        return Math.max(min, Math.min(max, n));
+    public static double round(double value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        BigDecimal decimal = new BigDecimal(value);
+        decimal = decimal.setScale(places, RoundingMode.HALF_UP);
+
+        return decimal.doubleValue();
+    }
+
+    public static double square(double squareX) {
+        squareX *= squareX;
+        return squareX;
+    }
+
+    public static double clamp(double value, double minimum, double maximum) {
+        return value < minimum ? minimum : (Math.min(value, maximum));
+    }
+
+    public static float clamp(float value, float minimum, float maximum) {
+        return value < minimum ? minimum : (Math.min(value, maximum));
+    }
+
+    public static int clamp(int value, int minimum, int maximum) {
+        return value < minimum ? minimum : (Math.min(value, maximum));
+    }
+
+    public static double interpolate(final double newPos, final double oldPos) {
+        return oldPos + (newPos - oldPos) * mc.timer.renderPartialTicks;
     }
 
 }
