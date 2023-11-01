@@ -39,7 +39,7 @@ public class Killaura extends Module {
 
     public final TimeUtil timer = new TimeUtil();
     public final StringSetting sort, autoblockMode;
-    public final NumberSetting minCps, maxCps, minRange, maxRange;
+    public final NumberSetting minCps, maxCps, range;
     public final BooleanSetting render, inGUI;
 
     public static EntityLivingBase target = null;
@@ -49,11 +49,10 @@ public class Killaura extends Module {
     public Killaura(){
         Client.settingManager.add(
                 sort = new StringSetting(this, "Sort", "Distance", "Distance", "Health"),
-                autoblockMode = new StringSetting(this, "Auto Block", "None", "None", "Vanilla", "Intave", "AAC", "NCP", "Grim"),
+                autoblockMode = new StringSetting(this, "Auto Block", "None", "None", "Vanilla", "Intave", "AAC", "NCP", "Fake"),
                 minCps = new NumberSetting(this, "Min CPS", 1, 20, 12, 1),
                 maxCps = new NumberSetting(this, "Max CPS", 1, 20, 17, 1),
-                minRange = new NumberSetting(this, "Min Range", 0, 6, 3.4, 1),
-                maxRange = new NumberSetting(this, "Max Range", 1, 6, 3.5, 1),
+                range = new NumberSetting(this, "Range", 1, 6, 3.5, 1),
                 inGUI = new BooleanSetting(this, "Attack in GUI", false),
                 render = new BooleanSetting(this, "Target ESP", true)
         );
@@ -75,12 +74,12 @@ public class Killaura extends Module {
         if (Client.moduleManager.getByClass(Scaffold.class).isEnabled())
             return;
 
-        target = EntityUtil.getClosestEntity(minRange.get().doubleValue(), maxRange.get().doubleValue());
+        target = EntityUtil.getClosestEntity(range.get().doubleValue());
 
         if (target != null && (inGUI.get() && mc.currentScreen == null)) {
             if (e.getState() == Event.State.PRE) {
                 if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled()) {
-                    EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, minRange.get().doubleValue(), maxRange.get().doubleValue(), getTarget());
+                    EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, range.get().doubleValue(), getTarget());
                     if (p == null)
                         return;
 
@@ -108,7 +107,6 @@ public class Killaura extends Module {
                                     mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));
                                 }
                                 break;
-                            case "Grim":
                             case "Intave":
                                 mc.playerController.interactWithEntitySendPacket(getPlayer(), p);
                                 mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));
@@ -124,17 +122,10 @@ public class Killaura extends Module {
 
     public Entity getTarget() {
         for (Entity o : mc.world.loadedEntityList) {
-            if (o instanceof EntityPlayer && !(o instanceof EntityVillager)) {
-                if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled() && !o.isDead && o != mc.player) {
-                    double distanceToEntity = mc.player.getDistanceToEntity(o);
-
-                    if (distanceToEntity >= minRange.get().doubleValue() && distanceToEntity <= maxRange.get().doubleValue()) {
-                        if (mc.player.canEntityBeSeen(o)) {
-                            return o;
-                        }
-                    }
-                }
-            }
+            if (o instanceof net.minecraft.entity.player.EntityPlayer && !(o instanceof net.minecraft.entity.passive.EntityVillager))
+                if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled() && !o.isDead && o != mc.player)
+                    if (mc.player.getDistanceToEntity(o) <= (mc.player.canEntityBeSeen(o) ? range.get().doubleValue() : 3.1D))
+                        return o;
         }
         return null;
     }

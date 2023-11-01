@@ -28,6 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.Client;
+import wtf.tophat.modules.impl.combat.Killaura;
 import wtf.tophat.modules.impl.render.BlockAnimations;
 import wtf.tophat.modules.impl.render.HitAnimations;
 import wtf.tophat.modules.impl.render.ViewModel;
@@ -418,7 +419,7 @@ public class ItemRenderer
         if (this.itemToRender != null) {
             if (this.itemToRender.getItem() == Items.filled_map) {
                 this.renderItemMap(abstractclientplayer, rotationPitch, equippedProgress, swingProgress);
-            } else if (abstractclientplayer.getItemInUseCount() > 0) {
+            } else if (abstractclientplayer.getItemInUseCount() > 0 || Client.moduleManager.getByClass(Killaura.class) != null && Client.moduleManager.getByClass(Killaura.class).target != null && Client.moduleManager.getByClass(Killaura.class).isEnabled() && Client.moduleManager.getByClass(Killaura.class).autoblockMode.get().equalsIgnoreCase("Fake") && mc.player.getHeldItem() != null && mc.player.getHeldItem().getItem() instanceof ItemSword) {
                 EnumAction enumaction = this.itemToRender.getItemUseAction();
 
                 switch (enumaction) {
