@@ -28,7 +28,7 @@ public class Speed extends Module {
 
     public Speed() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "New NCP"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "New NCP", "Matrix"),
                 speed = new NumberSetting(this, "Speed", 0, 3, 0.29, 2)
                         .setHidden(() -> !mode.is("Vanilla"))
         );
@@ -135,6 +135,30 @@ public class Speed extends Module {
                     MoveUtil.strafe(
                             MoveUtil.getSpeed() - (float) (Math.random() - 0.5F) / 100.0F
                     );
+                    break;
+                case "Matrix":
+                    if (!Methods.isMoving()) {
+                        mc.settings.keyBindJump.pressed = false;
+                        return;
+                    }
+
+                    mc.settings.keyBindJump.pressed = true;
+
+                    mc.player.speedInAir = 0.0203F;
+
+                    if(mc.player.motionY > 0.4) {
+                        mc.player.motionX *= 1.003F;
+                        mc.player.motionZ *= 1.003F;
+                    }
+
+                    if(mc.player.onGround) {
+                        mc.timer.timerSpeed = (float) (1.1 + Math.random() / 50 - Math.random() / 50);
+                        mc.player.motionX *= 1.0045F;
+                        mc.player.motionZ *= 1.0045F;
+                    } else {
+                        mc.timer.timerSpeed = (float) (1 - Math.random() / 500);
+                    }
+                    break;
             }
         }
     }
@@ -155,6 +179,7 @@ public class Speed extends Module {
         offTicks = 0;
         hypixelTicks = 0;
         mc.settings.keyBindJump.pressed = false;
+        mc.player.speedInAir = 0.02F;
         mc.timer.timerSpeed = 1.0f;
         KeyBinding.setKeyBindState(mc.settings.keyBindSprint.getKeyCode(), false);
         switch (mode.get()){
