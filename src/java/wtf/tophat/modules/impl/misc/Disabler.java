@@ -3,6 +3,7 @@ package wtf.tophat.modules.impl.misc;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
+import net.minecraft.network.play.server.S3FPacketCustomPayload;
 import wtf.tophat.Client;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
@@ -25,7 +26,7 @@ public class Disabler extends Module {
     public Disabler() {
         Client.settingManager.add(
                 modes = new DividerSetting(this, "Mode Settings"),
-                mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Verus", "NCP Timer"),
+                mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Verus", "Intave", "NCP Timer"),
                 spacer = new DividerSetting(this, "")
                         .setHidden(() -> mode.is("Intave Timer") || mode.is("NCP Timer")),
                 verusCombat = new BooleanSetting(this, "Verus Combat", false)
@@ -105,6 +106,14 @@ public class Disabler extends Module {
                     event.setCancelled(true);
                 }
                 break;
+            case "Intave":
+                if (packet instanceof S3FPacketCustomPayload) {
+                    S3FPacketCustomPayload customPayloadPacket = (S3FPacketCustomPayload) packet;
+
+                    if (customPayloadPacket.getChannelName().equals("MC|Brand")) {
+                        event.setCancelled(true);
+                    }
+                }
         }
     }
 
