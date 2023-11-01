@@ -40,7 +40,7 @@ public class Killaura extends Module {
     public final TimeUtil timer = new TimeUtil();
     public final StringSetting sort, autoblockMode;
     public final NumberSetting minCps, maxCps, minRange, maxRange;
-    public final BooleanSetting render;
+    public final BooleanSetting render, inGUI;
 
     public static EntityLivingBase target = null;
 
@@ -54,7 +54,8 @@ public class Killaura extends Module {
                 maxCps = new NumberSetting(this, "Max CPS", 1, 20, 17, 1),
                 minRange = new NumberSetting(this, "Min Range", 0, 6, 3.4, 1),
                 maxRange = new NumberSetting(this, "Max Range", 1, 6, 3.5, 1),
-                render = new BooleanSetting(this, "Jello Circle", true)
+                inGUI = new BooleanSetting(this, "Attack in GUI", false),
+                render = new BooleanSetting(this, "Target ESP", true)
         );
     }
 
@@ -76,7 +77,7 @@ public class Killaura extends Module {
 
         target = EntityUtil.getClosestEntity(minRange.get().doubleValue(), maxRange.get().doubleValue());
 
-        if (target != null) {
+        if (target != null && (inGUI.get() && mc.currentScreen == null)) {
             if (e.getState() == Event.State.PRE) {
                 if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled()) {
                     EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, minRange.get().doubleValue(), maxRange.get().doubleValue(), getTarget());
