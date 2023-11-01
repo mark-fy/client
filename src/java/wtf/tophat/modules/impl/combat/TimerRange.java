@@ -8,14 +8,14 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.time.TimeUtil;
 
-@ModuleInfo(name = "Tick Base",desc = "shift time", category = Module.Category.COMBAT)
-public class TickBase extends Module {
+@ModuleInfo(name = "Timer Range",desc = "shift time", category = Module.Category.COMBAT)
+public class TimerRange extends Module {
 
     private final NumberSetting autoChargeDelay, maxDischarge;
     private final TimeUtil timer = new TimeUtil();
     private long shifted, previousTime;
 
-    public TickBase() {
+    public TimerRange() {
         Client.settingManager.add(
                 autoChargeDelay = new NumberSetting(this, "Auto Charge Delay", 10, 1500, 100, 0),
                 maxDischarge = new NumberSetting(this, "Max Discharge Amount", 10, 1000, 300, 0)
