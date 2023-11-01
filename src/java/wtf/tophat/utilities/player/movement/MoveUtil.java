@@ -31,6 +31,15 @@ public class MoveUtil implements Methods {
         return new double[] { motionX, motionZ };
     }
 
+    public static void addFriction() {
+        addFriction(0.91);
+    }
+
+    public static void addFriction(double friction) {
+        mc.player.motionX *= friction;
+        mc.player.motionZ *= friction;
+    }
+
     public static float getMaxFallDist() {
         return mc.player.getMaxFallHeight() + (mc.player.isPotionActive(Potion.jump) ? mc.player.getActivePotionEffect(Potion.jump).getAmplifier() + 1 : 0);
     }
