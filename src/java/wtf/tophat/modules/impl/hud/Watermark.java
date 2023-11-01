@@ -17,6 +17,8 @@ import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 import static wtf.tophat.utilities.render.Colors.*;
@@ -30,14 +32,13 @@ public class Watermark extends Module {
 
     public Watermark() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern", "Floyd", "Watermark (flagged)"),
+                mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern", "Floyd", "Exhibition"),
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true),
                 bps = new BooleanSetting(this, "Blocks per Second", true)
         );
         setEnabled(true);
     }
-
     public void renderIngame() {
         FontRenderer fr = mc.fontRenderer;
         ScaledResolution sr = new ScaledResolution(mc);
@@ -66,6 +67,12 @@ public class Watermark extends Module {
         }
 
         switch(mode.get()) {
+            case "Exhibition": {
+                fr.drawStringWithShadow(String.format("E§7xhibition [§f%s§7] [§f%s FPS§7] [§f%s ms§7]", getCurrentTime(), Minecraft.getDebugFPS(), "18"), 3, 4, new Color(157,6,99));
+                fr.drawStringWithShadow(String.format("XYZ: §f%s, %s, %s §7b/s: §f%s", Math.round(getX()), Math.round(getY()), Math.round(getZ()), getBPS()), 3, sr.getScaledHeight() - 10, new Color(170,170,170));
+                fr.drawStringWithShadow(String.format("Release Build - §f§l%s§7 - User", Client.getVersion()), sr.getScaledWidth() - fr.getStringWidth("Release Build - §f§l" + Client.getVersion() + "§7 - User") + 5, sr.getScaledHeight() - 10, new Color(170,170,170));
+                break;
+            }
             case "Floyd": {
                 RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(color));
                 if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
@@ -158,6 +165,12 @@ public class Watermark extends Module {
         }
 
         counter++;
+    }
+
+    public static String getCurrentTime() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+        return dateFormat.format(calendar.getTime());
     }
 
     @Override

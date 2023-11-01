@@ -22,18 +22,21 @@ import static wtf.tophat.utilities.render.Colors.*;
 @ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.HUD)
 public class Arraylist extends Module {
 
-    private final StringSetting color, suffixMode, barMode;
-    private final BooleanSetting hideVisualModules, suffix, bar;
+    private final StringSetting color, suffixMode, outlinePosition, suffixColor;
+    private final BooleanSetting hideVisualModules, suffix, outline, background;
 
     public Arraylist() {
         Client.settingManager.add(
-                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown"),
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown", "Exhibition"),
                 suffix = new BooleanSetting(this, "Suffix", true),
                 suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s", "n > s", "n $ s", "n % s", "n # s", "n | s", "n -> s", "n » s")
                         .setHidden(() -> !suffix.get()),
-                bar = new BooleanSetting(this, "Bar", true),
-                barMode = new StringSetting(this, "Bar Type", "both", "top", "right", "both")
-                        .setHidden(() -> !bar.get()),
+                suffixColor = new StringSetting(this, "Suffix Color", "White", "White", "Gray", "Dark Gray", "None"),
+                background = new BooleanSetting(this, "Background", false),
+                outline = new BooleanSetting(this, "Outline", true)
+                        .setHidden(() -> !background.get()),
+                outlinePosition = new StringSetting(this, "Outline Position", "both", "both", "right", "top")
+                        .setHidden(() -> !outline.get() || !background.get()),
                 hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true)
         );
         setEnabled(true);
@@ -83,9 +86,16 @@ public class Arraylist extends Module {
             case "Brown":
                 rcColor = ColorUtil.fadeBetween(GORGE_COLOR, LIGHT_GORGE_COLOR, counter * 150L);
                 break;
+            case "Exhibition":
+                rcColor = new Color(157,6,99).getRGB();
+                break;
         }
 
-        DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 5, y - 1, maxWidth + 2, 1, true, new Color(rcColor));
+        // top rect
+        if(outline.get() && (outlinePosition.is("both") || outlinePosition.is("top")) && background.get()) {
+            DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 5, y - 3, maxWidth + 2, 1, true, new Color(rcColor));
+        }
+
         for (Module module : enabledModules) {
             String moduleName = module.getName();
             String modeText = "";
@@ -105,6 +115,9 @@ public class Arraylist extends Module {
                 case "Brown":
                     color = ColorUtil.fadeBetween(GORGE_COLOR, LIGHT_GORGE_COLOR, counter * 150L);
                     break;
+                case "Exhibition":
+                    color = new Color(157,6,99).getRGB();
+                    break;
             }
 
             for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
@@ -112,37 +125,37 @@ public class Arraylist extends Module {
                     if (suffix.get()) {
                         switch (suffixMode.get()) {
                             case "n [s]":
-                                modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).get() + "]";
+                                modeText = getSuffixColor(suffixColor) + " [" + ((StringSetting) setting).get() + "]";
                                 break;
                             case "n (s)":
-                                modeText = EnumChatFormatting.WHITE + " (" + ((StringSetting) setting).get() + ")";
+                                modeText = getSuffixColor(suffixColor) + " (" + ((StringSetting) setting).get() + ")";
                                 break;
                             case "n - s":
-                                modeText = EnumChatFormatting.WHITE + " - " + ((StringSetting) setting).get();
+                                modeText = getSuffixColor(suffixColor) + " - " + ((StringSetting) setting).get();
                                 break;
                             case "n s":
-                                modeText = EnumChatFormatting.WHITE + " " + ((StringSetting) setting).get();
+                                modeText = getSuffixColor(suffixColor) + " " + ((StringSetting) setting).get();
                                 break;
                             case "n > s":
-                                modeText = EnumChatFormatting.WHITE + " > " + ((StringSetting) setting).get();
+                                modeText = getSuffixColor(suffixColor) + " > " + ((StringSetting) setting).get();
                                 break;
                             case "n $ s":
-                                modeText = EnumChatFormatting.WHITE + " $ " + ((StringSetting) setting).get();
+                                modeText = getSuffixColor(suffixColor) + " $ " + ((StringSetting) setting).get();
                                 break;
                             case "n % s":
-                                modeText = EnumChatFormatting.WHITE + " % " + ((StringSetting) setting).get();
+                                modeText = getSuffixColor(suffixColor) + " % " + ((StringSetting) setting).get();
                                 break;
                             case "n # s":
-                                modeText = EnumChatFormatting.WHITE + " # " + ((StringSetting) setting).get();
+                                modeText =getSuffixColor(suffixColor) + " # " + ((StringSetting) setting).get();
                                 break;
                             case "n | s":
-                                modeText = EnumChatFormatting.WHITE + " | " + ((StringSetting) setting).get();
+                                modeText = getSuffixColor(suffixColor) + " | " + ((StringSetting) setting).get();
                                 break;
                             case "n -> s":
-                                modeText = EnumChatFormatting.WHITE + " -> " + ((StringSetting) setting).get();
+                                modeText = getSuffixColor(suffixColor) + " -> " + ((StringSetting) setting).get();
                                 break;
                             case "n » s":
-                                modeText = EnumChatFormatting.WHITE + " » " + ((StringSetting) setting).get();
+                                modeText = getSuffixColor(suffixColor) + " » " + ((StringSetting) setting).get();
                                 break;
                         }
                     }
@@ -151,10 +164,16 @@ public class Arraylist extends Module {
             }
 
             String fullText = moduleName + modeText;
-            DrawingUtil.rectangle(sr.getScaledWidth() - fr.getStringWidth(fullText) - 6 - 2, y, fr.getStringWidth(fullText) + 5, fr.FONT_HEIGHT + 2, true, new Color(0, 0, 0, 128));
-            fr.drawString(fullText, sr.getScaledWidth() - 6 - fr.getStringWidth(fullText), y + (fr.FONT_HEIGHT + 2 - fr.FONT_HEIGHT) / 2 + 1, new Color(color).getRGB());
-            DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 4 + maxWidth, y, 1, fr.FONT_HEIGHT + 2, true, new Color(color));
+            // dark background rect
+            if(background.get()) {
+                DrawingUtil.rectangle(sr.getScaledWidth() - fr.getStringWidth(fullText) - 6 - 2, y - 2, fr.getStringWidth(fullText) + 5, fr.FONT_HEIGHT + 2, true, new Color(0, 0, 0, 128));
+            }
+            fr.drawStringWithShadow(fullText, sr.getScaledWidth() - 6 - fr.getStringWidth(fullText), y + (float) (fr.FONT_HEIGHT + 2 - fr.FONT_HEIGHT) / 2 - 2, new Color(color).getRGB());
 
+            // left background rect
+            if(outline.get() && (outlinePosition.is("both") || outlinePosition.is("right")) && background.get()) {
+                DrawingUtil.rectangle(sr.getScaledWidth() - maxWidth - 4 + maxWidth, y - 2, 1, fr.FONT_HEIGHT + 2, true, new Color(color));
+            }
             y += 11;
             counter++;
         }
@@ -169,37 +188,37 @@ public class Arraylist extends Module {
                 if (setting instanceof StringSetting) {
                     switch (suffixMode.get()) {
                         case "n [s]":
-                            modeText = EnumChatFormatting.WHITE + " [" + ((StringSetting) setting).get() + "]";
+                            modeText = getSuffixColor(suffixColor) + " [" + ((StringSetting) setting).get() + "]";
                             break;
                         case "n (s)":
-                            modeText = EnumChatFormatting.WHITE + " (" + ((StringSetting) setting).get() + ")";
+                            modeText = getSuffixColor(suffixColor) + " (" + ((StringSetting) setting).get() + ")";
                             break;
                         case "n - s":
-                            modeText = EnumChatFormatting.WHITE + " - " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " - " + ((StringSetting) setting).get();
                             break;
                         case "n s":
-                            modeText = EnumChatFormatting.WHITE + " " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " " + ((StringSetting) setting).get();
                             break;
                         case "n > s":
-                            modeText = EnumChatFormatting.WHITE + " > " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " > " + ((StringSetting) setting).get();
                             break;
                         case "n $ s":
-                            modeText = EnumChatFormatting.WHITE + " $ " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " $ " + ((StringSetting) setting).get();
                             break;
                         case "n % s":
-                            modeText = EnumChatFormatting.WHITE + " % " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " % " + ((StringSetting) setting).get();
                             break;
                         case "n # s":
-                            modeText = EnumChatFormatting.WHITE + " # " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " # " + ((StringSetting) setting).get();
                             break;
                         case "n | s":
-                            modeText = EnumChatFormatting.WHITE + " | " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " | " + ((StringSetting) setting).get();
                             break;
                         case "n -> s":
-                            modeText = EnumChatFormatting.WHITE + " -> " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " -> " + ((StringSetting) setting).get();
                             break;
                         case "n » s":
-                            modeText = EnumChatFormatting.WHITE + " » " + ((StringSetting) setting).get();
+                            modeText = getSuffixColor(suffixColor) + " » " + ((StringSetting) setting).get();
                             break;
                     }
                     break;
@@ -209,6 +228,20 @@ public class Arraylist extends Module {
 
         String fullText = moduleName + modeText;
         return fr.getStringWidth(fullText) + 1;
+    }
+
+    private String getSuffixColor(StringSetting color) {
+        switch (color.get()) {
+            case "White":
+                return "§f";
+            case "Gray":
+                return "§7";
+            case "Dark Gray":
+                return "§8";
+            case "None":
+                return "§r";
+        }
+        return "§0";
     }
 
     @Override
