@@ -30,6 +30,7 @@ public class Player implements Methods {
     public boolean isMoving() { return isMoving(); }
     public boolean getGround() { return getPlayer().onGround; }
     public double getSpeed() { return MoveUtil.getSpeed(); }
+    public float getBPS() { return getBPS(); }
     public double getBaseSpeed() { return MoveUtil.getBaseSpeed(); }
     public double getX() { return getPlayer().posX; }
     public double getY() { return getPlayer().posY; }
