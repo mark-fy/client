@@ -40,5 +40,4 @@ public final class Spammer extends Module {
             timer.reset();
         }
     }
-
 }

@@ -17,5 +17,4 @@ public class ViewModel extends Module {
                 scale = new NumberSetting(this, "Model Scale", 0.01f, 1f, 0.4f, 2)
         );
     }
-
 }

@@ -18,5 +18,4 @@ public class AntiBot extends Module {
                 flying = new BooleanSetting(this, "Flying", true).setHidden(() -> !mode.is("Custom"))
         );
     }
-
 }

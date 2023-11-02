@@ -117,5 +117,4 @@ public class ESP extends Module {
         Gui.drawRect3(x + width, y, x + width - lineSize, y + height, borderColor);
         Gui.drawRect3(x, y + height, x + width, y + height - lineSize, borderColor);
     }
-
 }

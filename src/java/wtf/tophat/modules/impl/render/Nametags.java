@@ -91,7 +91,6 @@ public class Nametags extends Module {
         GlStateManager.popMatrix();
     }
 
-
     private int getDisplayColour(EntityPlayer player) {
         int colour = -new Color(197, 197, 197).getRGB();
         if (player.isInvisible()) {

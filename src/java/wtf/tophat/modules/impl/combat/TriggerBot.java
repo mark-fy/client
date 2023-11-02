@@ -37,5 +37,4 @@ public class TriggerBot extends Module {
             }
         }
     }
-
 }

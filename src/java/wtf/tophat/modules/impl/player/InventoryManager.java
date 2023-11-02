@@ -563,5 +563,4 @@ public class InventoryManager extends Module {
         }
         return true;
     }
-
 }

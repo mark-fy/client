@@ -39,5 +39,4 @@ public class CustomCape extends Module {
         }
         getPlayer().setLocationCape(null);
     }
-
 }

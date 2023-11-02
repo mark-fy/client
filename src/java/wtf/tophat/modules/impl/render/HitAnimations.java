@@ -1,6 +1,5 @@
 package wtf.tophat.modules.impl.render;
 
-
 import wtf.tophat.Client;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -19,5 +18,4 @@ public class HitAnimations extends Module {
                 smoothSwing = new BooleanSetting(this, "Smooth Swing", false)
         );
     }
-
 }

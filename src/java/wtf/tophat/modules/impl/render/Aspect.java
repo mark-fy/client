@@ -27,5 +27,4 @@ public class Aspect extends Module {
             event.setAspect(aspect.get().floatValue());
         }
     }
-
 }

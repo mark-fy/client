@@ -36,5 +36,4 @@ public class Reach extends Module {
         event.setRange((float) correctedRange);
         event.setBlockReachDistance((float) Math.max(mc.playerController.getBlockReachDistance(), correctedRange));
     }
-
 }

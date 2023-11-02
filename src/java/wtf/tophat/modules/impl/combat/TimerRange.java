@@ -39,5 +39,4 @@ public class TimerRange extends Module {
     public void charge(TimeEvent eventTime) { shifted += eventTime.getBalance() - previousTime; }
 
     public void discharge() { shifted = 0; }
-
 }

@@ -57,5 +57,4 @@ public class ClientSpoofer extends Module {
             return new PacketBuffer(Unpooled.wrappedBuffer(data.getBytes()));
         }
     }
-
 }
