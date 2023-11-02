@@ -4,6 +4,7 @@ import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
 import wtf.accounts.AccountManager;
 import wtf.tophat.menus.alts.AltThread;
+import wtf.tophat.menus.alts.AltThreadWeb;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ public class UIAltManager extends GuiScreen {
     private GuiTextField username, password;
     private final GuiScreen parent;
     private AltThread thread;
+    private AltThreadWeb threadWeb;
 
     public UIAltManager(GuiScreen parentScreen) {
         this.parent = parentScreen;
@@ -34,7 +36,9 @@ public class UIAltManager extends GuiScreen {
         buttonY += 20;
         this.buttonList.add(new GuiButton(1, buttonX, buttonY, "Add"));
         buttonY += 20;
-        this.buttonList.add(new GuiButton(2, buttonX, buttonY, "Cancel"));
+        this.buttonList.add(new GuiButton(2, buttonX, buttonY, "Login with browser"));
+        buttonY += 20;
+        this.buttonList.add(new GuiButton(3, buttonX, buttonY, "Cancel"));
 
         this.username = new GuiTextField(1, mc.fontRenderer, fieldX, fieldY, 200, 20);
         fieldY += 25;
@@ -65,6 +69,10 @@ public class UIAltManager extends GuiScreen {
                 }
                 break;
             case 2:
+                threadWeb = new AltThreadWeb(true);
+                threadWeb.start();
+                break;
+            case 3:
                 mc.displayGuiScreen(parent);
                 break;
         }
@@ -80,6 +88,7 @@ public class UIAltManager extends GuiScreen {
         int textY = this.height / 2 - fr.FONT_HEIGHT / 2 - 45;
 
         int statusX = this.width / 2 - fr.getStringWidth((this.thread == null) ? "§ewaiting..." : this.thread.getStatus().toLowerCase(Locale.ROOT)) / 2;
+        int statusXWeb = this.width / 2 - fr.getStringWidth((this.threadWeb == null) ? "§8web: §ewaiting..." : this.threadWeb.getStatus().toLowerCase(Locale.ROOT)) / 2;
 
         int fieldX = this.width / 2 - 100;
         int fieldY = this.height / 2 - 80;
@@ -89,6 +98,7 @@ public class UIAltManager extends GuiScreen {
 
         fr.drawString("Alt Manager", textX, textY - 60, -1);
         fr.drawString((this.thread == null) ? "§ewaiting..." : this.thread.getStatus().toLowerCase(Locale.ROOT), statusX, textY - 43, -1);
+        fr.drawString((this.threadWeb == null) ? "§8web: §ewaiting..." : this.threadWeb.getStatus().toLowerCase(Locale.ROOT), statusXWeb, this.height - 25, -1);
 
         if (this.username.getText().isEmpty()) {
             mc.fontRenderer.drawString("Username / E-Mail", fieldX + 4, fieldY + 6, -7829368);
