@@ -17,8 +17,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
+import wtf.capes.CapeHolder;
 
-public abstract class AbstractClientPlayer extends EntityPlayer
+public abstract class AbstractClientPlayer extends EntityPlayer implements CapeHolder
 {
     private NetworkPlayerInfo playerInfo;
 

@@ -12,7 +12,7 @@ import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ResourceLocation;
-import wtf.tophat.utilities.waveycapes.renderlayers.CustomCapeRenderLayer;
+import wtf.capes.renderlayers.CustomCapeRenderLayer;
 
 public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
 {
@@ -34,7 +34,7 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
         this.addLayer(new LayerDeadmau5Head(this));
         this.addLayer(new LayerCape(this));
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));
-        this.addLayer((LayerRenderer) new CustomCapeRenderLayer((RenderPlayer) this, this.getMainModel()));
+        this.addLayer((LayerRenderer) new CustomCapeRenderLayer(this, this.getMainModel()));
     }
 
     public ModelPlayer getMainModel()

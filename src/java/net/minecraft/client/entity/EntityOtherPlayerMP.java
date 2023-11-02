@@ -9,10 +9,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import wtf.tophat.utilities.waveycapes.sim.StickSimulation;
+import wtf.capes.CapeHolder;
+import wtf.capes.sim.StickSimulation;
 
 public class EntityOtherPlayerMP extends AbstractClientPlayer
 {
+    private final StickSimulation sharedSimulation;
     private boolean isItemInUse;
     private int otherPlayerMPPosRotationIncrements;
     private double otherPlayerMPX;
@@ -28,6 +30,12 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer
         this.noClip = true;
         this.renderOffsetY = 0.25F;
         this.renderDistanceWeight = 10.0D;
+        sharedSimulation = new StickSimulation();
+    }
+
+    @Override
+    public StickSimulation getSharedSimulation() {
+        return sharedSimulation;
     }
 
     /**
