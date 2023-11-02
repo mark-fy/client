@@ -25,6 +25,7 @@ import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -49,6 +50,8 @@ import wtf.tophat.events.base.Event;
 import wtf.tophat.events.handler.PlayerHandler;
 import wtf.tophat.events.impl.*;
 import wtf.tophat.utilities.player.movement.MoveUtil;
+import wtf.tophat.utilities.waveycapes.CapeHolder;
+import wtf.tophat.utilities.waveycapes.sim.StickSimulation;
 
 import java.util.ArrayList;
 import java.util.List;

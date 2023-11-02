@@ -2,12 +2,14 @@ package net.minecraft.client.entity;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import wtf.tophat.utilities.waveycapes.sim.StickSimulation;
 
 public class EntityOtherPlayerMP extends AbstractClientPlayer
 {

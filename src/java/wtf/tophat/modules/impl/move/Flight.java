@@ -95,7 +95,7 @@ public class Flight extends Module {
                     OldNCPSpeed = Math.max(baseSpeed, OldNCPSpeed);
 
                     if (event.getState().equals(Event.State.PRE)) {
-                        mc.timer.timerSpeed = 1;
+                        //mc.timer.timerSpeed = 1;
                         if (Methods.isMoving()) {
                             MoveUtil.setSpeed(OldNCPSpeed);
                         }

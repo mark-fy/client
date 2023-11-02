@@ -76,9 +76,10 @@ import net.minecraft.world.LockCode;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import wtf.tophat.events.handler.PlayerHandler;
+import wtf.tophat.utilities.waveycapes.CapeHolder;
 
 @SuppressWarnings("incomplete-switch")
-public abstract class EntityPlayer extends EntityLivingBase
+public abstract class EntityPlayer extends EntityLivingBase// implements CapeHolder
 {
     /** Inventory of the player */
     public InventoryPlayer inventory = new InventoryPlayer(this);
@@ -267,6 +268,9 @@ public abstract class EntityPlayer extends EntityLivingBase
      */
     public void onUpdate()
     {
+        //if (this instanceof EntityPlayer)
+            //simulate((EntityPlayer)this);
+
         this.noClip = this.isSpectator();
 
         if (this.isSpectator())
