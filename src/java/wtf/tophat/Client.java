@@ -11,6 +11,7 @@ import wtf.tophat.modules.base.ModuleManager;
 import wtf.script.ScriptManager;
 import wtf.tophat.settings.base.SettingManager;
 import wtf.tophat.utilities.player.chat.ChatUtil;
+import wtf.viaversion.VersionManager;
 
 import static wtf.tophat.utilities.Methods.createFolder;
 
@@ -38,12 +39,14 @@ public enum Client {
     public static final EventManager eventManager = new EventManager();
     public static final ConfigManager configManager = new ConfigManager();
     public static final ScriptManager scriptManager = new ScriptManager();
+    public static final VersionManager versionManager = new VersionManager();
 
     public static void startup() {
         printL("Starting Client...");
         Display.setTitle(getName() + " v" + getVersion());
         createFolder("tophat");
 
+        versionManager.init();
         moduleManager.init();
         commandManager.init();
         settingManager.init();

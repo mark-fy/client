@@ -52,6 +52,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldInfo;
+import wtf.viaversion.viamcp.fixes.FixedSoundEngine;
 
 public abstract class World implements IBlockAccess
 {
@@ -403,24 +404,7 @@ public abstract class World implements IBlockAccess
      */
     public boolean destroyBlock(BlockPos pos, boolean dropBlock)
     {
-        IBlockState iblockstate = this.getBlockState(pos);
-        Block block = iblockstate.getBlock();
-
-        if (block.getMaterial() == Material.air)
-        {
-            return false;
-        }
-        else
-        {
-            this.playAuxSFX(2001, pos, Block.getStateId(iblockstate));
-
-            if (dropBlock)
-            {
-                block.dropBlockAsItem(this, pos, iblockstate, 0);
-            }
-
-            return this.setBlockState(pos, Blocks.air.getDefaultState(), 3);
-        }
+        return FixedSoundEngine.destroyBlock(this, pos, dropBlock);
     }
 
     /**

@@ -13,6 +13,7 @@ import net.minecraft.client.resources.I18n;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
+import wtf.viaversion.viamcp.ViaMCP;
 
 public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
 {
@@ -51,6 +52,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
     {
         Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
+        this.buttonList.add(ViaMCP.INSTANCE.getAsyncVersionSlider());
 
         if (!this.initialized)
         {

@@ -181,6 +181,7 @@ import wtf.tophat.events.impl.PostTickEvent;
 import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.menus.UIMainMenu;
 import wtf.tophat.modules.impl.render.BlockAnimations;
+import wtf.viaversion.viamcp.fixes.AttackOrder;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
@@ -1505,42 +1506,33 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    public void click()
-    {
-        if (this.leftClickCounter <= 0)
-        {
-            this.player.swingItem();
+    public void click() {
+        if (this.leftClickCounter <= 0) {
+            AttackOrder.sendConditionalSwing(this.objectMouseOver);
 
-            if (this.objectMouseOver == null)
-            {
+            if (this.objectMouseOver == null) {
                 logger.error("Null returned as \'hitResult\', this shouldn\'t happen!");
 
-                if (this.playerController.isNotCreative())
-                {
+                if (this.playerController.isNotCreative()) {
                     this.leftClickCounter = 10;
                 }
-            }
-            else
-            {
-                switch (this.objectMouseOver.typeOfHit)
-                {
+            } else {
+                switch (this.objectMouseOver.typeOfHit) {
                     case ENTITY:
-                        this.playerController.attackEntity(this.player, this.objectMouseOver.entityHit);
+                        AttackOrder.sendFixedAttack(this.player, this.objectMouseOver.entityHit);
                         break;
 
                     case BLOCK:
                         BlockPos blockpos = this.objectMouseOver.getBlockPos();
 
-                        if (this.world.getBlockState(blockpos).getBlock().getMaterial() != Material.air)
-                        {
+                        if (this.world.getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
                             this.playerController.clickBlock(blockpos, this.objectMouseOver.sideHit);
                             break;
                         }
 
                     case MISS:
                     default:
-                        if (this.playerController.isNotCreative())
-                        {
+                        if (this.playerController.isNotCreative()) {
                             this.leftClickCounter = 10;
                         }
                 }
