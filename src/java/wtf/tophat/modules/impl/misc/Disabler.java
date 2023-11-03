@@ -18,7 +18,7 @@ import wtf.tophat.utilities.Methods;
 
 import java.util.ArrayList;
 
-@ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.EXPLOIT)
+@ModuleInfo(name = "Disabler",desc = "disables anti cheats", category = Module.Category.MISC)
 public class Disabler extends Module {
 
     private final DividerSetting modes, spacer;

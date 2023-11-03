@@ -8,7 +8,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 
-@ModuleInfo(name = "No Rotate", desc = "prevents servers from rotating you", category = Module.Category.EXPLOIT)
+@ModuleInfo(name = "No Rotate", desc = "prevents servers from rotating you", category = Module.Category.MISC)
 public final class NoRotate extends Module {
 
     private final StringSetting mode;

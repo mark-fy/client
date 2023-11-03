@@ -10,7 +10,7 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.time.TimeUtil;
 
-@ModuleInfo(name = "Spammer", desc = "spam a text in the chat", category = Module.Category.EXPLOIT)
+@ModuleInfo(name = "Spammer", desc = "spam a text in the chat", category = Module.Category.MISC)
 public final class Spammer extends Module {
 
     private final NumberSetting delay;

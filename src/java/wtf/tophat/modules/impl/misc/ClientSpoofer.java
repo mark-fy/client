@@ -10,7 +10,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 
-@ModuleInfo(name = "Client Spoofer",desc = "spoofs your client brand", category = Module.Category.EXPLOIT)
+@ModuleInfo(name = "Client Spoofer",desc = "spoofs your client brand", category = Module.Category.MISC)
 public class ClientSpoofer extends Module {
 
     private final StringSetting mode;

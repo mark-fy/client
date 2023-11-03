@@ -10,7 +10,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.utilities.time.TimeUtil;
 
-@ModuleInfo(name = "Auto Hypixel", desc = "automatically navigate inside hypixel", category = Module.Category.EXPLOIT)
+@ModuleInfo(name = "Auto Hypixel", desc = "automatically navigate inside hypixel", category = Module.Category.MISC)
 public class AutoHypixel extends Module {
 
     public String knownMode, knownType;

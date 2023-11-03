@@ -3,8 +3,6 @@ package wtf.tophat.modules.base;
 import wtf.tophat.Client;
 import wtf.tophat.utilities.Methods;
 
-import java.io.IOException;
-
 public class Module implements Methods {
 
     public String name = this.getClass().getAnnotation(ModuleInfo.class).name();
@@ -59,7 +57,7 @@ public class Module implements Methods {
         COMBAT ("Combat"),
         MOVE ("Move"),
         PLAYER ("Player"),
-        EXPLOIT("Exploit"),
+        MISC("Misc"),
         RENDER ("Render"),
         HUD("Hud");
 
