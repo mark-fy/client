@@ -12,6 +12,7 @@ import com.wrapper.spotify.requests.data.player.GetInformationAboutUsersCurrentP
 import com.wrapper.spotify.requests.data.tracks.GetTrackRequest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
+import wtf.tophat.TopHat;
 
 import java.awt.*;
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class SpotifyAPI {
     public AuthorizationCodeUriRequest AUTH_CODE_URI = SPOTIFY.authorizationCodePKCEUri(CODE_CHALLENGE)
             .scope("user-read-playback-state user-read-playback-position user-modify-playback-state user-read-currently-playing")
             .build();
-    private final String PREFIX = "\2472[\247aSpotify\2472]\247a";
+    private final String PREFIX = "§9" + TopHat.getName() + " §7>> §r";
     private final Minecraft mc = Minecraft.getMinecraft();
     public Track currentTrack;
     public CurrentlyPlayingContext currentPlayingContext;

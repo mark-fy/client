@@ -54,7 +54,7 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
 
     public IResource getResource(ResourceLocation location) throws IOException
     {
-        IResourceManager iresourcemanager = (IResourceManager)this.domainResourceManagers.get(location.getResourceDomain());
+        IResourceManager iresourcemanager = this.domainResourceManagers.get(location.getResourceDomain());
 
         if (iresourcemanager != null)
         {

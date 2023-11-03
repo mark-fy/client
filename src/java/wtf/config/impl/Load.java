@@ -36,9 +36,10 @@ public class Load extends Config {
                 JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
 
                 for (Module module : TopHat.moduleManager.getModulesByCategory(category)) {
+
+                    TopHat.printL("Module: " + module.getName());
                     JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
 
-                    TopHat.printL("Module: " + module.getName()); // For debugging
 
                     if (moduleObject.has("Enabled")) {
                         boolean enabled = moduleObject.get("Enabled").getAsBoolean();
