@@ -1,4 +1,4 @@
-package wtf.tophat.modules.impl.misc;
+package wtf.tophat.modules.impl.render;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.Gui;
@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import wtf.spotify.ColorUtil;
 import wtf.spotify.ScissorUtil;
 import wtf.spotify.SpotifyAPI;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -17,17 +18,24 @@ import wtf.tophat.modules.base.ModuleInfo;
 import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlayingContext;
 import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
-import wtf.tophat.utilities.render.shaders.RenderUtil;
+import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.render.shaders.RoundedUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
 
-@ModuleInfo(name = "Spotify Player",desc = "use spotify in minecraft", category = Module.Category.MISC)
+@ModuleInfo(name = "Spotify Player",desc = "use spotify in minecraft", category = Module.Category.RENDER)
 public class SpotifyPlayer extends Module {
 
-    private int posX = 50, posY = 50;
+    private final NumberSetting posX, posY;
+
+    public SpotifyPlayer() {
+        TopHat.settingManager.add(
+                posX = new NumberSetting(this, "X Position", 0, 1000, 50, 0),
+                posY = new NumberSetting(this, "Y Position", 0, 1000, 50, 0)
+        );
+    }
 
     private boolean downloadedCover;
     private int imageColor = -1;
@@ -77,15 +85,15 @@ public class SpotifyPlayer extends Module {
             // The rect methods that have WH at the end means they use width & height instead of x2 and y2
 
             //Gradient Rect behind the text
-            RoundedUtil.drawRound(posX - 5, posY, playerWidth + albumCoverSize + 10, albumCoverSize,8, new Color(imageColor));
+            RoundedUtil.drawRound(posX.get().floatValue() - 5, posY.get().floatValue(), playerWidth + albumCoverSize + 10, albumCoverSize,8, new Color(imageColor));
 
             //We scissor the text to be inside the box
-            ScissorUtil.scissor(posX + albumCoverSize, posY, playerWidth, albumCoverSize);
+            ScissorUtil.scissor(posX.get().floatValue() + albumCoverSize, posY.get().floatValue(), playerWidth, albumCoverSize);
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
             // Display the current track name
             // TODO: make the text of the current track and artist scroll back and forth, with a pause at each end.
-            mc.fontRenderer.drawString("§l" + currentTrack.getName(), posX + albumCoverSize + 4, posY + 6, -1);
+            mc.fontRenderer.drawString("§l" + currentTrack.getName(), posX.get().intValue() + albumCoverSize + 4, posY.get().intValue() + 6, -1);
 
             /*For every artist, append them to a string builder to make them into a single string
             They are separated by commas unless there is only one Or if its the last one, then its a dot.*/
@@ -95,21 +103,21 @@ public class SpotifyPlayer extends Module {
                 artistsDisplay.append(artist.getName()).append(artistIndex + 1 == currentTrack.getArtists().length ? '.' : ", ");
             }
 
-            mc.fontRenderer.drawString(artistsDisplay.toString(), posX + albumCoverSize + 4, posY + 17, -1);
+            mc.fontRenderer.drawString(artistsDisplay.toString(), posX.get().intValue() + albumCoverSize + 4, posY.get().intValue() + 17, -1);
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
             // Draw how much time until the track ends
-            mc.fontRenderer.drawString(trackRemaining, posX + playerWidth + 8, posY + albumCoverSize - 11, -1);
+            mc.fontRenderer.drawString(trackRemaining, posX.get().intValue() + playerWidth + 8, posY.get().intValue() + albumCoverSize - 11, -1);
 
             //This is where we draw the progress bar
             final int progressBarWidth = ((playerWidth - albumCoverSize) * currentPlayingContext.getProgress_ms()) / currentTrack.getDurationMs();
-            RoundedUtil.drawRound(posX + albumCoverSize + 5, posY + albumCoverSize - 9, playerWidth - albumCoverSize, 4, 2, new Color(50, 50, 50));
-            RoundedUtil.drawRound(posX + albumCoverSize + 5, posY + albumCoverSize - 9, progressBarWidth, 4, 2, new Color(255,255,255));
+            RoundedUtil.drawRound(posX.get().floatValue() + albumCoverSize + 5, posY.get().floatValue() + albumCoverSize - 9, playerWidth - albumCoverSize, 4, 2, new Color(50, 50, 50));
+            RoundedUtil.drawRound(posX.get().floatValue() + albumCoverSize + 5, posY.get().floatValue() + albumCoverSize - 9, progressBarWidth, 4, 2, new Color(255,255,255));
 
             if (currentAlbumCover != null && downloadedCover) {
                 mc.getTextureManager().bindTexture(currentAlbumCover);
                 GlStateManager.color(1,1,1);
-                Gui.drawModalRectWithCustomSizedTexture(posX, posY, 0, 0, albumCoverSize, albumCoverSize, albumCoverSize, albumCoverSize);
+                Gui.drawModalRectWithCustomSizedTexture(posX.get().intValue(), posY.get().intValue(), 0, 0, albumCoverSize, albumCoverSize, albumCoverSize, albumCoverSize);
             }
             if ((currentAlbumCover == null || !currentAlbumCover.getResourcePath().contains(currentTrack.getAlbum().getId()))) {
                 downloadedCover = false;

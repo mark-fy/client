@@ -1,6 +1,5 @@
 package wtf.tophat.modules.impl.render;
 
-import java.awt.Color;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
