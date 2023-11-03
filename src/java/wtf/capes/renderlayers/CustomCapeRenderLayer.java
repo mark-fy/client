@@ -37,6 +37,9 @@ public class CustomCapeRenderLayer implements LayerRenderer<AbstractClientPlayer
 	public void doRenderLayer(AbstractClientPlayer abstractClientPlayer, float paramFloat1, float paramFloat2,
 			float deltaTick, float animationTick, float paramFloat5, float paramFloat6, float paramFloat7) {
 
+		if(!TopHat.moduleManager.getByClass(CustomCape.class).isEnabled())
+			return;
+
         if (!abstractClientPlayer.hasPlayerInfo() || abstractClientPlayer.isInvisible() || !abstractClientPlayer.isWearing(EnumPlayerModelParts.CAPE) || abstractClientPlayer.getLocationCape() == null) {
             return;
         }

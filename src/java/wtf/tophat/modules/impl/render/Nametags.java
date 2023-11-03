@@ -18,6 +18,8 @@ import java.awt.*;
 @ModuleInfo(name = "Nametags", desc = "renders better nametags", category = Module.Category.RENDER)
 public class Nametags extends Module {
 
+    // Hook in Render.java -> renderOffsetLivingLabel method
+
     private final NumberSetting scaling;
     private final BooleanSetting invisibles, smartScale;
 

@@ -1,9 +1,12 @@
 package wtf.tophat.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
+import wtf.tophat.events.impl.RotationEvent;
+import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
@@ -20,7 +23,7 @@ public class LongJump extends Module {
 
     public LongJump() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "NCP", "NCP", "Old NCP", "BlocksMC", "Verus"),
+                mode = new StringSetting(this, "Mode", "NCP", "NCP", "Old NCP", "BlocksMC", "Verus", "Grim Boat"),
                 vertical = new NumberSetting(this, "Vertical", 0.05, 10.0,0.8, 1)
                         .setHidden(() -> !mode.is("Verus")),
                 boost = new NumberSetting(this, "Boost", 0.05, 10.0,1.45, 1)
@@ -44,6 +47,42 @@ public class LongJump extends Module {
     //Old NCP
     public boolean hasJumped;
     public int stage;
+
+    // Grim
+    private boolean launch;
+
+    @Listen
+    public void onRotation(RotationEvent event) {
+        switch (this.mode.get()) {
+            case "Grim Boat":
+                if(mc.player.isRiding() && mc.player.ridingEntity != null) {
+                    if(mc.player.ridingEntity instanceof EntityBoat) {
+                        EntityBoat boat = (EntityBoat) mc.player.ridingEntity;
+                        float yaw = boat.rotationYaw;
+                        float pitch = 90;
+                        event.setYaw(yaw);
+                        event.setPitch(pitch);
+                    }
+                }
+                break;
+        }
+    }
+
+    @Listen
+    public void onUpdate(UpdateEvent event) {
+        switch (mode.get()) {
+            case "Grim Boat":
+                if(mc.player.isRiding() && mc.player.ridingEntity instanceof EntityBoat) {
+                    launch = true;
+                }
+                if(launch && !mc.player.isRiding()) {
+                    mc.player.motionY = 1.5;
+                    MoveUtil.strafe(1.5);
+                    launch = false;
+                }
+                break;
+        }
+    }
 
     @Listen
     public void onMotion(MotionEvent event){
@@ -88,7 +127,7 @@ public class LongJump extends Module {
                     if (mc.player.motionY == 0.33319999363422365 && (mc.settings.keyBindForward.isKeyDown() || mc.settings.keyBindLeft.isKeyDown() || mc.settings.keyBindRight.isKeyDown() || mc.settings.keyBindBack.isKeyDown())) {
                         mc.player.motionX = (double)xDir * 1.6561;
                         if (stage != 2) {
-                            mc.player.motionY += (double)0.05f;
+                            mc.player.motionY += 0.05f;
                         }
                         mc.player.motionZ = (double)zDir * 1.6561;
                     }
@@ -134,18 +173,20 @@ public class LongJump extends Module {
                 DamageUtil.damage(DamageUtil.DamageType.VERUS);
                 break;
         }
-        launched = false;
         wasLaunched = false;
-        jumped = false;
-        timer.reset();
         hasJumped = false;
+        launched = false;
+        launch = false;
+        jumped = false;
         stage = 0;
+        timer.reset();
         super.onEnable();
     }
 
     @Override
     public void onDisable(){
         BMChurt = false;
+        launch = false;
         timer.setTimer(1.0f);
         super.onDisable();
     }

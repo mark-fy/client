@@ -19,6 +19,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import wtf.tophat.TopHat;
+import wtf.tophat.modules.impl.render.Nametags;
 
 public abstract class Render<T extends Entity>
 {
@@ -69,9 +71,10 @@ public abstract class Render<T extends Entity>
         return entity.getAlwaysRenderNameTagForRender() && entity.hasCustomName();
     }
 
-    protected void renderOffsetLivingLabel(T entityIn, double x, double y, double z, String str, float p_177069_9_, double p_177069_10_)
-    {
-        this.renderLivingLabel(entityIn, str, x, y, z, 64);
+    protected void renderOffsetLivingLabel(T entityIn, double x, double y, double z, String str, float p_177069_9_, double p_177069_10_) {
+        if(!TopHat.moduleManager.getByClass(Nametags.class).isEnabled()) {
+            this.renderLivingLabel(entityIn, str, x, y, z, 64);
+        }
     }
 
     /**

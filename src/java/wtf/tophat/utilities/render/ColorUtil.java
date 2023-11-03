@@ -1,5 +1,6 @@
 package wtf.tophat.utilities.render;
 
+import net.minecraft.entity.EntityLivingBase;
 import wtf.tophat.utilities.math.InterpolationUtil;
 
 import java.awt.*;
@@ -183,6 +184,12 @@ public class ColorUtil {
     public static Color applyOpacity(Color color, float opacity) {
         opacity = Math.min(1, Math.max(0, opacity));
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() * opacity));
+    }
+
+    public static int getHealthColor(EntityLivingBase player) {
+        float playerHealth = player.getHealth(), playerMaxHealth = player.getMaxHealth();
+        float maxed = Math.max(0.0f, Math.min(playerHealth, playerMaxHealth) / playerMaxHealth);
+        return Color.HSBtoRGB(maxed / 3.0f, 1.0f, 0.75f) | 0xFF000000;
     }
 
 }

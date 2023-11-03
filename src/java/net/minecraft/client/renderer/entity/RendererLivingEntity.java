@@ -35,6 +35,8 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     protected FloatBuffer brightnessBuffer = GLAllocation.createDirectFloatBuffer(4);
     protected List<LayerRenderer<T>> layerRenderers = Lists.<LayerRenderer<T>>newArrayList();
     protected boolean renderOutlines = false;
+    public static float NAME_TAG_RANGE = 64.0F;
+    public static float NAME_TAG_RANGE_SNEAK = 32.0F;
 
     public RendererLivingEntity(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn)
     {
@@ -507,7 +509,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
         if (this.canRenderName(entity))
         {
             double d0 = entity.getDistanceSqToEntity(this.renderManager.livingPlayer);
-            float f = entity.isSneaking() ? 32.0F : 64.0F;
+            float f = entity.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
 
             if (d0 < (double)(f * f))
             {

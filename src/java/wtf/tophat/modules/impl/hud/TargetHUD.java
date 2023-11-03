@@ -204,7 +204,7 @@ public class TargetHUD extends Module {
                 GL11.glPushMatrix();
                 RendererLivingEntity.NAME_TAG_RANGE = 0;
                 RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
-                GuiInventory.drawEntityOnScreen(x + 18, y + 44, 20, mc.player.rotationYaw, -mc.player.rotationPitch, mc.player);
+                //GuiInventory.drawEntityOnScreen(x + 18, y + 44, 20, mc.player.rotationYaw, -mc.player.rotationPitch, mc.player);
                 RendererLivingEntity.NAME_TAG_RANGE = 64f;
                 RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32f;
                 GL11.glPopMatrix();
@@ -245,7 +245,7 @@ public class TargetHUD extends Module {
 
                 RendererLivingEntity.NAME_TAG_RANGE = 0;
                 RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
-                GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, mc.player.rotationYaw, mc.player.rotationPitch, mc.player);
+                //GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, mc.player.rotationYaw, mc.player.rotationPitch, mc.player);
                 RendererLivingEntity.NAME_TAG_RANGE = 64f;
                 RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32f;
 

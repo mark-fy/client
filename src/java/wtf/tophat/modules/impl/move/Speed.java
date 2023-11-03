@@ -238,12 +238,16 @@ public class Speed extends Module {
     }
 
     @Listen
-    public void onPacket(PacketEvent event){
+    public void onPacket(PacketEvent event) {
+        if (getPlayer() == null || getWorld() == null)
+            return;
+
         switch (mode.get()) {
             case "New NCP":
                 if (event.getPacket() instanceof C0BPacketEntityAction) {
                     event.setCancelled(true);
                 }
+                break;
         }
     }
 
@@ -260,6 +264,10 @@ public class Speed extends Module {
 
     @Override
     public void onDisable() {
+        if(getPlayer() == null || getWorld() == null) {
+            return;
+        }
+
         onTicks = 0;
         offTicks = 0;
         hypixelTicks = 0;
@@ -271,6 +279,7 @@ public class Speed extends Module {
             case "New NCP":
                 mc.player.motionX = 0;
                 mc.player.motionZ = 0;
+                break;
         }
         super.onDisable();
     }

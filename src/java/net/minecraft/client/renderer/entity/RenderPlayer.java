@@ -133,15 +133,12 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
         GlStateManager.scale(f, f, f);
     }
 
-    protected void renderOffsetLivingLabel(AbstractClientPlayer entityIn, double x, double y, double z, String str, float p_177069_9_, double p_177069_10_)
-    {
-        if (p_177069_10_ < 100.0D)
-        {
+    protected void renderOffsetLivingLabel(AbstractClientPlayer entityIn, double x, double y, double z, String str, float p_177069_9_, double p_177069_10_) {
+        if (p_177069_10_ < 100.0D) {
             Scoreboard scoreboard = entityIn.getWorldScoreboard();
             ScoreObjective scoreobjective = scoreboard.getObjectiveInDisplaySlot(2);
 
-            if (scoreobjective != null)
-            {
+            if (scoreobjective != null) {
                 Score score = scoreboard.getValueFromObjective(entityIn.getName(), scoreobjective);
                 this.renderLivingLabel(entityIn, score.getScorePoints() + " " + scoreobjective.getDisplayName(), x, y, z, 64);
                 y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * p_177069_9_);
