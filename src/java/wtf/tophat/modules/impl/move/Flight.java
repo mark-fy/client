@@ -4,6 +4,9 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.network.play.client.C19PacketResourcePackStatus;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraft.network.play.server.S27PacketExplosion;
 import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.TopHat;
@@ -27,7 +30,7 @@ public class Flight extends Module {
 
     public Flight() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3"),
+                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3", "Redesky"),
                 aac3hopdelay = new NumberSetting(this, "Hop Delay", 1, 10, 3, 1)
                         .setHidden(() -> !mode.is("AAC3")),
                 aac3hopheight = new NumberSetting(this, "Hop Height", 0, 0.5, 0.4, 1)
@@ -48,6 +51,9 @@ public class Flight extends Module {
 
     // AAC3
     double startY;
+
+    // Redesky
+    public float val0 = 0, val1 = 0;
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -132,6 +138,36 @@ public class Flight extends Module {
                     }
                 }
                 break;
+            case "Redesky":
+                mc.player.setSprinting(true);
+
+                if(mc.player.onGround) {
+                    mc.player.speedInAir = 0.02F;
+                    if(!mc.settings.keyBindJump.pressed) {
+                        mc.player.jump();
+                    }
+                    mc.player.motionY = 1;
+                    val1 = 0.135f;
+                    mc.timer.timerSpeed = 1F;
+                } else {
+                    if(val0 != 1) {
+                        if(mc.player.motionY < 0.9) {
+                            mc.player.jumpMovementFactor = 0.2F;
+                        }
+                    } else {
+                        mc.player.jumpMovementFactor = val1;
+                    }
+                }
+
+                if(Methods.isMoving()) {
+                    mc.timer.timerSpeed = 1F;
+                } else {
+                    mc.timer.timerSpeed = 0.25F;
+                }
+                if(mc.player.ticksExisted % 10 == 0) {
+                    event.setOnGround(true);
+                }
+                break;
         }
     }
 
@@ -140,18 +176,33 @@ public class Flight extends Module {
         if (getPlayer() == null || getWorld() == null)
             return;
 
-        if (mode.get().equals("BWPractice")) {
-            if (event.getPacket() instanceof C0APacketAnimation) {
-                event.setCancelled(true);
-            }
+        switch (mode.get()){
+            case "BWPractice":
+                if (event.getPacket() instanceof C0APacketAnimation) {
+                    event.setCancelled(true);
+                }
 
-            if (event.getPacket() instanceof C19PacketResourcePackStatus) {
-                event.setCancelled(true);
-            }
+                if (event.getPacket() instanceof C19PacketResourcePackStatus) {
+                    event.setCancelled(true);
+                }
 
-            if (event.getPacket() instanceof C14PacketTabComplete) {
-                event.setCancelled(true);
-            }
+                if (event.getPacket() instanceof C14PacketTabComplete) {
+                    event.setCancelled(true);
+                }
+                break;
+            case "Redesky":
+                if(event.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) event.getPacket();
+
+                    if(packet.getEntityID() == mc.player.getEntityId()) {
+                        event.setCancelled(true);
+                    }
+                } else if(event.getPacket() instanceof S27PacketExplosion) {
+                    event.setCancelled(true);;
+                } else if(event.getPacket() instanceof S08PacketPlayerPosLook) {
+                    val0 = 1;
+                }
+                break;
         }
     }
 
@@ -195,6 +246,10 @@ public class Flight extends Module {
                 mc.player.motionY = -0.09800000190735147;
                 MoveUtil.stop();
                 MoveUtil.strafe(0.1);
+                break;
+            case "Redesky":
+                val0 = 0;
+                val1 = 0;
                 break;
         }
         super.onDisable();
