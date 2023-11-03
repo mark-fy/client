@@ -4,6 +4,8 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S3FPacketCustomPayload;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import wtf.tophat.Client;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
@@ -26,7 +28,7 @@ public class Disabler extends Module {
     public Disabler() {
         Client.settingManager.add(
                 modes = new DividerSetting(this, "Mode Settings"),
-                mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Verus", "Intave", "NCP Timer"),
+                mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Verus", "Vulcan", "NCP Timer"),
                 spacer = new DividerSetting(this, "")
                         .setHidden(() -> mode.is("Intave Timer") || mode.is("NCP Timer")),
                 verusCombat = new BooleanSetting(this, "Verus Combat", false)
@@ -77,6 +79,10 @@ public class Disabler extends Module {
                     }
                 }
                 break;
+            case "Vulcan":
+                if(packet instanceof C03PacketPlayer){
+                    mc.player.sendQueue.send(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, new BlockPos(mc.player.posX, mc.player.posY - 1.0, mc.player.posZ), EnumFacing.UP));
+                }
             case "Custom":
                 if(c00.get() && packet instanceof C00PacketKeepAlive) {
                     event.setCancelled(true);
@@ -106,14 +112,6 @@ public class Disabler extends Module {
                     event.setCancelled(true);
                 }
                 break;
-            case "Intave":
-                if (packet instanceof S3FPacketCustomPayload) {
-                    S3FPacketCustomPayload customPayloadPacket = (S3FPacketCustomPayload) packet;
-
-                    if (customPayloadPacket.getChannelName().equals("MC|Brand")) {
-                        event.setCancelled(true);
-                    }
-                }
         }
     }
 
