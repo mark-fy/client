@@ -5,7 +5,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.modules.impl.render.PostProcessing;
@@ -31,7 +31,7 @@ public class Watermark extends Module {
     private final BooleanSetting fontShadow, bps;
 
     public Watermark() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern", "Floyd", "Exhibition"),
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true),
@@ -46,7 +46,7 @@ public class Watermark extends Module {
         int scrWidth = sr.getScaledWidth();
         int scrHeight = sr.getScaledHeight();
 
-        String text = (Client.getName() + "sense | " + Minecraft.getDebugFPS() + " fps | " + mc.getSession().getUsername()).toLowerCase(Locale.ROOT);
+        String text = (TopHat.getName() + "sense | " + Minecraft.getDebugFPS() + " fps | " + mc.getSession().getUsername()).toLowerCase(Locale.ROOT);
 
         int counter = 0;
         int color = 0;
@@ -70,31 +70,31 @@ public class Watermark extends Module {
             case "Exhibition": {
                 fr.drawStringWithShadow(String.format("E§7xhibition [§f%s§7] [§f%s FPS§7] [§f%s ms§7]", getCurrentTime(), Minecraft.getDebugFPS(), getPing()), 3, 4, new Color(157,6,99));
                 fr.drawStringWithShadow(String.format("XYZ: §f%s, %s, %s §7b/s: §f%s", Math.round(getX()), Math.round(getY()), Math.round(getZ()), getBPS()), 3, sr.getScaledHeight() - 10, new Color(170,170,170));
-                fr.drawStringWithShadow(String.format("Release Build - §f§l%s§7 - User", Client.getVersion()), sr.getScaledWidth() - fr.getStringWidth("Release Build - §f§l" + Client.getVersion() + "§7 - User") + 5, sr.getScaledHeight() - 10, new Color(170,170,170));
+                fr.drawStringWithShadow(String.format("Release Build - §f§l%s§7 - User", TopHat.getVersion()), sr.getScaledWidth() - fr.getStringWidth("Release Build - §f§l" + TopHat.getVersion() + "§7 - User") + 5, sr.getScaledHeight() - 10, new Color(170,170,170));
                 break;
             }
             case "Floyd": {
                 RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(color));
-                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+                if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                     GaussianBlur.startBlur();
                     RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                fr.drawString("TopHat - " + Client.getVersion(), 15 ,6, Color.WHITE);
+                fr.drawString("TopHat - " + TopHat.getVersion(), 15 ,6, Color.WHITE);
                 mc.getTextureManager().bindTexture(new ResourceLocation("tophat/gorge.png"));
                 Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
                 break;
             }
             case "Watermark (flagged)": {
                 RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(color));
-                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+                if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                     GaussianBlur.startBlur();
                     RoundedUtil.drawRound(5, 5, 96, 105, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                fr.drawString("TopHat - " + Client.getVersion(), 15 ,6, Color.WHITE);
+                fr.drawString("TopHat - " + TopHat.getVersion(), 15 ,6, Color.WHITE);
                 mc.getTextureManager().bindTexture(new ResourceLocation("tophat/logo.png"));
                 Gui.drawModalRectWithCustomSizedTexture(7, 15, 0,0, 92, 92, 92,92);
                 break;
@@ -137,7 +137,7 @@ public class Watermark extends Module {
                 break;
             }
             case "Modern": {
-                text = Client.getName() + " - " + mc.getSession().getUsername();
+                text = TopHat.getName() + " - " + mc.getSession().getUsername();
                 int strWidth1 = fr.getStringWidth(text);
                 int x = 5;
                 int y = 5;
@@ -149,7 +149,7 @@ public class Watermark extends Module {
                 Color outlineColor = new Color(255, 255, 255, 25);
                 int textOffset = 4;
 
-                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+                if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                     GaussianBlur.startBlur();
                     int totalWidth = strWidth1 + padding + extraWidth * 2;
                     RoundedUtil.drawRound(x, y, totalWidth, height, cornerRadius, backgroundColor);

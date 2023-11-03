@@ -6,7 +6,7 @@ import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S3FPacketCustomPayload;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.modules.base.Module;
@@ -26,7 +26,7 @@ public class Disabler extends Module {
     private final BooleanSetting verusCombat, c00, c13, c0f, c0c, c0b, c03;
 
     public Disabler() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 modes = new DividerSetting(this, "Mode Settings"),
                 mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Intave 13", "Verus", "Vulcan", "NCP Timer"),
                 spacer = new DividerSetting(this, "")

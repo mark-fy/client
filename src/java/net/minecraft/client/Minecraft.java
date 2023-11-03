@@ -174,7 +174,7 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.ClickingEvent;
 import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.events.impl.PostTickEvent;
@@ -480,7 +480,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         logger.info("LWJGL Version: " + Sys.getVersion());
         this.setWindowIcon();
         this.setInitialDisplayMode();
-        this.createDisplay("Loading " + Client.getName() + "...");
+        this.createDisplay("Loading " + TopHat.getName() + "...");
         OpenGlHelper.initializeTextures();
         this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
         this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
@@ -561,7 +561,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.effectRenderer = new EffectRenderer(this.world, this.renderEngine);
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
-        Client.startup();
+        TopHat.startup();
 
         if (this.serverName != null)
         {
@@ -1030,7 +1030,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     public void shutdownMinecraftApplet()
     {
-        Client.shutdown();
+        TopHat.shutdown();
         try
         {
             logger.info("Stopping!");
@@ -1477,7 +1477,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.leftClickCounter = 0;
         }
 
-        if(Client.moduleManager.getByClass(BlockAnimations.class).isEnabled() && Client.moduleManager.getByClass(BlockAnimations.class).blockHit.get()) {
+        if(TopHat.moduleManager.getByClass(BlockAnimations.class).isEnabled() && TopHat.moduleManager.getByClass(BlockAnimations.class).blockHit.get()) {
             if (this.leftClickCounter <= 0) {
                 if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                     BlockPos blockpos = this.objectMouseOver.getBlockPos();

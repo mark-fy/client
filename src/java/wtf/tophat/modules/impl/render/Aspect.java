@@ -1,7 +1,7 @@
 package wtf.tophat.modules.impl.render;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.PerspectiveEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -15,7 +15,7 @@ public class Aspect extends Module {
     private final BooleanSetting hands;
 
     public Aspect() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 aspect = new NumberSetting(this, "Aspect", 0.1f, 5.0f, 1.0f, 1),
                 hands = new BooleanSetting(this, "Hands", true)
         );

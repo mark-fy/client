@@ -2,7 +2,7 @@ package wtf.config.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.config.base.Config;
 import wtf.config.base.ConfigInfo;
 import wtf.tophat.modules.base.Module;
@@ -28,24 +28,24 @@ public class Load extends Config {
             JsonObject clientInfo = rootObject.getAsJsonObject("TopHat");
             String version = clientInfo.get("Version").getAsString();
 
-            if (!version.equalsIgnoreCase(Client.getVersion())) {
-                Client.printC("Config was made in a different version of the client!", 2);
+            if (!version.equalsIgnoreCase(TopHat.getVersion())) {
+                TopHat.printC("Config was made in a different version of the client!", 2);
             }
 
             for (Module.Category category : Module.Category.values()) {
                 JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
 
-                for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+                for (Module module : TopHat.moduleManager.getModulesByCategory(category)) {
                     JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
 
-                    Client.printL("Module: " + module.getName()); // For debugging
+                    TopHat.printL("Module: " + module.getName()); // For debugging
 
                     if (moduleObject.has("Enabled")) {
                         boolean enabled = moduleObject.get("Enabled").getAsBoolean();
                         module.setEnabled(enabled);
                     }
 
-                    for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
+                    for (Setting setting : TopHat.settingManager.getSettingsByModule(module)) {
                         if (moduleObject.has("Settings")) {
                             JsonObject settingObject = moduleObject.getAsJsonObject("Settings");
                             if (settingObject.has(setting.getName())) {
@@ -87,7 +87,7 @@ public class Load extends Config {
             for (Module.Category category : Module.Category.values()) {
                 JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
 
-                for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+                for (Module module : TopHat.moduleManager.getModulesByCategory(category)) {
                     JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
 
                     if (moduleObject.has("Keybind")) {

@@ -2,8 +2,7 @@ package wtf.tophat.modules.impl.hud;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.EnumChatFormatting;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.base.Setting;
@@ -26,7 +25,7 @@ public class Arraylist extends Module {
     private final BooleanSetting hideVisualModules, suffix, outline, background;
 
     public Arraylist() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown", "Exhibition"),
                 suffix = new BooleanSetting(this, "Suffix", true),
                 suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s", "n > s", "n $ s", "n % s", "n # s", "n | s", "n -> s", "n » s")
@@ -46,7 +45,7 @@ public class Arraylist extends Module {
         ScaledResolution sr = new ScaledResolution(mc);
         FontRenderer fr = mc.fontRenderer;
 
-        List<Module> enabledModules = Client.moduleManager.getEnabledModules()
+        List<Module> enabledModules = TopHat.moduleManager.getEnabledModules()
                 .stream()
                 .filter(module ->
                         (!hideVisualModules.get() ||
@@ -120,7 +119,7 @@ public class Arraylist extends Module {
                     break;
             }
 
-            for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
+            for (Setting setting : TopHat.settingManager.getSettingsByModule(module)) {
                 if (setting instanceof StringSetting) {
                     if (suffix.get()) {
                         switch (suffixMode.get()) {
@@ -184,7 +183,7 @@ public class Arraylist extends Module {
         String modeText = "";
 
         if (suffix.get()) {
-            for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
+            for (Setting setting : TopHat.settingManager.getSettingsByModule(module)) {
                 if (setting instanceof StringSetting) {
                     switch (suffixMode.get()) {
                         case "n [s]":

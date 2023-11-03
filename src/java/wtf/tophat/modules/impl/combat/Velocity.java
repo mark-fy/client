@@ -8,8 +8,7 @@ import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S27PacketExplosion;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
-import net.minecraft.util.MovingObjectPosition;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
@@ -28,7 +27,7 @@ public class Velocity extends Module {
     private final NumberSetting horizontal,vertical;
 
     public Velocity() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Cubecraft"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
                         .setHidden(() -> !mode.is("Simple")),

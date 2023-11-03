@@ -3,7 +3,7 @@ package wtf.tophat.modules.base;
 import de.florianmichael.rclasses.storage.Storage;
 import io.github.nevalackin.radbus.Listen;
 import org.reflections.Reflections;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.utilities.Methods;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ModuleManager extends Storage<Module> implements Methods {
 
     public void init() {
-        Client.eventManager.subscribe(this);
+        TopHat.eventManager.subscribe(this);
         final Reflections reflections = new Reflections("wtf.tophat");
         reflections.getTypesAnnotatedWith(ModuleInfo.class).forEach(aClass -> {
             try {

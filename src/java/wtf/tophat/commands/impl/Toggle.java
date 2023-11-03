@@ -1,6 +1,6 @@
 package wtf.tophat.commands.impl;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
 import wtf.tophat.modules.base.Module;
@@ -14,7 +14,7 @@ public class Toggle extends Command {
     public void onCommand(String[] args, String command) {
         if (args.length >= 2) {
             String moduleName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-            Module module = Client.moduleManager.getModule(moduleName);
+            Module module = TopHat.moduleManager.getModule(moduleName);
 
             if (module != null) {
                 module.toggle();

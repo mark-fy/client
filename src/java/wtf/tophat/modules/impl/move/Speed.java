@@ -7,7 +7,7 @@ import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
@@ -28,7 +28,7 @@ public class Speed extends Module {
     private final NumberSetting speed, aac3speed;
 
     public Speed() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "Vulcan", "New NCP", "Matrix", "AAC3", "AAC4", "AAC5"),
                 aac3speed = new NumberSetting(this, "AAC3 Speed", 1, 1.5, 1.2, 1)
                         .setHidden(() -> !mode.is("AAC3")),

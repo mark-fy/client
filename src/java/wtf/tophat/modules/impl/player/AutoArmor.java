@@ -9,7 +9,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C16PacketClientStatus;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -25,7 +25,7 @@ public class AutoArmor extends Module {
     public final BooleanSetting inventoryonly;
 
     public AutoArmor() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 delay = new NumberSetting(this, "Delay", 0, 1000, 150, 2),
                 inventoryonly = new BooleanSetting(this, "Inv Only", true)
         );

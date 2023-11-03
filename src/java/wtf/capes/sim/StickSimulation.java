@@ -1,7 +1,7 @@
 package wtf.capes.sim;
 
 import wtf.capes.utils.Mth;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.impl.render.CustomCape;
 
 import java.util.ArrayList;
@@ -17,8 +17,8 @@ public class StickSimulation {
 	public int numIterations = 30;
 
 	public void simulate() {
-		if(Client.moduleManager.getByClass(CustomCape.class).isEnabled()) {
-			this.gravity = Client.moduleManager.getByClass(CustomCape.class).gravity.get().floatValue();
+		if(TopHat.moduleManager.getByClass(CustomCape.class).isEnabled()) {
+			this.gravity = TopHat.moduleManager.getByClass(CustomCape.class).gravity.get().floatValue();
 		} else {
 			this.gravity = 32;
 		}

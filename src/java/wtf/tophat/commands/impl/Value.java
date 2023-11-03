@@ -1,6 +1,6 @@
 package wtf.tophat.commands.impl;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
 import wtf.tophat.modules.base.Module;
@@ -27,11 +27,11 @@ public class Value extends Command {
             String valueName = args[args.length - 2];
             String newValue = args[args.length - 1];
 
-            Module module = Client.moduleManager.getModule(moduleName);
+            Module module = TopHat.moduleManager.getModule(moduleName);
 
             if (module != null) {
                 boolean found = false;
-                for (Setting setting : Client.settingManager.getSettingsByModule(module)) {
+                for (Setting setting : TopHat.settingManager.getSettingsByModule(module)) {
                     if (setting.getName().equalsIgnoreCase(valueName)) {
                         found = true;
                         if (setting instanceof BooleanSetting) {

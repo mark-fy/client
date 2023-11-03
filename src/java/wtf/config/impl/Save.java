@@ -3,7 +3,7 @@ package wtf.config.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.config.base.Config;
 import wtf.config.base.ConfigInfo;
 import wtf.tophat.modules.base.Module;
@@ -24,7 +24,7 @@ public class Save extends Config {
 
         // Add Client information
         JsonObject clientInfo = new JsonObject();
-        clientInfo.addProperty("Version", Client.getVersion());
+        clientInfo.addProperty("Version", TopHat.getVersion());
         clientInfo.addProperty("Date", Methods.getCurrentDate());
         rootObject.add("TopHat", clientInfo);
 
@@ -32,13 +32,13 @@ public class Save extends Config {
         for (Module.Category category : Module.Category.values()) {
             JsonObject categoryModules = new JsonObject();
 
-            Client.moduleManager.getModulesByCategory(category).forEach(module -> {
+            TopHat.moduleManager.getModulesByCategory(category).forEach(module -> {
                 JsonObject moduleObject = new JsonObject();
                 moduleObject.addProperty("Enabled", module.isEnabled());
 
                 JsonObject settingModules = new JsonObject();
 
-                Client.settingManager.getSettingsByModule(module).forEach(setting -> {
+                TopHat.settingManager.getSettingsByModule(module).forEach(setting -> {
                     if (setting instanceof DividerSetting) {
                         return;
                     } else if (setting instanceof StringSetting) {
@@ -80,7 +80,7 @@ public class Save extends Config {
         for (Module.Category category : Module.Category.values()) {
             JsonObject categoryModules = new JsonObject();
 
-            Client.moduleManager.getModulesByCategory(category).forEach(module -> {
+            TopHat.moduleManager.getModulesByCategory(category).forEach(module -> {
                 JsonObject moduleObject = new JsonObject();
                 moduleObject.addProperty("Keybind", module.getKeyCode());
                 categoryModules.add(module.getName(), moduleObject);

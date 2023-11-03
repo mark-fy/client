@@ -1,7 +1,7 @@
 package wtf.tophat.modules.impl.misc;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -17,7 +17,7 @@ public final class Spammer extends Module {
     private final BooleanSetting bypass, antispam;
 
     public Spammer() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 delay = new NumberSetting(this, "Speed", 0, 1000, 0, 2),
                 bypass = new BooleanSetting(this, "Bypass", true),
                 antispam = new BooleanSetting(this, "Anti Spam", true)

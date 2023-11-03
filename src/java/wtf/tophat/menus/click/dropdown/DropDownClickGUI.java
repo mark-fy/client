@@ -3,7 +3,7 @@ package wtf.tophat.menus.click.dropdown;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.impl.render.PostProcessing;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
@@ -34,7 +34,7 @@ public class DropDownClickGUI extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontRenderer fr = mc.fontRenderer;
-        boolean shadow = Client.moduleManager.getByClass(wtf.tophat.modules.impl.hud.ClickGUI.class).fontShadow.get();
+        boolean shadow = TopHat.moduleManager.getByClass(wtf.tophat.modules.impl.hud.ClickGUI.class).fontShadow.get();
 
         renderBlur();
 
@@ -54,7 +54,7 @@ public class DropDownClickGUI extends GuiScreen {
 
             double modX = x, modY = y + categoryHeight, modHeight = 20;
 
-            for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+            for (Module module : TopHat.moduleManager.getModulesByCategory(category)) {
 
                 String keybindText;
                 int keybindTextWidth;
@@ -129,13 +129,13 @@ public class DropDownClickGUI extends GuiScreen {
                 double categoryWidth = CategoryUtil.getMaxModuleNameWidth(category, listeningModule) + 20;
                 double modX = x, modY = y + 20;
 
-                for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+                for (Module module : TopHat.moduleManager.getModulesByCategory(category)) {
 
                     if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) categoryWidth, 20)) {
                         if (mouseButton == 0) {
                             module.toggle();
                         } else if (mouseButton == 1) {
-                            if (Client.settingManager.getSettingsByModule(module).size() > 0) {
+                            if (TopHat.settingManager.getSettingsByModule(module).size() > 0) {
                                 mc.displayGuiScreen(new DropDownSettingFrame(this, module));
                             }
                         } else {
@@ -168,7 +168,7 @@ public class DropDownClickGUI extends GuiScreen {
     }
 
     private void renderBlur() {
-        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+        if(TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
             GaussianBlur.startBlur();
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
             GaussianBlur.endBlur(10, 2);

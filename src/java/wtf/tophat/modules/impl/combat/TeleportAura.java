@@ -12,7 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.Vec3;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -31,7 +31,7 @@ public class TeleportAura extends Module {
     private final BooleanSetting onlyPlayer;
 
     public TeleportAura() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 minRange = new NumberSetting(this, "Min", 4.0, 100.0, 49.0, 1),
                 maxRange = new NumberSetting(this, "Min", 5.0, 100.0, 50.0, 1),
                 onlyPlayer = new BooleanSetting(this, "Only Player", true)

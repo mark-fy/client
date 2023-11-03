@@ -3,7 +3,7 @@ package wtf.tophat.menus.click.dropdown;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.impl.hud.ClickGUI;
 import wtf.tophat.modules.impl.render.PostProcessing;
@@ -49,7 +49,7 @@ public class DropDownSettingFrame extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontRenderer fr = mc.fontRenderer;
-        boolean shadow = Client.moduleManager.getByClass(ClickGUI.class).fontShadow.get();
+        boolean shadow = TopHat.moduleManager.getByClass(ClickGUI.class).fontShadow.get();
 
         renderBlur();
 
@@ -64,7 +64,7 @@ public class DropDownSettingFrame extends GuiScreen {
         fr.drawStringOptional(shadow, parent.getName().toLowerCase(Locale.ROOT), (int) x + 5, (int) y + 5, Color.WHITE);
 
         int counter = 0;
-        for(Setting setting : Client.settingManager.getSettingsByModule(parent)) {
+        for(Setting setting : TopHat.settingManager.getSettingsByModule(parent)) {
             if(setting.isHidden())
                 continue;
 
@@ -127,7 +127,7 @@ public class DropDownSettingFrame extends GuiScreen {
 
         double x = (width - 200) / 2.0, y = 50;
 
-        for (Setting setting : Client.settingManager.getSettingsByModule(parent)) {
+        for (Setting setting : TopHat.settingManager.getSettingsByModule(parent)) {
             if(setting.isHidden())
                 continue;
 
@@ -224,7 +224,7 @@ public class DropDownSettingFrame extends GuiScreen {
     }
 
     private void renderBlur() {
-        if(Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+        if(TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
             GaussianBlur.startBlur();
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0,0,0));
             GaussianBlur.endBlur(10, 2);

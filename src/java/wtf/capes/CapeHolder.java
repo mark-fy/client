@@ -3,7 +3,7 @@ package wtf.capes;
 import net.minecraft.entity.player.*;
 import net.minecraft.util.*;
 import wtf.capes.sim.StickSimulation;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.impl.render.CustomCape;
 
 public interface CapeHolder {
@@ -47,8 +47,8 @@ public interface CapeHolder {
 		final double o = Math.sin(n * 0.017453292f);
 		final double p = -Math.cos(n * 0.017453292f);
 		float heightMul;
-		if(Client.moduleManager.getByClass(CustomCape.class).isEnabled()) {
-			heightMul = Client.moduleManager.getByClass(CustomCape.class).heightMultiplier.get().floatValue();
+		if(TopHat.moduleManager.getByClass(CustomCape.class).isEnabled()) {
+			heightMul = TopHat.moduleManager.getByClass(CustomCape.class).heightMultiplier.get().floatValue();
 		} else {
 			heightMul = 16;
 		}

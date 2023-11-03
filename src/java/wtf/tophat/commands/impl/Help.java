@@ -1,6 +1,6 @@
 package wtf.tophat.commands.impl;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
 
@@ -9,9 +9,9 @@ public class Help extends Command {
 
     @Override
     public void onCommand(String[] args, String command) {
-        sendChat(String.format("Running %s v%s made by %s", Client.getName(), Client.getVersion(), "MarkGG"));
+        sendChat(String.format("Running %s v%s made by %s", TopHat.getName(), TopHat.getVersion(), "MarkGG"));
 
-        for (Command command1 : Client.commandManager.getList()) {
+        for (Command command1 : TopHat.commandManager.getList()) {
             sendChat(command1.getCommand() + " - " + command1.getDescription(), true);
         }
 

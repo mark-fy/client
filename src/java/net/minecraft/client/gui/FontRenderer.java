@@ -26,7 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.impl.hud.CustomScoreboard;
 import wtf.tophat.modules.impl.misc.NameProtect;
 
@@ -422,12 +422,12 @@ public class FontRenderer implements IResourceManagerReloadListener
     private void renderStringAtPos(String text, boolean shadow)
     {
         //NameProtect
-        if(Client.moduleManager.getByClass(NameProtect.class).isEnabled()) {
+        if(TopHat.moduleManager.getByClass(NameProtect.class).isEnabled()) {
             text = text.replace(Minecraft.getMinecraft().getSession().getUsername(), "TopHatBest");
         }
 
         //Custom Scoreboard
-        if(Client.moduleManager.getByClass(CustomScoreboard.class).isEnabled() && Client.moduleManager.getByClass(CustomScoreboard.class).customIp.get()) {
+        if(TopHat.moduleManager.getByClass(CustomScoreboard.class).isEnabled() && TopHat.moduleManager.getByClass(CustomScoreboard.class).customIp.get()) {
             text = text.replace(EnumChatFormatting.YELLOW + "www.hypixel.net", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);
             text = text.replace(EnumChatFormatting.YELLOW + "BlocksMC.com", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);
             text = text.replace(EnumChatFormatting.YELLOW + "jartexnetwork.com", EnumChatFormatting.LIGHT_PURPLE + "tophat.wtf" + EnumChatFormatting.RESET);

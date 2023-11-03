@@ -1,6 +1,6 @@
 package wtf.tophat.modules.impl.render;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -13,7 +13,7 @@ public class HitAnimations extends Module {
     public final BooleanSetting smoothSwing;
 
     public HitAnimations() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 swingSpeed = new NumberSetting(this, "Swing Speed", 0.1f, 3.5f, 1.2f, 1),
                 smoothSwing = new BooleanSetting(this, "Smooth Swing", false)
         );

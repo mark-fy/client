@@ -1,7 +1,7 @@
 package wtf.tophat.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -18,7 +18,7 @@ public class TriggerBot extends Module {
     private final TimeUtil timer = new TimeUtil();
 
     public TriggerBot() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 general = new DividerSetting(this, "General Settings"),
                 minCPS = new NumberSetting(this, "Min CPS", 1, 24, 11, 0),
                 maxCPS = new NumberSetting(this, "Max CPS", 2, 24, 12, 0)

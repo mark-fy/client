@@ -4,14 +4,11 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import org.lwjgl.opengl.GL11;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.Render3DEvent;
@@ -47,7 +44,7 @@ public class Killaura extends Module {
     public List<EntityLivingBase> targets = new ArrayList<>();
 
     public Killaura(){
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 sort = new StringSetting(this, "Sort", "Distance", "Distance", "Health"),
                 autoblockMode = new StringSetting(this, "Auto Block", "None", "None", "Vanilla", "Intave", "AAC", "NCP", "Fake"),
                 minCps = new NumberSetting(this, "Min CPS", 1, 20, 12, 1),
@@ -71,14 +68,14 @@ public class Killaura extends Module {
 
     @Listen
     public void onMotion(MotionEvent e) {
-        if (Client.moduleManager.getByClass(Scaffold.class).isEnabled())
+        if (TopHat.moduleManager.getByClass(Scaffold.class).isEnabled())
             return;
 
         target = EntityUtil.getClosestEntity(range.get().doubleValue());
 
         if (target != null && (inGUI.get() && mc.currentScreen == null)) {
             if (e.getState() == Event.State.PRE) {
-                if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled()) {
+                if (!TopHat.moduleManager.getByClass(Scaffold.class).isEnabled()) {
                     EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, range.get().doubleValue(), getTarget());
                     if (p == null)
                         return;
@@ -123,7 +120,7 @@ public class Killaura extends Module {
     public Entity getTarget() {
         for (Entity o : mc.world.loadedEntityList) {
             if (o instanceof net.minecraft.entity.player.EntityPlayer && !(o instanceof net.minecraft.entity.passive.EntityVillager))
-                if (!Client.moduleManager.getByClass(Scaffold.class).isEnabled() && !o.isDead && o != mc.player)
+                if (!TopHat.moduleManager.getByClass(Scaffold.class).isEnabled() && !o.isDead && o != mc.player)
                     if (mc.player.getDistanceToEntity(o) <= (mc.player.canEntityBeSeen(o) ? range.get().doubleValue() : 3.1D))
                         return o;
         }

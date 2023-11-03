@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.util.Timer;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 
@@ -95,7 +95,7 @@ public interface Methods {
                 Files.createDirectory(directoryPath);
             } catch (IOException e) {
                 e.printStackTrace();
-                Client.printL("Failed to create the directory.");
+                TopHat.printL("Failed to create the directory.");
             }
         }
     }

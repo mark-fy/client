@@ -27,7 +27,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.impl.combat.Killaura;
 import wtf.tophat.modules.impl.render.BlockAnimations;
 import wtf.tophat.modules.impl.render.HitAnimations;
@@ -306,7 +306,7 @@ public class ItemRenderer
     private ViewModel viewModel;
     private void transformFirstPersonItem(float equipProgress, float swingProgress) {
         if(viewModel == null) {
-            viewModel = Client.moduleManager.getByClass(ViewModel.class);
+            viewModel = TopHat.moduleManager.getByClass(ViewModel.class);
         }
 
         float scale = viewModel.isEnabled() ? viewModel.scale.get().floatValue() : 0.4f;
@@ -392,11 +392,11 @@ public class ItemRenderer
 
     public void renderItemInFirstPerson(float partialTicks) {
         if(blockAnimations == null) {
-            blockAnimations = Client.moduleManager.getByClass(BlockAnimations.class);
+            blockAnimations = TopHat.moduleManager.getByClass(BlockAnimations.class);
         }
 
         if(hitAnimations == null) {
-            hitAnimations = Client.moduleManager.getByClass(HitAnimations.class);
+            hitAnimations = TopHat.moduleManager.getByClass(HitAnimations.class);
         }
 
         float equippedProgress = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
@@ -419,7 +419,7 @@ public class ItemRenderer
         if (this.itemToRender != null) {
             if (this.itemToRender.getItem() == Items.filled_map) {
                 this.renderItemMap(abstractclientplayer, rotationPitch, equippedProgress, swingProgress);
-            } else if (abstractclientplayer.getItemInUseCount() > 0 || Client.moduleManager.getByClass(Killaura.class) != null && Client.moduleManager.getByClass(Killaura.class).target != null && Client.moduleManager.getByClass(Killaura.class).isEnabled() && Client.moduleManager.getByClass(Killaura.class).autoblockMode.get().equalsIgnoreCase("Fake") && mc.player.getHeldItem() != null && mc.player.getHeldItem().getItem() instanceof ItemSword) {
+            } else if (abstractclientplayer.getItemInUseCount() > 0 || TopHat.moduleManager.getByClass(Killaura.class) != null && TopHat.moduleManager.getByClass(Killaura.class).target != null && TopHat.moduleManager.getByClass(Killaura.class).isEnabled() && TopHat.moduleManager.getByClass(Killaura.class).autoblockMode.get().equalsIgnoreCase("Fake") && mc.player.getHeldItem() != null && mc.player.getHeldItem().getItem() instanceof ItemSword) {
                 EnumAction enumaction = this.itemToRender.getItemUseAction();
 
                 switch (enumaction) {

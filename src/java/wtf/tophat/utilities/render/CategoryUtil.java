@@ -2,7 +2,7 @@ package wtf.tophat.utilities.render;
 
 import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.utilities.Methods;
 
@@ -57,7 +57,7 @@ public class CategoryUtil implements Methods {
         FontRenderer fr = mc.fontRenderer;
         double maxModuleNameWidth = 0;
 
-        for (Module module : Client.moduleManager.getModulesByCategory(category)) {
+        for (Module module : TopHat.moduleManager.getModulesByCategory(category)) {
             String keybindText;
             int keybindTextWidth;
 

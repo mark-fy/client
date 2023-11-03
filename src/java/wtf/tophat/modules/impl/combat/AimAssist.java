@@ -12,7 +12,7 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 
 import net.minecraft.item.ItemSword;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
@@ -27,7 +27,7 @@ public class AimAssist extends Module {
     private final BooleanSetting swordCheck, clickAim;
 
     public AimAssist() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 horizontalSpeed = new NumberSetting(this, "Horizontal Aim Speed", 0, 7, 0.5, 2),
                 verticalSpeed = new NumberSetting(this, "Vertical Aim Speed", 0, 7, 0.5, 2),
                 cameraShake = new NumberSetting(this, "Camera Shake Amount", 0, 5, 0.2, 1),

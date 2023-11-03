@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.Render3DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -22,7 +22,7 @@ public class Nametags extends Module {
     private final BooleanSetting invisibles, smartScale;
 
     public Nametags() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
             invisibles = new BooleanSetting(this, "Invisibles", false),
             smartScale = new BooleanSetting(this, "Smart Scale", false),
             scaling = new NumberSetting(this, "Scale", 0.1, 2, 2, 2)

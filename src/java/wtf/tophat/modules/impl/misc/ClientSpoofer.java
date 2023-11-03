@@ -4,7 +4,7 @@ import io.github.nevalackin.radbus.Listen;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -16,7 +16,7 @@ public class ClientSpoofer extends Module {
     private final StringSetting mode;
 
     public ClientSpoofer() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Lunar", "Lunar", "Forge", "LabyMod", "CheatBreaker", "PvP Lounge", "Geyser")
         );
     }

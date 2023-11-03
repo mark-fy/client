@@ -1,7 +1,7 @@
 package wtf.tophat.menus;
 
 import net.minecraft.client.gui.*;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.menus.guis.UIAltManager;
 import wtf.tophat.menus.guis.UIChangeLog;
 import wtf.tophat.utilities.render.ColorUtil;
@@ -68,11 +68,11 @@ public class UIMainMenu extends GuiScreen {
         int counter = 0;
         this.drawDefaultBackground();
 
-        int x = width / 2 - fr.getStringWidth(Client.getName()) / 2;
+        int x = width / 2 - fr.getStringWidth(TopHat.getName()) / 2;
         int y = height / 2 - fr.FONT_HEIGHT / 2 - 45;
 
-        fr.drawString(Client.getName(), x, y, -1);
-        fr.drawString("v" + Client.getVersion(), x + 32, y + 14, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)).getRGB());
+        fr.drawString(TopHat.getName(), x, y, -1);
+        fr.drawString("v" + TopHat.getVersion(), x + 32, y + 14, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)).getRGB());
         counter++;
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

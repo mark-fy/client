@@ -10,7 +10,7 @@ import net.minecraft.network.play.client.C16PacketClientStatus;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
 import net.minecraft.network.play.server.S2EPacketCloseWindow;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
@@ -27,7 +27,7 @@ public class InventoryMove extends Module {
     private final BooleanSetting noOpenPacket, xCarry;
 
     public InventoryMove() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Hypixel"),
                 noOpenPacket = new BooleanSetting(this, "No Open Packet", false),
                 xCarry = new BooleanSetting(this, "Extra Storage", false)

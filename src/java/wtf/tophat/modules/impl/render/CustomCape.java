@@ -2,7 +2,7 @@ package wtf.tophat.modules.impl.render;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.util.ResourceLocation;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -16,7 +16,7 @@ public class CustomCape extends Module {
     public final NumberSetting heightMultiplier, gravity;
 
     public CustomCape(){
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "TopHat", "TopHat"),
 
                 waveStyle = new StringSetting(this, "Cape Wave Style", "Smooth", "Smooth", "Blocky"),

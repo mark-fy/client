@@ -14,7 +14,7 @@ import net.minecraft.item.*;
 import net.minecraft.network.play.client.C16PacketClientStatus;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -39,7 +39,7 @@ public class InventoryManager extends Module {
     final ArrayList<Integer> whitelistedItems = new ArrayList<>();
 
     public InventoryManager(){
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 delay = new NumberSetting(this, "Delay", 0, 1000, 500, 2),
                 blockcap = new NumberSetting(this, "Block Cap", 0, 512, 128, 2),
                 food = new BooleanSetting(this, "Food", true),

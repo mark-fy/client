@@ -7,12 +7,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import wtf.capes.CapeHolder;
 import wtf.capes.sim.StickSimulation;
-import wtf.capes.utils.Mth;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.impl.render.CustomCape;
 
 public class CustomCapeRenderLayer implements LayerRenderer<AbstractClientPlayer> {
@@ -48,9 +45,9 @@ public class CustomCapeRenderLayer implements LayerRenderer<AbstractClientPlayer
 
 		this.playerRenderer.bindTexture(new ResourceLocation("tophat/capes/TopHat.png"));
 
-		if (Client.moduleManager.getByClass(CustomCape.class).isEnabled() && Client.moduleManager.getByClass(CustomCape.class).waveStyle.is("Smooth")) {
+		if (TopHat.moduleManager.getByClass(CustomCape.class).isEnabled() && TopHat.moduleManager.getByClass(CustomCape.class).waveStyle.is("Smooth")) {
 			this.smoothCapeRenderer.renderSmoothCape(this, abstractClientPlayer, deltaTick);
-		} else if (Client.moduleManager.getByClass(CustomCape.class).waveStyle.is("Blocky")){
+		} else if (TopHat.moduleManager.getByClass(CustomCape.class).waveStyle.is("Blocky")){
 			ModelRenderer[] parts = this.customCape;
 			for (int part = 0; part < 16; part++) {
 				ModelRenderer model = parts[part];
@@ -103,7 +100,7 @@ public class CustomCapeRenderLayer implements LayerRenderer<AbstractClientPlayer
 	}
 
 	float getNatrualWindSwing(int part) {
-		if (Client.moduleManager.getByClass(CustomCape.class).isEnabled() && Client.moduleManager.getByClass(CustomCape.class).windMode.is("Waves")) {
+		if (TopHat.moduleManager.getByClass(CustomCape.class).isEnabled() && TopHat.moduleManager.getByClass(CustomCape.class).windMode.is("Waves")) {
 			long highlightedPart = System.currentTimeMillis() / 3L % 360L;
 			float relativePart = (part + 1) / 16.0F;
 			return (float) (Math.sin(Math.toRadians((relativePart * 360.0F - (float) highlightedPart))) * 3.0D);

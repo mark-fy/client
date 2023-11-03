@@ -1,7 +1,7 @@
 package wtf.tophat.modules.impl.hud;
 
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.menus.click.beta.BetaClickGUI;
@@ -18,7 +18,7 @@ public class ClickGUI extends Module {
     public final BooleanSetting fontShadow;
 
     public ClickGUI() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Style", "Dropdown", "Dropdown", "Material", "Concept"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true).setHidden(() -> !mode.is("Dropdown"))
         );

@@ -3,7 +3,7 @@ package wtf.tophat.utilities.entity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.impl.combat.AntiBot;
 import wtf.tophat.utilities.Methods;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Predicate;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -93,7 +92,7 @@ public class EntityUtil implements Methods {
                 Object e2;
                 if (o2 instanceof EntityLivingBase) {
                     for (String name : playerlists) {
-                        if (!name.equals(((EntityLivingBase)((Object)o2)).getName()) && Client.moduleManager.getByClass(AntiBot.class).isEnabled()) continue;
+                        if (!name.equals(((EntityLivingBase)((Object)o2)).getName()) && TopHat.moduleManager.getByClass(AntiBot.class).isEnabled()) continue;
                         Entity e3 = (Entity)((Object)o2);
                         EntityLivingBase elb2 = (EntityLivingBase)e3;
                         if (elb2 == mc.player || elb2.isOnSameTeam(mc.player)) break;

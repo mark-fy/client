@@ -2,7 +2,7 @@ package wtf.tophat.modules.impl.misc;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -14,7 +14,7 @@ public final class NoRotate extends Module {
     private final StringSetting mode;
 
     public NoRotate() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Normal", "Normal", "Cancel")
         );
     }

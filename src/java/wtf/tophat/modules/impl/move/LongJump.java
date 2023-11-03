@@ -2,8 +2,7 @@ package wtf.tophat.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.util.Timer;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -20,7 +19,7 @@ public class LongJump extends Module {
     public final NumberSetting vertical, boost;
 
     public LongJump() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "NCP", "NCP", "Old NCP", "BlocksMC", "Verus"),
                 vertical = new NumberSetting(this, "Vertical", 0.05, 10.0,0.8, 1)
                         .setHidden(() -> !mode.is("Verus")),

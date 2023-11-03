@@ -1,6 +1,6 @@
 package wtf.tophat.modules.impl.hud;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -12,7 +12,7 @@ public class CustomScoreboard extends Module {
     public final BooleanSetting customIp;
 
     public CustomScoreboard() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 customIp = new BooleanSetting(this, "Custom IP", true)
         );
     }

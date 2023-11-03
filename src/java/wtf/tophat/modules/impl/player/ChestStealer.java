@@ -5,7 +5,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -24,7 +24,7 @@ public class ChestStealer extends Module {
     private final NumberSetting delay;
 
     public ChestStealer() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 delay = new NumberSetting(this, "Delay", 0, 1000, 500, 2)
         );
     }

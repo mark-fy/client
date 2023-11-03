@@ -2,7 +2,7 @@ package wtf.tophat.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
 import org.apache.commons.lang3.RandomUtils;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -15,7 +15,7 @@ public class Criticals extends Module {
     public StringSetting mode;
 
     public Criticals(){
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Old NCP", "Old NCP")
         );
     }

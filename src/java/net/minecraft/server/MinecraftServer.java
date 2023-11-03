@@ -75,7 +75,7 @@ import net.minecraft.world.storage.WorldInfo;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 
 public abstract class MinecraftServer implements Runnable, ICommandSender, IThreadListener, IPlayerUsage
 {
@@ -467,7 +467,7 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
      */
     public void stopServer()
     {
-        Client.save();
+        TopHat.save();
         if (!this.worldIsBeingDeleted)
         {
             logger.info("Stopping server");

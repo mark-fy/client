@@ -1,20 +1,18 @@
 package wtf.tophat.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
-import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.CollisionBoxesEvent;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
-import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.Methods;
@@ -28,7 +26,7 @@ public class Flight extends Module {
     private final NumberSetting speed, aac3hopdelay, aac3hopheight;
 
     public Flight() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3"),
                 aac3hopdelay = new NumberSetting(this, "Hop Delay", 1, 10, 3, 1)
                         .setHidden(() -> !mode.is("AAC3")),

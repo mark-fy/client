@@ -3,7 +3,7 @@ package wtf.tophat.menus.click.beta;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -18,8 +18,6 @@ import wtf.tophat.utilities.render.shaders.RoundedUtil;
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
-
-import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
 
 public class BetaClickGUI extends GuiScreen implements Methods {
 
@@ -53,7 +51,7 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
         RoundedUtil.drawRound(x, y, width, height, 8, new Color(30, 30, 30));
         fr.drawString("TopHat", x + 10, y + 10, Color.WHITE);
-        fr.drawString(Client.getVersion(), x + 15, y + 25, Color.WHITE);
+        fr.drawString(TopHat.getVersion(), x + 15, y + 25, Color.WHITE);
 
         RoundedUtil.drawRound(x + 50, y + 15, 2, 260, 2, new Color(40, 40, 40));
 
@@ -68,7 +66,7 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
         int moduleOffset = 20;
 
-        List<Module> modules = Client.moduleManager.getModulesByCategory(listeningToCategory);
+        List<Module> modules = TopHat.moduleManager.getModulesByCategory(listeningToCategory);
         int maxVisibleModules = getMaxVisibleModules();
 
         for (int i = firstVisibleModule; i < firstVisibleModule + maxVisibleModules && i < modules.size(); i++) {
@@ -82,12 +80,12 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
             moduleOffset += 25;
 
-            if(listeningToModule == module && Client.settingManager.getSettingsByModule(listeningToModule).size() != 0) {
+            if(listeningToModule == module && TopHat.settingManager.getSettingsByModule(listeningToModule).size() != 0) {
                 RoundedUtil.drawRound(x + 305, y, 200, 285, 8, new Color(30,30,30));
 
                 int settingOffset = 5;
 
-                for(Setting setting : Client.settingManager.getSettingsByModule(listeningToModule)) {
+                for(Setting setting : TopHat.settingManager.getSettingsByModule(listeningToModule)) {
                     if(setting instanceof DividerSetting) {
                         fr.drawString(setting.getName(), x + 370, y + 5 + settingOffset, Color.WHITE);
                         settingOffset += 20;
@@ -141,7 +139,7 @@ public class BetaClickGUI extends GuiScreen implements Methods {
         }
 
         int moduleOffset = 20;
-        List<Module> modules = Client.moduleManager.getModulesByCategory(listeningToCategory);
+        List<Module> modules = TopHat.moduleManager.getModulesByCategory(listeningToCategory);
         int maxVisibleModules = getMaxVisibleModules();
 
         for (int i = firstVisibleModule; i < firstVisibleModule + maxVisibleModules && i < modules.size(); i++) {
@@ -161,10 +159,10 @@ public class BetaClickGUI extends GuiScreen implements Methods {
                 }
             }
 
-            if(listeningToModule == module && Client.settingManager.getSettingsByModule(listeningToModule).size() != 0) {
+            if(listeningToModule == module && TopHat.settingManager.getSettingsByModule(listeningToModule).size() != 0) {
                 int settingOffset = 5;
 
-                for(Setting setting : Client.settingManager.getSettingsByModule(listeningToModule)) {
+                for(Setting setting : TopHat.settingManager.getSettingsByModule(listeningToModule)) {
 
                     boolean hoveredSetting = DrawingUtil.hovered(mouseX, mouseY, x + 310, y + settingOffset + 1, 190, 15);
 
@@ -208,7 +206,7 @@ public class BetaClickGUI extends GuiScreen implements Methods {
         int scroll = Integer.signum(Mouse.getEventDWheel());
 
         if (scroll != 0) {
-            firstVisibleModule = Math.max(0, Math.min(firstVisibleModule - scroll, Client.moduleManager.getModulesByCategory(listeningToCategory).size() - getMaxVisibleModules()));
+            firstVisibleModule = Math.max(0, Math.min(firstVisibleModule - scroll, TopHat.moduleManager.getModulesByCategory(listeningToCategory).size() - getMaxVisibleModules()));
         }
         super.handleMouseInput();
     }

@@ -1,6 +1,6 @@
 package wtf.tophat.commands.impl;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
 
@@ -15,13 +15,13 @@ public class Script extends Command {
 
             switch (subCommand.toLowerCase()) {
                 case "enable":
-                    Client.scriptManager.enable(scriptName, "tophat/scripts");
+                    TopHat.scriptManager.enable(scriptName, "tophat/scripts");
                     break;
                 case "disable":
-                    Client.scriptManager.disable();
+                    TopHat.scriptManager.disable();
                     break;
                 case "list":
-                    sendChat(Client.scriptManager.list("tophat/scripts"), true);
+                    sendChat(TopHat.scriptManager.list("tophat/scripts"), true);
                     break;
                 default:
                     sendChat("Usage: .script <enable/disable/list> <script name>", true);

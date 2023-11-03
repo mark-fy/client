@@ -12,7 +12,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import org.apache.commons.lang3.RandomUtils;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.Render2DEvent;
@@ -61,7 +61,7 @@ public class Scaffold extends Module {
     private float yaw, pitch, y;
 
     public Scaffold(){
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 rotationMode = new StringSetting(this, "Rotations Mode", "Forward", "Forward", "45", "Watchdog"),
                 tower = new BooleanSetting(this, "Tower", false),
                 slow = new BooleanSetting(this, "Slow", true),

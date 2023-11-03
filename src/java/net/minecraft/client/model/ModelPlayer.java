@@ -2,7 +2,7 @@ package net.minecraft.client.model;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.impl.render.CustomCape;
 
 public class ModelPlayer extends ModelBiped
@@ -112,7 +112,7 @@ public class ModelPlayer extends ModelBiped
     }
 
     public void renderCape(float p_178728_1_) {
-        if(!Client.moduleManager.getByClass(CustomCape.class).isEnabled()) {
+        if(!TopHat.moduleManager.getByClass(CustomCape.class).isEnabled()) {
             this.bipedCape.render(p_178728_1_);
         }
     }

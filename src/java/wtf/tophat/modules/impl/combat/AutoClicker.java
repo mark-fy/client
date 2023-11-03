@@ -1,7 +1,7 @@
 package wtf.tophat.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -16,7 +16,7 @@ public class AutoClicker extends Module {
     private TimeUtil timer = new TimeUtil();
 
     public AutoClicker() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 minCPS = new NumberSetting(this, "Min CPS", 1, 24, 11, 0),
                 maxCPS = new NumberSetting(this, "Max CPS", 2, 24, 12, 0)
         );

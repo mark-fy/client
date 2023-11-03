@@ -1,7 +1,7 @@
 package wtf.tophat.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.TimeEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -16,7 +16,7 @@ public class TimerRange extends Module {
     private long shifted, previousTime;
 
     public TimerRange() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 autoChargeDelay = new NumberSetting(this, "Auto Charge Delay", 10, 1500, 100, 0),
                 maxDischarge = new NumberSetting(this, "Max Discharge Amount", 10, 1000, 300, 0)
         );

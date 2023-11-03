@@ -1,6 +1,6 @@
 package wtf.tophat.modules.impl.render;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -13,7 +13,7 @@ public class BlockAnimations extends Module {
     public final BooleanSetting blockHit;
 
     public BlockAnimations() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Style", "1.7", "1.7", "Exhibition", "Flux", "Swang", "Swong"),
                 blockHit = new BooleanSetting(this, "Block Hit", false)
         );

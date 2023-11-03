@@ -1,6 +1,6 @@
 package wtf.tophat.modules.impl.combat;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -13,7 +13,7 @@ public class AntiBot extends Module {
     public final BooleanSetting flying;
 
     public AntiBot() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Custom", "Custom"),
                 flying = new BooleanSetting(this, "Flying", true).setHidden(() -> !mode.is("Custom"))
         );

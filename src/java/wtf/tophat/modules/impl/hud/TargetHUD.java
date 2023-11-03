@@ -7,7 +7,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -33,7 +33,7 @@ public class TargetHUD extends Module {
     private final BooleanSetting fontShadow;
 
     public TargetHUD() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern"),
                 color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true)
@@ -91,7 +91,7 @@ public class TargetHUD extends Module {
                             float healthPercentage1 = Math.min(1.0f, health / livingEntity.getMaxHealth());
                             int sliderWidth1 = (int) (173 * healthPercentage1);
 
-                            if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+                            if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                                 GaussianBlur.startBlur();
                                 RoundedUtil.drawRound(x, y, width, height, 8, new Color(13, 60, 123));
                                 GaussianBlur.endBlur(8, 2);
@@ -156,7 +156,7 @@ public class TargetHUD extends Module {
                 float healthPercentage1 = Math.min(1.0f, 20 / 20);
                 int sliderWidth1 = (int) (173 * healthPercentage1);
 
-                if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+                if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                     GaussianBlur.startBlur();
                     RoundedUtil.drawRound(x, y, width, height, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);

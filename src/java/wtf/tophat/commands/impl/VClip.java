@@ -1,11 +1,7 @@
 package wtf.tophat.commands.impl;
 
-import wtf.tophat.Client;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
-import wtf.tophat.modules.base.Module;
-
-import java.util.Arrays;
 
 @CommandInfo(name = "VClip", description = "teleport you down / up", command = ".vclip <height>")
 public class VClip extends Command {

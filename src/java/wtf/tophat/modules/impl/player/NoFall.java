@@ -2,7 +2,7 @@ package wtf.tophat.modules.impl.player;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
@@ -18,7 +18,7 @@ public class NoFall extends Module {
     private final StringSetting mode;
 
     public NoFall() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Packet", "Verus", "Vulcan")
         );
     }

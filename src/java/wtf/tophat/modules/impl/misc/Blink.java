@@ -2,7 +2,7 @@ package wtf.tophat.modules.impl.misc;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.Packet;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
@@ -19,7 +19,7 @@ public class Blink extends Module {
     private final NumberSetting pulseDelay;
 
     public Blink() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 incoming = new BooleanSetting(this, "Incoming", false),
                 pulse = new BooleanSetting(this, "Pulse", false),
                 pulseDelay = new NumberSetting(this, "Pulse Delay", 50, 5000, 150, 1)

@@ -5,7 +5,7 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.CollisionBoxesEvent;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
@@ -20,7 +20,7 @@ public class Spider extends Module {
     private final StringSetting mode;
 
     public Spider() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Collision", "Verus", "Vulcan")
         );
     }

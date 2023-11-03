@@ -15,7 +15,7 @@ import wtf.viaversion.VersionManager;
 
 import static wtf.tophat.utilities.Methods.createFolder;
 
-public enum Client {
+public enum TopHat {
 
     INSTANCE();
 
@@ -27,7 +27,7 @@ public enum Client {
         version = "0.0.5";
     }
 
-    Client() {}
+    TopHat() {}
 
     public static String getName() { return name; }
 

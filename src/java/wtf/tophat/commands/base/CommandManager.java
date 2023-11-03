@@ -4,7 +4,7 @@ import de.florianmichael.rclasses.storage.Storage;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.GuiChat;
 import org.reflections.Reflections;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.ChatEvent;
 import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.utilities.Methods;
@@ -17,7 +17,7 @@ import java.util.Locale;
 public class CommandManager extends Storage<Command> implements Methods {
 
     public void init() {
-        Client.eventManager.subscribe(this);
+        TopHat.eventManager.subscribe(this);
         final Reflections reflections = new Reflections("wtf.tophat");
         reflections.getTypesAnnotatedWith(CommandInfo.class).forEach(aClass -> {
             try {

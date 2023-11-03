@@ -2,7 +2,7 @@ package wtf.tophat.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.util.EnumFacing;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.RayTraceRangeEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -16,7 +16,7 @@ public class Reach extends Module {
     private final BooleanSetting fixMisplace;
 
     public Reach() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 attackRange = new NumberSetting(this, "Attack Range", 3, 6, 3, 1),
                 fixMisplace = new BooleanSetting(this, "Fix Server-Side Misplace", true)
         );

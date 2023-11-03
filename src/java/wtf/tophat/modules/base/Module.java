@@ -1,6 +1,6 @@
 package wtf.tophat.modules.base;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.utilities.Methods;
 
 public class Module implements Methods {
@@ -34,10 +34,10 @@ public class Module implements Methods {
         try {
             if (isEnabled()) {
                 onEnable();
-                Client.eventManager.subscribe(this);
+                TopHat.eventManager.subscribe(this);
             } else {
                 onDisable();
-                Client.eventManager.unsubscribe(this);
+                TopHat.eventManager.unsubscribe(this);
             }
         } catch (Exception e) {
             e.printStackTrace();

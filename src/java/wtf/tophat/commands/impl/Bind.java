@@ -1,7 +1,7 @@
 package wtf.tophat.commands.impl;
 
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.commands.base.Command;
 import wtf.tophat.commands.base.CommandInfo;
 import wtf.tophat.modules.base.Module;
@@ -17,7 +17,7 @@ public class Bind extends Command {
         if (args.length >= 3) {
             String moduleName = String.join(" ", Arrays.copyOfRange(args, 1, args.length - 1));
             String keyName = args[args.length - 1];
-            Module module = Client.moduleManager.getModule(moduleName);
+            Module module = TopHat.moduleManager.getModule(moduleName);
 
             if (module != null) {
                 int keyCode = Keyboard.getKeyIndex(keyName.toUpperCase(Locale.ROOT));

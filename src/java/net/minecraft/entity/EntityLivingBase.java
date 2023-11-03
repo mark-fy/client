@@ -50,7 +50,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.DelayJumpEvent;
 import wtf.tophat.modules.impl.render.HitAnimations;
 
@@ -1340,8 +1340,8 @@ public abstract class EntityLivingBase extends Entity
      * progress indicator. Takes dig speed enchantments into account.
      */
     private int getArmSwingAnimationEnd() {
-        double swingSpeed = Client.moduleManager.getByClass(HitAnimations.class).isEnabled()
-                ? 1.0 / Client.moduleManager.getByClass(HitAnimations.class).swingSpeed.get().doubleValue()
+        double swingSpeed = TopHat.moduleManager.getByClass(HitAnimations.class).isEnabled()
+                ? 1.0 / TopHat.moduleManager.getByClass(HitAnimations.class).swingSpeed.get().doubleValue()
                 : 1.0;
 
         return this.isPotionActive(Potion.digSpeed)

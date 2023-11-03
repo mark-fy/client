@@ -10,7 +10,7 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.RunTickEvent;
@@ -33,7 +33,7 @@ public class NoSlowdown extends Module {
     private final NumberSetting swordForward, swordStrafe, foodForward, foodStrafe, bowForward, bowStrafe;
 
     public NoSlowdown() {
-        Client.settingManager.add(
+        TopHat.settingManager.add(
                 modes = new DividerSetting(this, "Mode Settings"),
                 mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave"),
 

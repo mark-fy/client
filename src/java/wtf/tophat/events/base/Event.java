@@ -1,6 +1,6 @@
 package wtf.tophat.events.base;
 
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 
 import java.lang.reflect.Method;
 
@@ -43,7 +43,7 @@ public class Event {
 
     public void call() {
         setCancelled(false);
-        Client.eventManager.post(this);
+        TopHat.eventManager.post(this);
     }
 
     public boolean isCancelled() {

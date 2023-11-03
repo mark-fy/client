@@ -5,7 +5,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.util.vector.Vector2f;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.impl.player.Scaffold;
 import wtf.tophat.utilities.Methods;
 
@@ -209,7 +209,7 @@ public class MoveUtil implements Methods {
                 horizontalDistance *= MOD_SPRINTING;
             }
 
-            final Scaffold scaffold = Client.moduleManager.getByClass(Scaffold.class);
+            final Scaffold scaffold = TopHat.moduleManager.getByClass(Scaffold.class);
 
             if (mc.player.isPotionActive(Potion.moveSpeed) && mc.player.getActivePotionEffect(Potion.moveSpeed).getDuration() > 0) {
                 horizontalDistance *= 1 + (0.2 * (mc.player.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1));

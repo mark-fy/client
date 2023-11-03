@@ -4,7 +4,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
-import wtf.tophat.Client;
+import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.impl.render.PostProcessing;
 import wtf.tophat.settings.base.Setting;
@@ -83,7 +83,7 @@ public class MaterialClickGUI extends GuiScreen {
         boolean hoveredOverClose = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) (x + 340), (float) (y + 3), fr.getStringWidth("X"), fr.FONT_HEIGHT);
 
         fr.drawString("X", (float) (x + 340), (float) y + 3, hoveredOverClose ? CategoryUtil.getCategoryColor(selectedCategory) : Color.WHITE);
-        fr.drawString(Client.getName().toLowerCase(Locale.ROOT) + " v" + Client.getVersion(), (int) (x + 3), (int) (y + 3), CategoryUtil.getCategoryColor(selectedCategory));
+        fr.drawString(TopHat.getName().toLowerCase(Locale.ROOT) + " v" + TopHat.getVersion(), (int) (x + 3), (int) (y + 3), CategoryUtil.getCategoryColor(selectedCategory));
 
         // Category Box
         DrawingUtil.rectangle(x, y + 15, 50, 334, true, new Color(30, 30, 30));
@@ -109,7 +109,7 @@ public class MaterialClickGUI extends GuiScreen {
         }
 
         int counter = 0;
-        for (Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+        for (Module module : TopHat.moduleManager.getModulesByCategory(selectedCategory)) {
 
             boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15);
 
@@ -121,7 +121,7 @@ public class MaterialClickGUI extends GuiScreen {
                     ? new Color(44, 44, 44)
                     : new Color(33, 33, 33);
 
-            if(module.equals(expandedModule) && !Client.settingManager.getSettingsByModule(expandedModule).isEmpty()) {
+            if(module.equals(expandedModule) && !TopHat.settingManager.getSettingsByModule(expandedModule).isEmpty()) {
                 moduleBackgroundColor = new Color(44, 44, 44);
             }
 
@@ -146,7 +146,7 @@ public class MaterialClickGUI extends GuiScreen {
         }
 
         int offset = 16;
-        for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
+        for (Setting setting : TopHat.settingManager.getSettingsByModule(expandedModule)) {
 
             boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 150, (float) y + offset, 199, setting instanceof NumberSetting ? 32 : 15);
 
@@ -213,7 +213,7 @@ public class MaterialClickGUI extends GuiScreen {
             }
 
             int counter = 0;
-            for (Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+            for (Module module : TopHat.moduleManager.getModulesByCategory(selectedCategory)) {
                 if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
                     module.toggle();
                 }
@@ -228,7 +228,7 @@ public class MaterialClickGUI extends GuiScreen {
             }
 
             int offset = 16;
-            for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
+            for (Setting setting : TopHat.settingManager.getSettingsByModule(expandedModule)) {
                 if (setting.isHidden()) {
                     continue;
                 }
@@ -261,7 +261,7 @@ public class MaterialClickGUI extends GuiScreen {
             double y = frameY;
 
             int counter = 0;
-            for (Module module : Client.moduleManager.getModulesByCategory(selectedCategory)) {
+            for (Module module : TopHat.moduleManager.getModulesByCategory(selectedCategory)) {
                 if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
                     expandedModule = module;
                 }
@@ -269,7 +269,7 @@ public class MaterialClickGUI extends GuiScreen {
             }
 
             int offset = 15;
-            for (Setting setting : Client.settingManager.getSettingsByModule(expandedModule)) {
+            for (Setting setting : TopHat.settingManager.getSettingsByModule(expandedModule)) {
                 if (setting.isHidden()) {
                     continue;
                 }
@@ -314,7 +314,7 @@ public class MaterialClickGUI extends GuiScreen {
     }
 
     private void renderBlur() {
-        if (Client.moduleManager.getByClass(PostProcessing.class).isEnabled() && Client.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+        if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
             GaussianBlur.startBlur();
             DrawingUtil.rectangle(0, 0, width, height, true, new Color(0, 0, 0));
             GaussianBlur.endBlur(10, 2);
