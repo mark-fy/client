@@ -22,6 +22,11 @@ public class MoveUtil implements Methods {
         return predicted;
     }
 
+    public static void stop() {
+        mc.player.motionX = 0;
+        mc.player.motionZ = 0;
+    }
+
     public static double[] getMotion(final double speed, final float strafe, final float forward, final float yaw) {
         final float friction = (float)speed;
         final float f1 = MathHelper.sin(yaw * (float)Math.PI / 180.0f);

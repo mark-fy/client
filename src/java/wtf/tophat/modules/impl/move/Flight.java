@@ -14,6 +14,7 @@ import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
+import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.Methods;
@@ -24,11 +25,17 @@ import wtf.tophat.utilities.player.movement.MoveUtil;
 public class Flight extends Module {
 
     private final StringSetting mode;
-    private final NumberSetting speed;
+    private final BooleanSetting aac3hop;
+    private final NumberSetting speed, aac3hopdelay, aac3hopheight;
 
     public Flight() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "BWPractice", "Old NCP"),
+                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3"),
+                aac3hop = new BooleanSetting(this, "Hop", false),
+                aac3hopdelay = new NumberSetting(this, "Hop Delay", 1, 10, 3, 1)
+                        .setHidden(() -> !mode.is("AAC3") && aac3hop.get()),
+                aac3hopheight = new NumberSetting(this, "Hop Height", 0, 0.5, 0.4, 1)
+                        .setHidden(() -> !mode.is("AAC3") && aac3hop.get()),
                 speed = new NumberSetting(this, "Speed", 0, 4, 1, 2)
                         .setHidden(() -> !mode.is("Motion"))
         );
@@ -42,6 +49,9 @@ public class Flight extends Module {
     // Old NCP
     int ticks;
     double OldNCPSpeed = 0.2800F;
+
+    // AAC3
+    double startY;
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -63,6 +73,15 @@ public class Flight extends Module {
                     }
                     MoveUtil.setSpeed(mc.settings.keyBindJump.isKeyDown() ? 0 : 0.33);
                 }
+                break;
+            case "Vulcan":
+                mc.player.motionY = 0.4641593749554431f;
+                mc.player.prevChasingPosY = mc.player.lastReportedPosY;
+                mc.player.motionY = mc.settings.keyBindJump.isKeyDown() ? 1F : mc.settings.keyBindSneak.isKeyDown() ? -1F : 0.0;
+                mc.player.isAirBorne = true;
+                MoveUtil.strafe(0.2753);
+                mc.player.motionY = mc.settings.keyBindJump.isKeyDown() ? 1F : mc.settings.keyBindSneak.isKeyDown() ? -1F : 0.0;
+                MoveUtil.strafe(1.40);
                 break;
             case "Motion":
                 mc.player.motionY = 0;
@@ -108,6 +127,17 @@ public class Flight extends Module {
                     mc.player.jump();
                     hasDamaged = true;
                 }
+                break;
+            case "AAC3":
+                if (event.getState() == Event.State.PRE) {
+                    mc.player.motionY = -0.0784000015258789;
+                    if (aac3hop.get()) {
+                        if (mc.player.ticksExisted % aac3hopdelay.get().intValue() == 0) {
+                            mc.player.motionY = aac3hopheight.get().doubleValue();
+                        }
+                    }
+                }
+                break;
         }
     }
 
@@ -152,6 +182,10 @@ public class Flight extends Module {
         switch (mode.get()) {
             case "Old NCP":
                 OldNCPSpeed = 1.4;
+                break;
+            case "AAC3":
+                startY = mc.player.posY;
+                break;
         }
         hasDamaged = false;
     }
@@ -162,6 +196,12 @@ public class Flight extends Module {
         switch (mode.get()){
             case "Old NCP":
                 mc.player.motionX = mc.player.motionZ = 0;
+                break;
+            case "Vulcan":
+                mc.player.motionY = -0.09800000190735147;
+                MoveUtil.stop();
+                MoveUtil.strafe(0.1);
+                break;
         }
         super.onDisable();
     }

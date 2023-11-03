@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import wtf.tophat.Client;
 import wtf.tophat.events.base.Event;
@@ -24,11 +25,13 @@ import java.util.Random;
 public class Speed extends Module {
 
     private final StringSetting mode;
-    private final NumberSetting speed;
+    private final NumberSetting speed, aac3speed;
 
     public Speed() {
         Client.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "New NCP", "Matrix"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "Vulcan", "New NCP", "Matrix", "AAC3", "AAC4", "AAC5"),
+                aac3speed = new NumberSetting(this, "AAC3 Speed", 1, 1.5, 1.2, 1)
+                        .setHidden(() -> !mode.is("AAC3")),
                 speed = new NumberSetting(this, "Speed", 0, 3, 0.29, 2)
                         .setHidden(() -> !mode.is("Vanilla"))
         );
@@ -39,6 +42,16 @@ public class Speed extends Module {
 
     // Intave
     private int onTicks, offTicks;
+
+    // Vulcan
+    double moveSpeed = 0;
+    int count = 0;
+
+    // AAC3
+    int aac3ticks;
+
+    // AAC4
+    int aac4ticks;
 
     @Listen
     public void onTick(RunTickEvent event) {
@@ -65,6 +78,36 @@ public class Speed extends Module {
                         } else {
                             MoveUtil.setSpeed(0);
                         }
+                    }
+                    break;
+                case "Vulcan":
+                    if (mc.player.movementInput.moveStrafe != 0 || mc.player.movementInput.moveForward != 0) {
+                        if (mc.player.onGround && mc.world.isAirBlock(new BlockPos(mc.player.posX,mc.player.posY + 2,mc.player.posZ)) && mc.world.isAirBlock(new BlockPos(mc.player.posX,mc.player.posY + 1,mc.player.posZ))) {
+                            double speed = Math.hypot(mc.player.motionX, mc.player.motionZ);
+                            boolean boost = mc.player.isPotionActive(1);
+                            switch (count) {
+                                case 1:
+                                    moveSpeed = 0.42f;
+                                    speed = boost ? speed + 0.2 : 0.48;
+                                    event.setOnGround(true);
+                                    break;
+                                case 2:
+                                    speed = boost ? speed * 0.71 : 0.19;
+                                    moveSpeed -= 0.0784f;
+                                    event.setOnGround(false);
+                                    break;
+                                default:
+                                    count = 0;
+                                    speed /= boost ? 0.64 : 0.66;
+                                    event.setOnGround(true);
+                                    break;
+                            }
+                            MoveUtil.setSpeed(speed);
+                            count++;
+                            event.setY(event.getY() + moveSpeed);
+                        }
+                    } else {
+                        count = 0;
                     }
                     break;
                 case "Hypixel":
@@ -159,6 +202,37 @@ public class Speed extends Module {
                         mc.timer.timerSpeed = (float) (1 - Math.random() / 500);
                     }
                     break;
+                case "AAC3":
+                    if (mc.player.onGround) {
+                        aac3ticks = 0;
+                        mc.player.jump();
+                    } else if (++aac3ticks == 1) {
+                        mc.player.motionX *= aac3speed.get().doubleValue();
+                        mc.player.motionZ *= aac3speed.get().doubleValue();
+                    }
+                    break;
+                case "AAC4":
+                    if (mc.player.onGround) {
+                        aac4ticks = 0;
+                        mc.player.jump();
+                    } else if (++aac4ticks == 1) {
+                        double multi = mc.player.movementInput.moveStrafe == 0 ? 1.075 : 1.05;
+                        mc.player.motionX *= multi;
+                        mc.player.motionZ *= multi;
+                    }
+                    break;
+                case "AAC5":
+                    if (Methods.isMoving()) {
+                        if (mc.player.onGround) {
+                            mc.player.jump();
+                        }
+                    }
+                    if (mc.player.movementInput.moveStrafe == 0) {
+                        mc.player.speedInAir = (float) (mc.player.ticksExisted % 2 == 0 ? 0.027 : 0.02);
+                    } else {
+                        mc.player.speedInAir = 0.02f;
+                    }
+                    break;
             }
         }
     }
@@ -171,6 +245,17 @@ public class Speed extends Module {
                     event.setCancelled(true);
                 }
         }
+    }
+
+    @Override
+    public void onEnable() {
+        switch (mode.get()){
+            case "Vulcan":
+                double moveSpeed = 0;
+                int count = 0;
+                break;
+        }
+        super.onEnable();
     }
 
     @Override
