@@ -30,9 +30,9 @@ public class Velocity extends Module {
         TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Cubecraft"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
-                        .setHidden(() -> (!mode.is("Simple") || !mode.is("Reverse"))),
+                        .setHidden(() -> !mode.is("Simple") || !mode.is("Reverse")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)
-                        .setHidden(() -> (!mode.is("Simple") || !mode.is("Reverse")))
+                        .setHidden(() -> !mode.is("Simple") || !mode.is("Reverse"))
         );
     }
 
