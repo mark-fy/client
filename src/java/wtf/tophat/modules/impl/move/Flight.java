@@ -25,17 +25,15 @@ import wtf.tophat.utilities.player.movement.MoveUtil;
 public class Flight extends Module {
 
     private final StringSetting mode;
-    private final BooleanSetting aac3hop;
     private final NumberSetting speed, aac3hopdelay, aac3hopheight;
 
     public Flight() {
         Client.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3"),
-                aac3hop = new BooleanSetting(this, "Hop", false),
                 aac3hopdelay = new NumberSetting(this, "Hop Delay", 1, 10, 3, 1)
-                        .setHidden(() -> !mode.is("AAC3") && aac3hop.get()),
+                        .setHidden(() -> !mode.is("AAC3")),
                 aac3hopheight = new NumberSetting(this, "Hop Height", 0, 0.5, 0.4, 1)
-                        .setHidden(() -> !mode.is("AAC3") && aac3hop.get()),
+                        .setHidden(() -> !mode.is("AAC3")),
                 speed = new NumberSetting(this, "Speed", 0, 4, 1, 2)
                         .setHidden(() -> !mode.is("Motion"))
         );
@@ -131,10 +129,8 @@ public class Flight extends Module {
             case "AAC3":
                 if (event.getState() == Event.State.PRE) {
                     mc.player.motionY = -0.0784000015258789;
-                    if (aac3hop.get()) {
-                        if (mc.player.ticksExisted % aac3hopdelay.get().intValue() == 0) {
-                            mc.player.motionY = aac3hopheight.get().doubleValue();
-                        }
+                    if (mc.player.ticksExisted % aac3hopdelay.get().intValue() == 0) {
+                        mc.player.motionY = aac3hopheight.get().doubleValue();
                     }
                 }
                 break;
