@@ -95,11 +95,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wtf.capes.CapeHolder;
-import wtf.capes.sim.StickSimulation;
 
 public class EntityPlayerMP extends EntityPlayer implements ICrafting {
-    private final StickSimulation sharedSimulation;
 
     private static final Logger logger = LogManager.getLogger();
     private String translator = "en_US";
@@ -200,12 +197,6 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting {
         {
             this.setPosition(this.posX, this.posY + 1.0D, this.posZ);
         }
-        sharedSimulation = new StickSimulation();
-    }
-
-    @Override
-    public StickSimulation getSharedSimulation() {
-        return sharedSimulation;
     }
 
     /**

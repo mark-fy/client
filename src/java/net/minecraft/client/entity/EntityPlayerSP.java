@@ -45,7 +45,6 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
-import wtf.capes.sim.StickSimulation;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.handler.PlayerHandler;
 import wtf.tophat.events.impl.*;
@@ -57,7 +56,6 @@ import java.util.List;
 public class EntityPlayerSP extends AbstractClientPlayer
 {
     public final NetHandlerPlayClient sendQueue;
-    private final StickSimulation sharedSimulation;
     private final StatFileWriter statWriter;
     public int offGroundTicks;
     public int onGroundTicks;
@@ -141,12 +139,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.statWriter = statFile;
         this.mc = mcIn;
         this.dimension = 0;
-        sharedSimulation = new StickSimulation();
-    }
-
-    @Override
-    public StickSimulation getSharedSimulation() {
-        return sharedSimulation;
     }
 
     /**
