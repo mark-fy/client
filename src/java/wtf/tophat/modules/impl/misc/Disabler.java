@@ -28,9 +28,9 @@ public class Disabler extends Module {
     public Disabler() {
         Client.settingManager.add(
                 modes = new DividerSetting(this, "Mode Settings"),
-                mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Verus", "Vulcan", "NCP Timer"),
+                mode = new StringSetting(this, "Mode", "Custom", "Custom", "Intave Timer", "Intave 13", "Verus", "Vulcan", "NCP Timer"),
                 spacer = new DividerSetting(this, "")
-                        .setHidden(() -> mode.is("Intave Timer") || mode.is("NCP Timer")),
+                        .setHidden(() -> mode.is("Intave Timer") || mode.is("NCP Timer") || mode.is("Intave 13")),
                 verusCombat = new BooleanSetting(this, "Verus Combat", false)
                         .setHidden(() -> !mode.is("Verus")),
                 c00 = new BooleanSetting(this, "C00KeepAlive", false)
@@ -51,7 +51,7 @@ public class Disabler extends Module {
     // Verus Combat
     private int verusCounter;
 
-    ArrayList<Packet> transactions = new ArrayList<Packet>();
+    ArrayList<Packet> transactions = new ArrayList<>();
     int currentTransaction = 0;
 
     @Listen
@@ -83,6 +83,7 @@ public class Disabler extends Module {
                 if(packet instanceof C03PacketPlayer){
                     mc.player.sendQueue.send(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, new BlockPos(mc.player.posX, mc.player.posY - 1.0, mc.player.posZ), EnumFacing.UP));
                 }
+                break;
             case "Custom":
                 if(c00.get() && packet instanceof C00PacketKeepAlive) {
                     event.setCancelled(true);
@@ -110,6 +111,14 @@ public class Disabler extends Module {
             case "Intave Timer":
                 if(packet instanceof C19PacketResourcePackStatus) {
                     event.setCancelled(true);
+                }
+                break;
+            case "Intave 13":
+                if (packet instanceof S3FPacketCustomPayload) {
+                    S3FPacketCustomPayload customPayloadPacket = (S3FPacketCustomPayload) packet;
+                    if (customPayloadPacket.getChannelName().equals("MC|Brand")) {
+                        event.setCancelled(true);
+                    }
                 }
                 break;
         }
