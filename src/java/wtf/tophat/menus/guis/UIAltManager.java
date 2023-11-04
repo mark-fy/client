@@ -3,8 +3,8 @@ package wtf.tophat.menus.guis;
 import net.minecraft.client.gui.*;
 import org.lwjgl.input.Keyboard;
 import wtf.accounts.AccountManager;
-import wtf.tophat.menus.alts.AltThread;
-import wtf.tophat.menus.alts.AltThreadWeb;
+import wtf.accounts.threads.AltThread;
+import wtf.accounts.threads.AltThreadWeb;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;

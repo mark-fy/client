@@ -1,4 +1,4 @@
-package wtf.tophat.menus.alts;
+package wtf.accounts.threads;
 
 import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
