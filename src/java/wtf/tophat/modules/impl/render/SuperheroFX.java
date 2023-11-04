@@ -1,6 +1,5 @@
 package wtf.tophat.modules.impl.render;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import java.awt.Color;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -14,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.S13PacketDestroyEntities;
 import net.minecraft.network.play.server.S19PacketEntityStatus;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import wtf.tophat.TopHat;
@@ -128,7 +128,7 @@ public class SuperheroFX extends Module {
             this.color = randomColors.get() == false ? -1 : Color.getHSBColor(rand.nextFloat(), 1.0f, 0.9f).getRGB();
             this.start = System.currentTimeMillis();
             this.yIncrease = random();
-            this.displayName = ChatFormatting.ITALIC + displayName;
+            this.displayName = EnumChatFormatting.ITALIC + displayName;
             this.vec3 = vec3;
         }
 
