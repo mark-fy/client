@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import wtf.tophat.utilities.Methods;
 
 import java.awt.*;
@@ -33,6 +34,25 @@ public class RenderUtil implements Methods {
 
     public static boolean needsNewFramebuffer(Framebuffer framebuffer) {
         return framebuffer == null || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight;
+    }
+
+    public static void glBillboardDistanceScaled(double x, double y, double z, Entity entity, double scale) {
+        RenderUtil.glBillboard(x, y, z);
+        int distance = (int)entity.getDistance(x, y, z);
+        double scaleDistance = (double)distance / 2.0 / (2.0 + (2.0 - scale));
+        if (scaleDistance < 1.0) {
+            scaleDistance = 1.0;
+        }
+        GlStateManager.scale(scaleDistance, scaleDistance, scaleDistance);
+    }
+
+    public static void glBillboard(double x, double y, double z) {
+        float scale = 0.02666667f;
+        GlStateManager.translate(x - mc.getRenderManager().renderPosX, y - RenderUtil.mc.getRenderManager().renderPosY, z - RenderUtil.mc.getRenderManager().renderPosZ);
+        GL11.glNormal3f((float)0.0f, (float)1.0f, (float)0.0f);
+        GlStateManager.rotate(-mc.getRenderViewEntity().rotationYaw, 0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(mc.getRenderViewEntity().rotationPitch, 1.0f, 0.0f, 0.0f);
+        GlStateManager.scale(-scale, -scale, scale);
     }
 
     public static void drawItemStack(ItemStack stack, int x, int y, float scale)

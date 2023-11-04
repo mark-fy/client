@@ -1,5 +1,7 @@
 package wtf.tophat.utilities.math;
 
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import wtf.tophat.utilities.Methods;
 
 import java.math.BigDecimal;
@@ -39,6 +41,13 @@ public class MathUtil implements Methods {
         for (int j = -1; j < 2; ++j) {
             ASIN_TABLE[(int) (((double) j + 1.0D) * 32767.5D) & 65535] = (float) Math.asin(j);
         }
+    }
+
+    public static Vec3 getCenter(AxisAlignedBB alignedBB) {
+        double centerX = alignedBB.minX + (alignedBB.maxX - alignedBB.minX) / 2.0;
+        double centerZ = alignedBB.minZ + (alignedBB.maxZ - alignedBB.minZ) / 2.0;
+        double centerY = alignedBB.minY + (alignedBB.maxY - alignedBB.minY) / 2.0;
+        return new Vec3(centerX, centerY, centerZ);
     }
 
     public static double round(double value, int places) {
