@@ -46,7 +46,7 @@ public class Killaura extends Module {
     public Killaura(){
         TopHat.settingManager.add(
                 sort = new StringSetting(this, "Sort", "Distance", "Distance", "Health"),
-                autoblockMode = new StringSetting(this, "Auto Block", "None", "None", "Vanilla", "Intave", "AAC", "NCP", "Fake"),
+                autoblockMode = new StringSetting(this, "Auto Block", "None", "None", "Vanilla", "Intave", "AAC", "NCP", "Matrix"),
                 minCps = new NumberSetting(this, "Min CPS", 1, 20, 12, 1),
                 maxCps = new NumberSetting(this, "Max CPS", 1, 20, 17, 1),
                 range = new NumberSetting(this, "Range", 1, 6, 3.5, 1),
@@ -104,6 +104,7 @@ public class Killaura extends Module {
                                     mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));
                                 }
                                 break;
+                            case "Matrix":
                             case "Intave":
                                 mc.playerController.interactWithEntitySendPacket(getPlayer(), p);
                                 mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));

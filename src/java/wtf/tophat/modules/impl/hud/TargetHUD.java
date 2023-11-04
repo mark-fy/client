@@ -6,7 +6,6 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.TopHat;
@@ -35,8 +34,9 @@ public class TargetHUD extends Module {
 
     private final StringSetting mode, color;
     private final BooleanSetting fontShadow;
+    // I took these from summer
     private final DecimalFormat DF_1 = new DecimalFormat("0.0");
-    private float health, barAnim, origX, origY;
+    private float aFloat;
 
     public TargetHUD() {
         TopHat.settingManager.add(
@@ -96,19 +96,19 @@ public class TargetHUD extends Module {
                             GL11.glPopMatrix();
 
                             health = (float) RenderUtil.animate((width - 41) * (targetEntity.getHealth() / targetEntity.getMaxHealth()), health, 0.025f);
-                            barAnim = (float) RenderUtil.animate(width - 41, barAnim, 0.025f);
+                            aFloat = (float) RenderUtil.animate(width - 41, aFloat, 0.025f);
                             fr.drawStringWithShadow(targetEntity.getName(), x + 37, y + 6, -1);
 
                             RoundedUtil.drawRound(x + 38, y + 8 + fr.FONT_HEIGHT,
-                                    barAnim, 5, 0, new Color(ColorUtil.getHealthColor(targetEntity)).darker().darker());
+                                    aFloat, 5, 0, new Color(ColorUtil.getHealthColor(targetEntity)).darker().darker());
 
                             RoundedUtil.drawRound(x + 38, y + 8 + fr.FONT_HEIGHT, health,
                                     5, 0, new Color(ColorUtil.getHealthColor(targetEntity)));
 
-                            RenderUtil.scissorStart(x + 38, y + 7 + fr.FONT_HEIGHT, barAnim, 9);
+                            RenderUtil.scissorStart(x + 38, y + 7 + fr.FONT_HEIGHT, aFloat, 9);
 
-                            float amount = barAnim / 10;
-                            float length = barAnim / amount;
+                            float amount = aFloat / 10;
+                            float length = aFloat / amount;
                             for(int i = 1; i < amount; i++){
                                 RoundedUtil.drawRound(x + 38 + i * length - 0.5f, y + 6.9f + fr.FONT_HEIGHT, 0.5f, 6.9f, 0, Color.black);
                             }
@@ -204,25 +204,25 @@ public class TargetHUD extends Module {
                 GL11.glPushMatrix();
                 RendererLivingEntity.NAME_TAG_RANGE = 0;
                 RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
-                //GuiInventory.drawEntityOnScreen(x + 18, y + 44, 20, mc.player.rotationYaw, -mc.player.rotationPitch, mc.player);
+                GuiInventory.drawEntityOnScreen(x + 18, y + 44, 20, mc.player.rotationYaw, -mc.player.rotationPitch, mc.player);
                 RendererLivingEntity.NAME_TAG_RANGE = 64f;
                 RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32f;
                 GL11.glPopMatrix();
 
                 health = (float) RenderUtil.animate((width - 41) * (mc.player.getHealth() / mc.player.getMaxHealth()), health, 0.025f);
-                barAnim = (float) RenderUtil.animate(width - 41, barAnim, 0.025f);
+                aFloat = (float) RenderUtil.animate(width - 41, aFloat, 0.025f);
                 fr.drawStringWithShadow(mc.player.getName(), x + 37, y + 6, -1);
 
                 RoundedUtil.drawRound(x + 38, y + 8 + fr.FONT_HEIGHT,
-                        barAnim, 5, 0, new Color(ColorUtil.getHealthColor(mc.player)).darker().darker());
+                        aFloat, 5, 0, new Color(ColorUtil.getHealthColor(mc.player)).darker().darker());
 
                 RoundedUtil.drawRound(x + 38, y + 8 + fr.FONT_HEIGHT, health,
                         5, 0, new Color(ColorUtil.getHealthColor(mc.player)));
 
-                RenderUtil.scissorStart(x + 38, y + 7 + fr.FONT_HEIGHT, barAnim, 9);
+                RenderUtil.scissorStart(x + 38, y + 7 + fr.FONT_HEIGHT, aFloat, 9);
 
-                float amount = barAnim / 10;
-                float length = barAnim / amount;
+                float amount = aFloat / 10;
+                float length = aFloat / amount;
                 for(int i = 1; i < amount; i++){
                     RoundedUtil.drawRound(x + 38 + i * length - 0.5f, y + 6.9f + fr.FONT_HEIGHT, 0.5f, 6.9f, 0, Color.black);
                 }
@@ -245,7 +245,7 @@ public class TargetHUD extends Module {
 
                 RendererLivingEntity.NAME_TAG_RANGE = 0;
                 RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
-                //GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, mc.player.rotationYaw, mc.player.rotationPitch, mc.player);
+                GuiInventory.drawEntityOnScreen(x + (100 - 15), y + 30, 12, mc.player.rotationYaw, mc.player.rotationPitch, mc.player);
                 RendererLivingEntity.NAME_TAG_RANGE = 64f;
                 RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32f;
 

@@ -6,7 +6,7 @@ import wtf.tophat.events.impl.TimeEvent;
 public class Timer {
     public int elapsedTicks;
     public float partialTicks;
-    public float field_194148_c;
+    public float elapsedPartialTicks;
     public float renderPartialTicks;
     private long lastSyncSysClock;
     private float tickLength;
@@ -22,9 +22,9 @@ public class Timer {
         TimeEvent eventTime = new TimeEvent(Minecraft.getSystemTime());
         eventTime.call();
         long i = eventTime.getBalance();
-        this.field_194148_c = (float)(i - this.lastSyncSysClock) / this.tickLength * this.timerSpeed;
+        this.elapsedPartialTicks = (float)(i - this.lastSyncSysClock) / this.tickLength * this.timerSpeed;
         this.lastSyncSysClock = i;
-        this.partialTicks += this.field_194148_c;
+        this.partialTicks += this.elapsedPartialTicks;
         this.elapsedTicks = (int)this.partialTicks;
         this.partialTicks -= (float)this.elapsedTicks;
         this.renderPartialTicks = this.partialTicks;
