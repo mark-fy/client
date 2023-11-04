@@ -24,7 +24,7 @@ public class Load extends Config {
         }
 
         try (FileReader reader = new FileReader(configFile)) {
-            JsonObject rootObject = new JsonParser().parse(reader).getAsJsonObject();
+            JsonObject rootObject = JsonParser.parseReader(reader).getAsJsonObject();
             JsonObject clientInfo = rootObject.getAsJsonObject("TopHat");
             String version = clientInfo.get("Version").getAsString();
 
@@ -40,28 +40,35 @@ public class Load extends Config {
                     TopHat.printL("Module: " + module.getName());
                     JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
 
-
                     if (moduleObject.has("Enabled")) {
                         boolean enabled = moduleObject.get("Enabled").getAsBoolean();
                         module.setEnabled(enabled);
                     }
 
-                    for (Setting setting : TopHat.settingManager.getSettingsByModule(module)) {
-                        if (moduleObject.has("Settings")) {
-                            JsonObject settingObject = moduleObject.getAsJsonObject("Settings");
-                            if (settingObject.has(setting.getName())) {
+                    if (moduleObject.has("Settings")) {
+                        JsonObject settingObject = moduleObject.getAsJsonObject("Settings");
+
+                        for (Setting setting : TopHat.settingManager.getSettingsByModule(module)) {
+                            try {
                                 if (setting instanceof DividerSetting) {
                                     continue;
-                                } else if (setting instanceof StringSetting) {
-                                    String value = settingObject.get(setting.getName()).getAsString();
-                                    ((StringSetting) setting).set(value);
-                                } else if (setting instanceof BooleanSetting) {
-                                    boolean value = settingObject.get(setting.getName()).getAsBoolean();
-                                    ((BooleanSetting) setting).set(value);
-                                } else if (setting instanceof NumberSetting) {
-                                    Number value = settingObject.get(setting.getName()).getAsNumber();
-                                    ((NumberSetting) setting).set(value);
                                 }
+
+                                if (settingObject.has(setting.getName())) {
+                                    if (setting instanceof StringSetting) {
+                                        String value = settingObject.get(setting.getName()).getAsString();
+                                        ((StringSetting) setting).set(value);
+                                    } else if (setting instanceof BooleanSetting) {
+                                        boolean value = settingObject.get(setting.getName()).getAsBoolean();
+                                        ((BooleanSetting) setting).set(value);
+                                    } else if (setting instanceof NumberSetting) {
+                                        Number value = settingObject.get(setting.getName()).getAsNumber();
+                                        ((NumberSetting) setting).set(value);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                TopHat.printC("Failed to load setting for module " + module.getName(), 2);
+                                e.printStackTrace();
                             }
                         }
                     }
@@ -83,7 +90,7 @@ public class Load extends Config {
         }
 
         try (FileReader reader = new FileReader(configFile)) {
-            JsonObject rootObject = new JsonParser().parse(reader).getAsJsonObject();
+            JsonObject rootObject = JsonParser.parseReader(reader).getAsJsonObject();
 
             for (Module.Category category : Module.Category.values()) {
                 JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
