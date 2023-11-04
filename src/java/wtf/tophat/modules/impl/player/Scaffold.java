@@ -53,7 +53,7 @@ public class Scaffold extends Module {
             Blocks.double_wooden_slab, Blocks.wooden_slab, Blocks.heavy_weighted_pressure_plate,
             Blocks.light_weighted_pressure_plate, Blocks.stone_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_slab2,
             Blocks.double_stone_slab2, Blocks.tripwire, Blocks.tripwire_hook, Blocks.tallgrass, Blocks.dispenser,
-            Blocks.command_block, Blocks.web);
+            Blocks.command_block, Blocks.web, Blocks.crafting_table);
 
     private TimeUtil timer = new TimeUtil();
     private BlockData blockInfo;
