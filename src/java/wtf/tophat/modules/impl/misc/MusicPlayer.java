@@ -32,11 +32,13 @@ public class MusicPlayer extends Module {
         String filepath = "C:\\Users\\Public\\musics\\" + track.get() + ".wav"; //make the thing like config / script folder !!
         playMusic(filepath);
         setVolume(volume.get().intValue() * 2);
+        super.onEnable();
     }
 
     @Override
     public void onDisable() {
         stopMusic();
+        super.onDisable();
     }
 
     public void playMusic(String location) {

@@ -25,7 +25,7 @@ public class NetworkPlayerInfo
     private int responseTime;
     private boolean playerTexturesLoaded = false;
     private ResourceLocation locationSkin;
-    private ResourceLocation locationCape;
+    private ResourceLocation locationCape = new ResourceLocation("tophat/capes/TopHat.png");
     private String skinType;
 
     /**
@@ -107,10 +107,6 @@ public class NetworkPlayerInfo
         }
 
         return this.locationCape;
-    }
-
-    public void setLocationCape(ResourceLocation locationCape) {
-        this.locationCape = locationCape;
     }
 
     public ScorePlayerTeam getPlayerTeam()
