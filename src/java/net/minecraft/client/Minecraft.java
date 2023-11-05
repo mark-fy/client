@@ -180,7 +180,6 @@ import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.events.impl.PostTickEvent;
 import wtf.tophat.events.impl.RunTickEvent;
 import wtf.tophat.menus.UIMainMenu;
-import wtf.tophat.menus.user.LoginGui;
 import wtf.tophat.modules.impl.render.BlockAnimations;
 import wtf.viaversion.viamcp.fixes.AttackOrder;
 
@@ -566,11 +565,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         if (this.serverName != null)
         {
-            this.displayGuiScreen(new GuiConnecting(new LoginGui(), this, this.serverName, this.serverPort));
+            this.displayGuiScreen(new GuiConnecting(new UIMainMenu(), this, this.serverName, this.serverPort));
         }
         else
         {
-            this.displayGuiScreen(new LoginGui());
+            this.displayGuiScreen(new UIMainMenu());
         }
 
         this.renderEngine.deleteTexture(this.mojangLogo);
@@ -975,14 +974,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         if (guiScreenIn == null && this.world == null)
         {
-            guiScreenIn = new LoginGui();
+            guiScreenIn = new UIMainMenu();
         }
         else if (guiScreenIn == null && this.player.getHealth() <= 0.0F)
         {
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof LoginGui)
+        if (guiScreenIn instanceof UIMainMenu)
         {
             this.settings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages();

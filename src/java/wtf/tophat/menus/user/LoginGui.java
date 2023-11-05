@@ -1,8 +1,8 @@
 package wtf.tophat.menus.user;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.menus.UIMainMenu;
@@ -19,7 +19,7 @@ public class LoginGui extends GuiScreen {
     private GuiTextField password;
     public static GuiTextField username;
     public UIMainMenu mainMenu;
-    public String currentStatusText = ChatFormatting.GRAY + "Idle...";
+    public String currentStatusText = EnumChatFormatting.GRAY + "Idle...";
 
     public LoginGui() {
         EncryptionUtil.setKey("9%%(CZXg<hFg=MqQ5Q#u2%^?:m2pB]b<cDDrw(Vh*^n>3A;w~gnv]M-hHJ26ak`zV(aY)c(sh[;/*{qbs:#WQ>s?2Y$[6`A2.x(V]WPFCT5*nJ(33]4JF,[>FQ%g9w+<Qpz].?FLJ}YGTrx)Dw\\F$*z\\R)uQKgRHb.y;6<6[JFh>g7LBt@_>w!/HA-<ded)Ek]?54/jyHbuEW#d{q~F\"8#Bs&k~3VKhSQhq[<3@3!s\\m<t3WX'Uf8F&v+R<+dXVF");
@@ -84,7 +84,7 @@ public class LoginGui extends GuiScreen {
 
     @Override
     public void initGui() {
-        currentStatusText = ChatFormatting.GRAY + "Login...";
+        currentStatusText = EnumChatFormatting.GRAY + "Login...";
         int var3 = height / 4 + 24;
         this.buttonList.add(new GuiButton(0, width / 2 - 75, height / 3 + 70, 150, 20, "Login"));
         this.username = new GuiTextField(var3, this.mc.fontRenderer, width / 2 - 75, 170, 150, 20);
@@ -112,7 +112,7 @@ public class LoginGui extends GuiScreen {
                     mc.displayGuiScreen(new UIMainMenu());
                     this.onGuiClosed();
                 } else {
-                    this.currentStatusText = ChatFormatting.DARK_RED + "Login failed!";
+                    this.currentStatusText = EnumChatFormatting.DARK_RED + "Login failed!";
                 }
                 break;
             }
