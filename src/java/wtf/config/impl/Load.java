@@ -1,7 +1,7 @@
 package wtf.config.impl;
 
-import com.viaversion.viaversion.libs.gson.JsonObject;
-import com.viaversion.viaversion.libs.gson.JsonParser;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import wtf.tophat.TopHat;
 import wtf.config.base.Config;
 import wtf.config.base.ConfigInfo;
@@ -36,13 +36,15 @@ public class Load extends Config {
                 JsonObject categoryModules = rootObject.getAsJsonObject(category.getName());
 
                 for (Module module : TopHat.moduleManager.getModulesByCategory(category)) {
-
                     TopHat.printL("Module: " + module.getName());
                     JsonObject moduleObject = categoryModules.getAsJsonObject(module.getName());
 
                     if (moduleObject.has("Enabled")) {
                         boolean enabled = moduleObject.get("Enabled").getAsBoolean();
                         module.setEnabled(enabled);
+                    } else {
+                        // Set the default value to false if "Enabled" section is not present
+                        module.setEnabled(false);
                     }
 
                     if (moduleObject.has("Settings")) {
