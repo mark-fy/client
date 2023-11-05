@@ -38,4 +38,12 @@ public class TimeUtil implements Methods {
             mc.timer.timerSpeed = mc.player.ticksExisted % ticks == 0 ? timer : DEFAULT_TIMER;
         }
     }
+
+    public long getTime() {
+        return System.currentTimeMillis() - lastMS;
+    }
+
+    public void setTime(long time) {
+        lastMS = time;
+    }
 }

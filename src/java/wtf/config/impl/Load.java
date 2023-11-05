@@ -1,7 +1,7 @@
 package wtf.config.impl;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.viaversion.viaversion.libs.gson.JsonObject;
+import com.viaversion.viaversion.libs.gson.JsonParser;
 import wtf.tophat.TopHat;
 import wtf.config.base.Config;
 import wtf.config.base.ConfigInfo;
