@@ -33,7 +33,7 @@ import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 public class TargetHUD extends Module {
 
     private final StringSetting mode, color;
-    private final BooleanSetting fontShadow;
+
     // I took these from summer
     private final DecimalFormat DF_1 = new DecimalFormat("0.0");
     private float aFloat;
@@ -41,8 +41,7 @@ public class TargetHUD extends Module {
     public TargetHUD() {
         TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern", "Exhibition"),
-                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
-                fontShadow = new BooleanSetting(this, "Font Shadow", true)
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow")
         );
     }
 

@@ -26,7 +26,7 @@ public class Arraylist extends Module {
 
     public Arraylist() {
         TopHat.settingManager.add(
-                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Brown", "Exhibition"),
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Exhibition"),
                 suffix = new BooleanSetting(this, "Suffix", true),
                 suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s", "n > s", "n $ s", "n % s", "n # s", "n | s", "n -> s", "n » s")
                         .setHidden(() -> !suffix.get()),
@@ -82,9 +82,6 @@ public class Arraylist extends Module {
             case "Astolfo":
                 rcColor = ColorUtil.blendRainbowColours(counter * 150L);
                 break;
-            case "Brown":
-                rcColor = ColorUtil.fadeBetween(GORGE_COLOR, LIGHT_GORGE_COLOR, counter * 150L);
-                break;
             case "Exhibition":
                 rcColor = new Color(157,6,99).getRGB();
                 break;
@@ -110,9 +107,6 @@ public class Arraylist extends Module {
                     break;
                 case "Astolfo":
                     color = ColorUtil.blendRainbowColours(counter * 150L);
-                    break;
-                case "Brown":
-                    color = ColorUtil.fadeBetween(GORGE_COLOR, LIGHT_GORGE_COLOR, counter * 150L);
                     break;
                 case "Exhibition":
                     color = new Color(157,6,99).getRGB();
