@@ -27,13 +27,14 @@ public class TeleportAura extends Module {
     public EntityLivingBase target;
     public final List<Vec3> path = new ArrayList<>();
 
-    private final NumberSetting minRange, maxRange;
+    private final NumberSetting range;
+    private final NumberSetting delay;
     private final BooleanSetting onlyPlayer;
 
     public TeleportAura() {
         TopHat.settingManager.add(
-                minRange = new NumberSetting(this, "Min", 4.0, 100.0, 49.0, 1),
-                maxRange = new NumberSetting(this, "Min", 5.0, 100.0, 50.0, 1),
+                range = new NumberSetting(this, "Range", 4.0, 100.0, 49.0, 1),
+                delay = new NumberSetting(this, "Delay", 1, 60, 1, 1),
                 onlyPlayer = new BooleanSetting(this, "Only Player", true)
         );
     }
@@ -47,7 +48,7 @@ public class TeleportAura extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        List<Entity> targets = mc.world.getLoadedEntityList()
+        List<Entity> targets = this.mc.world.getLoadedEntityList()
                 .stream()
                 .filter(new EntityUtil.LivingFilter())
                 .sorted(new EntityUtil.RangeSorter())
@@ -56,43 +57,32 @@ public class TeleportAura extends Module {
         LinkedList<Entity> entities = new LinkedList<>(targets);
         entities.sort(new EntityUtil.RangeSorter());
 
-        if (targets == null) return;
-
         for (Entity entity : entities) {
-            double deltaX = mc.player.posX - entity.posX;
-            double deltaY = mc.player.posY - entity.posY;
-            double deltaZ = mc.player.posZ - entity.posZ;
-            double sqrted = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-            if (mc.player == entity || (onlyPlayer.get() && !(entity instanceof EntityPlayer)) ||
-                    !(sqrted <= maxRange.get().doubleValue() &&
-                            entity instanceof EntityLivingBase &&
-                            sqrted >= minRange.get().doubleValue())) {
+            double deltaX = this.mc.player.posX - entity.posX;
+            double deltaY = this.mc.player.posY - entity.posY;
+            double deltaZ = this.mc.player.posZ - entity.posZ;
+            if (this.mc.player == entity || onlyPlayer.get() && !(entity instanceof EntityPlayer) || !(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) <= range.get().doubleValue()) || !(entity instanceof EntityLivingBase))
                 continue;
-            }
-
-            target = (EntityLivingBase) entity;
-
-            if (target == null) return;
-
-            if (mc.player.ticksExisted % 1 == 0) {
-                List<Vec3> blinkPath = PathUtil.findBlinkPath(target.posX, target.posY, target.posZ, 8.0);
-                path.clear();
-                if (mc.player.floatingTickCount <= (double) (79 - blinkPath.size() * 2)) {
-                    path.add(mc.player.getPositionVector());
-                    path.addAll(blinkPath);
-                    for (Vec3 vec3 : path) {
-                        mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(vec3.xCoord, vec3.yCoord, vec3.zCoord, false));
+            this.target = (EntityLivingBase) entity;
+            if (this.mc.player.ticksExisted % delay.get().doubleValue() == 0) {
+                List<Vec3> blinkPath = PathUtil.findBlinkPath(this.target.posX, this.target.posY, this.target.posZ, 8.0);
+                this.path.clear();
+                if (this.mc.player.floatingTickCount <= (double) (79 - blinkPath.size() * 2)) {
+                    this.path.add(this.mc.player.getPositionVector());
+                    this.path.addAll(blinkPath);
+                    for (Vec3 vec3 : this.path) {
+                        this.mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(vec3.xCoord, vec3.yCoord, vec3.zCoord, false));
                     }
-                    mc.player.swingItem();
-                    mc.playerController.attackEntity(mc.player, target);
-                    for (Vec3 vec3 : Lists.reverse(path)) {
-                        mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(vec3.xCoord, vec3.yCoord, vec3.zCoord, false));
+                    this.mc.player.swingItem();
+                    this.mc.playerController.attackEntity(this.mc.player, this.target);
+                    for (Vec3 vec3 : Lists.reverse(this.path)) {
+                        this.mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(vec3.xCoord, vec3.yCoord, vec3.zCoord, false));
                     }
                 }
             }
             return;
         }
-        target = null;
-        path.clear();
+        this.target = null;
+        this.path.clear();
     }
 }

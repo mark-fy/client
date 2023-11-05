@@ -2,11 +2,14 @@ package wtf.tophat.utilities.render.shaders;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
 import wtf.tophat.utilities.render.ColorUtil;
 
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
+import static wtf.tophat.utilities.render.RoundUtil.setColor;
 
 public class RoundedUtil {
 

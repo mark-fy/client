@@ -1,6 +1,5 @@
 package wtf.tophat;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
