@@ -2,8 +2,6 @@ package net.minecraft.client.model;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import wtf.tophat.TopHat;
-import wtf.tophat.modules.impl.render.CustomCape;
 
 public class ModelPlayer extends ModelBiped
 {
