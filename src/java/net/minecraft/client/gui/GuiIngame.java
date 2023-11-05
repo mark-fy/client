@@ -41,7 +41,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.Render2DEvent;
+import wtf.tophat.modules.impl.render.Crosshair;
 
 public class GuiIngame extends Gui
 {
@@ -512,10 +514,12 @@ public class GuiIngame extends Gui
         this.mc.mcProfiler.endSection();
     }
 
-    protected boolean showCrosshair()
-    {
-        if (this.mc.settings.showDebugInfo && !this.mc.player.hasReducedDebug() && !this.mc.settings.reducedDebugInfo)
-        {
+    protected boolean showCrosshair() {
+
+        if(TopHat.moduleManager.getByClass(Crosshair.class).isEnabled())
+            return false;
+
+        if (this.mc.settings.showDebugInfo && !this.mc.player.hasReducedDebug() && !this.mc.settings.reducedDebugInfo) {
             return false;
         }
         else if (this.mc.playerController.isSpectator())
