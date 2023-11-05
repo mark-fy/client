@@ -28,7 +28,7 @@ import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.render.shaders.RenderUtil;
 import wtf.tophat.utilities.time.TimeUtil;
 
-@ModuleInfo(name = "SuperheroFX", desc = "text particules", category = Module.Category.RENDER)
+@ModuleInfo(name = "Superhero FX", desc = "text particles", category = Module.Category.RENDER)
 public class SuperheroFX extends Module {
     private static String[] texts = new String[]{"SO BAD", "L", "BOZO", "EZ", "SKILLS ISSUES", "NO BRAIN", "KYS"};
     private static Random rand = new Random();
