@@ -14,7 +14,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.modules.impl.combat.Killaura;
 import wtf.tophat.modules.impl.render.PostProcessing;
-import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.render.shaders.RenderUtil;
 import wtf.tophat.utilities.render.shaders.RoundedUtil;
@@ -25,14 +25,12 @@ import wtf.tophat.utilities.render.DrawingUtil;
 import java.awt.*;
 import java.text.DecimalFormat;
 
-import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
-import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
-
 @SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 @ModuleInfo(name = "Target HUD", desc = "shows your enemy info", category = Module.Category.HUD)
 public class TargetHUD extends Module {
 
     private final StringSetting mode, color;
+    private final NumberSetting red, green, blue, red1, green1, blue1, darkFactor;
 
     // I took these from summer
     private final DecimalFormat DF_1 = new DecimalFormat("0.0");
@@ -41,7 +39,14 @@ public class TargetHUD extends Module {
     public TargetHUD() {
         TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern", "Exhibition"),
-                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow")
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Fade", "Astolfo", "Rainbow").setHidden(() -> mode.is("Exhibition")),
+                red = new NumberSetting(this, "Red", 0, 255, 95, 0).setHidden(() -> (!color.is("Gradient") && !color.is("Fade")) || mode.is("Exhibition")),
+                green = new NumberSetting(this, "Green", 0, 255, 61, 0).setHidden(() -> (!color.is("Gradient") && !color.is("Fade")) || mode.is("Exhibition")),
+                blue = new NumberSetting(this, "Blue", 0, 255, 248, 0).setHidden(() -> (!color.is("Gradient") && !color.is("Fade")) || mode.is("Exhibition")),
+                red1 = new NumberSetting(this, "Second Red", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient") || mode.is("Exhibition")),
+                green1 = new NumberSetting(this, "Second Green", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient") || mode.is("Exhibition")),
+                blue1 = new NumberSetting(this, "Second Blue", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient") || mode.is("Exhibition")),
+                darkFactor = new NumberSetting(this, "Dark Factor", 0, 1, 0.49, 2).setHidden(() -> !color.is("Fade") || mode.is("Exhibition"))
         );
     }
 
@@ -60,7 +65,11 @@ public class TargetHUD extends Module {
         if (!(mc.currentScreen instanceof GuiChat)) {
             switch (this.color.get()) {
                 case "Gradient":
-                    color = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
+                    color = ColorUtil.fadeBetween(new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB(), new Color(red1.get().intValue(), green1.get().intValue(), blue1.get().intValue()).getRGB(), counter * 150L);
+                    break;
+                case "Fade":
+                    int firstColor = new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB();
+                    color = ColorUtil.fadeBetween(firstColor, ColorUtil.darken(firstColor, darkFactor.get().floatValue()), counter * 150L);
                     break;
                 case "Rainbow":
                     color = ColorUtil.getRainbow(3000, (int) (counter * 150L));
@@ -80,7 +89,7 @@ public class TargetHUD extends Module {
                             width = 130;
                             height = 50;
 
-                            RenderUtil.scaleStart(x + width / 2, y + height / 2, 1);
+                            RenderUtil.scaleStart(x + (float) width / 2, y + (float) height / 2, 1);
                             RoundedUtil.drawRoundOutline(x, y,
                                     width + 2, height, 2, 1f, new Color(0xFF080809), new Color(0xFF3C3C3D));
                             RoundedUtil.drawRoundOutline(x + 3, y + 3, 32, 44, 2,
@@ -89,7 +98,7 @@ public class TargetHUD extends Module {
                             GL11.glPushMatrix();
                             RendererLivingEntity.NAME_TAG_RANGE = 0;
                             RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
-                            GuiInventory.drawEntityOnScreen((int) (x + 18), (int) (y + 44), 20, targetEntity.rotationYaw, -targetEntity.rotationPitch, targetEntity);
+                            GuiInventory.drawEntityOnScreen(x + 18, y + 44, 20, targetEntity.rotationYaw, -targetEntity.rotationPitch, targetEntity);
                             RendererLivingEntity.NAME_TAG_RANGE = 64f;
                             RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32f;
                             GL11.glPopMatrix();
@@ -178,7 +187,11 @@ public class TargetHUD extends Module {
 
         switch (this.color.get()) {
             case "Gradient":
-                color = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
+                color = ColorUtil.fadeBetween(new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB(), new Color(red1.get().intValue(), green1.get().intValue(), blue1.get().intValue()).getRGB(), counter * 150L);
+                break;
+            case "Fade":
+                int firstColor = new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB();
+                color = ColorUtil.fadeBetween(firstColor, ColorUtil.darken(firstColor, darkFactor.get().floatValue()), counter * 150L);
                 break;
             case "Rainbow":
                 color = ColorUtil.getRainbow(3000, (int) (counter * 150L));

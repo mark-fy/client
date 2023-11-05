@@ -10,6 +10,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.modules.impl.render.PostProcessing;
 import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.render.shaders.RoundedUtil;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
@@ -28,14 +29,25 @@ import static wtf.tophat.utilities.render.Colors.*;
 public class Watermark extends Module {
 
     private final StringSetting mode, color;
-    private final BooleanSetting fontShadow, bps;
+    private final BooleanSetting fontShadow, BPS, exhiXYZ, exhiBPS, exhiVersion;
+    private final NumberSetting red, green, blue, red1, green1, blue1, darkFactor;
 
     public Watermark() {
         TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "GameSense", "GameSense", "Modern", "Exhibition"),
-                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow"),
-                fontShadow = new BooleanSetting(this, "Font Shadow", true),
-                bps = new BooleanSetting(this, "Blocks per Second", true).setHidden(() -> !mode.is("GameSense"))
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Fade", "Astolfo", "Rainbow"),
+                fontShadow = new BooleanSetting(this, "Font Shadow", true).setHidden(() -> !mode.is("GameSense")),
+                BPS = new BooleanSetting(this, "BPS", true).setHidden(() -> !mode.is("GameSense")),
+                exhiXYZ = new BooleanSetting(this, "XYZ", true).setHidden(() -> !mode.is("Exhibition")),
+                exhiBPS = new BooleanSetting(this, "BPS", true).setHidden(() -> !mode.is("Exhibition")),
+                exhiVersion = new BooleanSetting(this, "Build Version", true).setHidden(() -> !mode.is("Exhibition")),
+                red = new NumberSetting(this, "Red", 0, 255, 95, 0).setHidden(() -> !color.is("Gradient") && !color.is("Fade")),
+                green = new NumberSetting(this, "Green", 0, 255, 61, 0).setHidden(() -> !color.is("Gradient") && !color.is("Fade")),
+                blue = new NumberSetting(this, "Blue", 0, 255, 248, 0).setHidden(() -> !color.is("Gradient") && !color.is("Fade")),
+                red1 = new NumberSetting(this, "Second Red", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient")),
+                green1 = new NumberSetting(this, "Second Green", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient")),
+                blue1 = new NumberSetting(this, "Second Blue", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient")),
+                darkFactor = new NumberSetting(this, "Dark Factor", 0 ,1, 0.49, 2).setHidden(() -> !color.is("Fade"))
         );
         setEnabled(true);
     }
@@ -53,7 +65,11 @@ public class Watermark extends Module {
 
         switch (this.color.get()) {
             case "Gradient":
-                color = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
+                color = ColorUtil.fadeBetween(new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB(), new Color(red1.get().intValue(), green1.get().intValue(), blue1.get().intValue()).getRGB(), counter * 150L);
+                break;
+            case "Fade":
+                int firstColor = new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB();
+                color = ColorUtil.fadeBetween(firstColor, ColorUtil.darken(firstColor, darkFactor.get().floatValue()), counter * 150L);
                 break;
             case "Rainbow":
                 color = ColorUtil.getRainbow(3000, (int) (counter * 150L));
@@ -61,16 +77,23 @@ public class Watermark extends Module {
             case "Astolfo":
                 color = ColorUtil.blendRainbowColours(counter * 150L);
                 break;
-            case "Brown":
-                color = new Color(ColorUtil.fadeBetween(GORGE_COLOR, LIGHT_GORGE_COLOR, counter * 150L),true).getRGB();
-                break;
         }
 
         switch(mode.get()) {
             case "Exhibition": {
                 fr.drawStringWithShadow(String.format("E§7xhibition [§f%s§7] [§f%s FPS§7] [§f%s ms§7]", getCurrentTime(), Minecraft.getDebugFPS(), getPing()), 3, 4, color);
-                fr.drawStringWithShadow(String.format("XYZ: §f%s, %s, %s §7b/s: §f%s", Math.round(getX()), Math.round(getY()), Math.round(getZ()), getBPS()), 3, sr.getScaledHeight() - 10, new Color(170,170,170));
-                fr.drawStringWithShadow(String.format("Release Build - §f§l%s§7 - User", TopHat.getVersion()), sr.getScaledWidth() - fr.getStringWidth("Release Build - §f§l" + TopHat.getVersion() + "§7 - User") + 5, sr.getScaledHeight() - 10, new Color(170,170,170));
+
+                String displayText = "";
+                if (exhiXYZ.get()) {
+                    displayText += "XYZ: §f" + Math.round(getX()) + ", " + Math.round(getY()) + ", " + Math.round(getZ()) + " ";
+                }
+                if (exhiBPS.get()) {
+                    displayText += "§7b/s: §f" + getBPS();
+                }
+
+                fr.drawStringWithShadow(displayText, 3, sr.getScaledHeight() - 10, new Color(170, 170, 170));
+                if(exhiVersion.get())
+                    fr.drawStringWithShadow(String.format("Release Build - §f§l%s§7 - TopHat", TopHat.getVersion()), sr.getScaledWidth() - fr.getStringWidth("Release Build - §f§l" + TopHat.getVersion() + "§7 - TopHat") + 5, sr.getScaledHeight() - 10, new Color(170,170,170));
                 break;
             }
             case "GameSense": {
@@ -87,9 +110,8 @@ public class Watermark extends Module {
 
                 int textY = scrHeight - 25;
 
-                if (bps.get()) {
-                    final double motionX = mc.player.posX - mc.player.prevPosX;
-                    final double motionZ = mc.player.posZ - mc.player.prevPosZ;
+                if (BPS.get()) {
+                    double motionX = mc.player.posX - mc.player.prevPosX, motionZ = mc.player.posZ - mc.player.prevPosZ;
                     double speed = Math.sqrt(motionX * motionX + motionZ * motionZ) * 20 * mc.timer.timerSpeed;
                     speed = Math.round(speed * 10);
                     speed = speed / 10;
@@ -112,20 +134,14 @@ public class Watermark extends Module {
             }
             case "Modern": {
                 text = TopHat.getName() + " - " + mc.getSession().getUsername();
-                int strWidth1 = fr.getStringWidth(text);
-                Color backgroundColor = new Color(13, 60, 123);
-                Color outlineColor = new Color(255, 255, 255, 25);
 
                 if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                     GaussianBlur.startBlur();
-                    int totalWidth = strWidth1 + 6 + 2 * 2;
-                    RoundedUtil.drawRound(5, 5, totalWidth, 20, 8, backgroundColor);
+                    RoundedUtil.drawRound(5, 5, fr.getStringWidth(text) + 6 + 2 * 2, 20, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);
                 }
 
-                int outlineX = 5 - 2;
-                int outlineWidth = strWidth1 + 6 + 2 * 2;
-                RoundedUtil.drawRoundOutline(outlineX, 5, outlineWidth, 20, 8, 0.30f, outlineColor, new Color(color));
+                RoundedUtil.drawRoundOutline(5 - 2, 5, fr.getStringWidth(text) + 6 + 2 * 2, 20, 8, 0.30f, new Color(255, 255, 255, 25), new Color(color));
                 fr.drawString(text, 5 + 4 - 1, 5 + 6, Color.WHITE);
                 break;
             }

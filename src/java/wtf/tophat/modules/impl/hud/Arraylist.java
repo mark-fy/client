@@ -7,6 +7,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
+import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
@@ -23,10 +24,11 @@ public class Arraylist extends Module {
 
     private final StringSetting color, suffixMode, outlinePosition, suffixColor;
     private final BooleanSetting hideVisualModules, suffix, outline, background;
+    private final NumberSetting red, green, blue, red1, green1, blue1, darkFactor;
 
     public Arraylist() {
         TopHat.settingManager.add(
-                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Astolfo", "Rainbow", "Exhibition"),
+                color = new StringSetting(this, "Color", "Gradient", "Gradient", "Fade", "Astolfo", "Rainbow"),
                 suffix = new BooleanSetting(this, "Suffix", true),
                 suffixMode = new StringSetting(this, "Suffix Type", "n [s]", "n [s]", "n (s)", "n - s", "n s", "n > s", "n $ s", "n % s", "n # s", "n | s", "n -> s", "n » s")
                         .setHidden(() -> !suffix.get()),
@@ -36,7 +38,14 @@ public class Arraylist extends Module {
                         .setHidden(() -> !background.get()),
                 outlinePosition = new StringSetting(this, "Outline Position", "both", "both", "right", "top")
                         .setHidden(() -> !outline.get() || !background.get()),
-                hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true)
+                hideVisualModules = new BooleanSetting(this, "Hide Visual Modules", true),
+                red = new NumberSetting(this, "Red", 0, 255, 95, 0).setHidden(() -> !color.is("Gradient") && !color.is("Fade")),
+                green = new NumberSetting(this, "Green", 0, 255, 61, 0).setHidden(() -> !color.is("Gradient") && !color.is("Fade")),
+                blue = new NumberSetting(this, "Blue", 0, 255, 248, 0).setHidden(() -> !color.is("Gradient") && !color.is("Fade")),
+                red1 = new NumberSetting(this, "Second Red", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient")),
+                green1 = new NumberSetting(this, "Second Green", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient")),
+                blue1 = new NumberSetting(this, "Second Blue", 0, 255, 255, 0).setHidden(() -> !color.is("Gradient")),
+                darkFactor = new NumberSetting(this, "Dark Factor", 0 ,1, 0.49, 2).setHidden(() -> !color.is("Fade"))
         );
         setEnabled(true);
     }
@@ -74,16 +83,17 @@ public class Arraylist extends Module {
 
         switch (this.color.get()) {
             case "Gradient":
-                rcColor = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
+                rcColor = ColorUtil.fadeBetween(new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB(), new Color(red1.get().intValue(), green1.get().intValue(), blue1.get().intValue()).getRGB(), counter * 150L);
+                break;
+            case "Fade":
+                int firstColor = new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB();
+                rcColor = ColorUtil.fadeBetween(firstColor, ColorUtil.darken(firstColor, darkFactor.get().floatValue()), counter * 150L);
                 break;
             case "Rainbow":
                 rcColor = ColorUtil.getRainbow(3000, (int) (counter * 150L));
                 break;
             case "Astolfo":
                 rcColor = ColorUtil.blendRainbowColours(counter * 150L);
-                break;
-            case "Exhibition":
-                rcColor = new Color(157,6,99).getRGB();
                 break;
         }
 
@@ -100,16 +110,17 @@ public class Arraylist extends Module {
 
             switch (this.color.get()) {
                 case "Gradient":
-                    color = ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L);
+                    color = ColorUtil.fadeBetween(new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB(), new Color(red1.get().intValue(), green1.get().intValue(), blue1.get().intValue()).getRGB(), counter * 150L);
+                    break;
+                case "Fade":
+                    int firstColor = new Color(red.get().intValue(), green.get().intValue(), blue.get().intValue()).getRGB();
+                    color = ColorUtil.fadeBetween(firstColor, ColorUtil.darken(firstColor, darkFactor.get().floatValue()), counter * 150L);
                     break;
                 case "Rainbow":
                     color = ColorUtil.getRainbow(3000, (int) (counter * 150L));
                     break;
                 case "Astolfo":
                     color = ColorUtil.blendRainbowColours(counter * 150L);
-                    break;
-                case "Exhibition":
-                    color = new Color(157,6,99).getRGB();
                     break;
             }
 
