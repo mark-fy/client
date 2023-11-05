@@ -1,6 +1,8 @@
 package wtf.tophat;
 
+import com.sun.media.jfxmedia.logging.Logger;
 import net.minecraft.client.Minecraft;
+import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 import wtf.tophat.commands.base.CommandManager;
 import wtf.config.ConfigManager;
@@ -32,6 +34,8 @@ public enum TopHat {
     public static String getName() { return name; }
 
     public static String getVersion() { return version; }
+
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
 
     public static final ModuleManager moduleManager = new ModuleManager();
     public static final SettingManager settingManager = new SettingManager();
@@ -67,7 +71,7 @@ public enum TopHat {
 
     public static void printL(String message) {
         if(message != null) {
-            System.out.println("[TopHat-v" + getVersion() + "] " + message);
+            logger.info("[TopHat-v" + getVersion() + "] " + message);
         }
     }
 
