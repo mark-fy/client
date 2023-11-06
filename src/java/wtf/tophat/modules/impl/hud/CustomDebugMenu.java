@@ -5,8 +5,8 @@ import wtf.tophat.events.impl.DebugOverlayEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 
-@ModuleInfo(name = "Custom Debug",desc = "change the debug menu", category = Module.Category.HUD)
-public class CustomDebug extends Module {
+@ModuleInfo(name = "Custom Debug Menu",desc = "change the debug menu", category = Module.Category.HUD)
+public class CustomDebugMenu extends Module {
 
     @Listen
     public void onDebug(DebugOverlayEvent event) {
