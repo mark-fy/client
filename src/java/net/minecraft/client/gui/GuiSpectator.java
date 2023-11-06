@@ -7,7 +7,10 @@ import net.minecraft.client.gui.spectator.SpectatorMenu;
 import net.minecraft.client.gui.spectator.categories.SpectatorDetails;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -18,6 +21,8 @@ public class GuiSpectator extends Gui implements ISpectatorMenuRecipient
     private final Minecraft field_175268_g;
     private long field_175270_h;
     private SpectatorMenu field_175271_i;
+    private static final ResourceLocation widgetsTexPath = new ResourceLocation("textures/gui/widgets.png");
+    private RenderItem itemRenderer;
 
     public GuiSpectator(Minecraft mcIn)
     {
@@ -44,29 +49,51 @@ public class GuiSpectator extends Gui implements ISpectatorMenuRecipient
         return MathHelper.clamp_float((float)i / 2000.0F, 0.0F, 1.0F);
     }
 
-    public void renderTooltip(ScaledResolution p_175264_1_, float p_175264_2_)
-    {
-        if (this.field_175271_i != null)
-        {
-            float f = this.func_175265_c();
-
-            if (f <= 0.0F)
-            {
-                this.field_175271_i.func_178641_d();
+    protected void renderTooltip(ScaledResolution sr, float partialTicks) {
+        if (Minecraft.getMinecraft().getRenderViewEntity() instanceof EntityPlayer) {
+            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+            Minecraft.getMinecraft().getTextureManager().bindTexture(widgetsTexPath);
+            EntityPlayer entityplayer = (EntityPlayer)Minecraft.getMinecraft().getRenderViewEntity();
+            int i = sr.getScaledWidth() / 2;
+            float f = this.zLevel;
+            this.zLevel = -90.0f;
+            this.drawTexturedModalRect(i - 91, sr.getScaledHeight() - 22, 0, 0, 182, 22);
+            this.drawTexturedModalRect(i - 91 - 1 + entityplayer.inventory.currentItem * 20, sr.getScaledHeight() - 22 - 1, 0, 22, 24, 22);
+            this.zLevel = f;
+            GlStateManager.enableRescaleNormal();
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            RenderHelper.enableGUIStandardItemLighting();
+            for (int j = 0; j < 9; ++j) {
+                int k = sr.getScaledWidth() / 2 - 90 + j * 20 + 2;
+                int l = sr.getScaledHeight() - 16 - 3;
+                this.renderHotbarItem(j, k, l, partialTicks, entityplayer);
             }
-            else
-            {
-                int i = p_175264_1_.getScaledWidth() / 2;
-                float f1 = this.zLevel;
-                this.zLevel = -90.0F;
-                float f2 = (float)p_175264_1_.getScaledHeight() - 22.0F * f;
-                SpectatorDetails spectatordetails = this.field_175271_i.func_178646_f();
-                this.func_175258_a(p_175264_1_, f, i, f2, spectatordetails);
-                this.zLevel = f1;
-            }
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.disableRescaleNormal();
+            GlStateManager.disableBlend();
         }
     }
 
+    private void renderHotbarItem(int index, int xPos, int yPos, float partialTicks, EntityPlayer p_175184_5_) {
+        ItemStack itemstack = p_175184_5_.inventory.mainInventory[index];
+        if (itemstack != null) {
+            float f = (float)itemstack.animationsToGo - partialTicks;
+            if (f > 0.0f) {
+                GlStateManager.pushMatrix();
+                float f1 = 1.0f + f / 5.0f;
+                GlStateManager.translate(xPos + 8, yPos + 12, 0.0f);
+                GlStateManager.scale(1.0f / f1, (f1 + 1.0f) / 2.0f, 1.0f);
+                GlStateManager.translate(-(xPos + 8), -(yPos + 12), 0.0f);
+            }
+            this.itemRenderer.renderItemAndEffectIntoGUI(itemstack, xPos, yPos);
+            if (f > 0.0f) {
+                GlStateManager.popMatrix();
+            }
+            this.itemRenderer.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, itemstack, xPos, yPos);
+        }
+    }
+    
     protected void func_175258_a(ScaledResolution p_175258_1_, float p_175258_2_, int p_175258_3_, float p_175258_4_, SpectatorDetails p_175258_5_)
     {
         GlStateManager.enableRescaleNormal();

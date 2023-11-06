@@ -1,8 +1,10 @@
 package wtf.tophat.utilities.player;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAnvilBlock;
+import net.minecraft.util.BlockPos;
 import wtf.tophat.utilities.Methods;
 
 public class PlayerUtil implements Methods {
@@ -19,6 +21,14 @@ public class PlayerUtil implements Methods {
         } else {
             return false;
         }
+    }
+
+    public Block block(final double x, final double y, final double z) {
+        return mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
+    }
+
+    public static Block block(final BlockPos blockPos) {
+        return mc.world.getBlockState(blockPos).getBlock();
     }
 
     public static boolean isBlockBlacklisted(Item item) {
