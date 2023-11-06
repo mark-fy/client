@@ -15,12 +15,13 @@ public class ClickGUI extends Module {
 
     private final StringSetting mode;
 
-    public final BooleanSetting fontShadow;
+    public final BooleanSetting fontShadow, sound;
 
     public ClickGUI() {
         TopHat.settingManager.add(
                 mode = new StringSetting(this, "Style", "Dropdown", "Dropdown", "Material", "Concept"),
-                fontShadow = new BooleanSetting(this, "Font Shadow", true).setHidden(() -> !mode.is("Dropdown"))
+                fontShadow = new BooleanSetting(this, "Font Shadow", true).setHidden(() -> !mode.is("Dropdown")),
+                sound = new BooleanSetting(this, "Sound", true)
         );
     }
 

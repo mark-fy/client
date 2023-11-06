@@ -1,16 +1,19 @@
 package wtf.tophat.menus.click.dropdown;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
+import wtf.tophat.modules.impl.hud.ClickGUI;
 import wtf.tophat.modules.impl.render.PostProcessing;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
 import wtf.tophat.utilities.render.CategoryUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
+import wtf.tophat.utilities.sound.SoundUtil;
 
 import java.awt.*;
 import java.io.IOException;
@@ -134,6 +137,13 @@ public class DropDownClickGUI extends GuiScreen {
 
                     if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) categoryWidth, 20)) {
                         if (mouseButton == 0) {
+                            if(TopHat.moduleManager.getByClass(ClickGUI.class).sound.get()) {
+                                if (!module.isEnabled()) {
+                                    SoundUtil.play(SoundUtil.toggleOnSound);
+                                } else if (module.isEnabled()) {
+                                    SoundUtil.play(SoundUtil.toggleOffSound);
+                                }
+                            }
                             module.toggle();
                         } else if (mouseButton == 1) {
                             if (TopHat.settingManager.getSettingsByModule(module).size() > 0) {

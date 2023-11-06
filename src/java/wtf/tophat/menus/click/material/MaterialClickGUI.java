@@ -6,6 +6,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
+import wtf.tophat.modules.impl.hud.ClickGUI;
 import wtf.tophat.modules.impl.render.PostProcessing;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -16,6 +17,7 @@ import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
 import wtf.tophat.utilities.render.CategoryUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
+import wtf.tophat.utilities.sound.SoundUtil;
 
 import java.awt.*;
 import java.util.Locale;
@@ -23,6 +25,8 @@ import java.util.Locale;
 import static wtf.tophat.utilities.render.Colors.*;
 
 public class MaterialClickGUI extends GuiScreen {
+
+    boolean sound = TopHat.moduleManager.getByClass(ClickGUI.class).sound.get();
 
     @Override
     public void initGui() {
@@ -216,6 +220,13 @@ public class MaterialClickGUI extends GuiScreen {
             for (Module module : TopHat.moduleManager.getModulesByCategory(selectedCategory)) {
                 if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
                     module.toggle();
+                    if(sound) {
+                        if (module.isEnabled()) {
+                            SoundUtil.play(SoundUtil.toggleOnSound);
+                        } else if (!module.isEnabled()) {
+                            SoundUtil.play(SoundUtil.toggleOffSound);
+                        }
+                    }
                 }
                 counter += 15;
             }

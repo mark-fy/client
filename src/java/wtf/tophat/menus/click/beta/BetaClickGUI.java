@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
+import wtf.tophat.modules.impl.hud.ClickGUI;
 import wtf.tophat.settings.base.Setting;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.DividerSetting;
@@ -14,6 +15,7 @@ import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.render.CategoryUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 import wtf.tophat.utilities.render.shaders.RoundedUtil;
+import wtf.tophat.utilities.sound.SoundUtil;
 
 import java.awt.*;
 import java.io.IOException;
@@ -36,6 +38,8 @@ public class BetaClickGUI extends GuiScreen implements Methods {
     private boolean isDragging = false;
     private int dragX, dragY;
     private float x = 50, y = 50;
+
+    boolean sound = TopHat.moduleManager.getByClass(ClickGUI.class).sound.get();
 
 
     @Override
@@ -149,6 +153,13 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
             if (hoveredMod) {
                 if (mouseButton == 0) {
+                    if(sound) {
+                        if (!module.isEnabled()) {
+                            SoundUtil.play(SoundUtil.toggleOnSound);
+                        } else if (module.isEnabled()) {
+                            SoundUtil.play(SoundUtil.toggleOffSound);
+                        }
+                    }
                     module.toggle();
                 } else if (mouseButton == 1) {
                     if (listeningToModule == module) {

@@ -1,31 +1,28 @@
 package wtf.tophat.utilities.sound;
 
-import wtf.tophat.utilities.Methods;
-
-import net.minecraft.util.ResourceLocation;
-
-import javax.sound.sampled.*;
-import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.net.URL;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.FloatControl.Type;
 
-public class SoundUtil implements Methods {
+public class SoundUtil {
+    private static Clip clip;
+    public static final URL toggleOnSound = SoundUtil.class.getClassLoader().getResource("assets/minecraft/tophat/Enable.wav");
+    public static final URL toggleOffSound = SoundUtil.class.getClassLoader().getResource("assets/minecraft/tophat/Disable.wav");
 
-    public static void playSound(ResourceLocation location, float volume) {
+    public static void play(URL filePath) {
         try {
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(mc.getResourceManager().getResource(location).getInputStream());
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(bufferedInputStream);
-
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-
-            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float range = gainControl.getMaximum() - gainControl.getMinimum();
-            float gain = (range * volume) + gainControl.getMinimum();
-            gainControl.setValue(gain);
-
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(filePath));
+            FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
+            floatControl.setValue(6.0206F);
             clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException var2) {
+            var2.printStackTrace();
         }
     }
 }
