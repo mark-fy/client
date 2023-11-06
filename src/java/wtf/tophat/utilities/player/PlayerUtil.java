@@ -1,6 +1,8 @@
 package wtf.tophat.utilities.player;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAnvilBlock;
 import wtf.tophat.utilities.Methods;
 
 public class PlayerUtil implements Methods {
@@ -17,6 +19,10 @@ public class PlayerUtil implements Methods {
         } else {
             return false;
         }
+    }
+
+    public static boolean isBlockBlacklisted(Item item) {
+        return item instanceof ItemAnvilBlock || item.getUnlocalizedName().contains("sand") || item.getUnlocalizedName().contains("gravel") || item.getUnlocalizedName().contains("ladder") || item.getUnlocalizedName().contains("tnt") || item.getUnlocalizedName().contains("chest") || item.getUnlocalizedName().contains("web");
     }
 
 }

@@ -65,18 +65,18 @@ public class NoSlowdown extends Module {
             case "Grim":
             case "Switch":
                 if(event.getState() == Event.State.PRE) {
-                    sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
-                    sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
+                    Methods.sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
+                    Methods.sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
                 }
                 break;
             case "Old Intave":
                 if(mc.player.isUsingItem() && currentItem.getItem() instanceof ItemSword && intaveTimer.elapsed(150L)) {
                     if(event.getState() == Event.State.PRE) {
-                        sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        Methods.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     }
 
                     if(event.getState() == Event.State.POST) {
-                        sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        Methods.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                         intaveTimer.reset();
                     }
                 }
@@ -117,10 +117,10 @@ public class NoSlowdown extends Module {
 
         if (mode.get().equals("Grim")) {
             if (mc.player.isBlocking()) {
-                sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
+                Methods.sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
             } else if (mc.player.isUsingItem()) {
-                sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
-                sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
+                Methods.sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
+                Methods.sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
             }
         }
     }

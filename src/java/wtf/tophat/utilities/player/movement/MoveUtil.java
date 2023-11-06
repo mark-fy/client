@@ -6,7 +6,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.util.vector.Vector2f;
 import wtf.tophat.TopHat;
-import wtf.tophat.modules.impl.player.Scaffold;
+import wtf.tophat.events.impl.MotionEvent;
+import wtf.tophat.modules.impl.player.ScaffoldWalk;
 import wtf.tophat.utilities.Methods;
 
 public class MoveUtil implements Methods {
@@ -27,6 +28,92 @@ public class MoveUtil implements Methods {
         mc.player.motionZ = 0;
     }
 
+    public static void strafeNoTargetStrafe(MotionEvent event, double speed) {
+        float direction = (float) Math.toRadians(getPlayerDirection());
+
+        if (Methods.isMoving()) {
+            event.setX(mc.player.motionX = -Math.sin(direction) * speed);
+            event.setZ(mc.player.motionZ = Math.cos(direction) * speed);
+        } else {
+            event.setX(mc.player.motionX = 0);
+            event.setZ(mc.player.motionZ = 0);
+        }
+    }
+
+    public static int getSpeedAmplifier() {
+        if(mc.player.isPotionActive(Potion.moveSpeed)) {
+            return 1 + mc.player.getActivePotionEffect(Potion.moveSpeed).getAmplifier();
+        }
+
+        return 0;
+    }
+
+    public static void jump(MotionEvent event) {
+        double jumpY = (double) mc.player.getJumpUpwardsMotion();
+
+        if(mc.player.isPotionActive(Potion.jump)) {
+            jumpY += (double)((float)(mc.player.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+        }
+
+        event.setY(mc.player.motionY = jumpY);
+    }
+
+    public static float getPlayerDirection() {
+        float direction = mc.player.rotationYaw;
+
+        if (mc.player.moveForward > 0) {
+            if (mc.player.moveStrafing > 0) {
+                direction -= 45;
+            } else if (mc.player.moveStrafing < 0) {
+                direction += 45;
+            }
+        } else if (mc.player.moveForward < 0) {
+            if (mc.player.moveStrafing > 0) {
+                direction -= 135;
+            } else if (mc.player.moveStrafing < 0) {
+                direction += 135;
+            } else {
+                direction -= 180;
+            }
+        } else {
+            if (mc.player.moveStrafing > 0) {
+                direction -= 90;
+            } else if (mc.player.moveStrafing < 0) {
+                direction += 90;
+            }
+        }
+
+        return direction;
+    }
+
+    public static float getPlayerDirection(float baseYaw) {
+        float direction = baseYaw;
+
+        if (mc.player.moveForward > 0) {
+            if (mc.player.moveStrafing > 0) {
+                direction -= 45;
+            } else if (mc.player.moveStrafing < 0) {
+                direction += 45;
+            }
+        } else if (mc.player.moveForward < 0) {
+            if (mc.player.moveStrafing > 0) {
+                direction -= 135;
+            } else if (mc.player.moveStrafing < 0) {
+                direction += 135;
+            } else {
+                direction -= 180;
+            }
+        } else {
+            if (mc.player.moveStrafing > 0) {
+                direction -= 90;
+            } else if (mc.player.moveStrafing < 0) {
+                direction += 90;
+            }
+        }
+
+        return direction;
+    }
+    
     public static double[] getMotion(final double speed, final float strafe, final float forward, final float yaw) {
         final float friction = (float)speed;
         final float f1 = MathHelper.sin(yaw * (float)Math.PI / 180.0f);
@@ -209,7 +296,7 @@ public class MoveUtil implements Methods {
                 horizontalDistance *= MOD_SPRINTING;
             }
 
-            final Scaffold scaffold = TopHat.moduleManager.getByClass(Scaffold.class);
+            final ScaffoldWalk scaffold = TopHat.moduleManager.getByClass(ScaffoldWalk.class);
 
             if (mc.player.isPotionActive(Potion.moveSpeed) && mc.player.getActivePotionEffect(Potion.moveSpeed).getDuration() > 0) {
                 horizontalDistance *= 1 + (0.2 * (mc.player.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1));

@@ -21,16 +21,33 @@ public class RotationUtil implements Methods {
         return new float[]{(mc.player.rotationYaw + MathHelper.wrapAngleTo180_float(yaw - mc.player.rotationYaw)) % 360, (mc.player.rotationPitch + MathHelper.wrapAngleTo180_float(pitch - mc.player.rotationPitch)) % 360.0f};
     }
 
-    public static float[] getNeededRotations(Entity entity) {
-        double d0 = entity.posX - Minecraft.getMinecraft().player.posX;
-        double d1 = entity.posZ - Minecraft.getMinecraft().player.posZ;
-        double d2 = entity.posY + entity.getEyeHeight()
-                - (Minecraft.getMinecraft().player.getEntityBoundingBox().minY
-                + (Minecraft.getMinecraft().player.getEntityBoundingBox().maxY
-                - Minecraft.getMinecraft().player.getEntityBoundingBox().minY));
-        double d3 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
-        float f = (float) (MathHelper.atan2(d1, d0) * 180.0D / Math.PI) - 90.0F;
-        float f1 = (float) (-(MathHelper.atan2(d2, d3) * 180.0D / Math.PI));
-        return new float[] { f, f1 };
+    public static float[] getRotationsToPosition(double x, double y, double z) {
+        double deltaX = x - mc.player.posX;
+        double deltaY = y - mc.player.posY - mc.player.getEyeHeight();
+        double deltaZ = z - mc.player.posZ;
+
+        double horizontalDistance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+
+        float yaw = (float) Math.toDegrees(-Math.atan2(deltaX, deltaZ));
+        float pitch = (float) Math.toDegrees(-Math.atan2(deltaY, horizontalDistance));
+
+        return new float[] {yaw, pitch};
+    }
+
+    public static float[] getRotationsToPosition(double x, double y, double z, double targetX, double targetY, double targetZ) {
+        double dx = targetX - x;
+        double dy = targetY - y;
+        double dz = targetZ - z;
+
+        double horizontalDistance = Math.sqrt(dx * dx + dz * dz);
+
+        float yaw = (float) Math.toDegrees(-Math.atan2(dx, dz));
+        float pitch = (float) Math.toDegrees(-Math.atan2(dy, horizontalDistance));
+
+        return new float[] {yaw, pitch};
+    }
+
+    public static float getGCD() {
+        return (float) (Math.pow(mc.settings.mouseSensitivity * 0.6 + 0.2, 3) * 1.2);
     }
 }

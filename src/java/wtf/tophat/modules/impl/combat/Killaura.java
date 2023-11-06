@@ -14,7 +14,7 @@ import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.Render3DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
-import wtf.tophat.modules.impl.player.Scaffold;
+import wtf.tophat.modules.impl.player.ScaffoldWalk;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
@@ -68,14 +68,14 @@ public class Killaura extends Module {
 
     @Listen
     public void onMotion(MotionEvent e) {
-        if (TopHat.moduleManager.getByClass(Scaffold.class).isEnabled())
+        if (TopHat.moduleManager.getByClass(ScaffoldWalk.class).isEnabled())
             return;
 
         target = EntityUtil.getClosestEntity(range.get().doubleValue());
 
         if (target != null && (inGUI.get() && mc.currentScreen == null)) {
             if (e.getState() == Event.State.PRE) {
-                if (!TopHat.moduleManager.getByClass(Scaffold.class).isEnabled()) {
+                if (!TopHat.moduleManager.getByClass(ScaffoldWalk.class).isEnabled()) {
                     EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, range.get().doubleValue(), getTarget());
                     if (p == null)
                         return;
@@ -121,7 +121,7 @@ public class Killaura extends Module {
     public Entity getTarget() {
         for (Entity o : mc.world.loadedEntityList) {
             if (o instanceof net.minecraft.entity.player.EntityPlayer && !(o instanceof net.minecraft.entity.passive.EntityVillager))
-                if (!TopHat.moduleManager.getByClass(Scaffold.class).isEnabled() && !o.isDead && o != mc.player)
+                if (!TopHat.moduleManager.getByClass(ScaffoldWalk.class).isEnabled() && !o.isDead && o != mc.player)
                     if (mc.player.getDistanceToEntity(o) <= (mc.player.canEntityBeSeen(o) ? range.get().doubleValue() : 3.1D))
                         return o;
         }

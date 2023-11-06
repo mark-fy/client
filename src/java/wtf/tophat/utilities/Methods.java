@@ -33,7 +33,7 @@ public interface Methods {
 
     static boolean isMoving() { return mc.player.moveForward != 0 || mc.player.moveStrafing != 0; }
 
-    default void sendPacket(Packet<? extends INetHandler> packet) { mc.player.sendQueue.send(packet); }
+    static void sendPacket(Packet<? extends INetHandler> packet) { mc.player.sendQueue.send(packet); }
 
     default void sendPacketUnlogged(Packet<? extends INetHandler> packet) { mc.getNetHandler().getNetworkManager().sendPacket(packet); }
 

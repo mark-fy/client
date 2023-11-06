@@ -11,6 +11,7 @@ import wtf.tophat.events.base.EventManager;
 import wtf.tophat.modules.base.ModuleManager;
 import wtf.script.ScriptManager;
 import wtf.tophat.settings.base.SettingManager;
+import wtf.tophat.utilities.misc.SlotSpoofHandler;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 import wtf.viaversion.VersionManager;
 
@@ -43,6 +44,7 @@ public enum TopHat {
     public static final ConfigManager configManager = new ConfigManager();
     public static final ScriptManager scriptManager = new ScriptManager();
     public static final VersionManager versionManager = new VersionManager();
+    public static final SlotSpoofHandler slotSpoofHandler = new SlotSpoofHandler();
 
     public static void startup() {
         printL("Starting Client...");

@@ -32,7 +32,7 @@ public class NoFall extends Module {
                         event.setOnGround(true);
                         break;
                     case "Packet":
-                        sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.rotationYaw, mc.player.rotationPitch, true));
+                        Methods.sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.rotationYaw, mc.player.rotationPitch, true));
                         break;
                 }
                 mc.player.fallDistance = 0;

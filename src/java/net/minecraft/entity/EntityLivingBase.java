@@ -1571,7 +1571,7 @@ public abstract class EntityLivingBase extends Entity
         return false;
     }
 
-    protected float getJumpUpwardsMotion()
+    public float getJumpUpwardsMotion()
     {
         return 0.42F;
     }

@@ -16,7 +16,7 @@ import wtf.tophat.settings.impl.NumberSetting;
 public class Crosshair extends Module {
 
     public final BooleanSetting outline, renderTop, renderBottom, renderLeft, renderRight;
-    public final NumberSetting pointedGap, dynamicGap, widthSetting, gapSetting, sizeSetting;
+    public final NumberSetting widthSetting, gapSetting, sizeSetting;
 
     public Crosshair(){
         TopHat.settingManager.add(
@@ -26,8 +26,6 @@ public class Crosshair extends Module {
                 renderLeft = new BooleanSetting(this, "Left", true),
                 renderRight = new BooleanSetting(this, "Right", true),
 
-                pointedGap = new NumberSetting(this, "Pointed Gap", 0.0, 15.0, 2.5, 1),
-                dynamicGap = new NumberSetting(this, "Dynamic Gap", 0.0, 15.0, 2.5, 1),
                 widthSetting = new NumberSetting(this, "Width", 0.25, 15.0, 1.0, 1),
                 gapSetting = new NumberSetting(this, "Gap", 0.0, 15.0, 2.5, 1),
                 sizeSetting = new NumberSetting(this, "Size", 0.25, 15.0, 2.5, 1)
