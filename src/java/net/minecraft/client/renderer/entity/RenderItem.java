@@ -446,7 +446,7 @@ public class RenderItem implements IResourceManagerReloadListener
 
     public void renderItemOverlays(FontRenderer fr, ItemStack stack, int xPosition, int yPosition)
     {
-        this.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, (String)null);
+        this.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, null);
     }
 
     /**
@@ -468,6 +468,7 @@ public class RenderItem implements IResourceManagerReloadListener
                 GlStateManager.disableLighting();
                 GlStateManager.disableDepth();
                 GlStateManager.disableBlend();
+                // Item amount
                 fr.drawStringWithShadow(s, (float)(xPosition + 19 - 2 - fr.getStringWidth(s)), (float)(yPosition + 6 + 3), 16777215);
                 GlStateManager.enableLighting();
                 GlStateManager.enableDepth();

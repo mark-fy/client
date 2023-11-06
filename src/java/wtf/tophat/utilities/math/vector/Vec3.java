@@ -1,4 +1,4 @@
-package wtf.tophat.utilities.vector;
+package wtf.tophat.utilities.math.vector;
 
 public class Vec3 {
     private final double x;

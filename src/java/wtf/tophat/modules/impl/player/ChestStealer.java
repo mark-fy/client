@@ -10,7 +10,7 @@ import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.item.ItemUtil;
+import wtf.tophat.utilities.player.item.ItemUtil;
 import wtf.tophat.utilities.time.TimeUtil;
 
 import java.util.Set;

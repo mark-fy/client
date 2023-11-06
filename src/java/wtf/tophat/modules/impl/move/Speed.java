@@ -68,7 +68,7 @@ public class Speed extends Module {
             switch (mode.get()) {
                 case "Verus":
                     if (event.getState() == Event.State.PRE) {
-                        if (Methods.isMoving()) {
+                        if (isMoving()) {
                             if (getGround()) {
                                 mc.player.jump();
                                 MoveUtil.setSpeed(0.48);
@@ -141,46 +141,36 @@ public class Speed extends Module {
                     break;
                 case "Vanilla":
                     MoveUtil.setSpeed(speed.get().floatValue());
-                    if (Methods.isMoving() && getGround()) {
+                    if (isMoving() && getGround()) {
                         mc.player.jump();
-                    } else if (!Methods.isMoving()) {
+                    } else if (!isMoving()) {
                         mc.player.motionX = 0.0;
                         mc.player.motionZ = 0.0;
                     }
                     break;
                 case "New NCP":
-                    if (event.getState().equals(Event.State.POST) || !Methods.isMoving() || (mc.player.isInLava() && mc.player.isInWater())) {
+                    if (!isMoving() || (mc.player.isInLava() && mc.player.isInWater())) {
                         return;
                     }
 
                     if(mc.player.hurtTime >1) {
-                        MoveUtil.strafe(
-                                MoveUtil.getSpeed() * 1.2F
-                        );
+                        MoveUtil.strafe(MoveUtil.getSpeed() * 1.2F);
                     }
 
                     if (mc.player.onGround) {
-                        MoveUtil.strafe(
-                                MoveUtil.getBaseMoveSpeed()
-                        );
+                        MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
                         mc.player.jump();
 
                         if (mc.player.isPotionActive(Potion.moveSpeed)) {
-                            MoveUtil.strafe(
-                                    MoveUtil.getSpeed() * 1.2F
-                            );
+                            MoveUtil.strafe(MoveUtil.getSpeed() * 1.2F);
                         }
                     }
 
                     mc.timer.timerSpeed = (float) (1.075F - (Math.random() - 0.5) / 100.0F);
-
-
-                    MoveUtil.strafe(
-                            MoveUtil.getSpeed() - (float) (Math.random() - 0.5F) / 100.0F
-                    );
+                    MoveUtil.strafe(MoveUtil.getSpeed() - (float) (Math.random() - 0.5F) / 100.0F);
                     break;
                 case "Matrix":
-                    if (!Methods.isMoving()) {
+                    if (!isMoving()) {
                         mc.settings.keyBindJump.pressed = false;
                         return;
                     }
@@ -222,7 +212,7 @@ public class Speed extends Module {
                     }
                     break;
                 case "AAC5":
-                    if (Methods.isMoving()) {
+                    if (isMoving()) {
                         if (mc.player.onGround) {
                             mc.player.jump();
                         }

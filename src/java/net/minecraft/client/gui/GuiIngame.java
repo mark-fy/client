@@ -366,28 +366,29 @@ public class GuiIngame extends Gui
         GlStateManager.enableAlpha();
     }
 
-    protected void renderTooltip(ScaledResolution sr, float partialTicks)
-    {
-        if (this.mc.getRenderViewEntity() instanceof EntityPlayer)
-        {
+    protected void renderTooltip(ScaledResolution sr, float partialTicks) {
+
+        if (this.mc.getRenderViewEntity() instanceof EntityPlayer) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.mc.getTextureManager().bindTexture(widgetsTexPath);
             EntityPlayer entityplayer = (EntityPlayer)this.mc.getRenderViewEntity();
-            int i = sr.getScaledWidth() / 2;
-            float f = this.zLevel;
+            int width = sr.getScaledWidth() / 2;
+            float zLevel1 = this.zLevel;
             this.zLevel = -90.0F;
-            this.drawTexturedModalRect(i - 91, sr.getScaledHeight() - 22, 0, 0, 182, 22);
-            this.drawTexturedModalRect(i - 91 - 1 + entityplayer.inventory.currentItem * 20, sr.getScaledHeight() - 22 - 1, 0, 22, 24, 22);
-            this.zLevel = f;
+            // draws the transparent background for hotbar
+            this.drawTexturedModalRect(width - 91, sr.getScaledHeight() - 22, 0, 0, 182, 22);
+            // draws the white rect around select item
+            this.drawTexturedModalRect(width - 91 - 1 + entityplayer.inventory.currentItem * 20, sr.getScaledHeight() - 22 - 1, 0, 22, 24, 22);
+            this.zLevel = zLevel1;
             GlStateManager.enableRescaleNormal();
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             RenderHelper.enableGUIStandardItemLighting();
 
-            for (int j = 0; j < 9; ++j)
-            {
+            for (int j = 0; j < 9; ++j) {
                 int k = sr.getScaledWidth() / 2 - 90 + j * 20 + 2;
                 int l = sr.getScaledHeight() - 16 - 3;
+                // renders the item texture in hotbar
                 this.renderHotbarItem(j, k, l, partialTicks, entityplayer);
             }
 
@@ -1035,8 +1036,9 @@ public class GuiIngame extends Gui
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    private void renderHotbarItem(int index, int xPos, int yPos, float partialTicks, EntityPlayer player)
-    {
+    // Renders the item into the hotbar
+    private void renderHotbarItem(int index, int xPos, int yPos, float partialTicks, EntityPlayer player) {
+
         ItemStack itemstack = player.inventory.mainInventory[index];
 
         if (itemstack != null)

@@ -1,4 +1,4 @@
-package wtf.tophat.utilities.vector;
+package wtf.tophat.utilities.math.vector;
 
 public class Vec2f {
     private float x, y;

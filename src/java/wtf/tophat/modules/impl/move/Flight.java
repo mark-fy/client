@@ -106,7 +106,7 @@ public class Flight extends Module {
                 if (hasDamaged) {
                     event.setOnGround(true);
                     double baseSpeed = MoveUtil.getBaseMoveSpeed();
-                    if (!Methods.isMoving() || mc.player.isCollidedHorizontally) {
+                    if (!isMoving() || mc.player.isCollidedHorizontally) {
                         OldNCPSpeed = baseSpeed;
                     }
                     if (OldNCPSpeed > baseSpeed) {
@@ -117,7 +117,7 @@ public class Flight extends Module {
 
                     if (event.getState().equals(Event.State.PRE)) {
                         //mc.timer.timerSpeed = 1;
-                        if (Methods.isMoving()) {
+                        if (isMoving()) {
                             MoveUtil.setSpeed(OldNCPSpeed);
                         }
                         mc.player.motionY = 0;
@@ -159,7 +159,7 @@ public class Flight extends Module {
                     }
                 }
 
-                if(Methods.isMoving()) {
+                if(isMoving()) {
                     mc.timer.timerSpeed = 1F;
                 } else {
                     mc.timer.timerSpeed = 0.25F;

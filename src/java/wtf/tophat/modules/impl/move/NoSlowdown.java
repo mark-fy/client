@@ -57,7 +57,7 @@ public class NoSlowdown extends Module {
     @Listen
     public void onMotion(MotionEvent event) {
         ItemStack currentItem = mc.player.getCurrentEquippedItem();
-        if (currentItem == null || !mc.player.isUsingItem() || !Methods.isMoving()) {
+        if (currentItem == null || !mc.player.isUsingItem() || !isMoving()) {
             return;
         }
 
@@ -65,18 +65,18 @@ public class NoSlowdown extends Module {
             case "Grim":
             case "Switch":
                 if(event.getState() == Event.State.PRE) {
-                    Methods.sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
-                    Methods.sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
+                    sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
+                    sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
                 }
                 break;
             case "Old Intave":
                 if(mc.player.isUsingItem() && currentItem.getItem() instanceof ItemSword && intaveTimer.elapsed(150L)) {
                     if(event.getState() == Event.State.PRE) {
-                        Methods.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     }
 
                     if(event.getState() == Event.State.POST) {
-                        Methods.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                         intaveTimer.reset();
                     }
                 }
@@ -87,7 +87,7 @@ public class NoSlowdown extends Module {
     @Listen
     public void onSlow(SlowDownEvent event) {
         ItemStack currentItem = getPlayer().getCurrentEquippedItem();
-        if (currentItem == null || !getPlayer().isUsingItem() || !Methods.isMoving()) {
+        if (currentItem == null || !getPlayer().isUsingItem() || !isMoving()) {
             return;
         }
 
@@ -117,10 +117,10 @@ public class NoSlowdown extends Module {
 
         if (mode.get().equals("Grim")) {
             if (mc.player.isBlocking()) {
-                Methods.sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
+                sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
             } else if (mc.player.isUsingItem()) {
-                Methods.sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
-                Methods.sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
+                sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
+                sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
             }
         }
     }

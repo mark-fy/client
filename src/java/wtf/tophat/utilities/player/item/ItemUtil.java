@@ -1,4 +1,4 @@
-package wtf.tophat.utilities.item;
+package wtf.tophat.utilities.player.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.*;

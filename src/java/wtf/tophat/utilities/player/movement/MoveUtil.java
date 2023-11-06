@@ -28,10 +28,10 @@ public class MoveUtil implements Methods {
         mc.player.motionZ = 0;
     }
 
-    public static void strafeNoTargetStrafe(MotionEvent event, double speed) {
+    public void strafeNoTargetStrafe(MotionEvent event, double speed) {
         float direction = (float) Math.toRadians(getPlayerDirection());
 
-        if (Methods.isMoving()) {
+        if (isMoving()) {
             event.setX(mc.player.motionX = -Math.sin(direction) * speed);
             event.setZ(mc.player.motionZ = Math.cos(direction) * speed);
         } else {

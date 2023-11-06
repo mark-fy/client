@@ -6,7 +6,7 @@ public class Packet implements Methods {
 
     // Methods
 
-    public void send(net.minecraft.network.Packet<?> packet) { Methods.sendPacket(packet); }
+    public void send(net.minecraft.network.Packet<?> packet) { sendPacket(packet); }
     public void sendU(net.minecraft.network.Packet<?> packet) { sendPacketUnlogged(packet); }
 
     // Getters

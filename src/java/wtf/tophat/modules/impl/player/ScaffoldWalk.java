@@ -32,10 +32,8 @@ import wtf.tophat.utilities.world.WorldUtil;
 
 import java.awt.*;
 
-@ModuleInfo(name = "ScaffoldWalk", desc = "better scaffold :3", category = Module.Category.PLAYER)
+@ModuleInfo(name = "Scaffold Walk", desc = "better scaffold :3", category = Module.Category.PLAYER)
 public class ScaffoldWalk extends Module {
-
-    // Change the settings and some names for ppl dont see the skid (xDDD)
 
     private final StringSetting rotationsTiming = new StringSetting(this, "Rotations timing", "Always", "Always", "Over air", "Never");
     private final StringSetting rotationsMode = new StringSetting(this, "Rotations mode", "Center", "Normal", "Center", "Movement").setHidden(() -> rotationsTiming.is("Never"));
@@ -58,19 +56,16 @@ public class ScaffoldWalk extends Module {
     private final BooleanSetting randomisedSpeed = new BooleanSetting(this, "Randomised speed", false).setHidden(() -> moveFix.get());
     private final StringSetting jump = new StringSetting(this, "Jump", "Disabled", "Disabled", "Enabled");
     private final NumberSetting range = new NumberSetting(this, "Range", 1, 4, 2, 1);
-    private final StringSetting tower = new StringSetting(this, "Tower", "None", "NCP", "NCP", "Vulcan", "Verus", "None");
+    private final StringSetting tower = new StringSetting(this, "Tower", "None", "None", "Vulcan", "Verus", "NCP");
     private final StringSetting blockPicker = new StringSetting(this, "Block picker", "Switch", "None", "Switch", "Spoof");
     private final BooleanSetting noSwing = new BooleanSetting(this, "No swing", false);
 
-    private BlockInfo info, prevBlockInfo;
+    private BlockInfo info;
     private Vec3 vec3;
     private double lastY;
     private FixedRotations rotations;
     private boolean isRotating;
-    private double lastMotionX, lastMotionZ;
-    private boolean startedLowhop;
     private int oldSlot;
-    private int towerTicks;
     private int placeDelay;
     private boolean hadBlockInfo;
 
@@ -119,21 +114,21 @@ public class ScaffoldWalk extends Module {
         info = null;
         vec3 = null;
 
-        lastMotionX = lastMotionZ = 0;
-
-        startedLowhop = false;
-
-        towerTicks = 0;
-
         oldSlot = mc.player.inventory.currentItem;
 
         placeDelay = 0;
+        super.onEnable();
     }
 
     @Override
     public void onDisable() {
+        if(getPlayer() == null || getWorld() == null) {
+            return;
+        }
+
         KeyboardUtil.resetKeybindings(mc.settings.keyBindSprint, mc.settings.keyBindSneak);
         switchToOriginalSlot();
+        super.onDisable();
     }
 
     private void switchToOriginalSlot() {
@@ -183,8 +178,6 @@ public class ScaffoldWalk extends Module {
         float yaw = rotations.getYaw();
         float pitch = rotations.getPitch();
 
-        boolean isAirUnder = WorldUtil.isAirOrLiquid(new BlockPos(mc.player.posX, lastY - 1, mc.player.posZ));
-
         switch (rotationsMode.get()) {
             case "Normal":
                 float normalRots[] = getNormalRotations(rotChangeOverAir.get());
@@ -227,7 +220,7 @@ public class ScaffoldWalk extends Module {
         }
 
         if(jump.is("Enabled")) {
-            if(mc.player.onGround && Methods.isMoving() && !mc.settings.keyBindJump.isKeyDown()) {
+            if(mc.player.onGround && isMoving() && !mc.settings.keyBindJump.isKeyDown()) {
                 mc.player.jump();
             }
         }
@@ -239,9 +232,8 @@ public class ScaffoldWalk extends Module {
         }
 
         if(!placed && mc.player.ticksExisted % 2 == 0) {
-            Killaura killaura = TopHat.moduleManager.getByClass(Killaura.class);
 
-            if(!(killaura.target == null)) {
+            if(!(Killaura.target == null)) {
                 PacketUtil.sendBlocking(true, false);
             }
         }
@@ -371,7 +363,7 @@ public class ScaffoldWalk extends Module {
         switch (tower.get()) {
             case "NCP":
                 if (mc.settings.keyBindJump.isKeyDown()) {
-                    if (!Methods.isMoving() || MoveUtil.getSpeed() < 0.16) {
+                    if (!isMoving() || MoveUtil.getSpeed() < 0.16) {
                         if (mc.player.onGround) {
                             mc.player.motionY = 0.42;
                         } else if (mc.player.motionY < 0.23) {
@@ -440,8 +432,6 @@ public class ScaffoldWalk extends Module {
             } else {
                 mc.player.swingItem();
             }
-
-            prevBlockInfo = info;
 
             placeDelay = 0;
         }

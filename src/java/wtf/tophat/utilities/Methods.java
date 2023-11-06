@@ -31,9 +31,9 @@ public interface Methods {
     default Timer getMCTimer() { return mc.timer; }
     default WorldClient getWorld() { return mc.world; }
 
-    static boolean isMoving() { return mc.player.moveForward != 0 || mc.player.moveStrafing != 0; }
+    default boolean isMoving() { return mc.player.moveForward != 0 || mc.player.moveStrafing != 0; }
 
-    static void sendPacket(Packet<? extends INetHandler> packet) { mc.player.sendQueue.send(packet); }
+    default void sendPacket(Packet<? extends INetHandler> packet) { mc.player.sendQueue.send(packet); }
 
     default void sendPacketUnlogged(Packet<? extends INetHandler> packet) { mc.getNetHandler().getNetworkManager().sendPacket(packet); }
 
