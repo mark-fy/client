@@ -6,6 +6,7 @@ import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.events.impl.Render3DEvent;
+import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
@@ -52,7 +53,7 @@ public class Ambiance extends Module {
     }
 
     @Listen
-    public void onRender3D(Render3DEvent render3D) {
+    public void onUpdate(UpdateEvent event) {
         this.counter = ((timeSpeed.get().longValue() > 0.0) ? (this.counter + this.timeSpeed.get().floatValue()) : 0.0);
         mc.world.setWorldTime((long) (time.get().longValue() + this.counter));
         if (this.counter > 24000.0) {
