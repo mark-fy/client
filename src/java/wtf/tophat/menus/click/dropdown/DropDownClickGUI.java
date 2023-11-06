@@ -2,6 +2,7 @@ package wtf.tophat.menus.click.dropdown;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
@@ -43,14 +44,14 @@ public class DropDownClickGUI extends GuiScreen {
         for (Module.Category category : Module.Category.values()) {
             double categoryWidth = CategoryUtil.getMaxModuleNameWidth(category, listeningModule) + 20, categoryHeight = 20;
 
-            double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName().toLowerCase(Locale.ROOT))) / 2 - 2, categoryTextY = y + 6;
+            double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName())) / 2 - 2, categoryTextY = y + 6;
 
             double dropdownMinX = x, dropdownMaxX = x + categoryWidth, dropdownMaxY = y + categoryHeight;
 
             DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor(category));
             DrawingUtil.rectangle(x, y, categoryWidth, categoryHeight, true, new Color(20, 20, 20));
 
-            fr.drawStringOptional(shadow, category.getName().toLowerCase(Locale.ROOT), (float) categoryTextX, (float) categoryTextY, Color.WHITE);
+            fr.drawStringOptional(shadow, EnumChatFormatting.BOLD + category.getName(), (float) categoryTextX, (float) categoryTextY, CategoryUtil.getCategoryColor(category));
 
             double modX = x, modY = y + categoryHeight, modHeight = 20;
 
@@ -83,7 +84,7 @@ public class DropDownClickGUI extends GuiScreen {
 
                 DrawingUtil.rectangle(modX, modY, categoryWidth, modHeight, true, moduleBackgroundColor);
 
-                String moduleName = module.getName().toLowerCase(Locale.ROOT);
+                String moduleName = module.getName();
 
                 fr.drawStringOptional(shadow, moduleName, (float) (modX + 5), (float) (modY + 6), module.isEnabled() ? CategoryUtil.getCategoryColor(category) : Color.WHITE);
 
@@ -92,7 +93,7 @@ public class DropDownClickGUI extends GuiScreen {
                 if (isHovered) {
                     int counter = 0;
 
-                    String text = (module.getDesc()).toLowerCase(Locale.ROOT);
+                    String text = module.getDesc();
                     int strWidth = fr.getStringWidth(text) + 3;
 
                     DrawingUtil.rectangle(5, this.height - 35, strWidth + 11, 20, true, new Color(5,5,5));
