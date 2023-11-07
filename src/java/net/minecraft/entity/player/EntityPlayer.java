@@ -718,35 +718,29 @@ public abstract class EntityPlayer extends EntityLivingBase
     /**
      * Called when the mob's health reaches 0.
      */
-    public void onDeath(DamageSource cause)
-    {
+    public void onDeath(DamageSource cause) {
         super.onDeath(cause);
         this.setSize(0.2F, 0.2F);
         this.setPosition(this.posX, this.posY, this.posZ);
         this.motionY = 0.10000000149011612D;
 
-        if (this.getName().equals("Notch"))
-        {
+        if (this.getName().equals("Notch")) {
             this.dropItem(new ItemStack(Items.apple, 1), true, false);
         }
 
-        if (!this.worldObj.getGameRules().getBoolean("keepInventory"))
-        {
+        if (!this.worldObj.getGameRules().getBoolean("keepInventory")) {
             this.inventory.dropAllItems();
         }
 
-        if (cause != null)
-        {
-            this.motionX = (double)(-MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
-            this.motionZ = (double)(-MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
-        }
-        else
-        {
+        if (cause != null) {
+            this.motionX = -MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F;
+            this.motionZ = -MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F;
+        } else {
             this.motionX = this.motionZ = 0.0D;
         }
 
         this.triggerAchievement(StatList.deathsStat);
-        this.func_175145_a(StatList.timeSinceDeathStat);
+        this.takeStat(StatList.timeSinceDeathStat);
     }
 
     /**
@@ -1768,7 +1762,7 @@ public abstract class EntityPlayer extends EntityLivingBase
     {
     }
 
-    public void func_175145_a(StatBase p_175145_1_)
+    public void takeStat(StatBase p_175145_1_)
     {
     }
 

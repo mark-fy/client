@@ -82,7 +82,7 @@ public class CommandAchievement extends CommandBase
                         {
                             for (Achievement achievement5 : Lists.reverse(AchievementList.achievementList))
                             {
-                                entityplayermp.func_175145_a(achievement5);
+                                entityplayermp.takeStat(achievement5);
                             }
 
                             notifyOperators(sender, this, "commands.achievement.take.success.all", new Object[] {entityplayermp.getName()});
@@ -153,7 +153,7 @@ public class CommandAchievement extends CommandBase
 
                                 for (Achievement achievement6 : list2)
                                 {
-                                    entityplayermp.func_175145_a(achievement6);
+                                    entityplayermp.takeStat(achievement6);
                                 }
                             }
                         }
@@ -165,7 +165,7 @@ public class CommandAchievement extends CommandBase
                         }
                         else if (flag1)
                         {
-                            entityplayermp.func_175145_a(statbase);
+                            entityplayermp.takeStat(statbase);
                             notifyOperators(sender, this, "commands.achievement.take.success.one", new Object[] {statbase.createChatComponent(), entityplayermp.getName()});
                         }
                     }
