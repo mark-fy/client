@@ -34,7 +34,8 @@ import java.util.List;
 public class Killaura extends Module {
 
     private final TimeUtil timer = new TimeUtil();
-    private final StringSetting sort, autoblockMode;
+    private final StringSetting sort;
+    public final StringSetting autoblockMode;
     private final NumberSetting minCps, maxCps, range;
     private final BooleanSetting render, inGUI;
 
