@@ -9,9 +9,8 @@ import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.TopHat;
-import wtf.tophat.events.base.Event;
-import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.Render3DEvent;
+import wtf.tophat.events.impl.RotationEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.modules.impl.player.ScaffoldWalk;
@@ -34,10 +33,11 @@ import java.util.List;
 @ModuleInfo(name = "Kill Aura", desc = "kills entities", category = Module.Category.COMBAT)
 public class Killaura extends Module {
 
-    public final TimeUtil timer = new TimeUtil();
-    public final StringSetting sort, autoblockMode;
-    public final NumberSetting minCps, maxCps, range;
-    public final BooleanSetting render, inGUI;
+    private final TimeUtil timer = new TimeUtil();
+    private final StringSetting sort;
+    public final StringSetting autoblockMode;
+    private final NumberSetting minCps, maxCps, range;
+    private final BooleanSetting render, inGUI;
 
     public static EntityLivingBase target = null;
 
@@ -67,52 +67,50 @@ public class Killaura extends Module {
     }
 
     @Listen
-    public void onMotion(MotionEvent e) {
+    public void onRots(RotationEvent e) {
         if (TopHat.moduleManager.getByClass(ScaffoldWalk.class).isEnabled())
             return;
 
         target = EntityUtil.getClosestEntity(range.get().doubleValue());
 
         if (target != null && (inGUI.get() && mc.currentScreen == null)) {
-            if (e.getState() == Event.State.PRE) {
-                if (!TopHat.moduleManager.getByClass(ScaffoldWalk.class).isEnabled()) {
-                    EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, range.get().doubleValue(), getTarget());
-                    if (p == null)
-                        return;
+            if (!TopHat.moduleManager.getByClass(ScaffoldWalk.class).isEnabled()) {
+                EntityLivingBase p = target = (EntityLivingBase) RayCast.raycast(mc, range.get().doubleValue(), getTarget());
+                if (p == null)
+                    return;
 
-                    float[] rotations = RotationUtil.getRotation(target);
+                float[] rotations = RotationUtil.getRotation(target);
 
-                    e.setYaw(rotations[0]);
-                    e.setPitch(rotations[1]);
+                e.setYaw(rotations[0]);
+                e.setPitch(rotations[1]);
 
-                    targetsSort();
-                    if (timer.elapsed((long) (1000.0D / MathUtil.randomNumber(minCps.get().doubleValue(), maxCps.get().doubleValue())))) {
-                        mc.player.swingItem();
-                        mc.player.sendQueue.send(new C02PacketUseEntity(p, C02PacketUseEntity.Action.ATTACK));
+                targetsSort();
+                if (timer.elapsed((long) (1000.0D / MathUtil.randomNumber(minCps.get().doubleValue(), maxCps.get().doubleValue())))) {
+                    mc.player.swingItem();
+                    mc.player.sendQueue.send(new C02PacketUseEntity(p, C02PacketUseEntity.Action.ATTACK));
 
-                        ItemStack currentItem = mc.player.getHeldItem();
-                        switch (autoblockMode.get()) {
-                            case "Vanilla":
-                                mc.playerController.sendUseItem(getPlayer(), getWorld(), currentItem);
-                                break;
-                            case "NCP":
-                                mc.player.setItemInUse(currentItem, 32767);
-                                break;
-                            case "AAC":
-                                if (mc.player.ticksExisted % 2 == 0) {
-                                    mc.playerController.interactWithEntitySendPacket(getPlayer(), p);
-                                    mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));
-                                }
-                                break;
-                            case "Matrix":
-                            case "Intave":
+                    ItemStack currentItem = mc.player.getHeldItem();
+                    switch (autoblockMode.get()) {
+                        case "Vanilla":
+                            mc.playerController.sendUseItem(getPlayer(), getWorld(), currentItem);
+                            break;
+                        case "NCP":
+                            mc.player.setItemInUse(currentItem, 32767);
+                            break;
+                        case "AAC":
+                            if (mc.player.ticksExisted % 2 == 0) {
                                 mc.playerController.interactWithEntitySendPacket(getPlayer(), p);
                                 mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));
-                                break;
-                        }
-
-                        timer.reset();
+                            }
+                            break;
+                        case "Matrix":
+                        case "Intave":
+                            mc.playerController.interactWithEntitySendPacket(getPlayer(), p);
+                            mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(currentItem));
+                            break;
                     }
+
+                    timer.reset();
                 }
             }
         }

@@ -15,8 +15,8 @@ import wtf.tophat.settings.impl.NumberSetting;
 @ModuleInfo(name = "Crosshair", desc = "changes your crosshair", category = Module.Category.RENDER)
 public class Crosshair extends Module {
 
-    public final BooleanSetting outline, renderTop, renderBottom, renderLeft, renderRight;
-    public final NumberSetting widthSetting, gapSetting, sizeSetting;
+    private final BooleanSetting outline, renderTop, renderBottom, renderLeft, renderRight;
+    private final NumberSetting widthSetting, gapSetting, sizeSetting;
 
     public Crosshair(){
         TopHat.settingManager.add(

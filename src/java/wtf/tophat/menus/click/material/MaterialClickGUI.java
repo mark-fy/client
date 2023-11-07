@@ -26,8 +26,6 @@ import static wtf.tophat.utilities.render.Colors.*;
 
 public class MaterialClickGUI extends GuiScreen {
 
-    boolean sound = TopHat.moduleManager.getByClass(ClickGUI.class).sound.get();
-
     @Override
     public void initGui() {
         ScaledResolution sr = new ScaledResolution(mc);
@@ -40,7 +38,7 @@ public class MaterialClickGUI extends GuiScreen {
         super.initGui();
     }
 
-    private NumberSetting currentDraggingSetting = null; // Added this variable
+    private NumberSetting currentDraggingSetting = null;
 
     @Override
     public boolean doesGuiPauseGame() {
@@ -220,12 +218,8 @@ public class MaterialClickGUI extends GuiScreen {
             for (Module module : TopHat.moduleManager.getModulesByCategory(selectedCategory)) {
                 if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15)) {
                     module.toggle();
-                    if(sound) {
-                        if (module.isEnabled()) {
-                            SoundUtil.play(SoundUtil.toggleOnSound);
-                        } else if (!module.isEnabled()) {
-                            SoundUtil.play(SoundUtil.toggleOffSound);
-                        }
+                    if(TopHat.moduleManager.getByClass(ClickGUI.class).sound.get()) {
+                        SoundUtil.play(!module.isEnabled() ? SoundUtil.toggleOnSound : SoundUtil.toggleOffSound);
                     }
                 }
                 counter += 15;

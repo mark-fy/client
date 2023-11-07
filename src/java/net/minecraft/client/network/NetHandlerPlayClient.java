@@ -206,6 +206,7 @@ import net.minecraft.world.storage.MapData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import wtf.tophat.events.handler.PlayerHandler;
+import wtf.tophat.events.impl.OnDeathEvent;
 import wtf.tophat.events.impl.PacketEvent;
 import wtf.tophat.menus.UIMainMenu;
 
@@ -514,10 +515,16 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
         Entity entity = this.clientWorldController.getEntityByID(packetIn.getEntityId());
+        EntityPlayer player;
 
-        if (entity != null && packetIn.func_149376_c() != null)
+        if (Minecraft.getMinecraft() != null && (entity = Minecraft.getMinecraft().world.getEntityByID(packetIn.getEntityId())) instanceof EntityPlayer && (player = (EntityPlayer)entity).getHealth() <= 0.0f) {
+            OnDeathEvent deathEvent = new OnDeathEvent(player);
+            deathEvent.call();
+        }
+
+        if (entity != null && packetIn.getDataManagerEntries() != null)
         {
-            entity.getDataWatcher().updateWatchedObjectsFromList(packetIn.func_149376_c());
+            entity.getDataWatcher().updateWatchedObjectsFromList(packetIn.getDataManagerEntries());
         }
     }
 

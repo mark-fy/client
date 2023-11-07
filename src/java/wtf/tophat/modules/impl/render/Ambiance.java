@@ -5,7 +5,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.PacketEvent;
-import wtf.tophat.events.impl.Render3DEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -13,10 +12,10 @@ import wtf.tophat.settings.impl.NumberSetting;
 
 @ModuleInfo(name = "Ambience", desc = "change the weather", category = Module.Category.RENDER)
 public class Ambiance extends Module {
-    public final NumberSetting time;
-    public final NumberSetting timeSpeed;
-    public final NumberSetting rainStrength;
-    public final NumberSetting thunderStrength;
+    private final NumberSetting time;
+    private final NumberSetting timeSpeed;
+    private final NumberSetting rainStrength;
+    private final NumberSetting thunderStrength;
     private double counter;
     private float rainStrengthf;
     private float thunderStrengthf;
@@ -34,22 +33,22 @@ public class Ambiance extends Module {
 
     @Override
     public void onEnable() {
-        super.onEnable();
         this.counter = 0.0;
-        if (mc.world != null) {
-            this.rainStrengthf = mc.world.getRainStrength(1.0f);
-            this.thunderStrengthf = mc.world.getThunderStrength(1.0f);
+        if (getWorld()  != null) {
+            this.rainStrengthf = getWorld().getRainStrength(1.0f);
+            this.thunderStrengthf = getWorld().getThunderStrength(1.0f);
         }
+        super.onEnable();
     }
 
     @Override
     public void onDisable() {
-        super.onDisable();
         this.counter = 0.0;
-        if (mc.world != null) {
-            mc.world.setRainStrength(this.rainStrengthf);
-            mc.world.setThunderStrength(this.thunderStrengthf);
+        if (getWorld() != null) {
+            getWorld() .setRainStrength(this.rainStrengthf);
+            getWorld() .setThunderStrength(this.thunderStrengthf);
         }
+        super.onDisable();
     }
 
     @Listen
@@ -65,7 +64,7 @@ public class Ambiance extends Module {
 
     @Listen
     public void onPacket(PacketEvent event){
-        final Packet packet = event.getPacket();
+        Packet<?> packet = event.getPacket();
         if (packet instanceof S03PacketTimeUpdate) {
             event.setCancelled(true);
         }

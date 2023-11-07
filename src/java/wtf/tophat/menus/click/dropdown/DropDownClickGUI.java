@@ -138,11 +138,7 @@ public class DropDownClickGUI extends GuiScreen {
                     if (DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) modX, (float) modY, (float) categoryWidth, 20)) {
                         if (mouseButton == 0) {
                             if(TopHat.moduleManager.getByClass(ClickGUI.class).sound.get()) {
-                                if (!module.isEnabled()) {
-                                    SoundUtil.play(SoundUtil.toggleOnSound);
-                                } else if (module.isEnabled()) {
-                                    SoundUtil.play(SoundUtil.toggleOffSound);
-                                }
+                                SoundUtil.play(!module.isEnabled() ? SoundUtil.toggleOnSound : SoundUtil.toggleOffSound);
                             }
                             module.toggle();
                         } else if (mouseButton == 1) {

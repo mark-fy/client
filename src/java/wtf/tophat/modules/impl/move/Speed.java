@@ -16,7 +16,6 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.player.movement.MoveUtil;
 
 import java.util.Random;

@@ -20,9 +20,9 @@ import wtf.tophat.utilities.time.TimeUtil;
 @ModuleInfo(name = "Auto Armor", desc = "automatically equip the best armor",category = Module.Category.PLAYER)
 public class AutoArmor extends Module {
 
-    private TimeUtil timer = new TimeUtil();
-    public final NumberSetting delay;
-    public final BooleanSetting inventoryonly;
+    private final TimeUtil timer = new TimeUtil();
+    private final NumberSetting delay;
+    private final BooleanSetting inventoryonly;
 
     public AutoArmor() {
         TopHat.settingManager.add(

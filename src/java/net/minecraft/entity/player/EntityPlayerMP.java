@@ -486,48 +486,37 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting {
     /**
      * Called when the mob's health reaches 0.
      */
-    public void onDeath(DamageSource cause)
-    {
-        if (this.worldObj.getGameRules().getBoolean("showDeathMessages"))
-        {
+    public void onDeath(DamageSource cause) {
+
+        if (this.worldObj.getGameRules().getBoolean("showDeathMessages")) {
             Team team = this.getTeam();
 
-            if (team != null && team.getDeathMessageVisibility() != Team.EnumVisible.ALWAYS)
-            {
-                if (team.getDeathMessageVisibility() == Team.EnumVisible.HIDE_FOR_OTHER_TEAMS)
-                {
+            if (team != null && team.getDeathMessageVisibility() != Team.EnumVisible.ALWAYS) {
+                if (team.getDeathMessageVisibility() == Team.EnumVisible.HIDE_FOR_OTHER_TEAMS) {
                     this.mcServer.getConfigurationManager().sendMessageToAllTeamMembers(this, this.getCombatTracker().getDeathMessage());
-                }
-                else if (team.getDeathMessageVisibility() == Team.EnumVisible.HIDE_FOR_OWN_TEAM)
-                {
+                } else if (team.getDeathMessageVisibility() == Team.EnumVisible.HIDE_FOR_OWN_TEAM) {
                     this.mcServer.getConfigurationManager().sendMessageToTeamOrEvryPlayer(this, this.getCombatTracker().getDeathMessage());
                 }
-            }
-            else
-            {
+            } else {
                 this.mcServer.getConfigurationManager().sendChatMsg(this.getCombatTracker().getDeathMessage());
             }
         }
 
-        if (!this.worldObj.getGameRules().getBoolean("keepInventory"))
-        {
+        if (!this.worldObj.getGameRules().getBoolean("keepInventory")) {
             this.inventory.dropAllItems();
         }
 
-        for (ScoreObjective scoreobjective : this.worldObj.getScoreboard().getObjectivesFromCriteria(IScoreObjectiveCriteria.deathCount))
-        {
+        for (ScoreObjective scoreobjective : this.worldObj.getScoreboard().getObjectivesFromCriteria(IScoreObjectiveCriteria.deathCount)) {
             Score score = this.getWorldScoreboard().getValueFromObjective(this.getName(), scoreobjective);
             score.func_96648_a();
         }
 
         EntityLivingBase entitylivingbase = this.getAttackingEntity();
 
-        if (entitylivingbase != null)
-        {
-            EntityList.EntityEggInfo entitylist$entityegginfo = (EntityList.EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(EntityList.getEntityID(entitylivingbase)));
+        if (entitylivingbase != null) {
+            EntityList.EntityEggInfo entitylist$entityegginfo = EntityList.entityEggs.get(Integer.valueOf(EntityList.getEntityID(entitylivingbase)));
 
-            if (entitylist$entityegginfo != null)
-            {
+            if (entitylist$entityegginfo != null) {
                 this.triggerAchievement(entitylist$entityegginfo.field_151513_e);
             }
 
@@ -535,7 +524,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting {
         }
 
         this.triggerAchievement(StatList.deathsStat);
-        this.func_175145_a(StatList.timeSinceDeathStat);
+        this.takeStat(StatList.timeSinceDeathStat);
         this.getCombatTracker().reset();
     }
 
@@ -963,7 +952,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting {
         }
     }
 
-    public void func_175145_a(StatBase p_175145_1_)
+    public void takeStat(StatBase p_175145_1_)
     {
         if (p_175145_1_ != null)
         {

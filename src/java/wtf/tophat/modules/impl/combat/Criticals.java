@@ -9,10 +9,10 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.player.PlayerUtil;
 
-@ModuleInfo(name = "Criticals", desc = "criticals the enemy", category = Module.Category.COMBAT)
+@ModuleInfo(name = "Criticals", desc = "get a critical hit when hitting an entity", category = Module.Category.COMBAT)
 public class Criticals extends Module {
 
-    public StringSetting mode;
+    private final StringSetting mode;
 
     public Criticals(){
         TopHat.settingManager.add(

@@ -13,7 +13,7 @@ import wtf.tophat.utilities.time.TimeUtil;
 public class AutoClicker extends Module {
 
     private final NumberSetting minCPS, maxCPS;
-    private TimeUtil timer = new TimeUtil();
+    private final TimeUtil timer = new TimeUtil();
 
     public AutoClicker() {
         TopHat.settingManager.add(

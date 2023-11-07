@@ -1,9 +1,7 @@
 package wtf.tophat.modules.base;
 
 import wtf.tophat.TopHat;
-import wtf.tophat.modules.impl.hud.ClickGUI;
 import wtf.tophat.utilities.Methods;
-import wtf.tophat.utilities.sound.SoundUtil;
 
 public class Module implements Methods {
 

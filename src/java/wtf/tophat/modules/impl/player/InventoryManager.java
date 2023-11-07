@@ -28,12 +28,10 @@ import java.util.function.Function;
 @ModuleInfo(name = "Inventory Manager", desc = "sorts your inventory automatically", category = Module.Category.PLAYER)
 public class InventoryManager extends Module {
 
-    public final NumberSetting delay, blockcap;
-    public final BooleanSetting food, sort, archery, sword, invcleaner, uhc, inventoryonly;
+    private final NumberSetting delay, blockcap;
+    private final BooleanSetting food, sort, archery, sword, invcleaner, uhc, inventoryonly;
 
-    private TimeUtil timer = new TimeUtil();
-
-    private int lastSlot;
+    private final TimeUtil timer = new TimeUtil();
 
     private final int weaponSlot = 36, pickaxeSlot = 37, axeSlot = 38, shovelSlot = 39;
     final ArrayList<Integer> whitelistedItems = new ArrayList<>();
@@ -50,12 +48,6 @@ public class InventoryManager extends Module {
                 uhc = new BooleanSetting(this, "UHC", false),
                 inventoryonly = new BooleanSetting(this, "Inventory Only", true)
         );
-    }
-
-    @Override
-    public void onEnable() {
-        lastSlot = -1;
-        super.onEnable();
     }
 
     @Listen

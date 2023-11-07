@@ -419,7 +419,7 @@ public class ItemRenderer
         if (this.itemToRender != null) {
             if (this.itemToRender.getItem() == Items.filled_map) {
                 this.renderItemMap(abstractclientplayer, rotationPitch, equippedProgress, swingProgress);
-            } else if (abstractclientplayer.getItemInUseCount() > 0 || TopHat.moduleManager.getByClass(Killaura.class) != null && TopHat.moduleManager.getByClass(Killaura.class).target != null && TopHat.moduleManager.getByClass(Killaura.class).isEnabled() && TopHat.moduleManager.getByClass(Killaura.class).autoblockMode.get().equalsIgnoreCase("Fake") && mc.player.getHeldItem() != null && mc.player.getHeldItem().getItem() instanceof ItemSword) {
+            } else if (abstractclientplayer.getItemInUseCount() > 0 || TopHat.moduleManager.getByClass(Killaura.class) != null && Killaura.target != null && TopHat.moduleManager.getByClass(Killaura.class).isEnabled() && TopHat.moduleManager.getByClass(Killaura.class).autoblockMode.get().equalsIgnoreCase("Fake") && mc.player.getHeldItem() != null && mc.player.getHeldItem().getItem() instanceof ItemSword) {
                 EnumAction enumaction = this.itemToRender.getItemUseAction();
 
                 switch (enumaction) {
