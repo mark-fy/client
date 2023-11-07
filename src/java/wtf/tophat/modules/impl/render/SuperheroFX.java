@@ -30,14 +30,14 @@ import wtf.tophat.utilities.time.TimeUtil;
 
 @ModuleInfo(name = "Superhero FX", desc = "text particles", category = Module.Category.RENDER)
 public class SuperheroFX extends Module {
-    private static String[] texts = new String[]{"SO BAD", "L", "BOZO", "EZ", "SKILLS ISSUES", "NO BRAIN", "KYS"};
-    private static Random rand = new Random();
-    private TimeUtil timer = new TimeUtil();
+    private static final String[] texts = new String[]{"SO BAD", "L", "BOZO", "EZ", "SKILLS ISSUES", "NO BRAIN", "KYS"};
+    private static final Random rand = new Random();
+    private final TimeUtil timer = new TimeUtil();
 
-    public final NumberSetting delay ;
-    public final BooleanSetting randomColors;
+    private final NumberSetting delay ;
+    private final BooleanSetting randomColors;
 
-    public List<PopupText> popTexts = new CopyOnWriteArrayList<PopupText>();
+    private final List<PopupText> popTexts = new CopyOnWriteArrayList<>();
 
     public SuperheroFX(){
         TopHat.settingManager.add(

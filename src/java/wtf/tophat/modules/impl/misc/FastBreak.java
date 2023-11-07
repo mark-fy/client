@@ -15,21 +15,20 @@ import wtf.tophat.utilities.player.PlayerUtil;
 @ModuleInfo(name = "Fast Break", desc = "break blocks faster", category = Module.Category.MISC)
 public final class FastBreak extends Module {
 
+    private final StringSetting mode = new StringSetting(this, "Mode", "Ticks", "Ticks", "Percentage");
+    private final NumberSetting speed = new NumberSetting(this, "Speed", 0, 100, 50, 0).setHidden(() -> !mode.is("Percentage"));
+    private final NumberSetting ticks = new NumberSetting(this, "Ticks", 1, 100, 1, 0).setHidden(() -> !mode.is("Ticks"));
 
-   public final StringSetting mode = new StringSetting(this, "Mode", "Ticks", "Ticks", "Percentage");
-   public final NumberSetting speed = new NumberSetting(this, "Speed", 0, 100, 50, 0).setHidden(() -> !mode.is("Percentage"));
-   public final NumberSetting ticks = new NumberSetting(this, "Ticks", 1, 100, 1, 0).setHidden(() -> !mode.is("Ticks"));
+    public FastBreak(){
+        TopHat.settingManager.add(
+                mode,
+                speed,
+                ticks
+        );
+    }
 
-   public FastBreak(){
-       TopHat.settingManager.add(
-               mode,
-               speed,
-               ticks
-       );
-   }
-
-   @Listen
-   public void onMotion(MotionEvent event){
+    @Listen
+    public void onMotion(MotionEvent event){
         mc.playerController.blockHitDelay = 0;
 
         double percentageFaster = 0;

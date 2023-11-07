@@ -39,9 +39,6 @@ public class BetaClickGUI extends GuiScreen implements Methods {
     private int dragX, dragY;
     private float x = 50, y = 50;
 
-    boolean sound = TopHat.moduleManager.getByClass(ClickGUI.class).sound.get();
-
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontRenderer fr = Methods.mc.fontRenderer;
@@ -153,12 +150,8 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
             if (hoveredMod) {
                 if (mouseButton == 0) {
-                    if(sound) {
-                        if (!module.isEnabled()) {
-                            SoundUtil.play(SoundUtil.toggleOnSound);
-                        } else if (module.isEnabled()) {
-                            SoundUtil.play(SoundUtil.toggleOffSound);
-                        }
+                    if(TopHat.moduleManager.getByClass(ClickGUI.class).sound.get()) {
+                        SoundUtil.play(!module.isEnabled() ? SoundUtil.toggleOnSound : SoundUtil.toggleOffSound);
                     }
                     module.toggle();
                 } else if (mouseButton == 1) {

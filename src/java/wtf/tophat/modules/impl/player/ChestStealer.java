@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @ModuleInfo(name = "Chest Stealer", desc = "steal from chests automatically", category = Module.Category.PLAYER)
 public class ChestStealer extends Module {
 
-    private TimeUtil timer = new TimeUtil();
+    private final TimeUtil timer = new TimeUtil();
 
     private final NumberSetting delay;
 

@@ -15,10 +15,9 @@ public class KillSays extends Module {
             "C00KeepAlive bypassing :skull:", "bad ac", "get TopHat for being good", "tophat?xyz (soon)", "ezzzzzz"
     };
 
-
     @Listen
     public void onPacket(PacketEvent event) {
-        Packet e = event.getPacket();
+        Packet<?> e = event.getPacket();
         Random rnd = new Random();
         if (e instanceof S02PacketChat) {
             S02PacketChat s02PacketChat = (S02PacketChat)e;

@@ -18,7 +18,6 @@ import wtf.tophat.modules.impl.move.Speed;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.network.PacketUtil;
 import wtf.tophat.utilities.player.KeyboardUtil;

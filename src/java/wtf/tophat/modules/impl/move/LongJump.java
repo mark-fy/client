@@ -18,8 +18,8 @@ import wtf.tophat.utilities.time.TimeUtil;
 @ModuleInfo(name = "Long Jump", desc = "perform longer jumps", category = Module.Category.MOVE)
 public class LongJump extends Module {
 
-    public final StringSetting mode;
-    public final NumberSetting vertical, boost;
+    private final StringSetting mode;
+    private final NumberSetting vertical, boost;
 
     public LongJump() {
         TopHat.settingManager.add(
