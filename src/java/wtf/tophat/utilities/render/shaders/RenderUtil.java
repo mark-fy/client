@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import wtf.spotify.ColorUtil;
 import wtf.tophat.utilities.Methods;
 
 import java.awt.*;
@@ -44,6 +45,44 @@ public class RenderUtil implements Methods {
             scaleDistance = 1.0;
         }
         GlStateManager.scale(scaleDistance, scaleDistance, scaleDistance);
+    }
+
+    public static void glColor(int hex) {
+        float alpha = (float) (hex >> 24 & 255) / 255F;
+        float red = (float) (hex >> 16 & 255) / 255F;
+        float green = (float) (hex >> 8 & 255) / 255F;
+        float blue = (float) (hex & 255) / 255F;
+        GL11.glColor4f(red, green, blue, alpha);
+    }
+
+    public static void draw3dLine(double x, double y, double z, double x1, double y1, double z1, Color color) {
+        GlStateManager.pushMatrix();
+        if (true) {
+            GL11.glDepthMask(false);
+            GL11.glDisable(2929);
+        }
+        GL11.glDisable(3008);
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(2848);
+        GL11.glHint(3154, 4354);
+        GL11.glLineWidth(1.0F);
+        glColor(color.getRGB());
+        GL11.glBegin(1);
+        GL11.glVertex3d(x, y, z);
+        GL11.glVertex3d(x1, y1, z1);
+        GL11.glEnd();
+        if (true) {
+            GL11.glDepthMask(true);
+            GL11.glEnable(2929);
+        }
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
+        GL11.glEnable(3008);
+        GL11.glDisable(2848);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.popMatrix();
     }
 
     public static void glBillboard(double x, double y, double z) {

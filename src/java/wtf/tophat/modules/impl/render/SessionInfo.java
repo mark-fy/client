@@ -11,6 +11,7 @@ import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
+import wtf.tophat.modules.impl.combat.Killaura;
 import wtf.tophat.utilities.network.ServerUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
