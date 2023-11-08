@@ -2,8 +2,8 @@ package wtf.tophat.modules.impl.misc;
 
 import io.github.nevalackin.radbus.Listen;
 import wtf.tophat.TopHat;
-import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.Render3DEvent;
+import wtf.tophat.events.impl.RotationEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -44,8 +44,8 @@ public class SpinBot extends Module {
     }
 
     @Listen
-    public void onMotion(MotionEvent event){
-        if (mc.player == null)
+    public void onRots(RotationEvent event){
+        if (getPlayer() == null)
             return;
 
         if (!yawMode.get().equalsIgnoreCase("none")) {

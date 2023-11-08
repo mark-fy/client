@@ -10,6 +10,7 @@ import net.minecraft.util.*;
 import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.MotionEvent;
 import wtf.tophat.events.impl.Render2DEvent;
+import wtf.tophat.events.impl.RotationEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -341,7 +342,7 @@ public class ScaffoldWalk extends Module {
     }
 
     @Listen
-    public void onMotion(MotionEvent event) {
+    public void onRots(RotationEvent event) {
         if(mc.settings.keyBindJump.isPressed()){
             if(moveFix.get() && isRotating) {
                 event.setYaw(rotations.getYaw());

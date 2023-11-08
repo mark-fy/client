@@ -11,7 +11,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.TopHat;
-import wtf.tophat.events.impl.MotionEvent;
+import wtf.tophat.events.impl.RotationEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -27,17 +27,15 @@ public class Breaker extends Module {
 
     private FixedRotations rotations;
 
-    private final NumberSetting range = new NumberSetting(this,"Range", 1, 6, 4, 1);
-    private final BooleanSetting rotate = new BooleanSetting(this, "Rotate", true);
-    private final BooleanSetting moveFix = new BooleanSetting(this, "Move fix", false).setHidden(() -> !rotate.get());
-    private final BooleanSetting hypixel = new BooleanSetting(this, "Hypixel (not working)", false);
+    private final NumberSetting range;
+    private final BooleanSetting rotate, moveFix, hypixel;
 
     public Breaker() {
         TopHat.settingManager.add(
-                range,
-                rotate,
-                moveFix,
-                hypixel
+                range = new NumberSetting(this,"Range", 1, 6, 4, 1),
+                rotate = new BooleanSetting(this, "Rotate", true),
+                moveFix = new BooleanSetting(this, "Move fix", false).setHidden(() -> !rotate.get()),
+                hypixel= new BooleanSetting(this, "Hypixel (not working)", false)
         );
     }
 
@@ -46,11 +44,13 @@ public class Breaker extends Module {
         bedPos = null;
 
         rotations = new FixedRotations(mc.player.rotationYaw, mc.player.rotationPitch);
+        super.onEnable();
     }
 
     @Override
     public void onDisable() {
         mc.settings.keyBindAttack.pressed = Mouse.isButtonDown(0);
+        super.onDisable();
     }
 
     @Listen
@@ -77,7 +77,7 @@ public class Breaker extends Module {
 
                             mc.settings.keyBindAttack.pressed = true;
 
-                            float rots[] = RotationUtil.getRotationsToPosition(posOver.getX() + 0.5, posOver.getY() + 1, posOver.getZ() + 0.5);
+                            float[] rots = RotationUtil.getRotationsToPosition(posOver.getX() + 0.5, posOver.getY() + 1, posOver.getZ() + 0.5);
 
                             yaw = rots[0];
                             pitch = rots[1];
@@ -86,7 +86,7 @@ public class Breaker extends Module {
 
                             mc.settings.keyBindAttack.pressed = true;
 
-                            float rots[] = RotationUtil.getRotationsToPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                            float[] rots = RotationUtil.getRotationsToPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 
                             yaw = rots[0];
                             pitch = rots[1];
@@ -98,7 +98,7 @@ public class Breaker extends Module {
             }
         }
 
-        if(!found) {
+        if(!found && mc.currentScreen == null) {
             mc.settings.keyBindAttack.pressed = Mouse.isButtonDown(0);
         }
 
@@ -118,7 +118,7 @@ public class Breaker extends Module {
     }
 
     @Listen
-    public void onMotion(MotionEvent event) {
+    public void onRots(RotationEvent event) {
         if(bedPos != null && rotate.get()) {
             event.setYaw(rotations.getYaw());
             event.setPitch(rotations.getPitch());
@@ -136,5 +136,4 @@ public class Breaker extends Module {
             }
         }
     }
-
 }
