@@ -24,7 +24,7 @@ public class AutoClicker extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        if(mc.settings.keyBindAttack.isKeyDown() && !mc.player.isUsingItem()) {
+        if(mc.settings.keyBindAttack.isKeyDown() && !mc.player.isUsingItem() && mc.currentScreen == null) {
             if(timer.elapsed((long) (1000.0D / MathUtil.randomNumber(minCPS.get().doubleValue(), maxCPS.get().doubleValue())), true) && mc.player.ticksExisted % 5 != 0 && mc.player.ticksExisted % 17 != 0) {
                 mc.leftClickCounter = 0;
                 mc.click();
