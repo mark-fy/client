@@ -1,6 +1,9 @@
 package wtf.tophat.client.menus;
 
 import net.minecraft.client.gui.*;
+import org.lwjgl.Sys;
+import wtf.tophat.auth.HwidUtil;
+import wtf.tophat.auth.NetworkUtil;
 import wtf.tophat.client.TopHat;
 
 import java.io.IOException;
@@ -32,7 +35,19 @@ public class UILoginScreen extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
             case 0:
-                mc.displayGuiScreen(new UIMainMenu());
+                if (uid.getText() == null || uid.getText().trim().isEmpty()) {
+                    return;
+                }
+
+                TopHat.printL("[DEBUG] HWID: " + HwidUtil.getHWID());
+                if(NetworkUtil.doesHWIDExistInContent(HwidUtil.getHWID()) && uid.getText().equalsIgnoreCase(NetworkUtil.getUIDFromHWID(HwidUtil.getHWID()))) {
+                    mc.displayGuiScreen(new UIMainMenu());
+                    TopHat.printL("Welcome to TopHat, " + NetworkUtil.getUsernameFromHWID(HwidUtil.getHWID()) + "!");
+                } else if(!NetworkUtil.doesHWIDExistInContent(HwidUtil.getHWID())) {
+                    TopHat.printL("HWID not found in the database.");
+                } else {
+                    TopHat.printL("Wrong UID!");
+                }
                 break;
             case 1:
                 mc.shutdownMinecraftApplet();
@@ -54,7 +69,6 @@ public class UILoginScreen extends GuiScreen {
         fr.drawString(TopHat.getName() + " - Login Menu", x, y - 25, -1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
-
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
