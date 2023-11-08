@@ -5,7 +5,7 @@ import wtf.tophat.events.base.Event;
 public class MotionEvent extends Event {
 
     private double x, y, z;
-    private float yaw, pitch;
+    private final float yaw, pitch;
     private boolean onGround;
 
     public MotionEvent(double x, double y, double z, float yaw, float pitch, boolean onGround) {
@@ -32,14 +32,9 @@ public class MotionEvent extends Event {
     public float getYaw() {
         return yaw;
     }
-    public void setYaw(float yaw) {
-        this.yaw = yaw;
-    }
+
     public float getPitch() {
         return pitch;
-    }
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
     }
 
     public boolean isOnGround() { return onGround; }
