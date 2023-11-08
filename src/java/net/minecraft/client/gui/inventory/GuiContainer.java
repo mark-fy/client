@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import java.io.IOException;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -18,6 +19,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
+import wtf.tophat.TopHat;
+import wtf.tophat.modules.impl.combat.KillAura;
+import wtf.tophat.modules.impl.player.ChestStealer;
+import wtf.tophat.modules.impl.player.InventoryManager;
 
 public abstract class GuiContainer extends GuiScreen
 {
@@ -75,8 +80,7 @@ public abstract class GuiContainer extends GuiScreen
     private boolean doubleClick;
     private ItemStack shiftClickedSlot;
 
-    public GuiContainer(Container inventorySlotsIn)
-    {
+    public GuiContainer(Container inventorySlotsIn) {
         this.inventorySlots = inventorySlotsIn;
         this.ignoreMouseUp = true;
     }
@@ -85,12 +89,32 @@ public abstract class GuiContainer extends GuiScreen
      * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the
      * window resizes, the buttonList is cleared beforehand.
      */
-    public void initGui()
-    {
+    public void initGui() {
         super.initGui();
+        this.buttonList.clear();
+        this.buttonList.add(new GuiButton(69, 5, 5,140, 20, "Disable Inventory Manager"));
+        this.buttonList.add(new GuiButton(70, 5, 27,140, 20, "Disable Chest Stealer"));
+        this.buttonList.add(new GuiButton(71, 5, 49,140, 20, "Disable Kill Aura"));
+
         this.mc.player.openContainer = this.inventorySlots;
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException {
+        switch (button.id){
+            case 69: //Disable Inventory Manager
+                TopHat.moduleManager.getByClass(InventoryManager.class).setEnabled(false);
+                break;
+            case 70: //Disable Chest Stealer
+                TopHat.moduleManager.getByClass(ChestStealer.class).setEnabled(false);
+                break;
+            case 71: //Disable Kill Aura
+                TopHat.moduleManager.getByClass(KillAura.class).setEnabled(false);
+                break;
+        }
+        super.actionPerformed(button);
     }
 
     /**

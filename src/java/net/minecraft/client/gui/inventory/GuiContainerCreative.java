@@ -31,6 +31,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import wtf.tophat.TopHat;
+import wtf.tophat.modules.impl.combat.KillAura;
+import wtf.tophat.modules.impl.player.ChestStealer;
+import wtf.tophat.modules.impl.player.InventoryManager;
 
 public class GuiContainerCreative extends InventoryEffectRenderer
 {
@@ -260,12 +264,14 @@ public class GuiContainerCreative extends InventoryEffectRenderer
      * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the
      * window resizes, the buttonList is cleared beforehand.
      */
-    public void initGui()
-    {
-        if (this.mc.playerController.isInCreativeMode())
-        {
-            super.initGui();
-            this.buttonList.clear();
+    public void initGui() {
+        super.initGui();
+        this.buttonList.clear();
+        this.buttonList.add(new GuiButton(69, 5, 5,140, 20, "Disable Inventory Manager"));
+        this.buttonList.add(new GuiButton(70, 5, 27,140, 20, "Disable Chest Stealer"));
+        this.buttonList.add(new GuiButton(71, 5, 49,140, 20, "Disable Kill Aura"));
+        if (this.mc.playerController.isInCreativeMode()) {
+
             Keyboard.enableRepeatEvents(true);
             this.searchField = new GuiTextField(0, this.fontRendererObj, this.guiLeft + 82, this.guiTop + 6, 89, this.fontRendererObj.FONT_HEIGHT);
             this.searchField.setMaxStringLength(15);
@@ -277,9 +283,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
             this.setCurrentCreativeTab(CreativeTabs.creativeTabArray[i]);
             this.field_147059_E = new CreativeCrafting(this.mc);
             this.mc.player.inventoryContainer.onCraftGuiOpened(this.field_147059_E);
-        }
-        else
-        {
+        } else {
             this.mc.displayGuiScreen(new GuiInventory(this.mc.player));
         }
     }
@@ -831,16 +835,23 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button) throws IOException
-    {
-        if (button.id == 0)
-        {
-            this.mc.displayGuiScreen(new GuiAchievements(this, this.mc.player.getStatFileWriter()));
-        }
-
-        if (button.id == 1)
-        {
-            this.mc.displayGuiScreen(new GuiStats(this, this.mc.player.getStatFileWriter()));
+    protected void actionPerformed(GuiButton button) throws IOException {
+        switch (button.id) {
+            case 0:
+                this.mc.displayGuiScreen(new GuiAchievements(this, this.mc.player.getStatFileWriter()));
+                break;
+            case 1:
+                this.mc.displayGuiScreen(new GuiStats(this, this.mc.player.getStatFileWriter()));
+                break;
+            case 69: //Disable Inventory Manager
+                TopHat.moduleManager.getByClass(InventoryManager.class).setEnabled(false);
+                break;
+            case 70: //Disable Chest Stealer
+                TopHat.moduleManager.getByClass(ChestStealer.class).setEnabled(false);
+                break;
+            case 71: //Disable Kill Aura
+                TopHat.moduleManager.getByClass(KillAura.class).setEnabled(false);
+                break;
         }
     }
 

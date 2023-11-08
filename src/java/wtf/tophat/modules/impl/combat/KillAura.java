@@ -31,7 +31,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @ModuleInfo(name = "Kill Aura", desc = "kills entities", category = Module.Category.COMBAT)
-public class Killaura extends Module {
+public class KillAura extends Module {
 
     private final TimeUtil timer = new TimeUtil();
     private final StringSetting sort;
@@ -43,7 +43,7 @@ public class Killaura extends Module {
 
     public List<EntityLivingBase> targets = new ArrayList<>();
 
-    public Killaura(){
+    public KillAura(){
         TopHat.settingManager.add(
                 sort = new StringSetting(this, "Sort", "Distance", "Distance", "Health"),
                 autoblockMode = new StringSetting(this, "Auto Block", "None", "None", "Vanilla", "Intave", "AAC", "NCP", "Matrix"),

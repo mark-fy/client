@@ -13,7 +13,7 @@ import wtf.tophat.events.impl.Render2DEvent;
 import wtf.tophat.events.impl.UpdateEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
-import wtf.tophat.modules.impl.combat.Killaura;
+import wtf.tophat.modules.impl.combat.KillAura;
 import wtf.tophat.modules.impl.move.Speed;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
@@ -232,7 +232,7 @@ public class ScaffoldWalk extends Module {
 
         if(!placed && mc.player.ticksExisted % 2 == 0) {
 
-            if(!(Killaura.target == null)) {
+            if(!(KillAura.target == null)) {
                 PacketUtil.sendBlocking(true, false);
             }
         }

@@ -28,7 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.TopHat;
-import wtf.tophat.modules.impl.combat.Killaura;
+import wtf.tophat.modules.impl.combat.KillAura;
 import wtf.tophat.modules.impl.render.BlockAnimations;
 import wtf.tophat.modules.impl.render.HitAnimations;
 import wtf.tophat.modules.impl.render.ViewModel;
@@ -419,7 +419,7 @@ public class ItemRenderer
         if (this.itemToRender != null) {
             if (this.itemToRender.getItem() == Items.filled_map) {
                 this.renderItemMap(abstractclientplayer, rotationPitch, equippedProgress, swingProgress);
-            } else if (abstractclientplayer.getItemInUseCount() > 0 || TopHat.moduleManager.getByClass(Killaura.class) != null && Killaura.target != null && TopHat.moduleManager.getByClass(Killaura.class).isEnabled() && TopHat.moduleManager.getByClass(Killaura.class).autoblockMode.get().equalsIgnoreCase("Fake") && mc.player.getHeldItem() != null && mc.player.getHeldItem().getItem() instanceof ItemSword) {
+            } else if (abstractclientplayer.getItemInUseCount() > 0 || TopHat.moduleManager.getByClass(KillAura.class) != null && KillAura.target != null && TopHat.moduleManager.getByClass(KillAura.class).isEnabled() && TopHat.moduleManager.getByClass(KillAura.class).autoblockMode.get().equalsIgnoreCase("Fake") && mc.player.getHeldItem() != null && mc.player.getHeldItem().getItem() instanceof ItemSword) {
                 EnumAction enumaction = this.itemToRender.getItemUseAction();
 
                 switch (enumaction) {

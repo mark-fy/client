@@ -13,7 +13,11 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import wtf.tophat.TopHat;
 import wtf.tophat.events.handler.PlayerHandler;
+import wtf.tophat.modules.impl.combat.KillAura;
+import wtf.tophat.modules.impl.player.ChestStealer;
+import wtf.tophat.modules.impl.player.InventoryManager;
 
 public class GuiInventory extends InventoryEffectRenderer
 {
@@ -23,8 +27,7 @@ public class GuiInventory extends InventoryEffectRenderer
     /** The old y position of the mouse pointer */
     private float oldMouseY;
 
-    public GuiInventory(EntityPlayer p_i1094_1_)
-    {
+    public GuiInventory(EntityPlayer p_i1094_1_) {
         super(p_i1094_1_.inventoryContainer);
         this.allowUserInput = true;
     }
@@ -32,10 +35,8 @@ public class GuiInventory extends InventoryEffectRenderer
     /**
      * Called from the main game loop to update the screen.
      */
-    public void updateScreen()
-    {
-        if (this.mc.playerController.isInCreativeMode())
-        {
+    public void updateScreen() {
+        if (this.mc.playerController.isInCreativeMode()) {
             this.mc.displayGuiScreen(new GuiContainerCreative(this.mc.player));
         }
 
@@ -46,16 +47,12 @@ public class GuiInventory extends InventoryEffectRenderer
      * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the
      * window resizes, the buttonList is cleared beforehand.
      */
-    public void initGui()
-    {
+    public void initGui() {
         this.buttonList.clear();
 
-        if (this.mc.playerController.isInCreativeMode())
-        {
+        if (this.mc.playerController.isInCreativeMode()) {
             this.mc.displayGuiScreen(new GuiContainerCreative(this.mc.player));
-        }
-        else
-        {
+        } else {
             super.initGui();
         }
     }
@@ -63,16 +60,14 @@ public class GuiInventory extends InventoryEffectRenderer
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items). Args : mouseX, mouseY
      */
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-    {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRendererObj.drawString(I18n.format("container.crafting", new Object[0]), 86, 16, 4210752);
     }
 
     /**
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
-    {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         this.oldMouseX = (float)mouseX;
         this.oldMouseY = (float)mouseY;
@@ -81,8 +76,7 @@ public class GuiInventory extends InventoryEffectRenderer
     /**
      * Args : renderPartialTicks, mouseX, mouseY
      */
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-    {
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(inventoryBackground);
         int i = this.guiLeft;
@@ -94,8 +88,7 @@ public class GuiInventory extends InventoryEffectRenderer
     /**
      * Draws the entity to the screen. Args: xPos, yPos, scale, mouseX, mouseY, entityLiving
      */
-    public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent)
-    {
+    public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent) {
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)posX, (float)posY, 50.0F);
@@ -152,16 +145,23 @@ public class GuiInventory extends InventoryEffectRenderer
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button) throws IOException
-    {
-        if (button.id == 0)
-        {
-            this.mc.displayGuiScreen(new GuiAchievements(this, this.mc.player.getStatFileWriter()));
-        }
-
-        if (button.id == 1)
-        {
-            this.mc.displayGuiScreen(new GuiStats(this, this.mc.player.getStatFileWriter()));
+    protected void actionPerformed(GuiButton button) throws IOException {
+        switch (button.id) {
+            case 0:
+                this.mc.displayGuiScreen(new GuiAchievements(this, this.mc.player.getStatFileWriter()));
+                break;
+            case 1:
+                this.mc.displayGuiScreen(new GuiStats(this, this.mc.player.getStatFileWriter()));
+                break;
+            case 69: //Disable Inventory Manager
+                TopHat.moduleManager.getByClass(InventoryManager.class).setEnabled(false);
+                break;
+            case 70: //Disable Chest Stealer
+                TopHat.moduleManager.getByClass(ChestStealer.class).setEnabled(false);
+                break;
+            case 71: //Disable Kill Aura
+                TopHat.moduleManager.getByClass(KillAura.class).setEnabled(false);
+                break;
         }
     }
 }
