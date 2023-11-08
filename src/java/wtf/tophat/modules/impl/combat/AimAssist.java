@@ -15,6 +15,7 @@ import net.minecraft.item.ItemSword;
 import wtf.tophat.TopHat;
 import wtf.tophat.events.base.Event;
 import wtf.tophat.events.impl.MotionEvent;
+import wtf.tophat.events.impl.RotationEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
@@ -38,8 +39,10 @@ public class AimAssist extends Module {
         );
     }
 
+    private EntityLivingBase target = null;
+
     @Listen
-    public void onMotionUpdate(MotionEvent event) {
+    public void onMotion(MotionEvent event) {
         if (event.getState() == Event.State.PRE) {
             List<EntityLivingBase> targets = mc.world.loadedEntityList.stream()
                     .filter(entity -> entity instanceof EntityLivingBase)
@@ -59,35 +62,32 @@ public class AimAssist extends Module {
                     .collect(Collectors.toList());
 
             if (!targets.isEmpty()) {
-                EntityLivingBase target = targets.get(0);
-                aim(target);
+                target = targets.get(0);
             }
         }
     }
 
-    public void aim(EntityLivingBase entityLivingBase) {
+    @Listen
+    public void onRots(RotationEvent event) {
+        float[] rotations = getRotations(target);
+
         ItemStack heldItem = getPlayer().getHeldItem();
         if (mc.currentScreen == null && heldItem != null) {
-
             if (swordCheck.get() && heldItem.getItem() instanceof ItemSword) {
-                setRotations(entityLivingBase);
+                setRotations(event, rotations);
             } else {
-                setRotations(entityLivingBase);
+                setRotations(event, rotations);
             }
         }
     }
 
-    public void setRotations(EntityLivingBase e) {
-        float[] rotations = getRotations(e);
-
-        if (clickAim.get()) {
-            if (Mouse.isButtonDown(0)) {
-                getPlayer().rotationYaw = rotations[0];
-               getPlayer().rotationPitch = rotations[1];
-            }
-        } else {
-            getPlayer().rotationYaw = rotations[0];
-            getPlayer().rotationPitch = rotations[1];
+    private void setRotations(RotationEvent event, float[] rotations) {
+        if(clickAim.get() && Mouse.isButtonDown(0)) {
+            event.setYaw(rotations[0]);
+            event.setPitch(rotations[1]);
+        } else if(!clickAim.get()) {
+            event.setYaw(rotations[0]);
+            event.setPitch(rotations[1]);
         }
     }
 

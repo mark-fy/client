@@ -11,7 +11,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.Methods;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 @ModuleInfo(name = "Eagle",desc = "sneak on edges", category = Module.Category.MOVE)
 public class Eagle extends Module {

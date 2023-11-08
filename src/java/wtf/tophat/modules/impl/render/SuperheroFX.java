@@ -26,7 +26,7 @@ import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.render.shaders.RenderUtil;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 @ModuleInfo(name = "Superhero FX", desc = "text particles", category = Module.Category.RENDER)
 public class SuperheroFX extends Module {
@@ -104,9 +104,7 @@ public class SuperheroFX extends Module {
                 ++i;
             }
         }
-        catch (NullPointerException nullPointerException) {
-
-        }
+        catch (NullPointerException ignored) {}
     }
 
     private void registerPopUpText(Entity entity) {
@@ -125,7 +123,7 @@ public class SuperheroFX extends Module {
         private Vec3 vec3;
 
         public PopupText(String displayName, Vec3 vec3) {
-            this.color = randomColors.get() == false ? -1 : Color.getHSBColor(rand.nextFloat(), 1.0f, 0.9f).getRGB();
+            this.color = !randomColors.get() ? -1 : Color.getHSBColor(rand.nextFloat(), 1.0f, 0.9f).getRGB();
             this.start = System.currentTimeMillis();
             this.yIncrease = random();
             this.displayName = EnumChatFormatting.ITALIC + displayName;

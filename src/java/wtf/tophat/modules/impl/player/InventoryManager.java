@@ -20,7 +20,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.function.Function;

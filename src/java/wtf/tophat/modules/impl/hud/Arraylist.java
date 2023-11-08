@@ -16,9 +16,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static wtf.tophat.utilities.render.Colors.*;
-
-@SuppressWarnings("ConstantValue")
+@SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 @ModuleInfo(name = "Arraylist",desc = "lists the enabled modules", category = Module.Category.HUD)
 public class Arraylist extends Module {
 

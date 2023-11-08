@@ -7,7 +7,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.math.MathUtil;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 @ModuleInfo(name = "Auto Clicker", desc = "clicks the mouse for you", category = Module.Category.COMBAT)
 public class AutoClicker extends Module {

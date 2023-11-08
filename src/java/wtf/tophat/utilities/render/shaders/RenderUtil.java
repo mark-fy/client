@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import wtf.spotify.ColorUtil;
 import wtf.tophat.utilities.Methods;
 
 import java.awt.*;

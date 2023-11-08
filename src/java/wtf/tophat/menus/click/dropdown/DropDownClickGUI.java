@@ -1,6 +1,5 @@
 package wtf.tophat.menus.click.dropdown;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,12 +16,7 @@ import wtf.tophat.utilities.sound.SoundUtil;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Locale;
 
-import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
-import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
-
-@SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 public class DropDownClickGUI extends GuiScreen {
 
     private Module listeningModule = null;
@@ -93,9 +87,8 @@ public class DropDownClickGUI extends GuiScreen {
 
                 fr.drawStringOptional(shadow, keybindText, (float) ((modX + moduleRectWidth - keybindTextWidth - 5) - keybindTextWidth), (float) (modY + 6), Color.darkGray);
 
-                if (isHovered) {
-                    int counter = 0;
 
+                if (isHovered) {
                     String text = module.getDesc();
                     int strWidth = fr.getStringWidth(text) + 3;
 
@@ -104,10 +97,9 @@ public class DropDownClickGUI extends GuiScreen {
                     DrawingUtil.rectangle(7, this.height - 33, strWidth + 7, 16, true, new Color(40,40,40));
                     DrawingUtil.rectangle(9, this.height - 31, strWidth + 3, 12, true, new Color(60,60,60));
                     DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 10, true, new Color(22,22,22));
-                    DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 1, true, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
+                    DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 1, true, CategoryUtil.getCategoryColor(category));
 
                     fr.drawStringOptional(shadow, text, 11, this.height - 28, Color.WHITE);
-                    counter++;
                 }
 
                 modY += 20;

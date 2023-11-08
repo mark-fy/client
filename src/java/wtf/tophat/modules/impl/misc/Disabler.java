@@ -14,7 +14,6 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.Methods;
 
 import java.util.ArrayList;
 
@@ -51,7 +50,7 @@ public class Disabler extends Module {
     // Verus Combat
     private int verusCounter;
 
-    ArrayList<Packet> transactions = new ArrayList<>();
+    private final ArrayList<Packet<?>> transactions = new ArrayList<>();
     int currentTransaction = 0;
 
     @Listen
@@ -135,7 +134,7 @@ public class Disabler extends Module {
                 break;
             case "NCP Timer":
                 if (mc.player.ticksExisted % 30 == 0) {
-                    sendPacketUnlogged(new C03PacketPlayer.C06PacketPlayerPosLook(getX(), getY() - (getGround() ? 0.1D : 1.1D), getZ(), Methods.getYaw(), getPitch(), getGround()));
+                    sendPacketUnlogged(new C03PacketPlayer.C06PacketPlayerPosLook(getX(), getY() - (getGround() ? 0.1D : 1.1D), getZ(), getYaw(), getPitch(), getGround()));
                 }
                 break;
         }

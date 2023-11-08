@@ -1,4 +1,4 @@
-package wtf.tophat.utilities.block;
+package wtf.tophat.utilities.world;
 
 import java.util.ArrayList;
 import net.minecraft.block.Block;

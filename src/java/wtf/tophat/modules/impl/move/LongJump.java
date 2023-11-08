@@ -13,7 +13,7 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.player.DamageUtil;
 import wtf.tophat.utilities.player.movement.MoveUtil;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 @ModuleInfo(name = "Long Jump", desc = "perform longer jumps", category = Module.Category.MOVE)
 public class LongJump extends Module {

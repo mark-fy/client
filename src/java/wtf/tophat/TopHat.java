@@ -11,6 +11,7 @@ import wtf.tophat.events.base.EventManager;
 import wtf.tophat.modules.base.ModuleManager;
 import wtf.script.ScriptManager;
 import wtf.tophat.settings.base.SettingManager;
+import wtf.tophat.utilities.Methods;
 import wtf.tophat.utilities.misc.SlotSpoofHandler;
 import wtf.tophat.utilities.player.chat.ChatUtil;
 import wtf.viaversion.VersionManager;
@@ -46,6 +47,8 @@ public enum TopHat {
     public static final VersionManager versionManager = new VersionManager();
     public static final SlotSpoofHandler slotSpoofHandler = new SlotSpoofHandler();
 
+    private static final ChatUtil chatUtil = new ChatUtil();
+
     public static void startup() {
         printL("Starting Client...");
         Display.setTitle(getName() + " v" + getVersion());
@@ -80,13 +83,13 @@ public enum TopHat {
         if(message != null && state != -1) {
             switch (state) {
                 case 0: // DEFAULT
-                    ChatUtil.addChatMessage(message, true);
+                    chatUtil.sendChat(message, true);
                     break;
                 case 1: // ERROR
-                    ChatUtil.addChatMessage("§cError: §r" + message, true);
+                    chatUtil.sendChat("§cError: §r" + message, true);
                     break;
                 case 2: // WARNING
-                    ChatUtil.addChatMessage("§eWarning: §r" + message, true);
+                    chatUtil.sendChat("§eWarning: §r" + message, true);
                     break;
             }
         }

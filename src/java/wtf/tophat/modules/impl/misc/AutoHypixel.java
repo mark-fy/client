@@ -14,7 +14,7 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

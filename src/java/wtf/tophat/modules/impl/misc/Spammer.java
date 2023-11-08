@@ -8,7 +8,7 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.math.MathUtil;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 @ModuleInfo(name = "Spammer", desc = "spam a text in the chat", category = Module.Category.MISC)
 public final class Spammer extends Module {

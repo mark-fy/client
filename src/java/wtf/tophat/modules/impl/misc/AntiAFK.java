@@ -7,7 +7,7 @@ import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.utilities.math.MathUtil;
 import wtf.tophat.utilities.player.rotations.GCDFix;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 @ModuleInfo(name = "Anti AFK", desc = "prevent anti afk plugins from kicking you", category = Module.Category.MISC)
 public class AntiAFK extends Module {

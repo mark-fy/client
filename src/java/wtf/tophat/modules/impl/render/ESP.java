@@ -1,5 +1,6 @@
 package wtf.tophat.modules.impl.render;
 
+import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
@@ -26,9 +27,6 @@ import wtf.tophat.events.impl.Render3DEvent;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.utilities.render.ColorUtil;
-
-import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
-import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 
 @ModuleInfo(name = "ESP", desc = "render box around entities", category = Module.Category.RENDER)
 public class ESP extends Module {
@@ -87,8 +85,8 @@ public class ESP extends Module {
             float y = (float)posVec.y;
             float h = (float)posVec.w - y;
             if (ent instanceof EntityPlayer && !mc.player.isInvisibleToPlayer(mc.player)) {
-                this.drawBorderedRect(x, y, w, h, 1.0, ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L), 0);
-                this.drawBorderedRect(x, y, w, h, 0.5, ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L), 0);
+                this.drawBorderedRect(x, y, w, h, 1.0, ColorUtil.fadeBetween(new Color(1, 236, 183).getRGB(), new Color(255, 255, 255).getRGB(), counter * 150L), 0);
+                this.drawBorderedRect(x, y, w, h, 0.5, ColorUtil.fadeBetween(new Color(1, 236, 183).getRGB(), new Color(255, 255, 255).getRGB(), counter * 150L), 0);
                 counter++;
             }
             GlStateManager.enableDepth();

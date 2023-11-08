@@ -8,7 +8,7 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.DividerSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.math.MathUtil;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 @ModuleInfo(name = "Trigger Bot",desc = "attacks on sight", category = Module.Category.COMBAT)
 public class TriggerBot extends Module {

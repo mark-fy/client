@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import wtf.tophat.utilities.math.InterpolationUtil;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import static wtf.tophat.utilities.math.MathUtil.clamp;
@@ -34,14 +35,6 @@ public class ColorUtil {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) clamp(0, 255, alpha));
     }
 
-    public static int blendCzechiaColours(final double progress) {
-        return blendColours(CZECHIA_COLORS, progress);
-    }
-
-    public static int blendCzechiaColours(final long offset) {
-        return blendCzechiaColours(getFadingFromSysTime(offset));
-    }
-
     public static int blendRainbowColours(final double progress) {
         return blendColours(RAINBOW_COLORS, progress);
     }
@@ -49,15 +42,6 @@ public class ColorUtil {
     public static int blendRainbowColours(final long offset) {
         return blendRainbowColours(getFadingFromSysTime(offset));
     }
-
-    public static int blendGermanColours(final double progress) {
-        return blendColours(GERMAN_COLORS, progress);
-    }
-
-    public static int blendGermanColours(final long offset) {
-        return blendGermanColours(getFadingFromSysTime(offset));
-    }
-
     public static int blendHealthColours(final double progress) {
         return blendColours(HEALTH_COLOURS, progress);
     }
@@ -190,6 +174,20 @@ public class ColorUtil {
         float playerHealth = player.getHealth(), playerMaxHealth = player.getMaxHealth();
         float maxed = Math.max(0.0f, Math.min(playerHealth, playerMaxHealth) / playerMaxHealth);
         return Color.HSBtoRGB(maxed / 3.0f, 1.0f, 0.75f) | 0xFF000000;
+    }
+
+    public static Color averageColor(BufferedImage bi, int width, int height, int pixelStep) {
+        int[] color = new int[3];
+        for (int x = 0; x < width; x += pixelStep) {
+            for (int y = 0; y < height; y += pixelStep) {
+                Color pixel = new Color(bi.getRGB(x, y));
+                color[0] += pixel.getRed();
+                color[1] += pixel.getGreen();
+                color[2] += pixel.getBlue();
+            }
+        }
+        int num = width * height;
+        return new Color(color[0] / num, color[1] / num, color[2] / num);
     }
 
 }

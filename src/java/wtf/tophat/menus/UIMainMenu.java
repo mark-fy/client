@@ -8,11 +8,6 @@ import wtf.tophat.utilities.render.ColorUtil;
 
 import java.awt.*;
 import java.io.IOException;
-
-import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
-import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
-
-@SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 public class UIMainMenu extends GuiScreen {
 
     public UIMainMenu() {}
@@ -72,7 +67,7 @@ public class UIMainMenu extends GuiScreen {
         int y = height / 2 - fr.FONT_HEIGHT / 2 - 45;
 
         fr.drawString(TopHat.getName(), x, y, -1);
-        fr.drawString("v" + TopHat.getVersion(), x + 32, y + 14, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)).getRGB());
+        fr.drawString("v" + TopHat.getVersion(), x + 32, y + 14, new Color(ColorUtil.fadeBetween(new Color(1, 236, 183).getRGB(), new Color(255, 255, 255).getRGB(), counter * 150L)).getRGB());
         counter++;
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

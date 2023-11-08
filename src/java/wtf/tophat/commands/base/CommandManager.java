@@ -9,7 +9,6 @@ import wtf.tophat.events.impl.ChatEvent;
 import wtf.tophat.events.impl.KeyboardEvent;
 import wtf.tophat.utilities.Methods;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.utilities.player.chat.ChatUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
@@ -62,7 +61,7 @@ public class CommandManager extends Storage<Command> implements Methods {
         if (command != null) {
             command.onCommand(arguments, message);
         } else {
-            ChatUtil.addChatMessage(String.format("Could not find command .%s", name.toLowerCase(Locale.ROOT)));
+            sendChat(String.format("Could not find command .%s", name.toLowerCase(Locale.ROOT)));
         }
     }
 

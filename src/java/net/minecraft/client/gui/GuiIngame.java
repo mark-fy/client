@@ -43,7 +43,7 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
 import wtf.tophat.TopHat;
 import wtf.tophat.events.impl.Render2DEvent;
-import wtf.tophat.modules.impl.render.Crosshair;
+import wtf.tophat.modules.impl.hud.Crosshair;
 
 public class GuiIngame extends Gui
 {

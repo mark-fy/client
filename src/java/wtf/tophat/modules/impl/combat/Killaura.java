@@ -23,7 +23,7 @@ import wtf.tophat.utilities.misc.RayCast;
 import wtf.tophat.utilities.player.rotations.RotationUtil;
 import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.shaders.RenderUtil;
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 import java.awt.*;
 import java.util.ArrayList;

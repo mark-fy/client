@@ -1,4 +1,4 @@
-package wtf.tophat.modules.impl.render;
+package wtf.tophat.modules.impl.hud;
 
 import java.awt.Color;
 
@@ -12,7 +12,7 @@ import wtf.tophat.modules.base.ModuleInfo;
 import wtf.tophat.settings.impl.BooleanSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 
-@ModuleInfo(name = "Crosshair", desc = "changes your crosshair", category = Module.Category.RENDER)
+@ModuleInfo(name = "Crosshair", desc = "changes your crosshair", category = Module.Category.HUD)
 public class Crosshair extends Module {
 
     private final BooleanSetting outline, renderTop, renderBottom, renderLeft, renderRight;

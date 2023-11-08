@@ -1,6 +1,6 @@
 package wtf.tophat.utilities.animations;
 
-import wtf.tophat.utilities.time.TimeUtil;
+import wtf.tophat.utilities.math.time.TimeUtil;
 
 public abstract class Animation {
 

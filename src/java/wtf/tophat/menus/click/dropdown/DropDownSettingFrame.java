@@ -15,16 +15,11 @@ import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.utilities.render.CategoryUtil;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
-import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.Locale;
-
-import static wtf.tophat.utilities.render.Colors.DEFAULT_COLOR;
-import static wtf.tophat.utilities.render.Colors.LIGHT_GRAY_COLOR;
-import static wtf.tophat.utilities.render.Colors.WHITE_COLOR;
 
 public class DropDownSettingFrame extends GuiScreen {
     private NumberSetting currentDraggingSetting = null;

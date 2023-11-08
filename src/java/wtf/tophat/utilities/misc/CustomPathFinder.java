@@ -20,7 +20,7 @@ import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.BlockWall;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
-import wtf.tophat.utilities.block.BlockUtil;
+import wtf.tophat.utilities.world.BlockUtil;
 
 public class CustomPathFinder {
     private Vec3 startVec3;

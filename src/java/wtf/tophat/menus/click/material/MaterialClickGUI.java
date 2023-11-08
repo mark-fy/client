@@ -15,14 +15,11 @@ import wtf.tophat.settings.impl.NumberSetting;
 import wtf.tophat.settings.impl.StringSetting;
 import wtf.tophat.utilities.render.shaders.blur.GaussianBlur;
 import wtf.tophat.utilities.render.CategoryUtil;
-import wtf.tophat.utilities.render.ColorUtil;
 import wtf.tophat.utilities.render.DrawingUtil;
 import wtf.tophat.utilities.sound.SoundUtil;
 
 import java.awt.*;
 import java.util.Locale;
-
-import static wtf.tophat.utilities.render.Colors.*;
 
 public class MaterialClickGUI extends GuiScreen {
 
@@ -139,7 +136,7 @@ public class MaterialClickGUI extends GuiScreen {
                 DrawingUtil.rectangle(7, this.height - 33, strWidth + 7, 16, true, new Color(40,40,40));
                 DrawingUtil.rectangle(9, this.height - 31, strWidth + 3, 12, true, new Color(60,60,60));
                 DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 10, true, new Color(22,22,22));
-                DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 1, true, new Color(ColorUtil.fadeBetween(DEFAULT_COLOR, WHITE_COLOR, counter * 150L)));
+                DrawingUtil.rectangle(10, this.height - 30, strWidth + 1, 1, true, CategoryUtil.getCategoryColor(selectedCategory));
 
                 fr.drawStringWithShadow(text, 11, this.height - 28, Color.WHITE);
             }

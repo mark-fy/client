@@ -2,9 +2,7 @@ package wtf.tophat.modules.impl.hud;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ResourceLocation;
 import wtf.tophat.TopHat;
 import wtf.tophat.modules.base.Module;
 import wtf.tophat.modules.base.ModuleInfo;
@@ -21,8 +19,6 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-
-import static wtf.tophat.utilities.render.Colors.*;
 
 @SuppressWarnings({"ConstantValue", "UnusedAssignment"})
 @ModuleInfo(name = "Watermark",desc = "displays the client's watermark", category = Module.Category.HUD)

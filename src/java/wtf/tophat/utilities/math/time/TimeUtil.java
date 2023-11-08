@@ -1,4 +1,4 @@
-package wtf.tophat.utilities.time;
+package wtf.tophat.utilities.math.time;
 
 import wtf.tophat.utilities.Methods;
 
