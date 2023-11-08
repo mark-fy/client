@@ -5,7 +5,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
-import wtf.tophat.menus.UIMainMenu;
+import wtf.tophat.client.menus.UIMainMenu;
 
 public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
 {

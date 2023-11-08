@@ -174,15 +174,14 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
-import wtf.tophat.TopHat;
-import wtf.tophat.events.impl.ClickingEvent;
-import wtf.tophat.events.impl.KeyboardEvent;
-import wtf.tophat.events.impl.PostTickEvent;
-import wtf.tophat.events.impl.RunTickEvent;
-import wtf.tophat.menus.UILoginScreen;
-import wtf.tophat.menus.UIMainMenu;
-import wtf.tophat.modules.impl.render.BlockAnimations;
-import wtf.viaversion.viamcp.fixes.AttackOrder;
+import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.impl.ClickingEvent;
+import wtf.tophat.client.events.impl.KeyboardEvent;
+import wtf.tophat.client.events.impl.PostTickEvent;
+import wtf.tophat.client.events.impl.RunTickEvent;
+import wtf.tophat.client.menus.UILoginScreen;
+import wtf.tophat.client.modules.impl.render.BlockAnimations;
+import wtf.tophat.viaversion.viamcp.fixes.AttackOrder;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {

@@ -8,7 +8,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.util.MathHelper;
-import wtf.tophat.events.handler.PlayerHandler;
+import wtf.tophat.client.events.handler.PlayerHandler;
 
 public class S18PacketEntityTeleport implements Packet<INetHandlerPlayClient>
 {

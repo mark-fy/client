@@ -205,10 +205,10 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wtf.tophat.events.handler.PlayerHandler;
-import wtf.tophat.events.impl.OnDeathEvent;
-import wtf.tophat.events.impl.PacketEvent;
-import wtf.tophat.menus.UIMainMenu;
+import wtf.tophat.client.events.handler.PlayerHandler;
+import wtf.tophat.client.events.impl.OnDeathEvent;
+import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.client.menus.UIMainMenu;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient
 {

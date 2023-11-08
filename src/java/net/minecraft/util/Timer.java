@@ -1,7 +1,7 @@
 package net.minecraft.util;
 
 import net.minecraft.client.Minecraft;
-import wtf.tophat.events.impl.TimeEvent;
+import wtf.tophat.client.events.impl.TimeEvent;
 
 public class Timer {
     public int elapsedTicks;

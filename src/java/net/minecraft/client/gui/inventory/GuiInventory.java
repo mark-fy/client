@@ -13,11 +13,11 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import wtf.tophat.TopHat;
-import wtf.tophat.events.handler.PlayerHandler;
-import wtf.tophat.modules.impl.combat.KillAura;
-import wtf.tophat.modules.impl.player.ChestStealer;
-import wtf.tophat.modules.impl.player.InventoryManager;
+import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.handler.PlayerHandler;
+import wtf.tophat.client.modules.impl.combat.KillAura;
+import wtf.tophat.client.modules.impl.player.ChestStealer;
+import wtf.tophat.client.modules.impl.player.InventoryManager;
 
 public class GuiInventory extends InventoryEffectRenderer
 {

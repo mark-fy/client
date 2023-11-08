@@ -26,9 +26,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
-import wtf.tophat.TopHat;
-import wtf.tophat.modules.impl.hud.CustomScoreboard;
-import wtf.tophat.modules.impl.misc.NameProtect;
+import wtf.tophat.client.TopHat;
+import wtf.tophat.client.modules.impl.hud.CustomScoreboard;
+import wtf.tophat.client.modules.impl.misc.NameProtect;
 
 public class FontRenderer implements IResourceManagerReloadListener
 {

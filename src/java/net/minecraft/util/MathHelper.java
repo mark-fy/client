@@ -1,6 +1,6 @@
 package net.minecraft.util;
 
-import wtf.tophat.utilities.math.MathUtil;
+import wtf.tophat.client.utilities.math.MathUtil;
 
 import java.util.Random;
 import java.util.UUID;

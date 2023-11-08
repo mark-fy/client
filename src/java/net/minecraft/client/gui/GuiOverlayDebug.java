@@ -25,8 +25,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import wtf.tophat.TopHat;
-import wtf.tophat.events.impl.DebugOverlayEvent;
+import wtf.tophat.client.events.impl.DebugOverlayEvent;
 
 public class GuiOverlayDebug extends Gui
 {

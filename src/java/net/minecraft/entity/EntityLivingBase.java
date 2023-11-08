@@ -50,9 +50,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import wtf.tophat.TopHat;
-import wtf.tophat.events.impl.DelayJumpEvent;
-import wtf.tophat.modules.impl.render.HitAnimations;
+import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.impl.DelayJumpEvent;
+import wtf.tophat.client.modules.impl.render.HitAnimations;
 
 public abstract class EntityLivingBase extends Entity
 {

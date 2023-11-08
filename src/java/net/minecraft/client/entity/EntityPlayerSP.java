@@ -45,10 +45,10 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
-import wtf.tophat.events.base.Event;
-import wtf.tophat.events.handler.PlayerHandler;
-import wtf.tophat.events.impl.*;
-import wtf.tophat.utilities.player.movement.MoveUtil;
+import wtf.tophat.client.events.base.Event;
+import wtf.tophat.client.events.handler.PlayerHandler;
+import wtf.tophat.client.events.impl.*;
+import wtf.tophat.client.utilities.player.movement.MoveUtil;
 
 import java.util.ArrayList;
 import java.util.List;

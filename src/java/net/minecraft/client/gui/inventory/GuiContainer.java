@@ -19,10 +19,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
-import wtf.tophat.TopHat;
-import wtf.tophat.modules.impl.combat.KillAura;
-import wtf.tophat.modules.impl.player.ChestStealer;
-import wtf.tophat.modules.impl.player.InventoryManager;
+import wtf.tophat.client.TopHat;
+import wtf.tophat.client.modules.impl.combat.KillAura;
+import wtf.tophat.client.modules.impl.player.ChestStealer;
+import wtf.tophat.client.modules.impl.player.InventoryManager;
 
 public abstract class GuiContainer extends GuiScreen
 {

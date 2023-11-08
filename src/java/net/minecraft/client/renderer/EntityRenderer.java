@@ -65,8 +65,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
-import wtf.tophat.events.handler.PlayerHandler;
-import wtf.tophat.events.impl.*;
+import wtf.tophat.client.events.handler.PlayerHandler;
+import wtf.tophat.client.events.impl.*;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {

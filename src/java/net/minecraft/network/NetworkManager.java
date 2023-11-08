@@ -51,11 +51,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-import wtf.tophat.events.impl.PacketEvent;
-import wtf.viaversion.vialoadingbase.ViaLoadingBase;
-import wtf.viaversion.vialoadingbase.netty.event.CompressionReorderEvent;
-import wtf.viaversion.viamcp.MCPVLBPipeline;
-import wtf.viaversion.viamcp.ViaMCP;
+import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.viaversion.vialoadingbase.ViaLoadingBase;
+import wtf.tophat.viaversion.vialoadingbase.netty.event.CompressionReorderEvent;
+import wtf.tophat.viaversion.viamcp.MCPVLBPipeline;
+import wtf.tophat.viaversion.viamcp.ViaMCP;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 {

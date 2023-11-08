@@ -44,7 +44,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import wtf.tophat.events.handler.PlayerHandler;
+import wtf.tophat.client.events.handler.PlayerHandler;
 
 public class Item
 {

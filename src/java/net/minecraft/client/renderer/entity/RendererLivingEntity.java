@@ -25,7 +25,7 @@ import net.minecraft.util.MathHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
-import wtf.tophat.events.handler.PlayerHandler;
+import wtf.tophat.client.events.handler.PlayerHandler;
 
 public abstract class RendererLivingEntity<T extends EntityLivingBase> extends Render<T>
 {

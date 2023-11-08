@@ -27,11 +27,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
-import wtf.tophat.TopHat;
-import wtf.tophat.modules.impl.combat.KillAura;
-import wtf.tophat.modules.impl.render.BlockAnimations;
-import wtf.tophat.modules.impl.render.HitAnimations;
-import wtf.tophat.modules.impl.render.ViewModel;
+import wtf.tophat.client.TopHat;
+import wtf.tophat.client.modules.impl.combat.KillAura;
+import wtf.tophat.client.modules.impl.render.BlockAnimations;
+import wtf.tophat.client.modules.impl.render.HitAnimations;
+import wtf.tophat.client.modules.impl.render.ViewModel;
 
 public class ItemRenderer
 {

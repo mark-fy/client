@@ -5,7 +5,7 @@ import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
-import wtf.tophat.menus.UIMainMenu;
+import wtf.tophat.client.menus.UIMainMenu;
 
 public class GuiIngameMenu extends GuiScreen
 {

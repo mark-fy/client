@@ -28,7 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
-import wtf.tophat.utilities.math.vector.Vec3d;
+import wtf.tophat.client.utilities.math.vector.Vec3d;
 
 public class PlayerControllerMP
 {

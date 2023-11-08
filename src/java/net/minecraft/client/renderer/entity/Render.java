@@ -19,8 +19,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
-import wtf.tophat.TopHat;
-import wtf.tophat.modules.impl.render.Nametags;
+import wtf.tophat.client.TopHat;
+import wtf.tophat.client.modules.impl.render.Nametags;
 
 public abstract class Render<T extends Entity>
 {
