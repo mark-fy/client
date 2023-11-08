@@ -13,10 +13,10 @@ public class VClip extends Command {
         try {
             blocks = Double.parseDouble(command.split(" ")[1]);
         } catch (Exception e) {
-            sendChat("Please enter a valid number!");
+            Methods.sendChat("Please enter a valid number!");
             return;
         }
         mc.player.setPosition(mc.player.posX, mc.player.posY + blocks, mc.player.posZ);
-        sendChat("Teleported you " + blocks + " blocks " + ((blocks < 0.0D) ? "down." : "up."));
+        Methods.sendChat("Teleported you " + blocks + " blocks " + ((blocks < 0.0D) ? "down." : "up."));
     }
 }

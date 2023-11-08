@@ -39,7 +39,7 @@ public interface Methods {
 
     default void sendChat(String message, boolean prefix) { ChatUtil.addChatMessage(message, prefix); }
 
-    default void sendChat(String message) { ChatUtil.addChatMessage(message, false); }
+    static void sendChat(String message) { ChatUtil.addChatMessage(message, false); }
 
     default void click(boolean doubleClick) {
         mc.click();
