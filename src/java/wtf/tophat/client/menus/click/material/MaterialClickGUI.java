@@ -109,7 +109,8 @@ public class MaterialClickGUI extends GuiScreen {
 
         int counter = 0;
         for (Module module : TopHat.moduleManager.getModulesByCategory(selectedCategory)) {
-
+            if(module.isHidden())
+                continue;
             boolean isHovered = DrawingUtil.hovered((float) mouseX, (float) mouseY, (float) x + 50, (float) y + 16 + counter, 100, 15);
 
             Color moduleBackgroundColor = isHovered

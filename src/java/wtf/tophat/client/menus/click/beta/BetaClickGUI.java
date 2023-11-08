@@ -72,6 +72,8 @@ public class BetaClickGUI extends GuiScreen implements Methods {
 
         for (int i = firstVisibleModule; i < firstVisibleModule + maxVisibleModules && i < modules.size(); i++) {
             Module module = modules.get(i);
+            if(module.isHidden())
+                continue;
             float modX = x + 60, modY = y + moduleOffset;
             boolean hoveredMod = DrawingUtil.hovered(mouseX, mouseY, modX, modY, 232, 20);
 
@@ -87,6 +89,9 @@ public class BetaClickGUI extends GuiScreen implements Methods {
                 int settingOffset = 5;
 
                 for(Setting setting : TopHat.settingManager.getSettingsByModule(listeningToModule)) {
+                    if(setting.isHidden())
+                        continue;
+
                     if(setting instanceof DividerSetting) {
                         fr.drawString(setting.getName(), x + 370, y + 5 + settingOffset, Color.WHITE);
                         settingOffset += 20;

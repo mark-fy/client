@@ -52,6 +52,8 @@ public class DropDownClickGUI extends GuiScreen {
             double modX = x, modY = y + categoryHeight, modHeight = 20;
 
             for (Module module : TopHat.moduleManager.getModulesByCategory(category)) {
+                if(module.isHidden())
+                    continue;
 
                 String keybindText;
                 int keybindTextWidth;
