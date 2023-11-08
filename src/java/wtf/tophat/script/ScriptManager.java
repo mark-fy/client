@@ -1,6 +1,5 @@
 package wtf.tophat.script;
 
-import wtf.script.methods.*;
 import wtf.tophat.client.utilities.Methods;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.jse.*;

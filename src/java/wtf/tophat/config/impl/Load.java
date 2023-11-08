@@ -10,7 +10,6 @@ import wtf.tophat.config.base.Config;
 import wtf.tophat.config.base.ConfigInfo;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.settings.base.Setting;
-import wtf.client.settings.impl.*;
 import wtf.tophat.client.settings.impl.DividerSetting;
 
 import java.io.File;

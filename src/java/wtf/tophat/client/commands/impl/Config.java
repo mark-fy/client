@@ -2,7 +2,6 @@ package wtf.tophat.client.commands.impl;
 
 import wtf.tophat.client.commands.base.Command;
 import wtf.tophat.client.commands.base.CommandInfo;
-import wtf.config.impl.*;
 import wtf.tophat.config.impl.Delete;
 import wtf.tophat.config.impl.List;
 import wtf.tophat.config.impl.Load;
