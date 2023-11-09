@@ -1,5 +1,6 @@
 package wtf.tophat.client.modules.impl.player;
 
+import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.client.C03PacketPlayer;
@@ -10,7 +11,6 @@ import wtf.tophat.client.events.impl.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.modules.impl.move.LongJump;
-import wtf.tophat.client.settings.impl.BooleanSetting;
 import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.utilities.misc.BlinkUtil;
 import wtf.tophat.client.utilities.network.PacketUtil;
@@ -20,7 +20,7 @@ import wtf.tophat.client.utilities.player.PlayerUtil;
 @ModuleInfo(name = "Anti Void", desc = "save you from the void", category = Module.Category.PLAYER)
 public class AntiVoid extends Module {
 
-    private final NumberSetting distance = new NumberSetting(this,"Distance",  0, 10, 5, 0);
+    private final NumberSetting distance;
     private Vec3 position, motion;
     private boolean wasVoid, setBack;
     private int overVoidTicks;
@@ -29,7 +29,7 @@ public class AntiVoid extends Module {
 
     public AntiVoid(){
         TopHat.settingManager.add(
-                distance
+                distance = new NumberSetting(this,"Distance",  0, 10, 5, 0)
         );
     }
 
@@ -38,7 +38,8 @@ public class AntiVoid extends Module {
         BlinkUtil.blinking = false;
     }
 
-    public void onUpdate (UpdateEvent event){
+    @Listen
+    public void onUpdate(UpdateEvent event){
         if (mc.player.ticksExisted <= 50) return;
 
         if (scaffold == null) {
@@ -77,7 +78,6 @@ public class AntiVoid extends Module {
                 BlinkUtil.blinking = false;
             }
         } else {
-
             setBack = false;
 
             if (wasVoid) {
