@@ -41,6 +41,8 @@ public class ScaffoldWalk extends Module {
     private final BooleanSetting randomised = new BooleanSetting(this, "Randomised", false).setHidden(() -> !rotationsMode.is("Center"));
     private final NumberSetting yawOffset = new NumberSetting(this, "Yaw offset", 0, 180, 180, 1).setHidden(() -> !rotationsMode.is("Movement"));
     private final NumberSetting pitchValue = new NumberSetting(this, "Pitch",70, 110, 81.5, 1).setHidden(() -> !rotationsMode.is("Movement"));
+    private final NumberSetting timer = new NumberSetting(this, "Timer",0.1, 10, 1, 1);
+    private final NumberSetting speed = new NumberSetting(this, "Speed",0.1, 1, 0.1, 1);
     private final StringSetting noSprintTiming = new StringSetting(this, "No sprint timing", "Always", "Always", "When rotating", "Never");
     private final StringSetting noSprintMode = new StringSetting(this, "No sprint", "Normal", "Normal", "Spoof").setHidden(() -> noSprintTiming.is("Never"));
     private final StringSetting raytrace = new StringSetting(this, "Raytrace", "Disabled", "Disabled", "Normal", "Legit");
@@ -49,7 +51,7 @@ public class ScaffoldWalk extends Module {
     private final NumberSetting delayBetweenPlacements = new NumberSetting(this, "Delay between placements", 0, 10, 0, 1);
     private final BooleanSetting moveFix = new BooleanSetting(this, "Move fix", false);
     private final StringSetting offGroundStrafe = new StringSetting(this, "Off ground strafe", "Disabled", "Disabled", "Enabled", "Keep movement").setHidden(() -> moveFix.get());
-    private final NumberSetting strafeSpeed = new NumberSetting(this, "Speed", 0.1, 0.5, 0.2, 1).setHidden(() -> moveFix.get());
+    private final NumberSetting strafeSpeed = new NumberSetting(this, "Speed", 0.1, 0.5, 0.1, 1).setHidden(() -> moveFix.get());
     private final NumberSetting overAirSpeed = new NumberSetting(this, "Over air speed", 0, 0.5, 0.1, 1).setHidden(() -> moveFix.get());
     private final NumberSetting offGroundSpeed = new NumberSetting(this, "Offground speed", 0.1, 0.5, 0.2, 1).setHidden(() -> offGroundStrafe.is("Disabled") && moveFix.get());
     private final NumberSetting strafeSpeedPotExtra = new NumberSetting(this, "Speed pot extra", 0, 0.2, 0.2, 1).setHidden(() -> moveFix.get());
@@ -77,6 +79,8 @@ public class ScaffoldWalk extends Module {
                 randomised,
                 yawOffset,
                 pitchValue,
+                timer,
+                speed,
                 noSprintTiming,
                 noSprintMode,
                 raytrace,
@@ -164,6 +168,9 @@ public class ScaffoldWalk extends Module {
         }
 
         pickBlock();
+
+        MoveUtil.setSpeed(speed.get().doubleValue());
+        mc.timer.timerSpeed = timer.get().floatValue();
 
         if(!jump.is("Disabled") || TopHat.moduleManager.getByClass(Speed.class).isEnabled()) {
             if(mc.player.onGround || mc.settings.keyBindJump.isKeyDown()) {
@@ -348,10 +355,8 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public void onRender2D(Render2DEvent event) {
-        int counter = 0;
         ScaledResolution sr = new ScaledResolution(mc);
-        mc.fontRenderer.drawStringWithShadow(getBlockCount() == 1 ? getBlockCount() + " \247fBlock" : getBlockCount() + " \247fBlocks", (sr.getScaledWidth() >> 1) - 12 - mc.fontRenderer.getStringWidth(Integer.toString(getBlockCount())) / 2, (sr.getScaledHeight() >> 1) + 12, ColorUtil.fadeBetween(new Color(1, 236, 183).getRGB(), new Color(246, 4, 234).getRGB(), counter * 150L));
-        counter++;
+        mc.fontRenderer.drawStringWithShadow(getBlockCount() == 1 ? getBlockCount() + " \247fBlock" : getBlockCount() + " \247fBlocks", (sr.getScaledWidth() >> 1) - 12 - mc.fontRenderer.getStringWidth(Integer.toString(getBlockCount())) / 2, (sr.getScaledHeight() >> 1) + 12, new Color(255, 255, 255).getRGB());
     }
 
     private int getBlockCount() {
