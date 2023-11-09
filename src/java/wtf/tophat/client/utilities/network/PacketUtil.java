@@ -1,5 +1,6 @@
 package wtf.tophat.client.utilities.network;
 
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.BlockPos;
 import wtf.tophat.client.utilities.Methods;
@@ -13,6 +14,14 @@ public class PacketUtil implements Methods {
         if(callEvent) {
             mc.player.sendQueue.send(packet);
         }
+    }
+
+    public void send(final Packet<?> packet) {
+        mc.getNetHandler().send(packet);
+    }
+
+    public static void sendNoEvent(final Packet<?> packet) {
+        mc.player.sendQueue.getNetworkManager().sendPacketNoEvent(packet);
     }
 
 }

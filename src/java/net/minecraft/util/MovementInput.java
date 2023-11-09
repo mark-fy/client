@@ -17,4 +17,33 @@ public class MovementInput
     public void updatePlayerMoveState()
     {
     }
+
+    public float getMoveForward() {
+        return moveForward;
+    }
+
+    public void setMoveForward(float moveForward) {
+        this.moveForward = moveForward;
+    }
+
+    public float getMoveStrafe() {
+        return moveStrafe;
+    }
+
+    public void setMoveStrafe(float moveStrafe) {
+        this.moveStrafe = moveStrafe;
+    }
+
+    public boolean jump() {
+        return jump;
+    }
+
+    public void setJump(boolean jump) {
+        this.jump = jump;
+    }
+
+    public boolean sneak() {
+        return sneak;
+    }
+
 }

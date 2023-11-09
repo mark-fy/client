@@ -2,6 +2,7 @@ package wtf.tophat.client.modules.impl.player;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -317,6 +318,32 @@ public class ScaffoldWalk extends Module {
         }
 
         return new float[] {yaw, pitch};
+    }
+
+    public float getYawBackward() {
+        float yaw = MathHelper.wrapAngleTo180_float(mc.player.rotationYaw);
+
+        MovementInput input = mc.player.movementInput;
+        float strafe = input.getMoveStrafe(), forward = input.getMoveForward();
+
+        if (forward != 0) {
+            if (strafe < 0) {
+                yaw += forward < 0 ? 135 : 45;
+            } else if (strafe > 0) {
+                yaw -= forward < 0 ? 135 : 45;
+            } else if (strafe == 0 && forward < 0) {
+                yaw -= 180;
+            }
+
+        } else {
+            if (strafe < 0) {
+                yaw += 90;
+            } else if (strafe > 0) {
+                yaw -= 90;
+            }
+        }
+
+        return MathHelper.wrapAngleTo180_float(yaw - 180);
     }
 
     @Listen

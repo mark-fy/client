@@ -224,6 +224,50 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
         }
     }
 
+    public void sendPacketNoEvent(Packet packetIn)
+    {
+        if (this.isChannelOpen())
+        {
+            this.flushOutboundQueue();
+            this.dispatchPacket(packetIn, (GenericFutureListener <? extends Future <? super Void >> [])null);
+        }
+        else
+        {
+            this.readWriteLock.writeLock().lock();
+
+            try
+            {
+                this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(packetIn, (GenericFutureListener[])null));
+            }
+            finally
+            {
+                this.readWriteLock.writeLock().unlock();
+            }
+        }
+    }
+
+    public void sendPacketNoEvent(Packet packetIn, GenericFutureListener <? extends Future <? super Void >> listener, GenericFutureListener <? extends Future <? super Void >> ... listeners)
+    {
+        if (this.isChannelOpen())
+        {
+            this.flushOutboundQueue();
+            this.dispatchPacket(packetIn, (GenericFutureListener[])ArrayUtils.add(listeners, 0, listener));
+        }
+        else
+        {
+            this.readWriteLock.writeLock().lock();
+
+            try
+            {
+                this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(packetIn, (GenericFutureListener[])ArrayUtils.add(listeners, 0, listener)));
+            }
+            finally
+            {
+                this.readWriteLock.writeLock().unlock();
+            }
+        }
+    }
+
     /**
      * Will commit the packet to the channel. If the current thread 'owns' the channel it will write and flush the
      * packet, otherwise it will add a task for the channel eventloop thread to do that.
