@@ -1,5 +1,6 @@
 package wtf.tophat.client.utilities.misc;
 
+import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.Packet;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.C00PacketLoginStart;
@@ -28,6 +29,7 @@ public final class BlinkUtil implements Methods {
         exemptionWatch.reset();
     }
 
+    @Listen
     public void onPacket(PacketEvent event) {
         if (mc.player == null) {
             packets.clear();
