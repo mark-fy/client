@@ -15,6 +15,7 @@ import wtf.tophat.client.events.impl.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.modules.impl.combat.KillAura;
+import wtf.tophat.client.modules.impl.move.CorrectMovement;
 import wtf.tophat.client.modules.impl.move.Speed;
 import wtf.tophat.client.settings.impl.BooleanSetting;
 import wtf.tophat.client.settings.impl.NumberSetting;
@@ -35,32 +36,9 @@ import java.awt.*;
 @ModuleInfo(name = "Scaffold Walk", desc = "better scaffold :3", category = Module.Category.PLAYER)
 public class ScaffoldWalk extends Module {
 
-    private final StringSetting rotationsTiming = new StringSetting(this, "Rotations timing", "Always", "Always", "Over air", "Never");
-    private final StringSetting rotationsMode = new StringSetting(this, "Rotations mode", "Center", "Normal", "Center", "Movement").setHidden(() -> rotationsTiming.is("Never"));
-    private final BooleanSetting rotChangeOverAir = new BooleanSetting(this, "Rot change over air", false).setHidden(() -> !rotationsMode.is("Normal"));
-    private final BooleanSetting randomised = new BooleanSetting(this, "Randomised", false).setHidden(() -> !rotationsMode.is("Center"));
-    private final NumberSetting yawOffset = new NumberSetting(this, "Yaw offset", 0, 180, 180, 1).setHidden(() -> !rotationsMode.is("Movement"));
-    private final NumberSetting pitchValue = new NumberSetting(this, "Pitch",70, 110, 81.5, 1).setHidden(() -> !rotationsMode.is("Movement"));
-    private final NumberSetting timer = new NumberSetting(this, "Timer",0.1, 10, 1, 1);
-    private final NumberSetting speed = new NumberSetting(this, "Speed",0.1, 1, 0.1, 1);
-    private final StringSetting noSprintTiming = new StringSetting(this, "No sprint timing", "Always", "Always", "When rotating", "Never");
-    private final StringSetting noSprintMode = new StringSetting(this, "No sprint", "Normal", "Normal", "Spoof").setHidden(() -> noSprintTiming.is("Never"));
-    private final StringSetting raytrace = new StringSetting(this, "Raytrace", "Disabled", "Disabled", "Normal", "Legit");
-    private final NumberSetting negativeExpand = new NumberSetting(this, "Negative expand", 0, 0.24, 0, 1);
-    private final NumberSetting offGroundNegativeExpand = new NumberSetting(this, "Offground negative expand", 0, 0.24, 0, 1);
-    private final NumberSetting delayBetweenPlacements = new NumberSetting(this, "Delay between placements", 0, 10, 0, 1);
-    private final BooleanSetting moveFix = new BooleanSetting(this, "Move fix", false);
-    private final StringSetting offGroundStrafe = new StringSetting(this, "Off ground strafe", "Disabled", "Disabled", "Enabled", "Keep movement").setHidden(() -> moveFix.get());
-    private final NumberSetting strafeSpeed = new NumberSetting(this, "Speed", 0.1, 0.5, 0.1, 1).setHidden(() -> moveFix.get());
-    private final NumberSetting overAirSpeed = new NumberSetting(this, "Over air speed", 0, 0.5, 0.1, 1).setHidden(() -> moveFix.get());
-    private final NumberSetting offGroundSpeed = new NumberSetting(this, "Offground speed", 0.1, 0.5, 0.2, 1).setHidden(() -> offGroundStrafe.is("Disabled") && moveFix.get());
-    private final NumberSetting strafeSpeedPotExtra = new NumberSetting(this, "Speed pot extra", 0, 0.2, 0.2, 1).setHidden(() -> moveFix.get());
-    private final BooleanSetting randomisedSpeed = new BooleanSetting(this, "Randomised speed", false).setHidden(() -> moveFix.get());
-    private final StringSetting jump = new StringSetting(this, "Jump", "Disabled", "Disabled", "Enabled");
-    private final NumberSetting range = new NumberSetting(this, "Range", 1, 4, 2, 1);
-    private final StringSetting tower = new StringSetting(this, "Tower", "None", "None", "Vulcan", "Verus", "NCP");
-    private final StringSetting blockPicker = new StringSetting(this, "Block picker", "Switch", "None", "Switch", "Spoof");
-    private final BooleanSetting noSwing = new BooleanSetting(this, "No swing", false);
+    private final StringSetting rotationsTiming, rotationsMode, noSprintTiming, noSprintMode, raytrace, offGroundStrafe, jump, tower, blockPicker;
+    private final BooleanSetting rotChangeOverAir, randomisedSpeed, noSwing, randomised;
+    private final NumberSetting yawOffset, pitchValue, timer, speed, negativeExpand, offGroundNegativeExpand, delayBetweenPlacements, strafeSpeed, overAirSpeed, offGroundSpeed, strafeSpeedPotExtra, range;
 
     private BlockInfo info;
     private Vec3 vec3;
@@ -73,32 +51,31 @@ public class ScaffoldWalk extends Module {
 
     public ScaffoldWalk() {
         TopHat.settingManager.add(
-                rotationsTiming,
-                rotationsMode,
-                rotChangeOverAir,
-                randomised,
-                yawOffset,
-                pitchValue,
-                timer,
-                speed,
-                noSprintTiming,
-                noSprintMode,
-                raytrace,
-                negativeExpand,
-                offGroundNegativeExpand,
-                delayBetweenPlacements,
-                moveFix,
-                offGroundStrafe,
-                strafeSpeed,
-                overAirSpeed,
-                offGroundSpeed,
-                strafeSpeedPotExtra,
-                randomisedSpeed,
-                jump,
-                range,
-                tower,
-                blockPicker,
-                noSwing
+                rotationsTiming = new StringSetting(this, "Rotations timing", "Always", "Always", "Over air", "Never"),
+                rotationsMode = new StringSetting(this, "Rotations mode", "Center", "Normal", "Center", "Movement").setHidden(() -> rotationsTiming.is("Never")),
+                rotChangeOverAir = new BooleanSetting(this, "Rot change over air", false).setHidden(() -> !rotationsMode.is("Normal")),
+                randomised = new BooleanSetting(this, "Randomised", false).setHidden(() -> !rotationsMode.is("Center")),
+                yawOffset = new NumberSetting(this, "Yaw offset", 0, 180, 180, 1).setHidden(() -> !rotationsMode.is("Movement")),
+                pitchValue = new NumberSetting(this, "Pitch",70, 110, 81.5, 1).setHidden(() -> !rotationsMode.is("Movement")),
+                timer = new NumberSetting(this, "Timer",0.1, 10, 1, 1),
+                speed = new NumberSetting(this, "Speed",0.1, 1, 0.1, 1),
+                noSprintTiming = new StringSetting(this, "No sprint timing", "Always", "Always", "When rotating", "Never"),
+                noSprintMode = new StringSetting(this, "No sprint", "Normal", "Normal", "Spoof").setHidden(() -> noSprintTiming.is("Never")),
+                raytrace = new StringSetting(this, "Raytrace", "Disabled", "Disabled", "Normal", "Legit"),
+                negativeExpand = new NumberSetting(this, "Negative expand", 0, 0.24, 0, 1),
+                offGroundNegativeExpand = new NumberSetting(this, "OffGround negative expand", 0, 0.24, 0, 1),
+                delayBetweenPlacements = new NumberSetting(this, "Delay between placements", 0, 10, 0, 1),
+                offGroundStrafe = new StringSetting(this, "Off ground strafe", "Disabled", "Disabled", "Enabled", "Keep movement").setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
+                strafeSpeed = new NumberSetting(this, "Speed", 0.1, 0.5, 0.1, 1).setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
+                overAirSpeed = new NumberSetting(this, "Over air speed", 0, 0.5, 0.1, 1).setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
+                offGroundSpeed = new NumberSetting(this, "OffGround speed", 0.1, 0.5, 0.2, 1).setHidden(() -> offGroundStrafe.is("Disabled") && TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
+                strafeSpeedPotExtra = new NumberSetting(this, "Speed pot extra", 0, 0.2, 0.2, 1).setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
+                randomisedSpeed = new BooleanSetting(this, "Randomised speed", false).setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
+                jump = new StringSetting(this, "Jump", "Disabled", "Disabled", "Enabled"),
+                range = new NumberSetting(this, "Range", 1, 4, 2, 1),
+                tower = new StringSetting(this, "Tower", "None", "None", "Vulcan", "Verus", "NCP"),
+                blockPicker = new StringSetting(this, "Block picker", "Switch", "None", "Switch", "Spoof"),
+                noSwing = new BooleanSetting(this, "No swing", false)
         );
     }
 
@@ -374,12 +351,6 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public void onRots(RotationEvent event) {
-        if(mc.settings.keyBindJump.isPressed()){
-            if(moveFix.get() && isRotating) {
-                event.setYaw(rotations.getYaw());
-            }
-        }
-
         if(noSprintMode.is("Spoof")) {
             if(noSprintTiming.is("Always") || (noSprintTiming.is("When rotating") && isRotating)) {
                 mc.player.setSprinting(false);
