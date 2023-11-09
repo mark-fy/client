@@ -22,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @ModuleInfo(name = "No Fall",desc = "disables fall damage", category = Module.Category.PLAYER)
 public class NoFall extends Module {
 
-    public boolean canFall() {
+    private boolean canFall() {
         return mc.player.isEntityAlive() && mc.world != null && !mc.player.isInWater() && !mc.player.isInLava()
                 && PlayerUtil.isBlockUnderNoCollisions();
     }
@@ -97,6 +97,7 @@ public class NoFall extends Module {
                 this.shouldBlink = false;
                 break;
         }
+        super.onEnable();
     }
 
     @Listen
@@ -119,7 +120,6 @@ public class NoFall extends Module {
                     }
                 }
                 break;
-
             case "Verus":
                 if(mc.player.fallDistance - mc.player.motionY > 3) {
                     mc.player.motionY = 0.0;
