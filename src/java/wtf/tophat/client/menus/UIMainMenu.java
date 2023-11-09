@@ -1,6 +1,7 @@
 package wtf.tophat.client.menus;
 
 import net.minecraft.client.gui.*;
+import org.lwjgl.input.Keyboard;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.menus.guis.UIAltManager;
 import wtf.tophat.client.menus.guis.UIChangeLog;
@@ -70,5 +71,12 @@ public class UIMainMenu extends GuiScreen {
         fr.drawString("v" + TopHat.getVersion(), x + 32, y + 14, new Color(ColorUtil.fadeBetween(new Color(1, 236, 183).getRGB(), new Color(255, 255, 255).getRGB(), counter * 150L)).getRGB());
         counter++;
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (keyCode != Keyboard.KEY_ESCAPE) {
+            super.keyTyped(typedChar, keyCode);
+        }
     }
 }
