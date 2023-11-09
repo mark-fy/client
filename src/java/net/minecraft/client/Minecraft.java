@@ -38,16 +38,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiControls;
-import net.minecraft.client.gui.GuiGameOver;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiMemoryErrorScreen;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiSleepMP;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.achievement.GuiAchievement;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.main.GameConfiguration;
@@ -180,6 +171,7 @@ import wtf.tophat.client.events.impl.KeyboardEvent;
 import wtf.tophat.client.events.impl.PostTickEvent;
 import wtf.tophat.client.events.impl.RunTickEvent;
 import wtf.tophat.client.menus.UILoginScreen;
+import wtf.tophat.client.menus.UIMainMenu;
 import wtf.tophat.client.modules.impl.render.BlockAnimations;
 import wtf.tophat.viaversion.viamcp.fixes.AttackOrder;
 
@@ -3227,5 +3219,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         map.put("X-Minecraft-UUID", getMinecraft().getSession().getPlayerID());
         map.put("X-Minecraft-Version", "1.8.9");
         return map;
+    }
+
+    public void leaveServer() {
+        if (this.world == null) return;
+        final boolean flag = this.isIntegratedServerRunning();
+        this.world.sendQuittingDisconnectingPacket();
+        this.loadWorld(null);
+
+        if (flag) {
+            this.displayGuiScreen(new UIMainMenu());
+        } else {
+            this.displayGuiScreen(new GuiMultiplayer(new UIMainMenu()));
+        }
     }
 }

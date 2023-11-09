@@ -2,8 +2,17 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import java.util.List;
+
+import net.minecraft.client.multiplayer.GuiConnecting;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.impl.ServerKickEvent;
+import wtf.tophat.client.menus.UIMainMenu;
+import wtf.tophat.client.utilities.misc.LastConnectionUtil;
 
 public class GuiDisconnected extends GuiScreen
 {
@@ -37,17 +46,24 @@ public class GuiDisconnected extends GuiScreen
         this.buttonList.clear();
         this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
         this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu")));
+        this.buttonList.add(new GuiButton(69, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT + 20, "Reconnect"));
+
+        ServerKickEvent event = new ServerKickEvent(multilineMessage);
+        event.call();
     }
 
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button) throws IOException
-    {
-        if (button.id == 0)
-        {
-            this.mc.displayGuiScreen(this.parentScreen);
+    protected void actionPerformed(GuiButton button) throws IOException {
+        switch (button.id) {
+            case 0:
+                this.mc.displayGuiScreen(this.parentScreen);
+                break;
+            case 69: // Reconnect to the same server
+                this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(new UIMainMenu()), this.mc, new ServerData("", LastConnectionUtil.ip, false)));
+                break;
         }
     }
 

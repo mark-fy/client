@@ -18,6 +18,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import wtf.tophat.client.events.impl.ServerJoinEvent;
+import wtf.tophat.client.utilities.misc.LastConnectionUtil;
 
 public class GuiConnecting extends GuiScreen
 {
@@ -45,19 +47,23 @@ public class GuiConnecting extends GuiScreen
         this.connect(hostName, port);
     }
 
-    private void connect(final String ip, final int port)
-    {
+    private void connect(String ip, int port) {
+        ServerJoinEvent event = new ServerJoinEvent(ip, port);
+        event.call();
         logger.info("Connecting to " + ip + ", " + port);
-        (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet())
-        {
-            public void run()
-            {
+
+        int finalPort = port;
+        String finalIp = ip;
+
+        LastConnectionUtil.ip = finalIp;
+        LastConnectionUtil.port = finalPort;
+
+        (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet()) {
+            public void run() {
                 InetAddress inetaddress = null;
 
-                try
-                {
-                    if (GuiConnecting.this.cancel)
-                    {
+                try {
+                    if (GuiConnecting.this.cancel) {
                         return;
                     }
 

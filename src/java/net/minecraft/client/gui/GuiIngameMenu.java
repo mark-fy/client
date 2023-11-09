@@ -3,9 +3,12 @@ package net.minecraft.client.gui;
 import java.io.IOException;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
+import net.minecraft.client.multiplayer.GuiConnecting;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
 import wtf.tophat.client.menus.UIMainMenu;
+import wtf.tophat.client.utilities.misc.LastConnectionUtil;
 
 public class GuiIngameMenu extends GuiScreen
 {
@@ -21,12 +24,15 @@ public class GuiIngameMenu extends GuiScreen
         this.field_146445_a = 0;
         this.buttonList.clear();
         int i = -16;
-        int j = 98;
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + i, I18n.format("menu.returnToMenu", new Object[0])));
+        int padding = 3;
 
-        if (!this.mc.isIntegratedServerRunning())
-        {
-            ((GuiButton)this.buttonList.get(0)).displayString = I18n.format("menu.disconnect", new Object[0]);
+        if (!this.mc.isIntegratedServerRunning()) {
+            this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + i, 100 - padding, 20, "Disconnect"));
+            this.buttonList.add(new GuiButton(8, this.width / 2 + padding, this.height / 4 + 120 + i, 100 - padding, 20, "Reconnect"));
+
+            this.buttonList.get(0).displayString = I18n.format("menu.disconnect");
+        } else {
+            this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + i, I18n.format("menu.returnToMenu")));
         }
 
         this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + i, I18n.format("menu.returnToGame", new Object[0])));
@@ -50,27 +56,15 @@ public class GuiIngameMenu extends GuiScreen
                 break;
 
             case 1:
-                boolean flag = this.mc.isIntegratedServerRunning();
                 button.enabled = false;
-                this.mc.world.sendQuittingDisconnectingPacket();
-                this.mc.loadWorld((WorldClient)null);
-
-                if (flag)
-                {
-                    this.mc.displayGuiScreen(new UIMainMenu());
-                }
-                else
-                {
-                    this.mc.displayGuiScreen(new GuiMultiplayer(new UIMainMenu()));
-                }
-
+                mc.leaveServer();
             case 2:
             case 3:
             default:
                 break;
 
             case 4:
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
                 this.mc.setIngameFocus();
                 break;
 
@@ -84,6 +78,11 @@ public class GuiIngameMenu extends GuiScreen
 
             case 7:
                 this.mc.displayGuiScreen(new GuiShareToLan(this));
+
+            case 8:
+                this.mc.leaveServer();
+                this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(new UIMainMenu()), this.mc, new ServerData("", LastConnectionUtil.ip, false)));
+                break;
         }
     }
 
