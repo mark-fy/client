@@ -1,6 +1,7 @@
 package wtf.tophat.client.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.block.BlockAir;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.Packet;
@@ -8,7 +9,9 @@ import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S27PacketExplosion;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
+import net.minecraft.util.AxisAlignedBB;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.impl.CollisionBoxesEvent;
 import wtf.tophat.client.events.impl.PacketEvent;
 import wtf.tophat.client.events.impl.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
@@ -28,7 +31,7 @@ public class Velocity extends Module {
 
     public Velocity() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Cubecraft"),
+                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Cubecraft", "Karhu"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
                         .setHidden(() -> !mode.is("Simple")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)
@@ -146,6 +149,23 @@ public class Velocity extends Module {
                         mc.player.motionX = -Math.sin(direction) * speed * currentSpeed;
                         mc.player.motionZ = Math.cos(direction) * speed * currentSpeed;
 
+                    }
+                }
+                break;
+        }
+    }
+
+    @Listen
+    public void onCollisionBoxes(CollisionBoxesEvent event){
+        switch (mode.get()) {
+            case "Karhu":
+                if (!mc.player.isSwingInProgress) return;
+
+                if (event.getBlock() instanceof BlockAir && mc.player.hurtTime > 0 && mc.player.ticksSinceVelocity <= 9) {
+                    final double x = event.getBlockPos().getX(), y = event.getBlockPos().getY(), z = event.getBlockPos().getZ();
+
+                    if (y == Math.floor(mc.player.posY) + 1) {
+                        event.setBoundingBox(AxisAlignedBB.fromBounds(0, 0, 0, 1, 0, 1).offset(x, y, z));
                     }
                 }
                 break;

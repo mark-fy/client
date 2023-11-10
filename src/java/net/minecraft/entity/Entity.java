@@ -116,6 +116,8 @@ public abstract class Entity implements ICommandSender
      */
     public boolean isCollidedVertically;
 
+    public int ticksSinceVelocity;
+
     /**
      * True if after a move this entity has collided with something either vertically or horizontally
      */

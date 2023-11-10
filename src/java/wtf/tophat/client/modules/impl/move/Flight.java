@@ -29,7 +29,7 @@ public class Flight extends Module {
 
     public Flight() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3", "Redesky"),
+                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3", "Redesky", "Karhu"),
                 aac3hopdelay = new NumberSetting(this, "Hop Delay", 1, 10, 3, 1)
                         .setHidden(() -> !mode.is("AAC3")),
                 aac3hopheight = new NumberSetting(this, "Hop Height", 0, 0.5, 0.4, 1)
@@ -167,6 +167,21 @@ public class Flight extends Module {
                     event.setOnGround(true);
                 }
                 break;
+            case "Karhu":
+                if(isMoving()) {
+                    if (mc.player.posY < startY) {
+                        mc.timer.timerSpeed = 0.2F;
+                        MoveUtil.setSpeed(4);
+                        mc.player.motionY = 0.99;
+                    } else {
+                        mc.timer.timerSpeed = 1.0F;
+                    }
+                }
+
+                if (mc.player.posY < startY) {
+                    event.setOnGround(true);
+                }
+                break;
         }
     }
 
@@ -230,6 +245,12 @@ public class Flight extends Module {
             case "AAC3":
                 startY = mc.player.posY;
                 break;
+            case "Karhu":
+                MoveUtil.spoof(3.1, false);
+                MoveUtil.spoof(0, false);
+                startY = (int) mc.player.posY;
+                if(mc.player.onGround) mc.player.jump();
+                break;
         }
         hasDamaged = false;
     }
@@ -249,6 +270,10 @@ public class Flight extends Module {
             case "Redesky":
                 val0 = 0;
                 val1 = 0;
+                break;
+            case "Karhu":
+                mc.timer.timerSpeed = 1.0F;
+                MoveUtil.setSpeed(0);
                 break;
         }
         super.onDisable();

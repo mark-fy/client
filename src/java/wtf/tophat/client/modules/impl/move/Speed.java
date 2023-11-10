@@ -28,7 +28,7 @@ public class Speed extends Module {
 
     public Speed() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "Vulcan", "New NCP", "Matrix", "AAC3", "AAC4", "AAC5"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "Vulcan", "New NCP", "Matrix", "AAC3", "AAC4", "AAC5", "Karhu"),
                 aac3speed = new NumberSetting(this, "AAC3 Speed", 1, 1.5, 1.2, 1)
                         .setHidden(() -> !mode.is("AAC3")),
                 speed = new NumberSetting(this, "Speed", 0, 3, 0.29, 2)
@@ -222,6 +222,21 @@ public class Speed extends Module {
                         mc.player.speedInAir = 0.02f;
                     }
                     break;
+                case "Karhu":
+                    if(mc.settings.keyBindJump.pressed ||!isMoving())
+                        return;
+
+                    mc.player.setSprinting(true);
+
+                    if (event.getState() == Event.State.PRE) {
+                        if(mc.player.onGround) {
+                            mc.timer.timerSpeed = 1;
+                            mc.player.jump();
+                            mc.player.motionY *= 0.55;
+                        } else {
+                            mc.timer.timerSpeed = (float) (1 + (Math.random() - 0.5) / 100);
+                        }
+                    }
             }
         }
     }
@@ -268,6 +283,9 @@ public class Speed extends Module {
             case "New NCP":
                 mc.player.motionX = 0;
                 mc.player.motionZ = 0;
+                break;
+            case "Karhu":
+                mc.timer.timerSpeed = 1.0F;
                 break;
         }
         super.onDisable();

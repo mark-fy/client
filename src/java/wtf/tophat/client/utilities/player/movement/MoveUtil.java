@@ -1,6 +1,7 @@
 package wtf.tophat.client.utilities.player.movement;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -27,6 +28,14 @@ public class MoveUtil implements Methods {
         mc.player.motionX = 0;
         mc.player.motionZ = 0;
     }
+    public static void spoof(double x, double y, double z, boolean ground) {
+        mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(mc.player.posX + x, mc.player.posY + y, mc.player.posZ + z, ground));
+    }
+
+    public static void spoof(double y, boolean ground) {
+        spoof(0, y, 0, ground);
+    }
+
 
     public void strafeNoTargetStrafe(MotionEvent event, double speed) {
         float direction = (float) Math.toRadians(getPlayerDirection());
