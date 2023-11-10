@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.Render3DEvent;
+import wtf.tophat.client.events.impl.render.Render3DEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.BooleanSetting;

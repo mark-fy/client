@@ -3,7 +3,7 @@ package wtf.tophat.client.modules.impl.move;
 import io.github.nevalackin.radbus.Listen;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.handler.PlayerHandler;
-import wtf.tophat.client.events.impl.RunTickEvent;
+import wtf.tophat.client.events.impl.world.RunTickEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.StringSetting;

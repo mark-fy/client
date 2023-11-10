@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.*;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.Render2DEvent;
-import wtf.tophat.client.events.impl.RotationEvent;
-import wtf.tophat.client.events.impl.UpdateEvent;
+import wtf.tophat.client.events.impl.render.Render2DEvent;
+import wtf.tophat.client.events.impl.combat.RotationEvent;
+import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
-import wtf.tophat.client.modules.impl.combat.Killaura;
+import wtf.tophat.client.modules.impl.combat.KillAura;
 import wtf.tophat.client.modules.impl.move.CorrectMovement;
 import wtf.tophat.client.modules.impl.move.Speed;
 import wtf.tophat.client.settings.impl.BooleanSetting;
@@ -215,7 +215,7 @@ public class ScaffoldWalk extends Module {
 
         if(!placed && mc.player.ticksExisted % 2 == 0) {
 
-            if(!(Killaura.target == null)) {
+            if(!(KillAura.target == null)) {
                 PacketUtil.sendBlocking(true, false);
             }
         }

@@ -1,4 +1,4 @@
-package wtf.tophat.client.events.impl;
+package wtf.tophat.client.events.impl.render;
 
 import net.minecraft.client.gui.ScaledResolution;
 import wtf.tophat.client.events.base.Event;

@@ -11,9 +11,9 @@ import net.minecraft.network.play.server.S27PacketExplosion;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
 import net.minecraft.util.AxisAlignedBB;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.CollisionBoxesEvent;
-import wtf.tophat.client.events.impl.PacketEvent;
-import wtf.tophat.client.events.impl.UpdateEvent;
+import wtf.tophat.client.events.impl.world.CollisionBoxesEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
+import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.modules.impl.move.Speed;
@@ -33,9 +33,9 @@ public class Velocity extends Module {
         TopHat.settingManager.add(
                 mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Cubecraft", "Karhu"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
-                        .setHidden(() -> !mode.is("Simple")),
+                        .setHidden(() -> !mode.is("Simple") && !mode.is("Reverse")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)
-                        .setHidden(() -> !mode.is("Simple"))
+                        .setHidden(() -> !mode.is("Simple") && !mode.is("Reverse"))
         );
     }
 
@@ -45,10 +45,12 @@ public class Velocity extends Module {
 
     @Listen
     public void onUpdate(UpdateEvent event) {
-        if (mode.get().equals("Grim")) {
-            if (transactionQueue.isEmpty() && grimPacket) {
-                grimPacket = false;
-            }
+        switch (mode.get()) {
+            case "Grim":
+                if (transactionQueue.isEmpty() && grimPacket) {
+                    grimPacket = false;
+                }
+                break;
         }
     }
 
@@ -162,7 +164,7 @@ public class Velocity extends Module {
                 if (!mc.player.isSwingInProgress) return;
 
                 if (event.getBlock() instanceof BlockAir && mc.player.hurtTime > 0 && mc.player.ticksSinceVelocity <= 9) {
-                    final double x = event.getBlockPos().getX(), y = event.getBlockPos().getY(), z = event.getBlockPos().getZ();
+                    double x = event.getBlockPos().getX(), y = event.getBlockPos().getY(), z = event.getBlockPos().getZ();
 
                     if (y == Math.floor(mc.player.posY) + 1) {
                         event.setBoundingBox(AxisAlignedBB.fromBounds(0, 0, 0, 1, 0, 1).offset(x, y, z));

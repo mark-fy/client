@@ -15,7 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.handler.PlayerHandler;
-import wtf.tophat.client.modules.impl.combat.Killaura;
+import wtf.tophat.client.modules.impl.combat.KillAura;
 import wtf.tophat.client.modules.impl.player.ChestStealer;
 import wtf.tophat.client.modules.impl.player.InventoryManager;
 
@@ -160,7 +160,7 @@ public class GuiInventory extends InventoryEffectRenderer
                 TopHat.moduleManager.getByClass(ChestStealer.class).setEnabled(false);
                 break;
             case 71: //Disable Kill Aura
-                TopHat.moduleManager.getByClass(Killaura.class).setEnabled(false);
+                TopHat.moduleManager.getByClass(KillAura.class).setEnabled(false);
                 break;
         }
     }

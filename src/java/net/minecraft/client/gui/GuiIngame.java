@@ -42,7 +42,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.Render2DEvent;
+import wtf.tophat.client.events.impl.render.Render2DEvent;
 import wtf.tophat.client.modules.impl.hud.Crosshair;
 
 public class GuiIngame extends Gui

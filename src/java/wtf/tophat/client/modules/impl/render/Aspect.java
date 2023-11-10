@@ -2,7 +2,7 @@ package wtf.tophat.client.modules.impl.render;
 
 import io.github.nevalackin.radbus.Listen;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.PerspectiveEvent;
+import wtf.tophat.client.events.impl.render.PerspectiveEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.BooleanSetting;

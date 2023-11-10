@@ -3,7 +3,7 @@ package wtf.tophat.client.modules.impl.combat;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.util.EnumFacing;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.RayTraceRangeEvent;
+import wtf.tophat.client.events.impl.combat.RayTraceRangeEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.BooleanSetting;

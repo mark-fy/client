@@ -47,8 +47,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import wtf.tophat.client.events.impl.SafeWalkEvent;
-import wtf.tophat.client.events.impl.StrafeEvent;
+import wtf.tophat.client.events.impl.move.SafeWalkEvent;
+import wtf.tophat.client.events.impl.move.StrafeEvent;
 
 public abstract class Entity implements ICommandSender
 {

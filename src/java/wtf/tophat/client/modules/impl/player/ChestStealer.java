@@ -6,7 +6,7 @@ import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.UpdateEvent;
+import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.NumberSetting;

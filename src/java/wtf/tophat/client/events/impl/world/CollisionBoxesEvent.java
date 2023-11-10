@@ -1,4 +1,4 @@
-package wtf.tophat.client.events.impl;
+package wtf.tophat.client.events.impl.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.AxisAlignedBB;

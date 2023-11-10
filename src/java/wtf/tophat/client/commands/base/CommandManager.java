@@ -5,8 +5,8 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.GuiChat;
 import org.reflections.Reflections;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.ChatEvent;
-import wtf.tophat.client.events.impl.KeyboardEvent;
+import wtf.tophat.client.events.impl.game.ChatEvent;
+import wtf.tophat.client.events.impl.game.KeyboardEvent;
 import wtf.tophat.client.utilities.Methods;
 import org.lwjgl.input.Keyboard;
 

@@ -32,7 +32,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import wtf.tophat.client.events.impl.CollisionBoxesEvent;
+import wtf.tophat.client.events.impl.world.CollisionBoxesEvent;
 
 public class Block
 {

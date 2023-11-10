@@ -10,7 +10,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockPos;
 import wtf.tophat.client.events.base.Event;
-import wtf.tophat.client.events.impl.MotionEvent;
+import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 

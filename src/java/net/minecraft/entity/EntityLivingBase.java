@@ -51,7 +51,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.DelayJumpEvent;
+import wtf.tophat.client.events.impl.move.DelayJumpEvent;
 import wtf.tophat.client.modules.impl.render.HitAnimations;
 
 public abstract class EntityLivingBase extends Entity

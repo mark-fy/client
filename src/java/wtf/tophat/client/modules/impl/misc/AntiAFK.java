@@ -1,8 +1,8 @@
 package wtf.tophat.client.modules.impl.misc;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.client.events.impl.RotationEvent;
-import wtf.tophat.client.events.impl.UpdateEvent;
+import wtf.tophat.client.events.impl.combat.RotationEvent;
+import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.utilities.math.MathUtil;

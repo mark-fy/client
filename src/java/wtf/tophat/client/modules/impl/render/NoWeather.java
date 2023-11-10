@@ -3,7 +3,7 @@ package wtf.tophat.client.modules.impl.render;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.world.storage.WorldInfo;
-import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 

@@ -15,28 +15,23 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.base.Event;
-import wtf.tophat.client.events.impl.MotionEvent;
-import wtf.tophat.client.events.impl.RotationEvent;
-import wtf.tophat.client.events.impl.UpdateEvent;
+import wtf.tophat.client.events.impl.combat.RotationEvent;
+import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.BooleanSetting;
 import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.settings.impl.StringSetting;
-import wtf.tophat.client.utilities.math.MathUtil;
 import wtf.tophat.client.utilities.math.time.TimeUtil;
 import wtf.tophat.client.utilities.player.PlayerUtil;
-import wtf.tophat.client.utilities.player.rotations.FixedRotations;
 import wtf.tophat.client.utilities.player.rotations.RotationUtil;
 
-@ModuleInfo(name = "Killaura", desc = "kills entity", category = Module.Category.COMBAT)
-public class Killaura extends Module {
+@ModuleInfo(name = "Kill Aura", desc = "kills entity", category = Module.Category.COMBAT)
+public class KillAura extends Module {
     public static Entity target;
     public static float yaw;
     public static float pitch;
@@ -63,7 +58,7 @@ public class Killaura extends Module {
     public BooleanSetting dead = new BooleanSetting(this,"Dead", false);
     public BooleanSetting teams = new BooleanSetting(this,"Teams", false);
 
-    public Killaura() {
+    public KillAura() {
         TopHat.settingManager.add(
             mode,
             rotations,
@@ -86,6 +81,10 @@ public class Killaura extends Module {
 
     @Listen
     public void onRotation(RotationEvent event){
+        if(target == null) {
+            return;
+        }
+        
         float[] rotation = RotationUtil.getRotation(target);
         event.setYaw(rotation[0]);
         event.setPitch(rotation[1]);
@@ -93,8 +92,8 @@ public class Killaura extends Module {
 
     @Listen
     public void onMotion(MotionEvent event) {
-        if(event.getState().equals(Event.State.PRE)) {
-            for (Entity e : Killaura.mc.world.loadedEntityList) {
+        if(event.getState() == Event.State.PRE) {
+            for (Entity e : KillAura.mc.world.loadedEntityList) {
                 if (!this.allowedToAttack(e)) continue;
                 target = e;
                 this.updateTarget();
@@ -104,9 +103,9 @@ public class Killaura extends Module {
                 this.unblock();
             }
             if (target != null) {
-                lastYaw = Killaura.mc.player.rotationYaw;
-                lastPitch = Killaura.mc.player.rotationPitch;
-                if (!this.thruwalls.get() && !Killaura.mc.player.canEntityBeSeen(target)) {
+                lastYaw = KillAura.mc.player.rotationYaw;
+                lastPitch = KillAura.mc.player.rotationPitch;
+                if (!this.thruwalls.get() && !KillAura.mc.player.canEntityBeSeen(target)) {
                     return;
                 }
                 if (this.timeUtils.elapsed(1000 / this.aps.get().intValue())) {
@@ -119,7 +118,7 @@ public class Killaura extends Module {
 
     @Override
     public void onEnable() {
-        this.blocking = Killaura.mc.settings.keyBindUseItem.isKeyDown();
+        this.blocking = KillAura.mc.settings.keyBindUseItem.isKeyDown();
         super.onEnable();
     }
 
@@ -132,14 +131,14 @@ public class Killaura extends Module {
     }
 
     private void Attack(Entity e) {
-        Killaura.mc.player.swingItem();
+        KillAura.mc.player.swingItem();
         switch (blockMode.get()) {
             case "None": {
                 break;
             }
             case "Legit": {
                 if (PlayerUtil.isHoldingSword()) {
-                    if (Killaura.mc.player.ticksExisted % 15 == 0) {
+                    if (KillAura.mc.player.ticksExisted % 15 == 0) {
                         this.block();
                     } else {
                         this.unblock();
@@ -160,8 +159,8 @@ public class Killaura extends Module {
                 if (!(target instanceof EntityPlayer)) break;
                 EntityPlayer player = (EntityPlayer)target;
                 if (PlayerUtil.isHoldingSword()) {
-                    if (player.hurtTime >= 5 || Killaura.mc.player.ticksExisted % 3 != 1) break;
-                    sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, Killaura.mc.player.getHeldItem(), 0.0f, 0.0f, 0.0f));
+                    if (player.hurtTime >= 5 || KillAura.mc.player.ticksExisted % 3 != 1) break;
+                    sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, KillAura.mc.player.getHeldItem(), 0.0f, 0.0f, 0.0f));
                     break;
                 }
                 sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
@@ -169,13 +168,13 @@ public class Killaura extends Module {
             }
             case "Interact": {
                 if (!PlayerUtil.isHoldingSword()) break;
-                Killaura.mc.playerController.interactWithEntitySendPacket(Killaura.mc.player, target);
-                this.sendPacket(new C08PacketPlayerBlockPlacement(Killaura.mc.player.getHeldItem()));
+                KillAura.mc.playerController.interactWithEntitySendPacket(KillAura.mc.player, target);
+                this.sendPacket(new C08PacketPlayerBlockPlacement(KillAura.mc.player.getHeldItem()));
                 break;
             }
             case "NCP": {
                 if (!PlayerUtil.isHoldingSword()) break;
-                this.sendPacket(new C08PacketPlayerBlockPlacement(Killaura.mc.player.getHeldItem()));
+                this.sendPacket(new C08PacketPlayerBlockPlacement(KillAura.mc.player.getHeldItem()));
             }
         }
         switch (this.mode.get()) {
@@ -183,10 +182,10 @@ public class Killaura extends Module {
                 if (this.keepsprint.get()) {
                     this.sendPacket(new C02PacketUseEntity(target, C02PacketUseEntity.Action.ATTACK));
                 } else {
-                    Killaura.mc.playerController.attackEntity(Killaura.mc.player, target);
+                    KillAura.mc.playerController.attackEntity(KillAura.mc.player, target);
                 }
-                if (!(Killaura.mc.player.fallDistance > 0.0f)) break;
-                Killaura.mc.player.onCriticalHit(target);
+                if (!(KillAura.mc.player.fallDistance > 0.0f)) break;
+                KillAura.mc.player.onCriticalHit(target);
                 break;
             }
             case "Switch": {
@@ -202,10 +201,10 @@ public class Killaura extends Module {
                 if (this.keepsprint.get()) {
                     this.sendPacket(new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
                 } else {
-                    Killaura.mc.playerController.attackEntity(Killaura.mc.player, entity);
+                    KillAura.mc.playerController.attackEntity(KillAura.mc.player, entity);
                 }
-                if (Killaura.mc.player.fallDistance > 0.0f) {
-                    Killaura.mc.player.onCriticalHit(target);
+                if (KillAura.mc.player.fallDistance > 0.0f) {
+                    KillAura.mc.player.onCriticalHit(target);
                 }
                 ++this.targetIndex;
                 break;
@@ -215,10 +214,10 @@ public class Killaura extends Module {
                     if (this.keepsprint.get()) {
                         this.sendPacket(new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
                     } else {
-                        Killaura.mc.playerController.attackEntity(Killaura.mc.player, entity);
+                        KillAura.mc.playerController.attackEntity(KillAura.mc.player, entity);
                     }
-                    if (!(Killaura.mc.player.fallDistance > 0.0f)) continue;
-                    Killaura.mc.player.onCriticalHit(entity);
+                    if (!(KillAura.mc.player.fallDistance > 0.0f)) continue;
+                    KillAura.mc.player.onCriticalHit(entity);
                 }
                 break;
             }
@@ -226,7 +225,7 @@ public class Killaura extends Module {
     }
 
     public List<EntityLivingBase> getTargets() {
-        List<EntityLivingBase> entities = Killaura.mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityLivingBase).map(entity -> (EntityLivingBase)entity).filter(entity -> {
+        List<EntityLivingBase> entities = KillAura.mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityLivingBase).map(entity -> (EntityLivingBase)entity).filter(entity -> {
             if (entity instanceof EntityPlayer && !this.players.get()) {
                 return false;
             }
@@ -248,14 +247,14 @@ public class Killaura extends Module {
             if (entity instanceof EntityPlayer) {
                 EntityPlayer entityPlayer = (EntityPlayer)entity;
             }
-            return Killaura.mc.player != entity;
+            return KillAura.mc.player != entity;
         }).filter(entity -> {
             double girth = 0.5657;
-            return Killaura.mc.player.getDistanceToEntity(entity) - 0.5657 < range.get().doubleValue();
+            return KillAura.mc.player.getDistanceToEntity(entity) - 0.5657 < range.get().doubleValue();
         }).sorted(Comparator.comparingDouble(entity -> {
             switch (this.sort.get()) {
                 case "Distance": {
-                    return Killaura.mc.player.getDistanceSqToEntity(entity);
+                    return KillAura.mc.player.getDistanceSqToEntity(entity);
                 }
                 case "Health": {
                     return entity.getHealth();
@@ -276,27 +275,27 @@ public class Killaura extends Module {
 
     private boolean allowedToAttack(Entity entity) {
         this.getTargets();
-        return entity instanceof EntityLivingBase && entity != Killaura.mc.player && Killaura.mc.player.getDistanceToEntity(entity) <= range.get().intValue();
+        return entity instanceof EntityLivingBase && entity != KillAura.mc.player && KillAura.mc.player.getDistanceToEntity(entity) <= range.get().intValue();
     }
 
     private void block() {
-        this.sendUseItem(Killaura.mc.player, Killaura.mc.world, Killaura.mc.player.getCurrentEquippedItem());
-        Killaura.mc.settings.keyBindUseItem.pressed = true;
-        Killaura.mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, Killaura.mc.player.getHeldItem(), 0.0f, 0.0f, 0.0f));
+        this.sendUseItem(KillAura.mc.player, KillAura.mc.world, KillAura.mc.player.getCurrentEquippedItem());
+        KillAura.mc.settings.keyBindUseItem.pressed = true;
+        KillAura.mc.player.sendQueue.send(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, KillAura.mc.player.getHeldItem(), 0.0f, 0.0f, 0.0f));
         this.blocking = true;
     }
 
     private void unblock() {
         if (this.blocking) {
-            Killaura.mc.settings.keyBindUseItem.pressed = false;
+            KillAura.mc.settings.keyBindUseItem.pressed = false;
             this.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             this.blocking = false;
         }
     }
 
     public void sendUseItem(EntityPlayer playerIn, World worldIn, ItemStack itemStackIn) {
-        if (Killaura.mc.playerController.getCurrentGameType() != WorldSettings.GameType.SPECTATOR) {
-            Killaura.mc.playerController.syncCurrentPlayItem();
+        if (KillAura.mc.playerController.getCurrentGameType() != WorldSettings.GameType.SPECTATOR) {
+            KillAura.mc.playerController.syncCurrentPlayItem();
             int i = itemStackIn.stackSize;
             ItemStack itemstack = itemStackIn.useItemRightClick(worldIn, playerIn);
             if (itemstack != itemStackIn || itemstack.stackSize != i) {

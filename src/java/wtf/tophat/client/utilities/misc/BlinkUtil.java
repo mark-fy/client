@@ -8,7 +8,7 @@ import net.minecraft.network.login.client.C01PacketEncryptionResponse;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.status.client.C00PacketServerQuery;
 import net.minecraft.network.status.client.C01PacketPing;
-import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.utilities.Methods;
 import wtf.tophat.client.utilities.math.time.TimeUtil;
 import wtf.tophat.client.utilities.network.PacketUtil;

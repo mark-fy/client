@@ -51,7 +51,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.viaversion.vialoadingbase.ViaLoadingBase;
 import wtf.tophat.viaversion.vialoadingbase.netty.event.CompressionReorderEvent;
 import wtf.tophat.viaversion.viamcp.MCPVLBPipeline;

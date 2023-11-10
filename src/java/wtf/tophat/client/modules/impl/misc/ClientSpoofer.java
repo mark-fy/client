@@ -5,7 +5,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.StringSetting;

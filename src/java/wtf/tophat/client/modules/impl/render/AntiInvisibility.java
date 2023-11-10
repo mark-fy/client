@@ -2,7 +2,7 @@ package wtf.tophat.client.modules.impl.render;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.potion.Potion;
-import wtf.tophat.client.events.impl.MotionEvent;
+import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 

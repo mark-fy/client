@@ -20,7 +20,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.modules.impl.combat.Killaura;
+import wtf.tophat.client.modules.impl.combat.KillAura;
 import wtf.tophat.client.modules.impl.player.ChestStealer;
 import wtf.tophat.client.modules.impl.player.InventoryManager;
 
@@ -111,7 +111,7 @@ public abstract class GuiContainer extends GuiScreen
                 TopHat.moduleManager.getByClass(ChestStealer.class).setEnabled(false);
                 break;
             case 71: //Disable Kill Aura
-                TopHat.moduleManager.getByClass(Killaura.class).setEnabled(false);
+                TopHat.moduleManager.getByClass(KillAura.class).setEnabled(false);
                 break;
         }
         super.actionPerformed(button);

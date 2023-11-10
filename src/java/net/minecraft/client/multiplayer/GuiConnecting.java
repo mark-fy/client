@@ -18,7 +18,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wtf.tophat.client.events.impl.ServerJoinEvent;
+import wtf.tophat.client.events.impl.game.ServerJoinEvent;
 import wtf.tophat.client.utilities.misc.LastConnectionUtil;
 
 public class GuiConnecting extends GuiScreen

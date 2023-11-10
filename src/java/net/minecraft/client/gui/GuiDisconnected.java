@@ -5,12 +5,9 @@ import java.util.List;
 
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
-import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.ServerKickEvent;
+import wtf.tophat.client.events.impl.game.ServerKickEvent;
 import wtf.tophat.client.menus.UIMainMenu;
 import wtf.tophat.client.utilities.misc.LastConnectionUtil;
 

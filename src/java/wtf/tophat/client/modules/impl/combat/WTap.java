@@ -3,7 +3,7 @@ package wtf.tophat.client.modules.impl.combat;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
-import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 

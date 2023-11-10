@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.UpdateEvent;
+import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.NumberSetting;

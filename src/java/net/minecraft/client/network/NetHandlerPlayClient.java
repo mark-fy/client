@@ -206,8 +206,8 @@ import net.minecraft.world.storage.MapData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import wtf.tophat.client.events.handler.PlayerHandler;
-import wtf.tophat.client.events.impl.OnDeathEvent;
-import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.client.events.impl.player.OnDeathEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.menus.UIMainMenu;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient

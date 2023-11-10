@@ -66,7 +66,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 import wtf.tophat.client.events.handler.PlayerHandler;
-import wtf.tophat.client.events.impl.*;
+import wtf.tophat.client.events.impl.combat.RayTraceRangeEvent;
+import wtf.tophat.client.events.impl.combat.RotationEvent;
+import wtf.tophat.client.events.impl.render.EntityRendererEvent;
+import wtf.tophat.client.events.impl.render.PerspectiveEvent;
+import wtf.tophat.client.events.impl.render.Render3DEvent;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {

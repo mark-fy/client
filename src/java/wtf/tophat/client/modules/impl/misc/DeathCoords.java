@@ -2,7 +2,7 @@ package wtf.tophat.client.modules.impl.misc;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.GuiGameOver;
-import wtf.tophat.client.events.impl.OnDeathEvent;
+import wtf.tophat.client.events.impl.player.OnDeathEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 

@@ -4,8 +4,8 @@ import de.florianmichael.rclasses.storage.Storage;
 import io.github.nevalackin.radbus.Listen;
 import org.reflections.Reflections;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.KeyboardEvent;
-import wtf.tophat.client.events.impl.Render2DEvent;
+import wtf.tophat.client.events.impl.game.KeyboardEvent;
+import wtf.tophat.client.events.impl.render.Render2DEvent;
 import wtf.tophat.client.utilities.Methods;
 
 import java.lang.reflect.InvocationTargetException;

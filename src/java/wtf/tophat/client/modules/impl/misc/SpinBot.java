@@ -2,8 +2,8 @@ package wtf.tophat.client.modules.impl.misc;
 
 import io.github.nevalackin.radbus.Listen;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.Render3DEvent;
-import wtf.tophat.client.events.impl.RotationEvent;
+import wtf.tophat.client.events.impl.render.Render3DEvent;
+import wtf.tophat.client.events.impl.combat.RotationEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.BooleanSetting;

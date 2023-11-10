@@ -1,7 +1,7 @@
 package wtf.tophat.client.modules.impl.hud;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.client.events.impl.DebugOverlayEvent;
+import wtf.tophat.client.events.impl.render.DebugOverlayEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 

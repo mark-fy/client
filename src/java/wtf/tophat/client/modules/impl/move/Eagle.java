@@ -6,7 +6,7 @@ import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.base.Event;
-import wtf.tophat.client.events.impl.MotionEvent;
+import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.NumberSetting;

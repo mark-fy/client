@@ -1,7 +1,7 @@
 package wtf.tophat.client.modules.impl.player;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.client.events.impl.UpdateEvent;
+import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 

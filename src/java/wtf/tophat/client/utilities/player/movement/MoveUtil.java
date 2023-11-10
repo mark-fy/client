@@ -7,7 +7,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.util.vector.Vector2f;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.MotionEvent;
+import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.modules.impl.player.ScaffoldWalk;
 import wtf.tophat.client.utilities.Methods;
 

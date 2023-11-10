@@ -14,8 +14,8 @@ import org.lwjgl.input.Mouse;
 import net.minecraft.item.ItemSword;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.base.Event;
-import wtf.tophat.client.events.impl.MotionEvent;
-import wtf.tophat.client.events.impl.RotationEvent;
+import wtf.tophat.client.events.impl.move.MotionEvent;
+import wtf.tophat.client.events.impl.combat.RotationEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.BooleanSetting;
@@ -25,7 +25,7 @@ import wtf.tophat.client.utilities.Methods;
 @ModuleInfo(name = "Aim Assist", desc = "assists aiming at players", category = Module.Category.COMBAT)
 public class AimAssist extends Module {
 
-    private final NumberSetting horizontalSpeed, verticalSpeed, cameraShake, minRange, maxRange;
+    private final NumberSetting horizontalSpeed, verticalSpeed, cameraShake, range;
     private final BooleanSetting swordCheck, clickAim;
 
     public AimAssist() {
@@ -33,8 +33,7 @@ public class AimAssist extends Module {
                 horizontalSpeed = new NumberSetting(this, "Horizontal Aim Speed", 0, 7, 0.5, 2),
                 verticalSpeed = new NumberSetting(this, "Vertical Aim Speed", 0, 7, 0.5, 2),
                 cameraShake = new NumberSetting(this, "Camera Shake Amount", 0, 5, 0.2, 1),
-                minRange = new NumberSetting(this, "Min Range", 0, 10, 3.1, 1),
-                maxRange = new NumberSetting(this, "Max Range", 1, 10, 3.9, 1),
+                range = new NumberSetting(this, "Range", 1, 10, 3.1, 1),
                 swordCheck = new BooleanSetting(this,"Sword Only", false),
                 clickAim = new BooleanSetting(this, "Click Aim", true)
         );
@@ -48,17 +47,13 @@ public class AimAssist extends Module {
             List<EntityLivingBase> targets = Methods.mc.world.loadedEntityList.stream()
                     .filter(entity -> entity instanceof EntityLivingBase)
                     .map(entity -> (EntityLivingBase) entity)
-                    .filter(entityLivingBase -> {
-                        double distanceToPlayer = entityLivingBase.getDistanceToEntity(Methods.mc.player);
-                        return distanceToPlayer >= minRange.get().doubleValue()
-                                && distanceToPlayer <= maxRange.get().doubleValue()
+                    .filter(entityLivingBase -> entityLivingBase.getDistanceToEntity(mc.player) <= range.get().floatValue()
                                 && entityLivingBase != Methods.mc.player
                                 && !entityLivingBase.isDead
                                 && entityLivingBase.getHealth() > 0
                                 && !entityLivingBase.isInvisible()
                                 && !entityLivingBase.getName().isEmpty()
-                                && !entityLivingBase.getName().contains(" ");
-                    })
+                                && !entityLivingBase.getName().contains(" "))
                     .sorted(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(Methods.mc.player)))
                     .collect(Collectors.toList());
 

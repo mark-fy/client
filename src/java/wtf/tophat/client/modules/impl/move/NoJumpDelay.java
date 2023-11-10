@@ -1,7 +1,7 @@
 package wtf.tophat.client.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
-import wtf.tophat.client.events.impl.DelayJumpEvent;
+import wtf.tophat.client.events.impl.move.DelayJumpEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 

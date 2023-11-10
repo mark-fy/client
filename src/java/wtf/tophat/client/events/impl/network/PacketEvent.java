@@ -1,4 +1,4 @@
-package wtf.tophat.client.events.impl;
+package wtf.tophat.client.events.impl.network;
 
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;

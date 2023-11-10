@@ -1,7 +1,7 @@
 package wtf.tophat.client.utilities.player;
 
 import wtf.tophat.client.events.base.Event;
-import wtf.tophat.client.events.impl.MotionEvent;
+import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.utilities.Methods;
 
 public final class FallDistanceUtil implements Methods {

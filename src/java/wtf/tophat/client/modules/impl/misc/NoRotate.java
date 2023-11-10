@@ -3,7 +3,7 @@ package wtf.tophat.client.modules.impl.misc;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.events.impl.PacketEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.StringSetting;
