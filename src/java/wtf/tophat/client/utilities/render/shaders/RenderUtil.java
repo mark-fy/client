@@ -1,9 +1,13 @@
 package wtf.tophat.client.utilities.render.shaders;
 
+import de.florianmichael.rclasses.ColorUtils;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -30,6 +34,29 @@ public class RenderUtil implements Methods {
             return new Framebuffer(mc.displayWidth, mc.displayHeight, depth);
         }
         return framebuffer;
+    }
+
+
+    public static void drawRect(int x, int y, int width, int height, int color) {
+        Gui.drawRect(x, y, x + width, y + height, color);
+    }
+
+    public static void draw2DPolygon(double x, double y, double radius, int sides, int color) {
+        if (sides < 3) return;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        glColor(color);
+        worldrenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION);
+        for (int i = 0; i < sides; i++) {
+            double angle = (Math.PI * 2 * i / sides) + Math.toRadians(180);
+            worldrenderer.pos(x + Math.sin(angle) * radius, y + Math.cos(angle) * radius, 0).endVertex();
+        }
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 
     public static boolean needsNewFramebuffer(Framebuffer framebuffer) {
