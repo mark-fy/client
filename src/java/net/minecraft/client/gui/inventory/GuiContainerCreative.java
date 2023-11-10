@@ -32,7 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.modules.impl.combat.KillAura;
+import wtf.tophat.client.modules.impl.combat.Killaura;
 import wtf.tophat.client.modules.impl.player.ChestStealer;
 import wtf.tophat.client.modules.impl.player.InventoryManager;
 
@@ -850,7 +850,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
                 TopHat.moduleManager.getByClass(ChestStealer.class).setEnabled(false);
                 break;
             case 71: //Disable Kill Aura
-                TopHat.moduleManager.getByClass(KillAura.class).setEnabled(false);
+                TopHat.moduleManager.getByClass(Killaura.class).setEnabled(false);
                 break;
         }
     }

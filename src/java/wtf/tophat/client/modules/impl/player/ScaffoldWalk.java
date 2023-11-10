@@ -2,7 +2,6 @@ package wtf.tophat.client.modules.impl.player;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -14,7 +13,7 @@ import wtf.tophat.client.events.impl.RotationEvent;
 import wtf.tophat.client.events.impl.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
-import wtf.tophat.client.modules.impl.combat.KillAura;
+import wtf.tophat.client.modules.impl.combat.Killaura;
 import wtf.tophat.client.modules.impl.move.CorrectMovement;
 import wtf.tophat.client.modules.impl.move.Speed;
 import wtf.tophat.client.settings.impl.BooleanSetting;
@@ -27,7 +26,6 @@ import wtf.tophat.client.utilities.player.PlayerUtil;
 import wtf.tophat.client.utilities.player.movement.MoveUtil;
 import wtf.tophat.client.utilities.player.rotations.FixedRotations;
 import wtf.tophat.client.utilities.player.rotations.RotationUtil;
-import wtf.tophat.client.utilities.render.ColorUtil;
 import wtf.tophat.client.utilities.world.BlockInfo;
 import wtf.tophat.client.utilities.world.WorldUtil;
 
@@ -217,7 +215,7 @@ public class ScaffoldWalk extends Module {
 
         if(!placed && mc.player.ticksExisted % 2 == 0) {
 
-            if(!(KillAura.target == null)) {
+            if(!(Killaura.target == null)) {
                 PacketUtil.sendBlocking(true, false);
             }
         }

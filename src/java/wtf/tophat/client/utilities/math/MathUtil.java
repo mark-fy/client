@@ -29,6 +29,16 @@ public class MathUtil implements Methods {
         return Math.random() * (max - min) + min;
     }
 
+    public static float sqrt(float value)
+    {
+        return (float)Math.sqrt((double)value);
+    }
+
+    public static float sqrt(double value)
+    {
+        return (float)Math.sqrt(value);
+    }
+
     public static int getRandInt(final int min, final int max) {
         return new Random().nextInt(max - min + 1) + min;
     }

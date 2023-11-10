@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAnvilBlock;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import wtf.tophat.client.utilities.Methods;
@@ -23,6 +24,10 @@ public class PlayerUtil implements Methods {
         } else {
             return false;
         }
+    }
+
+    public static boolean isHoldingSword() {
+        return mc.player.ticksExisted > 3 && mc.player.getCurrentEquippedItem() != null && mc.player.getCurrentEquippedItem().getItem() instanceof ItemSword;
     }
 
     public boolean isBlockUnder(final double height) {

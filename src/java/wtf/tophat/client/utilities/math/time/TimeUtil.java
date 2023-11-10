@@ -6,6 +6,10 @@ public class TimeUtil implements Methods {
 
     private long lastMS = System.currentTimeMillis();
 
+    public long getCurrentMS() {
+        return System.currentTimeMillis();
+    }
+
     public void reset() { lastMS = System.currentTimeMillis(); }
 
     public boolean elapsed(long time, boolean reset) {

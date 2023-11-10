@@ -12,7 +12,7 @@ import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.impl.Render2DEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
-import wtf.tophat.client.modules.impl.combat.KillAura;
+import wtf.tophat.client.modules.impl.combat.Killaura;
 import wtf.tophat.client.modules.impl.render.PostProcessing;
 import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.settings.impl.StringSetting;
@@ -79,7 +79,7 @@ public class TargetHUD extends Module {
                     break;
             }
 
-            EntityLivingBase targetEntity = KillAura.target;
+            EntityLivingBase targetEntity = (EntityLivingBase) Killaura.target;
             if (targetEntity != null) {
                 float health = targetEntity.getHealth();
 
