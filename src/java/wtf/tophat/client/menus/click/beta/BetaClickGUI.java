@@ -113,8 +113,11 @@ public class BetaClickGUI extends GuiScreen implements Methods {
                         settingOffset += 20;
                     } else if(setting instanceof NumberSetting) {
                         RoundedUtil.drawRound(x + 310, y + settingOffset + 1, 190, 35, 2, new Color(38,38,38));
+                        // the slider background (only visual)
                         RoundedUtil.drawRound(x + 312, y + settingOffset + 25, 186, 2, 2, Color.WHITE);
+                        // the part goes with the slider thingy (fills up used space)
                         RoundedUtil.drawRound(x + 312, y + settingOffset + 25, 40, 2, 2,  CategoryUtil.getCategoryColor(listeningToModule.getCategory()));
+                        // the slider thingy (when you hover your mouse over this and hold down it only then lets you slide it around)
                         RoundedUtil.drawRound(x + 350, y + settingOffset + 21, 2, 10, 1, Color.DARK_GRAY);
                         fr.drawString(setting.getName() + ": " + ((NumberSetting) setting).get(), x + 313, y + 5 + settingOffset, Color.WHITE);
                         settingOffset += 40;
