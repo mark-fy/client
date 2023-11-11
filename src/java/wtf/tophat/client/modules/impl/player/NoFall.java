@@ -86,8 +86,8 @@ public class NoFall extends Module {
                         }
                         break;
                 }
+                mc.player.fallDistance = 0;
             }
-            mc.player.fallDistance = 0;
         }
     }
 
