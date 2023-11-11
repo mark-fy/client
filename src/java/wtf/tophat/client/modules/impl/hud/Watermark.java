@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.menus.UILoginScreen;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.modules.impl.render.PostProcessing;
@@ -89,7 +90,7 @@ public class Watermark extends Module {
 
                 fr.drawStringWithShadow(displayText, 3, sr.getScaledHeight() - 10, new Color(170, 170, 170));
                 if(exhiVersion.get())
-                    fr.drawStringWithShadow(String.format("Release Build - §f§l%s§7 - TopHat", TopHat.getVersion()), sr.getScaledWidth() - fr.getStringWidth("Release Build - §f§l" + TopHat.getVersion() + "§7 - TopHat") + 5, sr.getScaledHeight() - 10, new Color(170,170,170));
+                    fr.drawStringWithShadow(String.format("Release Build - §f§l%s§7 - " + UILoginScreen.username, TopHat.getVersion()), sr.getScaledWidth() - fr.getStringWidth("Release Build - §f§l" + TopHat.getVersion() + "§7 - TopHat") + 5, sr.getScaledHeight() - 10, new Color(170,170,170));
                 break;
             }
             case "GameSense": {

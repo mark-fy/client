@@ -15,8 +15,14 @@ public class NetworkUtil {
 
     public static String getRawContent() {
         try {
-            URL url = new URL("https://raw.githubusercontent.com/spltiz1337/db/main/test.th?token=GHSAT0AAAAAACJQBA75A3FERGZPRT5ZWJNAZKO6ILA");
+            URL url = new URL("https://tophat.fun/assets/test.th");
             URLConnection connection = url.openConnection();
+
+            if (connection.getURL().getHost().equals("localhost")) {
+                System.out.println("Blocked connection from localhost.");
+                return null; // or handle the blocking logic as needed
+            }
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder content = new StringBuilder();
             String inputLine;
@@ -35,13 +41,19 @@ public class NetworkUtil {
         return null;
     }
 
+    // parts[0] = username
+    // parts[1] = hwid
+    // parts[2] = uid
+    // parts[3] = key
+    // parts[4] = discord-id
+
     public static String getUsernameFromHWID(String targetHWID) {
         if (getRawContent() != null && targetHWID != null) {
             String[] lines = getRawContent().split("\n");
 
             for (String line : lines) {
                 String[] parts = line.split(":");
-                if (parts.length == 3) {
+                if (parts.length == 5) {
                     String username = parts[0];
                     String hwid = parts[1];
                     if (hwid.equals(targetHWID)) {
@@ -60,7 +72,7 @@ public class NetworkUtil {
 
             for (String line : lines) {
                 String[] parts = line.split(":");
-                if (parts.length == 3) {
+                if (parts.length == 5) {
                     String hwid = parts[1];
                     String uid = parts[2];
                     if (hwid.equals(targetHWID)) {
@@ -79,7 +91,7 @@ public class NetworkUtil {
 
             for (String line : lines) {
                 String[] parts = line.split(":");
-                if (parts.length == 3) {
+                if (parts.length == 5) {
                     String hwid = parts[1];
                     if (hwid.equals(targetHWID)) {
                         return true; // HWID exists in the content

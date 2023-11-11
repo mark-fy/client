@@ -1,7 +1,6 @@
 package wtf.tophat.client.menus;
 
 import net.minecraft.client.gui.*;
-import org.lwjgl.Sys;
 import wtf.tophat.auth.HwidUtil;
 import wtf.tophat.auth.NetworkUtil;
 import wtf.tophat.client.TopHat;
@@ -11,6 +10,7 @@ import java.io.IOException;
 public class UILoginScreen extends GuiScreen {
 
     private GuiTextField uid;
+    public static String username;
 
     public UILoginScreen() {}
 
@@ -40,7 +40,9 @@ public class UILoginScreen extends GuiScreen {
                 }
 
                 TopHat.printL("[DEBUG] HWID: " + HwidUtil.getHWID());
+                System.out.println(NetworkUtil.getRawContent());
                 if(NetworkUtil.doesHWIDExistInContent(HwidUtil.getHWID()) && uid.getText().equalsIgnoreCase(NetworkUtil.getUIDFromHWID(HwidUtil.getHWID()))) {
+                    username = NetworkUtil.getUsernameFromHWID(HwidUtil.getHWID());
                     mc.displayGuiScreen(new UIMainMenu());
                     TopHat.printL("Welcome to TopHat, " + NetworkUtil.getUsernameFromHWID(HwidUtil.getHWID()) + "!");
                 } else if(!NetworkUtil.doesHWIDExistInContent(HwidUtil.getHWID())) {
