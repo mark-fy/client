@@ -31,7 +31,7 @@ public class NoFall extends Module {
 
     public NoFall() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Packet", "Verus", "Vulcan", "Blink")
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Packet", "Verus", "Vulcan", "Blink", "Invalid")
         );
     }
 
@@ -44,6 +44,10 @@ public class NoFall extends Module {
         if(event.getState() == Event.State.PRE) {
             if (mc.player.fallDistance > 3.0 && MoveUtil.isBlockUnder()) {
                 switch (mode.get()) {
+                    case "Invalid":
+                        mc.player.onGround = true;
+                        mc.player.motionY = -9999;
+                        break;
                     case "Vanilla":
                         event.setOnGround(true);
                         break;
