@@ -17,9 +17,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.base.Event;
 import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.events.impl.render.Render3DEvent;
-import wtf.tophat.client.events.impl.world.RunTickEvent;
+import wtf.tophat.client.events.impl.world.TickEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.BooleanSetting;
@@ -47,8 +48,10 @@ public class SuperheroFX extends Module {
     }
 
     @Listen
-    public void onTick(RunTickEvent event) {
-        this.popTexts.forEach(PopupText::update);
+    public void onTick(TickEvent event) {
+        if(event.getState() == Event.State.PRE) {
+            this.popTexts.forEach(PopupText::update);
+        }
     }
 
     @Listen
