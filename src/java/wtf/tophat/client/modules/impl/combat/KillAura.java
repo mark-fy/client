@@ -124,6 +124,10 @@ public class KillAura extends Module {
 
     @Override
     public void onDisable() {
+        if (getPlayer() == null || getWorld() == null) {
+            return;
+        }
+
         if (PlayerUtil.isHoldingSword()) {
             this.unblock();
         }
