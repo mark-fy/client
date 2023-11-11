@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 import wtf.tophat.client.commands.base.CommandManager;
+import wtf.tophat.client.utilities.misc.bestnameuwu;
 import wtf.tophat.config.ConfigManager;
 import wtf.tophat.config.impl.Load;
 import wtf.tophat.config.impl.Save;
@@ -11,7 +12,6 @@ import wtf.tophat.client.events.base.EventManager;
 import wtf.tophat.client.modules.base.ModuleManager;
 import wtf.tophat.script.ScriptManager;
 import wtf.tophat.client.settings.base.SettingManager;
-import wtf.tophat.client.utilities.misc.SlotSpoofHandler;
 import wtf.tophat.client.utilities.player.chat.ChatUtil;
 import wtf.tophat.viaversion.VersionManager;
 
@@ -44,7 +44,7 @@ public enum TopHat {
     public static final ConfigManager configManager = new ConfigManager();
     public static final ScriptManager scriptManager = new ScriptManager();
     public static final VersionManager versionManager = new VersionManager();
-    public static final SlotSpoofHandler slotSpoofHandler = new SlotSpoofHandler();
+    public static final bestnameuwu bestnameuwu = new bestnameuwu();
 
     private static final ChatUtil chatUtil = new ChatUtil();
 
@@ -53,6 +53,7 @@ public enum TopHat {
         Display.setTitle(getName() + " v" + getVersion());
         createFolder("tophat");
 
+        bestnameuwu.init();
         versionManager.init();
         moduleManager.init();
         commandManager.init();

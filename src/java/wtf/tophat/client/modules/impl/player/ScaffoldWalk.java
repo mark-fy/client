@@ -115,7 +115,7 @@ public class ScaffoldWalk extends Module {
             mc.player.inventory.currentItem = oldSlot;
         }
 
-        TopHat.slotSpoofHandler.stopSpoofing();
+        TopHat.bestnameuwu.stopSpoofing();
     }
 
     private void pickBlock() {
@@ -131,7 +131,7 @@ public class ScaffoldWalk extends Module {
         }
 
         if(blockPicker.is("Spoof")) {
-            TopHat.slotSpoofHandler.startSpoofing(oldSlot);
+            TopHat.bestnameuwu.startSpoofing(oldSlot);
         }
     }
 

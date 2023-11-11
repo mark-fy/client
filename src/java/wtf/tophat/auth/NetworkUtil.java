@@ -15,7 +15,7 @@ public class NetworkUtil {
 
     public static String getRawContent() {
         try {
-            URL url = new URL("https://raw.githubusercontent.com/mark-fy/db/main/f560d1b1-560e-44a1-9251-e862672c638b.th");
+            URL url = new URL("https://raw.githubusercontent.com/spltiz1337/db/main/test.th?token=GHSAT0AAAAAACJQBA75A3FERGZPRT5ZWJNAZKO6ILA");
             URLConnection connection = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder content = new StringBuilder();

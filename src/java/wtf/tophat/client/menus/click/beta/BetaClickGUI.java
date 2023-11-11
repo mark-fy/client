@@ -6,6 +6,7 @@ import org.lwjgl.input.Mouse;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.impl.hud.ClickGUI;
+import wtf.tophat.client.modules.impl.render.PostProcessing;
 import wtf.tophat.client.settings.base.Setting;
 import wtf.tophat.client.settings.impl.BooleanSetting;
 import wtf.tophat.client.settings.impl.DividerSetting;
@@ -15,6 +16,7 @@ import wtf.tophat.client.utilities.Methods;
 import wtf.tophat.client.utilities.render.CategoryUtil;
 import wtf.tophat.client.utilities.render.DrawingUtil;
 import wtf.tophat.client.utilities.render.shaders.RoundedUtil;
+import wtf.tophat.client.utilities.render.shaders.blur.GaussianBlur;
 import wtf.tophat.client.utilities.sound.SoundUtil;
 
 import java.awt.*;
@@ -39,11 +41,21 @@ public class BetaClickGUI extends GuiScreen implements Methods {
     private int dragX, dragY;
     private float x = 50, y = 50;
 
+    private void renderBlur() {
+        if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
+            GaussianBlur.startBlur();
+            DrawingUtil.rectangle(0, 0, width, height, true, new Color(0, 0, 0));
+            GaussianBlur.endBlur(10, 2);
+        }
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontRenderer fr = Methods.mc.fontRenderer;
 
         float width = 300, height = 285;
+
+        renderBlur();
 
         if (isDragging) {
             x = mouseX - dragX;

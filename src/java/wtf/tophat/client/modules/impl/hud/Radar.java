@@ -72,9 +72,9 @@ public class Radar extends Module {
         if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
             GaussianBlur.startBlur();
             RoundedUtil.drawRound(miX - borderWidth, miY - borderWidth, 100 + 2 * borderWidth, (maY - miY) + 2 * borderWidth, 3, new Color(0, 0, 0, 100));
-            GaussianBlur.endBlur(3, 2);
+            GaussianBlur.endBlur(3, 1);
         } else {
-            RoundedUtil.drawRound(miX - borderWidth, miY - borderWidth, 100 + 2 * borderWidth, (maY - miY) + 2 * borderWidth, 3, new Color(0, 0, 0, 128));
+            RoundedUtil.drawRound(miX - borderWidth, miY - borderWidth, 100 + 2 * borderWidth, (maY - miY) + 2 * borderWidth, 3, new Color(0, 0, 0, 100));
         }
 
         RenderUtil.drawRect(miX - borderWidth, miY - borderWidth - 1, 100 + 2 * borderWidth, borderWidth, ColorUtil.blendRainbowColours(counter * 150L)); // Bordure supérieure
