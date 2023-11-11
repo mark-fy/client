@@ -2,8 +2,9 @@ package wtf.tophat.client.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.base.Event;
 import wtf.tophat.client.events.handler.PlayerHandler;
-import wtf.tophat.client.events.impl.world.RunTickEvent;
+import wtf.tophat.client.events.impl.world.TickEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.StringSetting;
@@ -20,12 +21,12 @@ public class CorrectMovement extends Module {
     }
 
     @Listen
-    public void onTick(RunTickEvent event) {
+    public void onTick(TickEvent event) {
         if (getPlayer() == null || getWorld() == null)
             return;
 
         PlayerHandler.moveFix = isEnabled();
-        if(isEnabled()) {
+        if(isEnabled() && event.getState() == Event.State.PRE) {
             switch (mode.get()) {
                 case "Strict":
                     PlayerHandler.currentMode = PlayerHandler.MoveFixMode.STRICT;

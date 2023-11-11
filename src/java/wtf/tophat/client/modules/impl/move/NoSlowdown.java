@@ -13,8 +13,8 @@ import net.minecraft.util.EnumFacing;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.base.Event;
 import wtf.tophat.client.events.impl.move.MotionEvent;
-import wtf.tophat.client.events.impl.world.RunTickEvent;
 import wtf.tophat.client.events.impl.move.SlowDownEvent;
+import wtf.tophat.client.events.impl.world.TickEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.BooleanSetting;
@@ -110,16 +110,20 @@ public class NoSlowdown extends Module {
     }
 
     @Listen
-    public void onTick(RunTickEvent event) {
+    public void onTick(TickEvent event) {
         if (getPlayer() == null || getWorld() == null)
             return;
 
-        if (mode.get().equals("Grim")) {
-            if (mc.player.isBlocking()) {
-                sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
-            } else if (mc.player.isUsingItem()) {
-                sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
-                sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
+        if(event.getState() == Event.State.PRE) {
+            switch (mode.get()) {
+                case "Grim":
+                    if (mc.player.isBlocking()) {
+                        sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.player.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
+                    } else if (mc.player.isUsingItem()) {
+                        sendPacket(new C09PacketHeldItemChange((mc.player.inventory.currentItem + 1) % 9));
+                        sendPacket(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
+                    }
+                    break;
             }
         }
     }

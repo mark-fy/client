@@ -166,10 +166,10 @@ import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.base.Event;
 import wtf.tophat.client.events.impl.player.ClickingEvent;
 import wtf.tophat.client.events.impl.game.KeyboardEvent;
-import wtf.tophat.client.events.impl.world.PostTickEvent;
-import wtf.tophat.client.events.impl.world.RunTickEvent;
+import wtf.tophat.client.events.impl.world.TickEvent;
 import wtf.tophat.client.menus.UILoginScreen;
 import wtf.tophat.client.menus.UIMainMenu;
 import wtf.tophat.client.modules.impl.render.BlockAnimations;
@@ -1710,8 +1710,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     public void runTick() throws IOException
     {
-        RunTickEvent runTickEvent = new RunTickEvent();
-        runTickEvent.call();
+        TickEvent tickEvent = new TickEvent();
+        tickEvent.setState(Event.State.PRE);
+        tickEvent.call();
         if (this.rightClickDelayTimer > 0)
         {
             --this.rightClickDelayTimer;
@@ -2251,8 +2252,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
-        PostTickEvent postTickEvent = new PostTickEvent();
-        postTickEvent.call();
+        tickEvent.setState(Event.State.POST);
+        tickEvent.call();
     }
 
     /**

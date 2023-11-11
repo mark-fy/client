@@ -11,7 +11,7 @@ import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.base.Event;
 import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.events.impl.network.PacketEvent;
-import wtf.tophat.client.events.impl.world.RunTickEvent;
+import wtf.tophat.client.events.impl.world.TickEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.NumberSetting;
@@ -53,12 +53,14 @@ public class Speed extends Module {
     int aac4ticks;
 
     @Listen
-    public void onTick(RunTickEvent event) {
+    public void onTick(TickEvent event) {
         if (getPlayer() == null || getWorld() == null)
             return;
 
-        onTicks = getGround() ? ++onTicks : 0;
-        offTicks = getGround() ? 0 : ++offTicks;
+        if(event.getState() == Event.State.PRE) {
+            onTicks = getGround() ? ++onTicks : 0;
+            offTicks = getGround() ? 0 : ++offTicks;
+        }
     }
 
     @Listen
