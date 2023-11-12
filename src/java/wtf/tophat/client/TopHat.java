@@ -62,6 +62,13 @@ public enum TopHat {
         scriptManager.init();
 
         Minecraft.getMinecraft().settings.guiScale = 2;
+        Minecraft.getMinecraft().settings.fovSetting = 100.0F;
+        Minecraft.getMinecraft().settings.gammaSetting = 100F;
+        Minecraft.getMinecraft().settings.viewBobbing = true;
+        Minecraft.getMinecraft().settings.entityShadows = false;
+        Minecraft.getMinecraft().settings.fancyGraphics = false;
+        Minecraft.getMinecraft().settings.enableVsync = false;
+
 
         load();
     }
