@@ -3,9 +3,16 @@ package wtf.tophat.client.modules.impl.move;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0APacketAnimation;
+import net.minecraft.network.play.client.C14PacketTabComplete;
+import net.minecraft.network.play.client.C19PacketResourcePackStatus;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraft.network.play.server.S27PacketExplosion;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.events.impl.combat.RotationEvent;
+import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
@@ -24,7 +31,7 @@ public class LongJump extends Module {
 
     public LongJump() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "NCP", "NCP", "Old NCP", "BlocksMC", "Verus", "Grim Boat"),
+                mode = new StringSetting(this, "Mode", "NCP", "NCP", "Old NCP", "BlocksMC", "Verus", "Grim Boat", "Matrix"),
                 vertical = new NumberSetting(this, "Vertical", 0.05, 10.0,0.8, 1)
                         .setHidden(() -> !mode.is("Verus")),
                 boost = new NumberSetting(this, "Boost", 0.05, 10.0,1.45, 1)
@@ -51,6 +58,9 @@ public class LongJump extends Module {
 
     // Grim
     private boolean launch;
+
+    // Matrix
+    public boolean yes;
 
     @Listen
     public void onRotation(RotationEvent event) {
@@ -80,6 +90,28 @@ public class LongJump extends Module {
                     Methods.mc.player.motionY = 1.5;
                     MoveUtil.strafe(1.5);
                     launch = false;
+                }
+                break;
+            case "Matrix":
+                float yaw = (float) Math.atan(MoveUtil.movingYaw());
+                if (!yes) return;
+                mc.player.motionX = -Math.sin(yaw) * 1.89;
+                mc.player.motionZ = Math.cos(yaw) * 1.89;
+                mc.player.motionY = 0.42;
+                break;
+        }
+    }
+
+    @Listen
+    public void onPacket(PacketEvent event){
+        if (getPlayer() == null || getWorld() == null)
+            return;
+
+        switch (mode.get()){
+            case "Matrix":
+                if (event.getPacket() instanceof S08PacketPlayerPosLook) {
+                    yes = false;
+                    return;
                 }
                 break;
         }
@@ -160,6 +192,9 @@ public class LongJump extends Module {
     @Override
     public void onEnable(){
         switch (mode.get()) {
+            case "Matrix":
+                yes = true;
+                break;
             case "BlocksMC":
                 Methods.mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(Methods.mc.player.posX, Methods.mc.player.posY + 3.1005, Methods.mc.player.posZ, false));
                 Methods.mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(Methods.mc.player.posX, Methods.mc.player.posY, Methods.mc.player.posZ, false));

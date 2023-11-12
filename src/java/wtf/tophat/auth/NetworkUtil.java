@@ -15,12 +15,12 @@ public class NetworkUtil {
 
     public static String getRawContent() {
         try {
-            URL url = new URL("https://tophat.fun/assets/test.th");
+            URL url = new URL("https://raw.githubusercontent.com/mark-fy/db/main/f560d1b1-560e-44a1-9251-e862672c638b.th");
             URLConnection connection = url.openConnection();
 
             if (connection.getURL().getHost().equals("localhost")) {
                 System.out.println("Blocked connection from localhost.");
-                return null; // or handle the blocking logic as needed
+                return null;
             }
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -35,11 +35,13 @@ public class NetworkUtil {
 
             return content.toString();
         } catch (IOException e) {
+            System.err.println("Error reading from URL: " + e.getMessage());
             e.printStackTrace();
         }
 
         return null;
     }
+
 
     // parts[0] = username
     // parts[1] = hwid

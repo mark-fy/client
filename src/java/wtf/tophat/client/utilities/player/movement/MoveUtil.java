@@ -24,6 +24,10 @@ public class MoveUtil implements Methods {
         return predicted;
     }
 
+    public static float movingYaw(){
+        return (float) (getPlayerDirection() * 180f / Math.PI);
+    }
+
     public static void stop() {
         mc.player.motionX = 0;
         mc.player.motionZ = 0;
