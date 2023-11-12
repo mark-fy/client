@@ -2,7 +2,9 @@ package wtf.tophat.client.modules.impl.hud;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.network.play.server.S02PacketChat;
+import org.lwjgl.opengl.GL11;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.impl.player.OnDeathEvent;
 import wtf.tophat.client.events.impl.network.PacketEvent;
@@ -15,7 +17,9 @@ import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.settings.impl.StringSetting;
 import wtf.tophat.client.utilities.network.ServerUtil;
 import wtf.tophat.client.utilities.render.ColorUtil;
+import wtf.tophat.client.utilities.render.shaders.RenderUtil;
 import wtf.tophat.client.utilities.render.shaders.RoundedUtil;
+import wtf.tophat.client.utilities.render.shaders.bloom.KawaseBloom;
 import wtf.tophat.client.utilities.render.shaders.blur.GaussianBlur;
 
 import java.awt.*;
@@ -101,10 +105,23 @@ public class SessionInfo extends Module {
         int y = 62;
         FontRenderer fr = mc.fontRenderer;
 
+
+        Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
+
         if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
             GaussianBlur.startBlur();
             RoundedUtil.drawRound(60, 60, 120, 52, 4, new Color(13, 60, 123));
             GaussianBlur.endBlur(4, 2);
+        }
+        if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).bloomShader.get()) {
+            GL11.glPushMatrix();
+            stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
+            stencilFramebuffer.framebufferClear();
+            stencilFramebuffer.bindFramebuffer(false);
+            RoundedUtil.drawRound(60, 60, 120, 52, 4, new Color(color));
+            stencilFramebuffer.unbindFramebuffer();
+            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, TopHat.moduleManager.getByClass(PostProcessing.class).iterations.get().intValue(), TopHat.moduleManager.getByClass(PostProcessing.class).offset.get().intValue());
+            GL11.glPopMatrix();
         }
 
         RoundedUtil.drawRoundOutline(60, 60, 120, 52, 4, 0.30f, new Color(255, 255, 255, 25), new Color(color));

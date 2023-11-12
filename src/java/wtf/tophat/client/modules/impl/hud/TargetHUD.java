@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.EntityLivingBase;
 import org.lwjgl.opengl.GL11;
 import wtf.tophat.client.TopHat;
@@ -18,6 +19,7 @@ import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.settings.impl.StringSetting;
 import wtf.tophat.client.utilities.render.shaders.RenderUtil;
 import wtf.tophat.client.utilities.render.shaders.RoundedUtil;
+import wtf.tophat.client.utilities.render.shaders.bloom.KawaseBloom;
 import wtf.tophat.client.utilities.render.shaders.blur.GaussianBlur;
 import wtf.tophat.client.utilities.render.ColorUtil;
 import wtf.tophat.client.utilities.render.DrawingUtil;
@@ -153,10 +155,23 @@ public class TargetHUD extends Module {
                             float healthPercentage1 = Math.min(1.0f, health / targetEntity.getMaxHealth());
                             int sliderWidth1 = (int) (173 * healthPercentage1);
 
+                            Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
+
                             if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).blurShader.get()) {
                                 GaussianBlur.startBlur();
                                 RoundedUtil.drawRound(x, y, width, height, 8, new Color(13, 60, 123));
                                 GaussianBlur.endBlur(8, 2);
+                            }
+
+                            if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).bloomShader.get()) {
+                                GL11.glPushMatrix();
+                                stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
+                                stencilFramebuffer.framebufferClear();
+                                stencilFramebuffer.bindFramebuffer(false);
+                                RoundedUtil.drawRound(x, y, width, height, 8, new Color(color));
+                                stencilFramebuffer.unbindFramebuffer();
+                                KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, TopHat.moduleManager.getByClass(PostProcessing.class).iterations.get().intValue(), TopHat.moduleManager.getByClass(PostProcessing.class).offset.get().intValue());
+                                GL11.glPopMatrix();
                             }
 
                             RoundedUtil.drawRoundOutline(x, y, width, height, 8, 0.30f, new Color(255, 255, 255, 25), new Color(color));
@@ -276,6 +291,18 @@ public class TargetHUD extends Module {
                     GaussianBlur.startBlur();
                     RoundedUtil.drawRound(x, y, width, height, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);
+                }
+
+                Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
+                if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).bloomShader.get()) {
+                    GL11.glPushMatrix();
+                    stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
+                    stencilFramebuffer.framebufferClear();
+                    stencilFramebuffer.bindFramebuffer(false);
+                    RoundedUtil.drawRound(x, y, width, height, 8, new Color(color));
+                    stencilFramebuffer.unbindFramebuffer();
+                    KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, TopHat.moduleManager.getByClass(PostProcessing.class).iterations.get().intValue(), TopHat.moduleManager.getByClass(PostProcessing.class).offset.get().intValue());
+                    GL11.glPopMatrix();
                 }
 
                 RoundedUtil.drawRoundOutline(x, y, width, height, 8, 0.30f, new Color(255, 255, 255, 25), new Color(color));
