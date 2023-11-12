@@ -22,6 +22,63 @@ import static wtf.tophat.client.utilities.math.InterpolationUtil.interpolate;
 
 public class RenderUtil implements Methods {
 
+    public static void stop() {
+        GlStateManager.enableAlpha();
+        GL11.glEnable(GL_CULL_FACE);
+        GL11.glEnable(GL_TEXTURE_2D);
+        GL11.glDisable(GL_BLEND);
+        color(Color.white);
+    }
+
+    public static int getScaledHeight() {
+        ScaledResolution scaledResolution = new ScaledResolution(mc);
+        return scaledResolution.getScaledHeight();
+    }
+
+    public static float[] convertRGB(int rgb) {
+        float a = (rgb >> 24 & 0xFF) / 255.0f;
+        float r = (rgb >> 16 & 0xFF) / 255.0f;
+        float g = (rgb >> 8 & 0xFF) / 255.0f;
+        float b = (rgb & 0xFF) / 255.0f;
+        return new float[]{r, g, b, a};
+    }
+
+    public static void color(Color color) {
+        GL11.glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+    }
+
+    private static void gradientSideways(double x, double y, double width, double height, boolean filled, Color color1, Color color2) {
+        start();
+        glShadeModel(GL_SMOOTH);
+        GlStateManager.disableAlpha();
+        if (color1 != null)
+            color(color1);
+        glBegin(filled ? GL_TRIANGLE_FAN : GL_LINES);
+        {
+            glVertex2d(x, y);
+            glVertex2d(x, y + height);
+            if (color2 != null)
+                color(color2);
+            glVertex2d(x + width, y + height);
+            glVertex2d(x + width, y);
+        }
+        glEnd();
+        GlStateManager.enableAlpha();
+        glShadeModel(GL_FLAT);
+        stop();
+    }
+    public static void start() {
+        GL11.glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL_TEXTURE_2D);
+        GL11.glDisable(GL_CULL_FACE);
+        GlStateManager.disableAlpha();
+    }
+
+    public static void gradientSideways(double x, double y, double width, double height, Color color1, Color color2) {
+        gradientSideways(x, y, width, height, true, color1, color2);
+    }
+
     public static Framebuffer createFrameBuffer(Framebuffer framebuffer) {
         return createFrameBuffer(framebuffer, false);
     }

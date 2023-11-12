@@ -68,6 +68,7 @@ public enum TopHat {
         Minecraft.getMinecraft().settings.entityShadows = false;
         Minecraft.getMinecraft().settings.fancyGraphics = false;
         Minecraft.getMinecraft().settings.enableVsync = false;
+        Minecraft.getMinecraft().settings.fullScreen = true;
 
 
         load();

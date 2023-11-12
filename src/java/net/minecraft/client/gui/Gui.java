@@ -1,15 +1,17 @@
 package net.minecraft.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import wtf.tophat.client.utilities.render.shaders.GLUtil;
 import wtf.tophat.client.utilities.render.shaders.RenderUtil;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Gui
 {
@@ -32,6 +34,39 @@ public class Gui
 
         drawRect(startX, y, endX + 1, y + 1, color);
     }
+
+    public static void drawImage(Minecraft mc, int x, int y, int size, ResourceLocation rec) {
+        GlStateManager.pushMatrix();
+        mc.getTextureManager().bindTexture(rec);
+        GL11.glEnable(GL11.GL_BLEND);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        drawModalRectWithCustomSizedTexture(x, y, 0, 0, size, size, size, size);
+        GlStateManager.popMatrix();
+    }
+    public static void drawImage(Minecraft mc, double x,double y,double size, ResourceLocation rec) {
+        GlStateManager.pushMatrix();
+        mc.getTextureManager().bindTexture(rec);
+        GL11.glEnable(GL11.GL_BLEND);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.9F);
+        drawModalRectWithCustomSizedTexture(x, y, 0, 0, (int)size, (int) size, (int) size, (int) size);
+        GlStateManager.popMatrix();
+    }
+    public static void drawImage(Minecraft mc, double x,double y,double size,double size2, ResourceLocation rec) {
+        GlStateManager.pushMatrix();
+        mc.getTextureManager().bindTexture(rec);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        //GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glEnable(GL11.GL_BLEND);
+        drawModalRectWithCustomSizedTexture(x, y, 0, 0, (int)size, (int)size2, (int)size, (int)size2);
+        GlStateManager.color(0.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.popMatrix();
+    }
+
 
     /**
      * Draw a 1 pixel wide vertical line. Args : x, y1, y2, color
@@ -242,7 +277,7 @@ public class Gui
     /**
      * Draws a textured rectangle at z = 0. Args: x, y, u, v, width, height, textureWidth, textureHeight
      */
-    public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight)
+    public static void drawModalRectWithCustomSizedTexture(double x, double y, float u, float v, int width, int height, float textureWidth, float textureHeight)
     {
         float f = 1.0F / textureWidth;
         float f1 = 1.0F / textureHeight;

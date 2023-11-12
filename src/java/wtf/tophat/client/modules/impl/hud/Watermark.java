@@ -25,7 +25,7 @@ import java.util.Locale;
 @ModuleInfo(name = "Watermark",desc = "displays the client's watermark", category = Module.Category.HUD)
 public class Watermark extends Module {
 
-    private final StringSetting mode, color;
+    public final StringSetting mode, color;
     private final BooleanSetting fontShadow, BPS, exhiXYZ, exhiBPS, exhiVersion;
     private final NumberSetting red, green, blue, red1, green1, blue1, darkFactor;
 
