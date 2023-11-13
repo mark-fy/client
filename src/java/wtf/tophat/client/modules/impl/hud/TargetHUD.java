@@ -163,17 +163,6 @@ public class TargetHUD extends Module {
                                 GaussianBlur.endBlur(8, 2);
                             }
 
-                            if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).bloomShader.get()) {
-                                GL11.glPushMatrix();
-                                stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
-                                stencilFramebuffer.framebufferClear();
-                                stencilFramebuffer.bindFramebuffer(false);
-                                RoundedUtil.drawRound(x, y, width, height, 8, new Color(color));
-                                stencilFramebuffer.unbindFramebuffer();
-                                KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, TopHat.moduleManager.getByClass(PostProcessing.class).iterations.get().intValue(), TopHat.moduleManager.getByClass(PostProcessing.class).offset.get().intValue());
-                                GL11.glPopMatrix();
-                            }
-
                             RoundedUtil.drawRoundOutline(x, y, width, height, 8, 0.30f, new Color(255, 255, 255, 25), new Color(color));
                             RoundedUtil.drawRound(x + 6, y + 51, sliderWidth1, 8, 4, new Color(0, 255, 0, 125));
                             RoundedUtil.drawRoundOutline(x + 5, y + 50, 175, 10, 4, 0.30f, new Color(255, 255, 255, 125), new Color(color));
@@ -291,18 +280,6 @@ public class TargetHUD extends Module {
                     GaussianBlur.startBlur();
                     RoundedUtil.drawRound(x, y, width, height, 8, new Color(13, 60, 123));
                     GaussianBlur.endBlur(8, 2);
-                }
-
-                Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
-                if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).bloomShader.get()) {
-                    GL11.glPushMatrix();
-                    stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
-                    stencilFramebuffer.framebufferClear();
-                    stencilFramebuffer.bindFramebuffer(false);
-                    RoundedUtil.drawRound(x, y, width, height, 8, new Color(color));
-                    stencilFramebuffer.unbindFramebuffer();
-                    KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, TopHat.moduleManager.getByClass(PostProcessing.class).iterations.get().intValue(), TopHat.moduleManager.getByClass(PostProcessing.class).offset.get().intValue());
-                    GL11.glPopMatrix();
                 }
 
                 RoundedUtil.drawRoundOutline(x, y, width, height, 8, 0.30f, new Color(255, 255, 255, 25), new Color(color));

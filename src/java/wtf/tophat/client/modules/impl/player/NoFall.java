@@ -22,22 +22,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @ModuleInfo(name = "No Fall",desc = "disables fall damage", category = Module.Category.PLAYER)
 public class NoFall extends Module {
 
-    private boolean canFall() {
-        return mc.player.isEntityAlive() && mc.world != null && !mc.player.isInWater() && !mc.player.isInLava()
-                && PlayerUtil.isBlockUnderNoCollisions();
-    }
-
     private final StringSetting mode;
 
     public NoFall() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Packet", "Verus", "Vulcan", "Blink", "Invalid")
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Packet", "Verus", "Vulcan", "Invalid")
         );
     }
-
-    private final List<Vec3> vectors = new ArrayList<>();
-    private final List<Packet<?>> packets = new CopyOnWriteArrayList<>();
-    private boolean shouldBlink;
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -54,54 +45,10 @@ public class NoFall extends Module {
                     case "Packet":
                         sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.rotationYaw, mc.player.rotationPitch, true));
                         break;
-                    case "Blink":
-                        if (canFall() && !mc.isIntegratedServerRunning()) {
-                            if (mc.player.fallDistance > 2.5 && !mc.player.isInWater() && !mc.player.capabilities.isFlying) {
-                                this.shouldBlink = true;
-
-                                if (this.packets.size() > 0) {
-                                    event.setOnGround(true);
-
-                                    double posX = mc.player.posX;
-                                    double posY = mc.player.posY;
-                                    double posZ = mc.player.posZ;
-
-                                    if (posX != mc.player.lastTickPosX
-                                            || posY != mc.player.lastTickPosY
-                                            || posZ != mc.player.lastTickPosZ) {
-                                        this.vectors.add(new Vec3(posX, posY, posZ));
-                                    }
-                                }
-                            } else {
-                                if (this.shouldBlink) {
-                                    this.packets.forEach(packet -> {
-                                        this.packets.remove(packet);
-                                        mc.player.sendQueue.getNetworkManager().sendPacketNoEvent(packet);
-                                    });
-
-                                    this.vectors.clear();
-                                    this.shouldBlink = false;
-                                }
-                            }
-                        }
-                        break;
                 }
                 mc.player.fallDistance = 0;
             }
         }
-    }
-
-
-    @Override
-    public void onEnable(){
-        switch (mode.get()){
-            case "Blink":
-                this.vectors.clear();
-                this.packets.clear();
-                this.shouldBlink = false;
-                break;
-        }
-        super.onEnable();
     }
 
     @Listen
@@ -130,16 +77,6 @@ public class NoFall extends Module {
                     mc.player.motionX *= 0.6;
                     mc.player.motionZ *= 0.6;
                     sendPacketUnlogged(new C03PacketPlayer(true));
-                }
-                break;
-            case "Blink":
-                if (mc.player != null) {
-                    if (this.shouldBlink) {
-                        if (event.getPacket() instanceof C03PacketPlayer) {
-                            event.setCancelled(true);
-                            this.packets.add(event.getPacket());
-                        }
-                    }
                 }
                 break;
         }

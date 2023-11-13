@@ -113,16 +113,6 @@ public class SessionInfo extends Module {
             RoundedUtil.drawRound(60, 60, 120, 52, 4, new Color(13, 60, 123));
             GaussianBlur.endBlur(4, 2);
         }
-        if (TopHat.moduleManager.getByClass(PostProcessing.class).isEnabled() && TopHat.moduleManager.getByClass(PostProcessing.class).bloomShader.get()) {
-            GL11.glPushMatrix();
-            stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
-            stencilFramebuffer.framebufferClear();
-            stencilFramebuffer.bindFramebuffer(false);
-            RoundedUtil.drawRound(60, 60, 120, 52, 4, new Color(color));
-            stencilFramebuffer.unbindFramebuffer();
-            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, TopHat.moduleManager.getByClass(PostProcessing.class).iterations.get().intValue(), TopHat.moduleManager.getByClass(PostProcessing.class).offset.get().intValue());
-            GL11.glPopMatrix();
-        }
 
         RoundedUtil.drawRoundOutline(60, 60, 120, 52, 4, 0.30f, new Color(255, 255, 255, 25), new Color(color));
 

@@ -9,15 +9,11 @@ import wtf.tophat.client.settings.impl.NumberSetting;
 @ModuleInfo(name = "Post Processing",desc = "modify shaders", category = Module.Category.RENDER)
 public class PostProcessing extends Module {
 
-    public final BooleanSetting blurShader, bloomShader;
-    public final NumberSetting iterations, offset;
+    public final BooleanSetting blurShader;
 
     public PostProcessing() {
         TopHat.settingManager.add(
-                blurShader = new BooleanSetting(this, "Blur Shader", true),
-                bloomShader = new BooleanSetting(this, "Bloom Shader", true),
-                iterations = new NumberSetting(this, "Bloom Iterations", 1, 8, 3, 0).setHidden(() -> !bloomShader.get()),
-                offset = new NumberSetting(this, "Bloom Offset", 1, 10, 1, 0).setHidden(() -> !bloomShader.get())
+                blurShader = new BooleanSetting(this, "Blur Shader", true)
         );
         setEnabled(true);
     }
