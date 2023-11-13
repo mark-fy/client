@@ -7,6 +7,8 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.util.Vec3;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.base.Event;
+import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
@@ -36,57 +38,61 @@ public class AntiVoid extends Module {
     @Override
     public void onDisable() {
         BlinkUtil.blinking = false;
+        super.onDisable();
     }
 
     @Listen
-    public void onUpdate(UpdateEvent event){
-        if (mc.player.ticksExisted <= 50) return;
+    public void onMotion(MotionEvent event){
+        if(event.getState().equals(Event.State.PRE)){
+            if (mc.player.ticksExisted <= 50) return;
 
-        if (scaffold == null) {
-            scaffold = TopHat.moduleManager.getByClass(ScaffoldWalk.class);
-        }
+            if (scaffold == null) {
+                scaffold = TopHat.moduleManager.getByClass(ScaffoldWalk.class);
+            }
 
-        if (longJump == null) {
-            longJump = TopHat.moduleManager.getByClass(LongJump.class);
-        }
+            if (longJump == null) {
+                longJump = TopHat.moduleManager.getByClass(LongJump.class);
+            }
 
-        boolean overVoid = !mc.player.onGround && !PlayerUtil.isBlockUnder(30, true);
+            boolean overVoid = !mc.player.onGround && !PlayerUtil.isBlockUnder(30, true);
 
-        if (overVoid) {
-            overVoidTicks++;
-        } else if (mc.player.onGround) {
-            overVoidTicks = 0;
-        }
+            if (overVoid) {
+                overVoidTicks++;
+            } else if (mc.player.onGround) {
+                overVoidTicks = 0;
+            }
 
-        if (overVoid && position != null && motion != null && overVoidTicks < 30 + distance.get().doubleValue() * 20) {
-            if (!setBack) {
-                wasVoid = true;
+            if (overVoid && position != null && motion != null && overVoidTicks < 30 + distance.get().doubleValue() * 20) {
+                if (!setBack) {
+                    wasVoid = true;
 
-                BlinkUtil.blinking = true;
-                BlinkUtil.setExempt(C0FPacketConfirmTransaction.class, C00PacketKeepAlive.class, C01PacketChatMessage.class);
+                    BlinkUtil.blinking = true;
+                    BlinkUtil.setExempt(C0FPacketConfirmTransaction.class, C00PacketKeepAlive.class, C01PacketChatMessage.class);
 
-                if (FallDistanceUtil.distance > distance.get().doubleValue() || setBack) {
-                    PacketUtil.sendNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(position.xCoord, position.yCoord - 0.1 - Math.random(), position.zCoord, false));
+                    if (FallDistanceUtil.distance > distance.get().doubleValue() || setBack) {
+                        PacketUtil.sendNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(position.xCoord, position.yCoord - 0.1 - Math.random(), position.zCoord, false));
 
-                    BlinkUtil.packets.clear();
+                        BlinkUtil.packets.clear();
 
-                    FallDistanceUtil.distance = 0;
+                        FallDistanceUtil.distance = 0;
 
-                    setBack = true;
+                        setBack = true;
+                    }
+                } else {
+                    BlinkUtil.blinking = false;
                 }
             } else {
-                BlinkUtil.blinking = false;
-            }
-        } else {
-            setBack = false;
+                setBack = false;
 
-            if (wasVoid) {
-                BlinkUtil.blinking = false;
-                wasVoid = false;
-            }
+                if (wasVoid) {
+                    BlinkUtil.blinking = false;
+                    wasVoid = false;
+                }
 
-            motion = new Vec3(mc.player.motionX, mc.player.motionY, mc.player.motionZ);
-            position = new Vec3(mc.player.posX, mc.player.posY, mc.player.posZ);
+                motion = new Vec3(mc.player.motionX, mc.player.motionY, mc.player.motionZ);
+                position = new Vec3(mc.player.posX, mc.player.posY, mc.player.posZ);
+            }
         }
+
     }
 }
