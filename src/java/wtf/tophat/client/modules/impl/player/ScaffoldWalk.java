@@ -1,13 +1,18 @@
 package wtf.tophat.client.modules.impl.player;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.block.BlockAir;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.*;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.base.Event;
+import wtf.tophat.client.events.impl.move.MotionEvent;
+import wtf.tophat.client.events.impl.move.SafeWalkEvent;
 import wtf.tophat.client.events.impl.render.Render2DEvent;
 import wtf.tophat.client.events.impl.combat.RotationEvent;
 import wtf.tophat.client.events.impl.world.UpdateEvent;
@@ -30,13 +35,14 @@ import wtf.tophat.client.utilities.world.BlockInfo;
 import wtf.tophat.client.utilities.world.WorldUtil;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 
 @ModuleInfo(name = "Scaffold Walk", desc = "better scaffold :3", category = Module.Category.PLAYER)
 public class ScaffoldWalk extends Module {
 
-    private final StringSetting rotationsTiming, rotationsMode, noSprintTiming, noSprintMode, raytrace, offGroundStrafe, jump, tower, blockPicker;
-    private final BooleanSetting rotChangeOverAir, randomisedSpeed, noSwing, randomised;
-    private final NumberSetting yawOffset, pitchValue, timer, speed, negativeExpand, offGroundNegativeExpand, delayBetweenPlacements, strafeSpeed, overAirSpeed, offGroundSpeed, strafeSpeedPotExtra, range;
+    private final StringSetting rotationsTiming, rotationsMode, jump, tower, blockPicker;
+    private final BooleanSetting rotChangeOverAir, noSprintMode, safeWalk, noSwing, randomised;
+    private final NumberSetting yawOffset, pitchValue, timer, speed, negativeExpand, offGroundNegativeExpand, delayBetweenPlacements;
 
     private BlockInfo info;
     private Vec3 vec3;
@@ -56,21 +62,13 @@ public class ScaffoldWalk extends Module {
                 yawOffset = new NumberSetting(this, "Yaw offset", 0, 180, 180, 1).setHidden(() -> !rotationsMode.is("Movement")),
                 pitchValue = new NumberSetting(this, "Pitch",70, 110, 81.5, 1).setHidden(() -> !rotationsMode.is("Movement")),
                 timer = new NumberSetting(this, "Timer",0.1, 10, 1, 1),
-                speed = new NumberSetting(this, "Speed",0.1, 1, 0.1, 1),
-                noSprintTiming = new StringSetting(this, "No sprint timing", "Always", "Always", "When rotating", "Never"),
-                noSprintMode = new StringSetting(this, "No sprint", "Normal", "Normal", "Spoof").setHidden(() -> noSprintTiming.is("Never")),
-                raytrace = new StringSetting(this, "Raytrace", "Disabled", "Disabled", "Normal", "Legit"),
+                speed = new NumberSetting(this, "Speed",0.01, 0.8, 0.1, 2),
+                noSprintMode = new BooleanSetting(this, "No sprint", true),
                 negativeExpand = new NumberSetting(this, "Negative expand", 0, 0.24, 0, 1),
                 offGroundNegativeExpand = new NumberSetting(this, "OffGround negative expand", 0, 0.24, 0, 1),
-                delayBetweenPlacements = new NumberSetting(this, "Delay between placements", 0, 10, 0, 1),
-                offGroundStrafe = new StringSetting(this, "Off ground strafe", "Disabled", "Disabled", "Enabled", "Keep movement").setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
-                strafeSpeed = new NumberSetting(this, "Speed", 0.1, 0.5, 0.1, 1).setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
-                overAirSpeed = new NumberSetting(this, "Over air speed", 0, 0.5, 0.1, 1).setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
-                offGroundSpeed = new NumberSetting(this, "OffGround speed", 0.1, 0.5, 0.2, 1).setHidden(() -> offGroundStrafe.is("Disabled") && TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
-                strafeSpeedPotExtra = new NumberSetting(this, "Speed pot extra", 0, 0.2, 0.2, 1).setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
-                randomisedSpeed = new BooleanSetting(this, "Randomised speed", false).setHidden(() -> TopHat.moduleManager.getByClass(CorrectMovement.class).isEnabled()),
+                delayBetweenPlacements = new NumberSetting(this, "Delay", 0, 10, 0, 1),
                 jump = new StringSetting(this, "Jump", "Disabled", "Disabled", "Enabled"),
-                range = new NumberSetting(this, "Range", 1, 4, 2, 1),
+                safeWalk = new BooleanSetting(this, "Safe walk", false),
                 tower = new StringSetting(this, "Tower", "None", "None", "Vulcan", "Verus", "NCP"),
                 blockPicker = new StringSetting(this, "Block picker", "Switch", "None", "Switch", "Spoof"),
                 noSwing = new BooleanSetting(this, "No swing", false)
@@ -136,6 +134,16 @@ public class ScaffoldWalk extends Module {
     }
 
     @Listen
+    public void onSafe(SafeWalkEvent event) {
+        if (getPlayer() == null || getWorld() == null)
+            return;
+
+        if(safeWalk.get()) {
+            event.setSafe(mc.player.onGround);
+        }
+    }
+
+    @Listen
     public void onUpdate(UpdateEvent event) {
         if(mc.player.ticksExisted < 10) {
             this.setEnabled(false);
@@ -155,7 +163,7 @@ public class ScaffoldWalk extends Module {
             lastY = mc.player.posY;
         }
 
-        info = WorldUtil.getBlockUnder(lastY, range.get().intValue());
+        info = WorldUtil.getBlockUnder(lastY, 1);
 
         float yaw = rotations.getYaw();
         float pitch = rotations.getPitch();
@@ -194,11 +202,9 @@ public class ScaffoldWalk extends Module {
 
         isRotating = rotationsTiming.is("Always") || (rotationsTiming.is("Over air") && info != null && WorldUtil.negativeExpand(getNegativeExpand()));
 
-        if(noSprintMode.is("Normal")) {
-            if(noSprintTiming.is("Always") || ((noSprintTiming.is("When rotating") && isRotating))) {
-                mc.settings.keyBindSprint.pressed = false;
-                mc.player.setSprinting(false);
-            }
+        if(noSprintMode.get()) {
+            mc.settings.keyBindSprint.pressed = false;
+            mc.player.setSprinting(false);
         }
 
         if(jump.is("Enabled")) {
@@ -349,11 +355,6 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public void onRots(RotationEvent event) {
-        if(noSprintMode.is("Spoof")) {
-            if(noSprintTiming.is("Always") || (noSprintTiming.is("When rotating") && isRotating)) {
-                mc.player.setSprinting(false);
-            }
-        }
 
         if(isRotating) {
             event.setYaw(rotations.getYaw());
@@ -387,32 +388,13 @@ public class ScaffoldWalk extends Module {
         }
     }
 
-    private boolean raytrace() {
-        MovingObjectPosition movingObjectPosition;
-
-        if(raytrace.is("Legit")) {
-            movingObjectPosition = WorldUtil.raytraceLegit(rotations.getYaw(), rotations.getPitch(), rotations.getLastYaw(), rotations.getLastPitch());
-        } else {
-            movingObjectPosition = WorldUtil.raytrace(rotations.getYaw(), rotations.getPitch());
-        }
-
-        if(movingObjectPosition != null && movingObjectPosition.sideHit == info.getFacing() && movingObjectPosition.getBlockPos().equals(info.getPos())) {
-            vec3 = movingObjectPosition.hitVec;
-            return true;
-        }
-
-        return false;
-    }
-
     public boolean placeBlock() {
         ItemStack stack = mc.player.getHeldItem();
 
         if(info != null && stack != null && stack.getItem() instanceof ItemBlock) {
             if(placeDelay >= delayBetweenPlacements.get().doubleValue()) {
-                if(raytrace.is("Disabled") || raytrace()) {
-                    if(WorldUtil.negativeExpand(getNegativeExpand())) {
-                        return sendPlacing();
-                    }
+                if(WorldUtil.negativeExpand(getNegativeExpand())) {
+                    return sendPlacing();
                 }
             }
         }
@@ -422,7 +404,7 @@ public class ScaffoldWalk extends Module {
 
     public boolean sendPlacing() {
         ItemStack stack = mc.player.getHeldItem();
-        Vec3 vec = !raytrace.is("None") && vec3 != null ? vec3 : WorldUtil.getVec3(info.getPos(), info.getFacing(), true);
+        Vec3 vec = vec3 != null ? vec3 : WorldUtil.getVec3(info.getPos(), info.getFacing(), true);
 
         boolean success = mc.playerController.onPlayerRightClick(mc.player, mc.world, stack, info.getPos(), info.getFacing(), vec);
 
