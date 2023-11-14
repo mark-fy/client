@@ -8,6 +8,9 @@ import wtf.tophat.client.utilities.Methods;
 
 import static net.minecraft.network.play.client.C16PacketClientStatus.EnumState.OPEN_INVENTORY_ACHIEVEMENT;
 
+/**
+ * @author Alan Gaming 69
+ */
 public class BadPacketsUtil implements Methods {
     private static boolean slot, attack, swing, block, inventory;
 
