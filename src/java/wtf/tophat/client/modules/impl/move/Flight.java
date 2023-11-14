@@ -23,8 +23,12 @@ import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.StringSetting;
 import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.utilities.player.DamageUtil;
+import wtf.tophat.client.utilities.player.PlayerUtil;
+import wtf.tophat.client.utilities.player.chat.ChatUtil;
 import wtf.tophat.client.utilities.player.movement.MoveUtil;
 import wtf.tophat.client.utilities.world.WorldUtil;
+
+import static wtf.tophat.client.utilities.player.movement.MoveUtil.isBlockUnder;
 
 @ModuleInfo(name = "Flight",desc = "fly like a bird", category = Module.Category.MOVE)
 public class Flight extends Module {
@@ -34,7 +38,7 @@ public class Flight extends Module {
 
     public Flight() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3", "Redesky", "Karhu", "MushMC"),
+                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3", "Redesky", "Karhu", "MushMC", "Updated NCP"),
                 aac3hopdelay = new NumberSetting(this, "Hop Delay", 1, 10, 3, 1)
                         .setHidden(() -> !mode.is("AAC3")),
                 aac3hopheight = new NumberSetting(this, "Hop Height", 0, 0.5, 0.4, 1)
@@ -45,6 +49,10 @@ public class Flight extends Module {
     }
 
     private boolean hasDamaged;
+
+    // Updated NCP
+    private double moveSpeed;
+    private boolean started, notUnder, clipped, teleport;
 
     // Verus
     private boolean up;
@@ -194,6 +202,26 @@ public class Flight extends Module {
                 mc.player.isAirBorne = true;
                 MoveUtil.strafe(2.6753);
                 break;
+            case "Updated NCP":
+                if(event.getState().equals(Event.State.PRE)){
+                    final AxisAlignedBB bb = mc.player.getEntityBoundingBox().offset(0, 1, 0);
+
+                    if(started) {
+                        mc.timer.timerSpeed = 0.2f;
+                        mc.player.motionY += 0.025;
+                        MoveUtil.strafe(moveSpeed *= 0.935F);
+
+                        if(mc.player.motionY < -0.5 && !isBlockUnder())
+                            toggle();
+                    }
+
+                    if(mc.world.getCollidingBoundingBoxes(mc.player, bb).isEmpty() && !started) {
+                        started = true;
+                        mc.player.jump();
+                        MoveUtil.strafe(moveSpeed = 9);
+                    }
+                }
+                break;
         }
     }
 
@@ -263,6 +291,15 @@ public class Flight extends Module {
                 startY = (int) mc.player.posY;
                 if(mc.player.onGround) mc.player.jump();
                 break;
+            case "Updated NCP":
+                sendChat("Be under a block.");
+
+                moveSpeed = 0;
+                notUnder = false;
+                started = false;
+                clipped = false;
+                teleport = false;
+                break;
         }
         hasDamaged = false;
     }
@@ -286,6 +323,10 @@ public class Flight extends Module {
             case "Karhu":
                 mc.timer.timerSpeed = 1.0F;
                 MoveUtil.setSpeed(0);
+                break;
+            case "Updated NCP":
+                mc.timer.timerSpeed = 1.0f;
+                MoveUtil.stop();
                 break;
         }
         super.onDisable();
