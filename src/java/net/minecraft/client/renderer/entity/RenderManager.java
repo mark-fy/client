@@ -495,4 +495,16 @@ public class RenderManager
     {
         this.renderOutlines = renderOutlinesIn;
     }
+
+    public double getRenderPosX() {
+        return this.renderPosX;
+    }
+
+    public double getRenderPosY() {
+        return this.renderPosY;
+    }
+
+    public double getRenderPosZ() {
+        return this.renderPosZ;
+    }
 }

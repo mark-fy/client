@@ -9,6 +9,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.*;
+import org.lwjgl.input.Keyboard;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.base.Event;
 import wtf.tophat.client.events.impl.move.MotionEvent;
@@ -24,6 +25,7 @@ import wtf.tophat.client.modules.impl.move.Speed;
 import wtf.tophat.client.settings.impl.BooleanSetting;
 import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.settings.impl.StringSetting;
+import wtf.tophat.client.utilities.Methods;
 import wtf.tophat.client.utilities.math.MathUtil;
 import wtf.tophat.client.utilities.network.PacketUtil;
 import wtf.tophat.client.utilities.player.KeyboardUtil;
@@ -351,6 +353,17 @@ public class ScaffoldWalk extends Module {
             blockCount += itemStack.stackSize;
         }
         return blockCount;
+    }
+
+    @Listen
+    public void onMotion(MotionEvent event){
+        if(event.getState() == Event.State.PRE) {
+            if (getWorld().getBlockState(new BlockPos(getX(), getY() - 1.0, getZ())).getBlock() instanceof BlockAir && getGround()) {
+                Methods.mc.settings.keyBindSneak.pressed = true;
+            } else {
+                Methods.mc.settings.keyBindSneak.pressed = Keyboard.isKeyDown(Methods.mc.settings.keyBindSneak.getKeyCode());
+            }
+        }
     }
 
     @Listen

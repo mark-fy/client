@@ -29,7 +29,7 @@ public class Flight extends Module {
 
     public Flight() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3", "Redesky", "Karhu"),
+                mode = new StringSetting(this, "Mode", "Motion", "Motion", "Collision", "Verus", "Vulcan", "BWPractice", "Old NCP", "AAC3", "Redesky", "Karhu", "MushMC"),
                 aac3hopdelay = new NumberSetting(this, "Hop Delay", 1, 10, 3, 1)
                         .setHidden(() -> !mode.is("AAC3")),
                 aac3hopheight = new NumberSetting(this, "Hop Height", 0, 0.5, 0.4, 1)
@@ -181,6 +181,13 @@ public class Flight extends Module {
                 if (mc.player.posY < startY) {
                     event.setOnGround(true);
                 }
+                break;
+            case "MushMC":
+                mc.player.motionY = 0.4641593749554431f;
+                mc.player.prevChasingPosY = mc.player.lastReportedPosY;
+                mc.player.motionY = mc.settings.keyBindJump.isKeyDown() ? 1F : mc.settings.keyBindSneak.isKeyDown() ? -1F : 0.0;
+                mc.player.isAirBorne = true;
+                MoveUtil.strafe(2.6753);
                 break;
         }
     }

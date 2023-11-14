@@ -1,4 +1,4 @@
-package wtf.tophat.client.menus.click.dropdown;
+package wtf.tophat.client.menus.click.astolfo;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,7 +16,7 @@ import wtf.tophat.client.utilities.sound.SoundUtil;
 import java.awt.*;
 import java.io.IOException;
 
-public class DropDownClickGUI extends GuiScreen {
+public class AstolfoClickGUI extends GuiScreen {
 
     private Module listeningModule = null;
 
@@ -42,9 +42,9 @@ public class DropDownClickGUI extends GuiScreen {
 
             double categoryTextX = x + (categoryWidth - fr.getStringWidth(category.getName())) / 2 - 2, categoryTextY = y + 6;
 
-            double dropdownMinX = x, dropdownMaxX = x + categoryWidth, dropdownMaxY = y + categoryHeight;
+            double astolfoMinX = x, astolfoMaxX = x + categoryWidth, astolfoMaxY = y + categoryHeight;
 
-            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor(category));
+            DrawingUtil.rectangle(astolfoMinX, y, astolfoMaxX - astolfoMinX, astolfoMaxY - y, false, CategoryUtil.getCategoryColor(category));
             DrawingUtil.rectangle(x, y, categoryWidth, categoryHeight, true, new Color(20, 20, 20));
 
             fr.drawStringOptional(shadow, EnumChatFormatting.BOLD + category.getName(), (float) categoryTextX, (float) categoryTextY, CategoryUtil.getCategoryColor(category));
@@ -106,9 +106,9 @@ public class DropDownClickGUI extends GuiScreen {
                 modY += 20;
             }
 
-            dropdownMaxY = modY;
+            astolfoMaxY = modY;
 
-            DrawingUtil.rectangle(dropdownMinX, y, dropdownMaxX - dropdownMinX, dropdownMaxY - y, false, CategoryUtil.getCategoryColor(category));
+            DrawingUtil.rectangle(astolfoMinX, y, astolfoMaxX - astolfoMinX, astolfoMaxY - y, false, CategoryUtil.getCategoryColor(category));
 
             x += categoryWidth + 15;
         }
@@ -136,7 +136,7 @@ public class DropDownClickGUI extends GuiScreen {
                             module.toggle();
                         } else if (mouseButton == 1) {
                             if (TopHat.settingManager.getSettingsByModule(module).size() > 0) {
-                                mc.displayGuiScreen(new DropDownSettingFrame(this, module));
+                                mc.displayGuiScreen(new AstolfoSettingFrame(this, module));
                             }
                         } else {
                             listeningModule = module;

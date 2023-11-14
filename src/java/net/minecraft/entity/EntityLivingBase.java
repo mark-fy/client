@@ -192,6 +192,10 @@ public abstract class EntityLivingBase extends Entity
     private int jumpTicks;
     private float absorptionAmount;
 
+    public int realPosX;
+    public int realPosY;
+    public int realPosZ;
+
     /**
      * Called by the /kill command.
      */

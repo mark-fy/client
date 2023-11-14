@@ -28,7 +28,7 @@ public class Speed extends Module {
 
     public Speed() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "Vulcan", "New NCP", "Matrix", "AAC3", "AAC4", "AAC5", "Karhu"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Intave", "Hypixel", "Verus", "Vulcan", "New NCP", "Matrix", "AAC3", "AAC4", "AAC5", "Karhu", "MushMC"),
                 aac3speed = new NumberSetting(this, "AAC3 Speed", 1, 1.5, 1.2, 1)
                         .setHidden(() -> !mode.is("AAC3")),
                 speed = new NumberSetting(this, "Speed", 0, 3, 0.29, 2)
@@ -239,6 +239,19 @@ public class Speed extends Module {
                             mc.timer.timerSpeed = (float) (1 + (Math.random() - 0.5) / 100);
                         }
                     }
+                    break;
+                case "MushMC":
+                    if (!isMoving())
+                        return;
+                    if (mc.player.onGround) {
+                        MoveUtil.strafe(0.73F);
+                        mc.player.jump();
+                    } else {
+                        MoveUtil.strafe(0.63F);
+                    }
+                    if (mc.player.moveForward < 0.0F)
+                        MoveUtil.strafe(0.6F);
+                    break;
             }
         }
     }

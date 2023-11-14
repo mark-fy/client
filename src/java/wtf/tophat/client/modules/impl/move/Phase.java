@@ -6,18 +6,23 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.events.impl.network.PacketEvent;
 import wtf.tophat.client.events.impl.world.CollisionBoxesEvent;
 import wtf.tophat.client.events.impl.world.UpdateEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.settings.impl.StringSetting;
+import wtf.tophat.client.utilities.misc.BlinkUtil;
 
 @ModuleInfo(name = "Phase", desc = "pass trough blocks", category = Module.Category.MOVE)
 public class Phase extends Module {
@@ -118,11 +123,15 @@ public class Phase extends Module {
         }
         if (event.getType().equals(PacketEvent.Type.INCOMING)){
             Packet packet = event.getPacket();
-            if(packet instanceof S08PacketPlayerPosLook) {
-                S08PacketPlayerPosLook s08packet = (S08PacketPlayerPosLook)packet;
-                s08packet.setYaw(mc.player.rotationYaw);
-                s08packet.setPitch(mc.player.rotationPitch);
-                canSpeed = true;
+            switch (mode.get()){
+                case "Full":
+                    if(packet instanceof S08PacketPlayerPosLook) {
+                        S08PacketPlayerPosLook s08packet = (S08PacketPlayerPosLook)packet;
+                        s08packet.setYaw(mc.player.rotationYaw);
+                        s08packet.setPitch(mc.player.rotationPitch);
+                        canSpeed = true;
+                    }
+                    break;
             }
         }
     }
