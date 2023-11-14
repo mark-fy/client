@@ -235,7 +235,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     /**
      * Reference to the current ClientWorld instance, which many handler methods operate on
      */
-    private WorldClient clientWorldController;
+    public WorldClient clientWorldController;
 
     /**
      * True if the client has finished downloading terrain and may spawn. Set upon receipt of S08PacketPlayerPosLook,
