@@ -22,6 +22,7 @@ import wtf.tophat.client.settings.impl.DividerSetting;
 import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.settings.impl.StringSetting;
 import wtf.tophat.client.utilities.math.time.TimeUtil;
+import wtf.tophat.client.utilities.network.BadPacketsUtil;
 
 @ModuleInfo(name = "No Slowdown",desc = "disable slow down effects", category = Module.Category.MOVE)
 public class NoSlowdown extends Module {
@@ -34,7 +35,7 @@ public class NoSlowdown extends Module {
     public NoSlowdown() {
         TopHat.settingManager.add(
                 modes = new DividerSetting(this, "Mode Settings"),
-                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave"),
+                mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Switch", "Grim", "Old Intave", "Updated NCP"),
 
                 booleans = new DividerSetting(this, "Available Items"),
                 sword = new BooleanSetting(this, "Sword", true),
@@ -52,6 +53,9 @@ public class NoSlowdown extends Module {
     }
 
     private final TimeUtil intaveTimer = new TimeUtil();
+
+    // UNCP
+    private int ticks;
 
     @Listen
     public void onMotion(MotionEvent event) {
@@ -78,6 +82,14 @@ public class NoSlowdown extends Module {
                         sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                         intaveTimer.reset();
                     }
+                }
+                break;
+            case "Updated NCP":
+                this.ticks++;
+                if (mc.player.isUsingItem() && this.ticks > 10 && !BadPacketsUtil.bad(false,
+                        true, true, false, false) && !(mc.player.getHeldItem().getItem() instanceof ItemBow)) {
+                    mc.player.sendQueue.send(new C09PacketHeldItemChange(mc.player.inventory.currentItem % 8 + 1));
+                    mc.player.sendQueue.send(new C09PacketHeldItemChange(mc.player.inventory.currentItem));
                 }
                 break;
         }
