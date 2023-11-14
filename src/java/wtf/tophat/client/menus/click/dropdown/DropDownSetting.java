@@ -1,4 +1,4 @@
-package wtf.tophat.client.menus.click.astolfo;
+package wtf.tophat.client.menus.click.dropdown;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -21,12 +21,12 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Locale;
 
-public class AstolfoSettingFrame extends GuiScreen {
+public class DropDownSetting extends GuiScreen {
     private NumberSetting currentDraggingSetting = null;
     private final GuiScreen screenParent;
     private final Module parent;
 
-    public AstolfoSettingFrame(GuiScreen screenParent, Module parent) {
+    public DropDownSetting(GuiScreen screenParent, Module parent) {
         this.screenParent = screenParent;
         this.parent = parent;
     }

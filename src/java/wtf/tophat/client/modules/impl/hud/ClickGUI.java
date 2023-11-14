@@ -2,7 +2,7 @@ package wtf.tophat.client.modules.impl.hud;
 
 import org.lwjgl.input.Keyboard;
 import wtf.tophat.client.TopHat;
-import wtf.tophat.client.menus.click.astolfo.AstolfoClickGUI;
+import wtf.tophat.client.menus.click.dropdown.DropDownGUI;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
 import wtf.tophat.client.menus.click.beta.BetaClickGUI;
@@ -19,7 +19,7 @@ public class ClickGUI extends Module {
 
     public ClickGUI() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Style", "Concept", "Astolfo", "Material", "Concept"),
+                mode = new StringSetting(this, "Style", "Concept", "Dropdown", "Material", "Concept"),
                 fontShadow = new BooleanSetting(this, "Font Shadow", true).setHidden(() -> !mode.is("Dropdown")),
                 sound = new BooleanSetting(this, "Sound", true)
         );
@@ -28,8 +28,8 @@ public class ClickGUI extends Module {
     @Override
     public void onEnable() {
         switch (mode.get()) {
-            case "Astolfo":
-                mc.displayGuiScreen(new AstolfoClickGUI());
+            case "Dropdown":
+                mc.displayGuiScreen(new DropDownGUI());
                 break;
             case "Material":
                 mc.displayGuiScreen(new MaterialClickGUI());
