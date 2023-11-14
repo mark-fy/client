@@ -2,6 +2,7 @@ package wtf.tophat.client.modules.impl.move;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.network.play.client.C14PacketTabComplete;
@@ -9,7 +10,9 @@ import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S27PacketExplosion;
+import net.minecraft.potion.Potion;
 import wtf.tophat.client.TopHat;
+import wtf.tophat.client.events.base.Event;
 import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.events.impl.combat.RotationEvent;
 import wtf.tophat.client.events.impl.network.PacketEvent;
@@ -31,7 +34,7 @@ public class LongJump extends Module {
 
     public LongJump() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "NCP", "NCP", "Old NCP", "BlocksMC", "Verus", "Grim Boat", "Matrix"),
+                mode = new StringSetting(this, "Mode", "NCP", "NCP", "Old NCP", "Verus", "Grim Boat", "Watchdog (doesn't work)"),
                 vertical = new NumberSetting(this, "Vertical", 0.05, 10.0,0.8, 1)
                         .setHidden(() -> !mode.is("Verus")),
                 boost = new NumberSetting(this, "Boost", 0.05, 10.0,1.45, 1)
@@ -46,9 +49,6 @@ public class LongJump extends Module {
     public boolean wasLaunched = false;
     public boolean jumped = false;
 
-    //BlocksMC
-    public boolean BMChurt = false;
-
     //NCP
     public boolean setSpeed;
 
@@ -59,8 +59,9 @@ public class LongJump extends Module {
     // Grim
     private boolean launch;
 
-    // Matrix
-    public boolean yes;
+    // Watchdog
+    private boolean aBoolean;
+    private double aDouble;
 
     @Listen
     public void onRotation(RotationEvent event) {
@@ -92,13 +93,6 @@ public class LongJump extends Module {
                     launch = false;
                 }
                 break;
-            case "Matrix":
-                float yaw = (float) Math.atan(MoveUtil.movingYaw());
-                if (!yes) return;
-                mc.player.motionX = -Math.sin(yaw) * 1.89;
-                mc.player.motionZ = Math.cos(yaw) * 1.89;
-                mc.player.motionY = 0.42;
-                break;
         }
     }
 
@@ -107,13 +101,24 @@ public class LongJump extends Module {
         if (getPlayer() == null || getWorld() == null)
             return;
 
-        switch (mode.get()){
-            case "Matrix":
-                if (event.getPacket() instanceof S08PacketPlayerPosLook) {
-                    yes = false;
-                    return;
-                }
-                break;
+        if(event.getType().equals(PacketEvent.Type.INCOMING)) {
+            switch (mode.get()) {
+                case "Watchdog (doesn't work)":
+                    Packet<?> packet = event.getPacket();
+
+                    if (packet instanceof S12PacketEntityVelocity) {
+                        final S12PacketEntityVelocity wrapper = (S12PacketEntityVelocity) packet;
+
+                        if (wrapper.getEntityID() == mc.player.getEntityId()) {
+                            aDouble = wrapper.motionY / 8000.0D;
+                            if (aDouble > 0.1 - Math.random() / 10000f) {
+                                aBoolean = true;
+                                event.setCancelled(true);
+                            }
+                        }
+                    }
+                    break;
+            }
         }
     }
 
@@ -131,19 +136,6 @@ public class LongJump extends Module {
                     }
 
                     MoveUtil.addFriction(0.97);
-                }
-                break;
-            case "BlocksMC":
-                if(!BMChurt && Methods.mc.player.hurtTime > 0) {
-                    BMChurt = true;
-                    Methods.mc.player.motionY = 1.0;
-                }
-                if(BMChurt) {
-                    Methods.mc.timer.timerSpeed = 1;
-                    MoveUtil.setSpeed(1.89);
-                    if(Methods.mc.player.onGround) {
-                        toggle();
-                    }
                 }
                 break;
             case "Old NCP":
@@ -186,20 +178,44 @@ public class LongJump extends Module {
                     toggle();
                 }
                 break;
+            case "Watchdog (doesn't work)":
+                if(event.getState().equals(Event.State.PRE)){
+                    if (!aBoolean) return;
+
+                    if (mc.player.ticksSinceVelocity == 1) {
+                        MoveUtil.strafe(MoveUtil.getAllowedHorizontalDistance() * (mc.player.isPotionActive(Potion.moveSpeed) ? 0.75 : 0.7) - Math.random() / 10000f);
+                        mc.player.jump();
+                    }
+
+                    if (mc.player.ticksSinceVelocity == 9) {
+                        MoveUtil.strafe((mc.player.isPotionActive(Potion.moveSpeed) ? 0.8 : 0.7) - Math.random() / 10000f);
+                        mc.player.motionY = aDouble;
+                    }
+
+                    if (mc.player.ticksSinceVelocity <= 50 && mc.player.ticksSinceVelocity > 9) {
+                        mc.player.motionY += 0.028;
+
+                        if (mc.player.isPotionActive(Potion.moveSpeed)) {
+                            mc.player.motionX *= 1.038;
+                            mc.player.motionZ *= 1.038;
+                        } else {
+                            if (mc.player.ticksSinceVelocity == 12 || mc.player.ticksSinceVelocity == 13) {
+                                mc.player.motionX *= 1.1;
+                                mc.player.motionZ *= 1.1;
+                            }
+
+                            mc.player.motionX *= 1.019;
+                            mc.player.motionZ *= 1.019;
+                        }
+                    }
+                }
+                break;
         }
     }
 
     @Override
     public void onEnable(){
         switch (mode.get()) {
-            case "Matrix":
-                yes = true;
-                break;
-            case "BlocksMC":
-                Methods.mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(Methods.mc.player.posX, Methods.mc.player.posY + 3.1005, Methods.mc.player.posZ, false));
-                Methods.mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(Methods.mc.player.posX, Methods.mc.player.posY, Methods.mc.player.posZ, false));
-                Methods.mc.player.sendQueue.send(new C03PacketPlayer.C04PacketPlayerPosition(Methods.mc.player.posX, Methods.mc.player.posY, Methods.mc.player.posZ, true));
-                break;
             case "Verus":
                 if (!Methods.mc.player.onGround) {
                     toggle();
@@ -207,6 +223,9 @@ public class LongJump extends Module {
                 }
                 TimeUtil.setTimer(0.3f);
                 DamageUtil.damage(DamageUtil.DamageType.VERUS);
+                break;
+            case "Watchdog (doesn't work)":
+                aBoolean = false;
                 break;
         }
         wasLaunched = false;
@@ -221,7 +240,6 @@ public class LongJump extends Module {
 
     @Override
     public void onDisable(){
-        BMChurt = false;
         launch = false;
         timer.setTimer(1.0f);
         super.onDisable();

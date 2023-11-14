@@ -2,6 +2,7 @@ package wtf.tophat.client.modules.base;
 
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.utilities.Methods;
+import wtf.tophat.client.utilities.sound.SoundUtil;
 
 public class Module implements Methods {
 
@@ -13,8 +14,12 @@ public class Module implements Methods {
     private boolean enabled;
     private boolean hidden;
 
-    public void onEnable() {}
-    public void onDisable() {}
+    public void onEnable() {
+        SoundUtil.play(SoundUtil.toggleOnSound);
+    }
+    public void onDisable() {
+        SoundUtil.play(SoundUtil.toggleOffSound);
+    }
 
     public String getName() { return name; }
 

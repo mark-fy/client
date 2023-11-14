@@ -26,6 +26,7 @@ import wtf.tophat.client.utilities.player.DamageUtil;
 import wtf.tophat.client.utilities.player.PlayerUtil;
 import wtf.tophat.client.utilities.player.chat.ChatUtil;
 import wtf.tophat.client.utilities.player.movement.MoveUtil;
+import wtf.tophat.client.utilities.sound.SoundUtil;
 import wtf.tophat.client.utilities.world.WorldUtil;
 
 import static wtf.tophat.client.utilities.player.movement.MoveUtil.isBlockUnder;
@@ -278,6 +279,7 @@ public class Flight extends Module {
 
     @Override
     public void onEnable(){
+        SoundUtil.play(!this.isEnabled() ? SoundUtil.toggleOffSound : SoundUtil.toggleOnSound);
         switch (mode.get()) {
             case "Old NCP":
                 OldNCPSpeed = 1.4;
