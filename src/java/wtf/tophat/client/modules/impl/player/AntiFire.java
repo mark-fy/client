@@ -7,39 +7,44 @@ import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.impl.move.MotionEvent;
 import wtf.tophat.client.modules.base.Module;
 import wtf.tophat.client.modules.base.ModuleInfo;
+import wtf.tophat.client.settings.impl.BooleanSetting;
 import wtf.tophat.client.settings.impl.StringSetting;
 
-@ModuleInfo(name = "Anti Fire", desc = "removes you fire", category = Module.Category.PLAYER)
+@ModuleInfo(name = "Anti Fire", desc = "removes fire effects", category = Module.Category.PLAYER)
 public class AntiFire extends Module {
 
-    public final StringSetting mode;
+    private final StringSetting mode;
+    public final BooleanSetting visual;
 
     public AntiFire(){
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Normal", "Normal")
+                mode = new StringSetting(this, "Mode", "Normal", "Normal"),
+                visual = new BooleanSetting(this, "Remove Visual Fire", true)
         );
     }
 
     public void onMotion(MotionEvent event){
         switch (mode.get()){
             case "Normal":
-                if (this.mc.player.isBurning()) {
-                    for (int i = 0; i < InventoryPlayer.getHotbarSize(); ++i) {
-                        ItemStack itemStack = this.mc.player.inventory.getStackInSlot(i);
-                        if (itemStack == null) continue;
-                        itemStack.getItem();
-                        if (Item.getIdFromItem(itemStack.getItem()) != 326) continue;
-                        this.mc.player.inventory.currentItem = i;
-                    }
-                    if (this.mc.player.getHeldItem() == null) {
+                if (mc.player.isBurning()) {
+                    if (mc.player.getHeldItem() == null) {
                         return;
                     }
-                    this.mc.player.getHeldItem().getItem();
-                    if (Item.getIdFromItem(this.mc.player.getHeldItem().getItem()) == 326) {
-                        float oldpitch = this.mc.player.rotationPitch;
-                        this.mc.player.rotationPitch = 90.0f;
-                        this.mc.playerController.sendUseItem(this.mc.player, this.mc.world, this.mc.player.getHeldItem());
-                        this.mc.player.rotationPitch = oldpitch;
+
+                    for (int i = 0; i < InventoryPlayer.getHotbarSize(); ++i) {
+                        ItemStack itemStack = mc.player.inventory.getStackInSlot(i);
+                        if (itemStack == null)
+                            continue;
+                        if (Item.getIdFromItem(itemStack.getItem()) != 326)
+                            continue;
+                        mc.player.inventory.currentItem = i;
+                    }
+
+                    if (Item.getIdFromItem(mc.player.getHeldItem().getItem()) == 326) {
+                        float oldPitch = mc.player.rotationPitch;
+                        mc.player.rotationPitch = 90.0f;
+                        mc.playerController.sendUseItem(mc.player, mc.world, mc.player.getHeldItem());
+                        mc.player.rotationPitch = oldPitch;
                     }
                 }
                 break;
