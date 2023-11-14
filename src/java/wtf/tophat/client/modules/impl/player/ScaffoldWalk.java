@@ -356,17 +356,6 @@ public class ScaffoldWalk extends Module {
     }
 
     @Listen
-    public void onMotion(MotionEvent event){
-        if(event.getState() == Event.State.PRE) {
-            if (getWorld().getBlockState(new BlockPos(getX(), getY() - 1.0, getZ())).getBlock() instanceof BlockAir && getGround()) {
-                Methods.mc.settings.keyBindSneak.pressed = true;
-            } else {
-                Methods.mc.settings.keyBindSneak.pressed = Keyboard.isKeyDown(Methods.mc.settings.keyBindSneak.getKeyCode());
-            }
-        }
-    }
-
-    @Listen
     public void onRots(RotationEvent event) {
 
         if(isRotating) {
