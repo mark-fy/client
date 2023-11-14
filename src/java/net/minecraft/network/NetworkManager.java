@@ -48,6 +48,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
+import tophat.fun.events.impl.network.PacketEvent;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 {
@@ -146,18 +147,17 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
         this.closeChannel(chatcomponenttranslation);
     }
 
-    protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception
-    {
-        if (this.channel.isOpen())
-        {
-            try
-            {
-                p_channelRead0_2_.processPacket(this.packetListener);
+    protected void channelRead0(ChannelHandlerContext handlerContext, Packet packet) throws Exception {
+        if (this.channel.isOpen()) {
+            try {
+                PacketEvent packetEvent = new PacketEvent(packet, this.getNetHandler(), PacketEvent.Type.INCOMING);
+                packetEvent.call();
+                if(packetEvent.isCancelled())
+                    return;
+
+                packet.processPacket(this.packetListener);
             }
-            catch (ThreadQuickExitException var4)
-            {
-                ;
-            }
+            catch (ThreadQuickExitException ignored) {}
         }
     }
 

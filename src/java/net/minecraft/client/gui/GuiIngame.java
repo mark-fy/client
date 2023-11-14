@@ -43,6 +43,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
+import tophat.fun.events.impl.render.Render2DEvent;
 
 public class GuiIngame extends Gui
 {
@@ -169,6 +170,9 @@ public class GuiIngame extends Gui
         {
             this.renderTooltip(scaledresolution, partialTicks);
         }
+
+        Render2DEvent render2DEvent = new Render2DEvent(scaledresolution, partialTicks);
+        render2DEvent.call();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(icons);

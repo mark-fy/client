@@ -5,6 +5,9 @@
       <configuration />
     </facet>
   </component>
+  <component name="McpModuleSettings">
+    <option name="srgType" value="SRG" />
+  </component>
   <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/out/production/TopHat" />
     <output-test url="file://$MODULE_DIR$/out/test/TopHat" />

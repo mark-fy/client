@@ -46,7 +46,6 @@ import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMemoryErrorScreen;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSleepMP;
@@ -184,6 +183,11 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
+import tophat.fun.Client;
+import tophat.fun.events.Event;
+import tophat.fun.events.impl.game.KeyboardEvent;
+import tophat.fun.events.impl.game.TickEvent;
+import tophat.fun.menu.CustomMainMenu;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
@@ -220,7 +224,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     /** True if the player is connected to a realms server */
     private boolean connectedToRealms = false;
-    private Timer timer = new Timer(20.0F);
+    public Timer timer = new Timer(20.0F);
 
     /** Instance of PlayerUsageSnooper. */
     private PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getCurrentTimeMillis());
@@ -568,13 +572,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
 
+        Client.INSTANCE.run();
+
         if (this.serverName != null)
         {
-            this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
+            this.displayGuiScreen(new GuiConnecting(new CustomMainMenu(), this, this.serverName, this.serverPort));
         }
         else
         {
-            this.displayGuiScreen(new GuiMainMenu());
+            this.displayGuiScreen(new CustomMainMenu());
         }
 
         this.renderEngine.deleteTexture(this.mojangLogo);
@@ -992,14 +998,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         if (guiScreenIn == null && this.theWorld == null)
         {
-            guiScreenIn = new GuiMainMenu();
+            guiScreenIn = new CustomMainMenu();
         }
         else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F)
         {
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof GuiMainMenu)
+        if (guiScreenIn instanceof CustomMainMenu)
         {
             this.gameSettings.showDebugProfilerChart = false;
             this.ingameGUI.getChatGUI().clearChatMessages();
@@ -1738,17 +1744,17 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Runs the current tick.
      */
-    public void runTick() throws IOException
-    {
-        if (this.rightClickDelayTimer > 0)
-        {
+    public void runTick() throws IOException {
+        TickEvent tickEvent = new TickEvent();
+        tickEvent.setState(Event.State.PRE);
+        tickEvent.call();
+        if (this.rightClickDelayTimer > 0) {
             --this.rightClickDelayTimer;
         }
 
         this.mcProfiler.startSection("gui");
 
-        if (!this.isGamePaused)
-        {
+        if (!this.isGamePaused) {
             this.ingameGUI.updateTick();
         }
 
@@ -1903,12 +1909,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
             while (Keyboard.next())
             {
-                int k = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
-                KeyBinding.setKeyBindState(k, Keyboard.getEventKeyState());
+                int keycode = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
+                KeyBinding.setKeyBindState(keycode, Keyboard.getEventKeyState());
 
                 if (Keyboard.getEventKeyState())
                 {
-                    KeyBinding.onTick(k);
+                    KeyBinding.onTick(keycode);
                 }
 
                 if (this.debugCrashKeyPressTime > 0L)
@@ -1930,105 +1936,91 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
                 this.dispatchKeypresses();
 
-                if (Keyboard.getEventKeyState())
-                {
-                    if (k == 62 && this.entityRenderer != null)
+                if (Keyboard.getEventKeyState()) {if (keycode == 62 && this.entityRenderer != null)
                     {
                         this.entityRenderer.switchUseShader();
                     }
 
-                    if (this.currentScreen != null)
-                    {
+                    if (this.currentScreen != null) {
                         this.currentScreen.handleKeyboardInput();
-                    }
-                    else
-                    {
-                        if (k == 1)
-                        {
+                    } else {
+
+                        KeyboardEvent keyboardEvent = new KeyboardEvent(keycode);
+                        keyboardEvent.call();
+
+                        if(keyboardEvent.isCancelled()) {
+                            return;
+                        }
+
+                        if (keycode == 1) {
                             this.displayInGameMenu();
                         }
 
-                        if (k == 32 && Keyboard.isKeyDown(61) && this.ingameGUI != null)
-                        {
+                        if (keycode == 32 && Keyboard.isKeyDown(61) && this.ingameGUI != null) {
                             this.ingameGUI.getChatGUI().clearChatMessages();
                         }
 
-                        if (k == 31 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 31 && Keyboard.isKeyDown(61)) {
                             this.refreshResources();
                         }
 
-                        if (k == 17 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 17 && Keyboard.isKeyDown(61)) {
                             ;
                         }
 
-                        if (k == 18 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 18 && Keyboard.isKeyDown(61)) {
                             ;
                         }
 
-                        if (k == 47 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 47 && Keyboard.isKeyDown(61)) {
                             ;
                         }
 
-                        if (k == 38 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 38 && Keyboard.isKeyDown(61)) {
                             ;
                         }
 
-                        if (k == 22 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 22 && Keyboard.isKeyDown(61)) {
                             ;
                         }
 
-                        if (k == 20 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 20 && Keyboard.isKeyDown(61)) {
                             this.refreshResources();
                         }
 
-                        if (k == 33 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 33 && Keyboard.isKeyDown(61)) {
                             this.gameSettings.setOptionValue(GameSettings.Options.RENDER_DISTANCE, GuiScreen.isShiftKeyDown() ? -1 : 1);
                         }
 
-                        if (k == 30 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 30 && Keyboard.isKeyDown(61)) {
                             this.renderGlobal.loadRenderers();
                         }
 
-                        if (k == 35 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 35 && Keyboard.isKeyDown(61)) {
                             this.gameSettings.advancedItemTooltips = !this.gameSettings.advancedItemTooltips;
                             this.gameSettings.saveOptions();
                         }
 
-                        if (k == 48 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 48 && Keyboard.isKeyDown(61)) {
                             this.renderManager.setDebugBoundingBox(!this.renderManager.isDebugBoundingBox());
                         }
 
-                        if (k == 25 && Keyboard.isKeyDown(61))
-                        {
+                        if (keycode == 25 && Keyboard.isKeyDown(61)) {
                             this.gameSettings.pauseOnLostFocus = !this.gameSettings.pauseOnLostFocus;
                             this.gameSettings.saveOptions();
                         }
 
-                        if (k == 59)
-                        {
+                        if (keycode == 59) {
                             this.gameSettings.thirdPersonView = !this.gameSettings.thirdPersonView;
                         }
 
-                        if (k == 61)
-                        {
+                        if (keycode == 61) {
                             this.gameSettings.showDebugProfilerChart = !this.gameSettings.showDebugProfilerChart;
                             this.gameSettings.showLagometer = GuiScreen.isShiftKeyDown();
                             this.gameSettings.lastServer = GuiScreen.isAltKeyDown();
                         }
 
-                        if (this.gameSettings.keyBindSmoothCamera.isPressed())
-                        {
+                        if (this.gameSettings.keyBindSmoothCamera.isPressed()) {
                             ++this.gameSettings.showDebugInfo;
 
                             if (this.gameSettings.showDebugInfo > 2)
@@ -2056,14 +2048,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
                     if (this.gameSettings.showDebugProfilerChart && this.gameSettings.showLagometer)
                     {
-                        if (k == 11)
+                        if (keycode == 11)
                         {
                             this.updateDebugProfilerName(0);
                         }
 
                         for (int j1 = 0; j1 < 9; ++j1)
                         {
-                            if (k == 2 + j1)
+                            if (keycode == 2 + j1)
                             {
                                 this.updateDebugProfilerName(j1 + 1);
                             }
@@ -2268,6 +2260,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
+        tickEvent.setState(Event.State.POST);
+        tickEvent.call();
     }
 
     /**
