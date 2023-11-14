@@ -10,6 +10,7 @@ import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S27PacketExplosion;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
 import wtf.tophat.client.TopHat;
 import wtf.tophat.client.events.impl.world.CollisionBoxesEvent;
 import wtf.tophat.client.events.impl.network.PacketEvent;
@@ -31,7 +32,7 @@ public class Velocity extends Module {
 
     public Velocity() {
         TopHat.settingManager.add(
-                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Cubecraft", "Karhu"),
+                mode = new StringSetting(this, "Mode", "Simple", "Simple", "Reverse", "Grim", "Matrix", "C0F Cancel", "Legit", "Cubecraft", "Karhu", "Intave 60%"),
                 horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0)
                         .setHidden(() -> !mode.is("Simple") && !mode.is("Reverse")),
                 vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0)
@@ -43,6 +44,10 @@ public class Velocity extends Module {
     private final Queue<Short> transactionQueue = new ConcurrentLinkedQueue<>();
     private boolean grimPacket;
 
+    // Intave 60%
+    private boolean attacked;
+    private int intaveCounter;
+
     @Listen
     public void onUpdate(UpdateEvent event) {
         switch (mode.get()) {
@@ -50,6 +55,17 @@ public class Velocity extends Module {
                 if (transactionQueue.isEmpty() && grimPacket) {
                     grimPacket = false;
                 }
+                break;
+            case "Intave":
+                intaveCounter++;
+                if (mc.player.isSwingInProgress)
+                    attacked = true;
+                if (mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY) && mc.player.hurtTime > 0 && !attacked) {
+                    mc.player.motionX *= 0.6D;
+                    mc.player.motionZ *= 0.6D;
+                    mc.player.setSprinting(false);
+                }
+                attacked = false;
                 break;
         }
     }
@@ -60,6 +76,15 @@ public class Velocity extends Module {
             return;
 
         switch (mode.get()) {
+            case "Intave 60%":
+                if (event.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity s12PacketEntityVelocity = (S12PacketEntityVelocity)event.getPacket();
+                    if (intaveCounter > 20 && s12PacketEntityVelocity.getEntityID() == mc.player.getEntityId()) {
+                        event.setCancelled(true);
+                        intaveCounter = 0;
+                    }
+                }
+                break;
             case "Simple":
                 if (event.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) event.getPacket();
@@ -140,17 +165,14 @@ public class Velocity extends Module {
                 if (mc.player.hurtTime != 0) {
                     if(mc.player.onGround){
                         mc.player.motionY = 0.42F;
-                        mc.timer.timerSpeed = 1F;
                         Minecraft.getMinecraft().settings.keyBindJump.pressed = true;
                     } else {
                         boolean boost2 = (Math.abs(mc.player.rotationYawHead - mc.player.rotationYaw) < 90.0F);
-                        mc.timer.timerSpeed = 1F;
                         double currentSpeed = Math.sqrt(mc.player.motionX * mc.player.motionX + mc.player.motionZ * mc.player.motionZ);
                         double speed = boost2 ? 1 : 1D;
                         double direction = Speed.getDirection();
                         mc.player.motionX = -Math.sin(direction) * speed * currentSpeed;
                         mc.player.motionZ = Math.cos(direction) * speed * currentSpeed;
-
                     }
                 }
                 break;
