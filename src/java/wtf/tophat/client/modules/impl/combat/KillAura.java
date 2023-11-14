@@ -15,6 +15,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import wtf.tophat.client.TopHat;
@@ -28,6 +29,7 @@ import wtf.tophat.client.settings.impl.NumberSetting;
 import wtf.tophat.client.settings.impl.StringSetting;
 import wtf.tophat.client.utilities.math.time.TimeUtil;
 import wtf.tophat.client.utilities.player.PlayerUtil;
+import wtf.tophat.client.utilities.player.rotations.Rotation;
 import wtf.tophat.client.utilities.player.rotations.RotationUtil;
 
 @ModuleInfo(name = "Kill Aura", desc = "kills entity", category = Module.Category.COMBAT)
@@ -45,8 +47,9 @@ public class KillAura extends Module {
     public StringSetting rotations = new StringSetting(this,"Rotations", "Default", "Default", "Custom", "Smooth", "Derp", "None");
     public NumberSetting maxrot = new NumberSetting(this,"Max Rotation", 0.0, 180.0, 180.0, 1);
     public NumberSetting minrot = new NumberSetting(this,"Min Rotation", 0.0, 180.0, 180.0, 1);
-    public StringSetting sort = new StringSetting(this,"Sort", "Distance", "Distance", "Health", "Hurttime");
+    public StringSetting sort = new StringSetting(this,"Sort", "Distance", "Distance", "Health", "Hurttime", "FOV");
     public StringSetting blockMode = new StringSetting(this,"Block Mode", "Vanilla", "None", "Vanilla", "Hypixel", "Interact", "Legit", "Fake", "NCP");
+    public NumberSetting aimRange = new NumberSetting(this,"Aim range", 1.0, 6.0, 4.5, 1);
     public NumberSetting range = new NumberSetting(this,"Range", 1.0, 6.0, 3.0, 1);
     public NumberSetting aps = new NumberSetting(this,"Aps", 1.0, 20.0, 10.0, 1);
     public BooleanSetting ondead = new BooleanSetting(this,"Disable on death", true);
@@ -254,7 +257,7 @@ public class KillAura extends Module {
             return mc.player != entity;
         }).filter(entity -> {
             double girth = 0.5657;
-            return mc.player.getDistanceToEntity(entity) - 0.5657 < range.get().doubleValue();
+            return mc.player.getDistanceToEntity(entity) - 0.5657 < aimRange.get().doubleValue();
         }).sorted(Comparator.comparingDouble(entity -> {
             switch (this.sort.get()) {
                 case "Distance": {
@@ -265,6 +268,9 @@ public class KillAura extends Module {
                 }
                 case "Hurttime": {
                     return entity.hurtTime;
+                }
+                case "FOV": {
+                    return Math.abs(MathHelper.wrapAngleTo180_float(Math.abs(RotationUtil.getRotation(entity)[0] - getYaw())));
                 }
             }
             return -1.0;
