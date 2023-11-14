@@ -69,7 +69,7 @@ public class ScaffoldWalk extends Module {
                 negativeExpand = new NumberSetting(this, "Negative expand", 0, 0.24, 0, 1),
                 offGroundNegativeExpand = new NumberSetting(this, "OffGround negative expand", 0, 0.24, 0, 1),
                 delayBetweenPlacements = new NumberSetting(this, "Delay", 0, 10, 0, 1),
-                jump = new StringSetting(this, "Jump", "Disabled", "Disabled", "Enabled"),
+                jump = new StringSetting(this, "Jump", "Disabled", "Disabled", "Enabled", "Sprint only"),
                 safeWalk = new BooleanSetting(this, "Safe walk", false),
                 tower = new StringSetting(this, "Tower", "None", "None", "Vulcan", "Verus", "NCP"),
                 blockPicker = new StringSetting(this, "Block picker", "Switch", "None", "Switch", "Spoof"),
@@ -209,7 +209,7 @@ public class ScaffoldWalk extends Module {
             mc.player.setSprinting(false);
         }
 
-        if(jump.is("Enabled")) {
+        if(jump.is("Enabled") || (jump.is("Sprint only") && mc.player.isSprinting())) {
             if(mc.player.onGround && isMoving() && !mc.settings.keyBindJump.isKeyDown()) {
                 mc.player.jump();
             }
