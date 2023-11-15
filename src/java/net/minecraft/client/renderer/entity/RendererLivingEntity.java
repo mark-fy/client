@@ -119,40 +119,40 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
 
             this.mainModel.isChild = entity.isChild();
 
-            try
-            {
+            try {
                 float f = this.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
                 float f1 = this.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
                 float f2 = f1 - f;
 
-                if (this.mainModel.isRiding && entity.ridingEntity instanceof EntityLivingBase)
-                {
-                    EntityLivingBase entitylivingbase = (EntityLivingBase)entity.ridingEntity;
+                if (this.mainModel.isRiding && entity.ridingEntity instanceof EntityLivingBase) {
+                    EntityLivingBase entitylivingbase = (EntityLivingBase) entity.ridingEntity;
                     f = this.interpolateRotation(entitylivingbase.prevRenderYawOffset, entitylivingbase.renderYawOffset, partialTicks);
                     f2 = f1 - f;
                     float f3 = MathHelper.wrapAngleTo180_float(f2);
 
-                    if (f3 < -85.0F)
-                    {
+                    if (f3 < -85.0F) {
                         f3 = -85.0F;
                     }
 
-                    if (f3 >= 85.0F)
-                    {
+                    if (f3 >= 85.0F) {
                         f3 = 85.0F;
                     }
 
                     f = f1 - f3;
 
-                    if (f3 * f3 > 2500.0F)
-                    {
+                    if (f3 * f3 > 2500.0F) {
                         f += f3 * 0.2F;
                     }
 
                     f2 = f1 - f;
                 }
 
-                float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+                float f7;
+                if (entity == renderManager.livingPlayer) {
+                    f7 = entity.prevRotationPitchHead + (entity.rotationPitchHead - entity.prevRotationPitchHead) * partialTicks;
+                } else {
+                    f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+                }
                 this.renderLivingAt(entity, x, y, z);
                 float f8 = this.handleRotationFloat(entity, partialTicks);
                 this.rotateCorpse(entity, f8, f, partialTicks);
