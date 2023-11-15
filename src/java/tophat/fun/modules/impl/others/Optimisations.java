@@ -1,12 +1,14 @@
 package tophat.fun.modules.impl.others;
 
+import io.github.nevalackin.radbus.Listen;
 import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
 
-@ModuleInfo(name = "Optimizer", desc = "better fps", category = Module.Category.OTHERS)
-public class Optimizer extends Module {
+@ModuleInfo(name = "Optimisations", desc = "optimizes your performance.", category = Module.Category.OTHERS)
+public class Optimisations extends Module {
 
+    @Listen
     public void onUpdate(UpdateEvent event){
         // Sky
         mc.gameSettings.ofSky = false;
