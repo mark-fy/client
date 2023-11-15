@@ -1,6 +1,7 @@
 package tophat.fun.menu;
 
 import net.minecraft.client.gui.*;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 public class CustomMainMenu extends GuiScreen {
 
-    private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("Poppins SemiBold 32");
+    private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsSemiBold 20");
 
     public CustomMainMenu() {}
 
@@ -32,6 +33,9 @@ public class CustomMainMenu extends GuiScreen {
         // Background
         RectUtil.rectangle(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), true, new Color(22, 22, 22));
 
+        mc.getTextureManager().bindTexture(new ResourceLocation("tophat/logo/3000x.png"));
+        Gui.drawModalRectWithCustomSizedTexture((int) x - 27, (int) y - 105, 0, 0, 54, 54, 54, 54);
+
         // Buttons
         String[] buttonLabels = {"Singleplayer", "Multiplayer", "Accounts", "Settings", "Exit"};
         double offset = y - 65;
@@ -46,7 +50,7 @@ public class CustomMainMenu extends GuiScreen {
             RoundUtil.drawRoundedRect(x - 60, offset, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
 
             // Draw button label
-            poppins.drawCenteredString(label, (float) x, (float) offset + 3, -1);
+            poppins.drawCenteredString(label, (float) x, (float) offset + 3.5f, -1);
         }
 
         // Copyright
