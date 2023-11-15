@@ -15,7 +15,7 @@ public enum Client implements Information {
     public SettingManager settingManager = new SettingManager();
 
     public void run() {
-        Display.setTitle(CNAME + " v" + CVERSION + " | Presented by " + Arrays.toString(CAUTHORS));
+        Display.setTitle(CNAME + " v" + CVERSION + " | Made with love by " + Arrays.toString(CAUTHORS));
         moduleManager.init();
         settingManager.init();
     }

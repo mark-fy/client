@@ -1,4 +1,4 @@
-package tophat.fun.menu.click;
+package tophat.fun.menu.click.tophat;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
