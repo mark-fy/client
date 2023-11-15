@@ -8,9 +8,6 @@ import tophat.fun.modules.ModuleInfo;
 public class Optimizer extends Module {
 
     public void onUpdate(UpdateEvent event){
-        // Memory Clean
-        System.gc();
-
         // Sky
         mc.gameSettings.ofSky = false;
         mc.gameSettings.ofCustomSky = false;
