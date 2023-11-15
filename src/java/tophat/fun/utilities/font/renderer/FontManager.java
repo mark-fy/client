@@ -39,9 +39,9 @@ public class FontManager {
             loadFont("/assets/minecraft/tophat/font/sf_ui_display/SF-UI-Light.ttf", "SFUILight", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/sf_ui_display/SF-UI-Regular.ttf", "SFUIRegular", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/poppins/Poppins-Thin.ttf", "PoppinsThin", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
-            loadFont("/assets/minecraft/tophat/font/poppins/Poppins-SemiBold.ttf", "PoppinsSemiBold", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
+            loadFont("/assets/minecraft/tophat/font/poppins/Poppins-SemiBold.ttf", "PoppinsSemiBold", new int[]{14, 16, 18, 20, 22, 24, 32}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/poppins/Poppins-Regular.ttf", "PoppinsRegular", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
-            loadFont("/assets/minecraft/tophat/font/poppins/Poppins-Medium.ttf", "PoppinsMedium", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
+            loadFont("/assets/minecraft/tophat/font/poppins/Poppins-Medium.ttf", "PoppinsMedium", new int[]{14, 16, 18, 20, 22, 24, 32}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/poppins/Poppins-Light.ttf", "PoppinsLight", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/poppins/Poppins-ExtraLight.ttf", "PoppinsExtraLight", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/poppins/Poppins-ExtraBold.ttf", "PoppinsExtraBold", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);

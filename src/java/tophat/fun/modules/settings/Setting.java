@@ -22,4 +22,7 @@ public class Setting {
         return (T) this;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

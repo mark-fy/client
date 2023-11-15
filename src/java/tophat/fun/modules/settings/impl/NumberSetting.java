@@ -51,4 +51,7 @@ public class NumberSetting extends Setting {
         }
     }
 
+    public void setValue(Number value) {
+        this.value = value;
+    }
 }

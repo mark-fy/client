@@ -16,7 +16,7 @@ public class ModuleManager extends Storage<Module> implements Methods {
 
     public void init() {
         Client.INSTANCE.eventManager.subscribe(this);
-        final Reflections reflections = new Reflections("wtf.tophat");
+        final Reflections reflections = new Reflections("tophat.fun");
         reflections.getTypesAnnotatedWith(ModuleInfo.class).forEach(aClass -> {
             try {
                 this.add((Module) aClass.getDeclaredConstructor().newInstance());

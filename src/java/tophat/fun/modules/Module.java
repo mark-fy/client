@@ -1,7 +1,14 @@
 package tophat.fun.modules;
 
+import org.lwjgl.Sys;
 import tophat.fun.Client;
+import tophat.fun.modules.settings.SettingInfo;
+import tophat.fun.modules.settings.impl.BooleanSetting;
+import tophat.fun.modules.settings.impl.NumberSetting;
+import tophat.fun.modules.settings.impl.StringSetting;
 import tophat.fun.utilities.Methods;
+
+import java.lang.reflect.Field;
 
 public class Module implements Methods {
 
@@ -9,6 +16,38 @@ public class Module implements Methods {
     public String desc = this.getClass().getAnnotation(ModuleInfo.class).desc();
     public Category category = this.getClass().getAnnotation(ModuleInfo.class).category();
     public int keyCode = this.getClass().getAnnotation(ModuleInfo.class).bind();
+
+    private void registerSettings() {
+        for (Field field : getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(SettingInfo.class)) {
+                SettingInfo settingInfo = field.getAnnotation(SettingInfo.class);
+
+                try {
+                    field.setAccessible(true);
+                    Object value = field.get(this);
+
+                    if (value instanceof BooleanSetting) {
+                        BooleanSetting setting = (BooleanSetting) value;
+                        setting.setName(settingInfo.name());
+                        setting.setValue(settingInfo.booleanDefault());
+                        Client.INSTANCE.settingManager.add(setting);
+                    } else if (value instanceof StringSetting) {
+                        StringSetting setting = (StringSetting) value;
+                        setting.setName(settingInfo.name());
+                        setting.setValue(settingInfo.stringDefault());
+                        Client.INSTANCE.settingManager.add(setting);
+                    } else if (value instanceof NumberSetting) {
+                        NumberSetting setting = (NumberSetting) value;
+                        setting.setName(settingInfo.name());
+                        setting.setValue(settingInfo.intDefault());
+                        Client.INSTANCE.settingManager.add(setting);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     private boolean enabled;
     private boolean hidden;

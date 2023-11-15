@@ -30,5 +30,7 @@ public class BooleanSetting extends Setting {
 
     public void onChange(boolean old, boolean current) {}
 
-
+    public void setValue(boolean value) {
+        this.value = value;
+    }
 }

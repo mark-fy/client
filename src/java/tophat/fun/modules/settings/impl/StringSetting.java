@@ -60,4 +60,7 @@ public class StringSetting extends Setting {
 
     public void onChange(String old, String current) {}
 
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

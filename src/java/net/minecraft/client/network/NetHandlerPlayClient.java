@@ -210,6 +210,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tophat.fun.events.impl.network.PacketEvent;
+import tophat.fun.events.impl.player.DeathEvent;
 import tophat.fun.menu.CustomMainMenu;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient
@@ -459,13 +461,17 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
     }
 
-    public void handleEntityMetadata(S1CPacketEntityMetadata packetIn)
-    {
+    public void handleEntityMetadata(S1CPacketEntityMetadata packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
         Entity entity = this.clientWorldController.getEntityByID(packetIn.getEntityId());
+        EntityPlayer player;
 
-        if (entity != null && packetIn.func_149376_c() != null)
-        {
+        if (Minecraft.getMinecraft() != null && (entity = Minecraft.getMinecraft().theWorld.getEntityByID(packetIn.getEntityId())) instanceof EntityPlayer && (player = (EntityPlayer)entity).getHealth() <= 0.0f) {
+            DeathEvent deathEvent = new DeathEvent(player);
+            deathEvent.call();
+        }
+
+        if (entity != null && packetIn.func_149376_c() != null) {
             entity.getDataWatcher().updateWatchedObjectsFromList(packetIn.func_149376_c());
         }
     }
@@ -712,9 +718,14 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
     }
 
-    public void addToSendQueue(Packet p_147297_1_)
-    {
-        this.netManager.sendPacket(p_147297_1_);
+    public void addToSendQueue(Packet packet) {
+        PacketEvent packetEvent = new PacketEvent(packet, this, PacketEvent.Type.OUTGOING);
+        packetEvent.call();
+
+        if(packetEvent.isCancelled())
+            return;
+
+        this.netManager.sendPacket(packet);
     }
 
     public void handleCollectItem(S0DPacketCollectItem packetIn)

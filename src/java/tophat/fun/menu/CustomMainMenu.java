@@ -29,7 +29,6 @@ public class CustomMainMenu extends GuiScreen {
         double x = sr.getScaledWidth_double() / 2;
         double y = sr.getScaledHeight_double() / 2;
 
-
         // Background
         RectUtil.rectangle(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), true, new Color(22, 22, 22));
 
