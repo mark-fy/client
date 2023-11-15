@@ -52,8 +52,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import tophat.fun.events.Event;
-import tophat.fun.events.impl.network.ChatEvent;
 import tophat.fun.events.impl.game.UpdateEvent;
+import tophat.fun.events.impl.network.ChatEvent;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.events.impl.player.OmniSprintEvent;
 import tophat.fun.events.impl.player.SlowDownEvent;
@@ -62,61 +62,19 @@ public class EntityPlayerSP extends AbstractClientPlayer
 {
     public final NetHandlerPlayClient sendQueue;
     private final StatFileWriter statWriter;
-
-    /**
-     * The last X position which was transmitted to the server, used to determine when the X position changes and needs
-     * to be re-trasmitted
-     */
     private double lastReportedPosX;
-
-    /**
-     * The last Y position which was transmitted to the server, used to determine when the Y position changes and needs
-     * to be re-transmitted
-     */
     private double lastReportedPosY;
-
-    /**
-     * The last Z position which was transmitted to the server, used to determine when the Z position changes and needs
-     * to be re-transmitted
-     */
     private double lastReportedPosZ;
-
-    /**
-     * The last yaw value which was transmitted to the server, used to determine when the yaw changes and needs to be
-     * re-transmitted
-     */
     private float lastReportedYaw;
-
-    /**
-     * The last pitch value which was transmitted to the server, used to determine when the pitch changes and needs to
-     * be re-transmitted
-     */
     private float lastReportedPitch;
-
-    /** the last sneaking state sent to the server */
     private boolean serverSneakState;
-
-    /** the last sprinting state sent to the server */
     private boolean serverSprintState;
-
-    /**
-     * Reset to 0 every time position is sent to the server, used to send periodic updates every 20 ticks even when the
-     * player is not moving.
-     */
     private int positionUpdateTicks;
     private boolean hasValidHealth;
     private String clientBrand;
     public MovementInput movementInput;
     protected Minecraft mc;
-
-    /**
-     * Used to tell if the player pressed forward twice. If this is at 0 and it's pressed (And they are allowed to
-     * sprint, aka enough food on the ground etc) it sets this to 7. If it's pressed and it's greater than 0 enable
-     * sprinting.
-     */
     protected int sprintToggleTimer;
-
-    /** Ticks left before sprinting is disabled. */
     public int sprintingTicksLeft;
     public float renderArmYaw;
     public float renderArmPitch;
@@ -124,11 +82,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     public float prevRenderArmPitch;
     private int horseJumpPowerCounter;
     private float horseJumpPower;
-
-    /** The amount of time an entity has been in a Portal */
     public float timeInPortal;
-
-    /** The amount of time an entity has been in a Portal the previous tick */
     public float prevTimeInPortal;
 
     public EntityPlayerSP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFile)
@@ -140,24 +94,15 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.dimension = 0;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         return false;
     }
 
-    /**
-     * Heal living entity (param: amount of half-hearts)
-     */
     public void heal(float healAmount)
     {
     }
 
-    /**
-     * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
-     */
     public void mountEntity(Entity entityIn)
     {
         super.mountEntity(entityIn);
@@ -168,34 +113,30 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    public void onUpdate() {
-        if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ))) {
+    public void onUpdate()
+    {
+        if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
+        {
             super.onUpdate();
-
             UpdateEvent updateEvent = new UpdateEvent();
             updateEvent.call();
 
-            if (this.isRiding()) {
+            if (this.isRiding())
+            {
                 this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
                 this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
-            } else {
+            }
+            else
+            {
                 this.onUpdateWalkingPlayer();
             }
         }
     }
 
-    /**
-     * called every tick when the player is on foot. Performs all the things that normally happen during movement.
-     */
     public void onUpdateWalkingPlayer() {
-
         MotionEvent eventMotion = new MotionEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
         eventMotion.setState(Event.State.PRE);
         eventMotion.call();
-
         boolean sprinting = this.isSprinting();
 
         if (sprinting != this.serverSprintState) {
@@ -236,8 +177,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
                     this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(eventMotion.getX(), eventMotion.getY(), eventMotion.getZ(), eventMotion.getYaw(), eventMotion.getPitch(), eventMotion.isOnGround()));
                 } else if (moving) {
                     this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(eventMotion.getX(), eventMotion.getY(), eventMotion.getZ(), eventMotion.isOnGround()));
-                }
-                else if (looking) {
+                } else if (looking) {
                     this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(eventMotion.getYaw(), eventMotion.getPitch(), eventMotion.isOnGround()));
                 } else {
                     this.sendQueue.addToSendQueue(new C03PacketPlayer(eventMotion.isOnGround()));
@@ -265,9 +205,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         eventMotion.call();
     }
 
-    /**
-     * Called when player presses the drop item key
-     */
     public EntityItem dropOneItem(boolean dropAll)
     {
         C07PacketPlayerDigging.Action c07packetplayerdigging$action = dropAll ? C07PacketPlayerDigging.Action.DROP_ALL_ITEMS : C07PacketPlayerDigging.Action.DROP_ITEM;
@@ -275,16 +212,10 @@ public class EntityPlayerSP extends AbstractClientPlayer
         return null;
     }
 
-    /**
-     * Joins the passed in entity item with the world. Args: entityItem
-     */
     protected void joinEntityItemWithWorld(EntityItem itemIn)
     {
     }
 
-    /**
-     * Sends a chat message from the player. Args: chatMessage
-     */
     public void sendChatMessage(String message) {
         ChatEvent chatEvent = new ChatEvent(message);
         chatEvent.call();
@@ -296,9 +227,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
     }
 
-    /**
-     * Swings the item the player is holding.
-     */
     public void swingItem()
     {
         super.swingItem();
@@ -310,10 +238,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.sendQueue.addToSendQueue(new C16PacketClientStatus(C16PacketClientStatus.EnumState.PERFORM_RESPAWN));
     }
 
-    /**
-     * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health
-     * second with the reduced value. Args: damageAmount
-     */
     protected void damageEntity(DamageSource damageSrc, float damageAmount)
     {
         if (!this.isEntityInvulnerable(damageSrc))
@@ -322,9 +246,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
     }
 
-    /**
-     * set current crafting inventory back to the 2x2 square
-     */
     public void closeScreen()
     {
         this.sendQueue.addToSendQueue(new C0DPacketCloseWindow(this.openContainer.windowId));
@@ -338,9 +259,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.mc.displayGuiScreen((GuiScreen)null);
     }
 
-    /**
-     * Updates health locally.
-     */
     public void setPlayerSPHealth(float health)
     {
         if (this.hasValidHealth)
@@ -372,9 +290,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
     }
 
-    /**
-     * Adds a value to a statistic field.
-     */
     public void addStat(StatBase stat, int amount)
     {
         if (stat != null)
@@ -386,17 +301,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
     }
 
-    /**
-     * Sends the player's abilities to the server (if there is one).
-     */
     public void sendPlayerAbilities()
     {
         this.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(this.capabilities));
     }
 
-    /**
-     * returns true if this is an EntityPlayerSP, or the logged in player.
-     */
     public boolean isUser()
     {
         return true;
@@ -500,26 +409,17 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
     }
 
-    /**
-     * Returns true if the block at the given BlockPos and the block above it are NOT full cubes.
-     */
     private boolean isOpenBlockSpace(BlockPos pos)
     {
         return !this.worldObj.getBlockState(pos).getBlock().isNormalCube() && !this.worldObj.getBlockState(pos.up()).getBlock().isNormalCube();
     }
 
-    /**
-     * Set sprinting switch for Entity.
-     */
     public void setSprinting(boolean sprinting)
     {
         super.setSprinting(sprinting);
         this.sprintingTicksLeft = sprinting ? 600 : 0;
     }
 
-    /**
-     * Sets the current XP, total XP, and level number.
-     */
     public void setXPStats(float currentXP, int maxXP, int level)
     {
         this.experience = currentXP;
@@ -527,26 +427,16 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.experienceLevel = level;
     }
 
-    /**
-     * Send a chat message to the CommandSender
-     */
     public void addChatMessage(IChatComponent component)
     {
         this.mc.ingameGUI.getChatGUI().printChatMessage(component);
     }
 
-    /**
-     * Returns {@code true} if the CommandSender is allowed to execute the command, {@code false} if not
-     */
     public boolean canCommandSenderUseCommand(int permLevel, String commandName)
     {
         return permLevel <= 0;
     }
 
-    /**
-     * Get the position in the world. <b>{@code null} is not allowed!</b> If you are not an entity in the world, return
-     * the coordinates 0, 0, 0
-     */
     public BlockPos getPosition()
     {
         return new BlockPos(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D);
@@ -557,9 +447,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.worldObj.playSound(this.posX, this.posY, this.posZ, name, volume, pitch, false);
     }
 
-    /**
-     * Returns whether the entity is in a server world
-     */
     public boolean isServerWorld()
     {
         return true;
@@ -585,9 +472,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.mc.displayGuiScreen(new GuiCommandBlock(cmdBlockLogic));
     }
 
-    /**
-     * Displays the GUI for interacting with a book.
-     */
     public void displayGUIBook(ItemStack bookStack)
     {
         Item item = bookStack.getItem();
@@ -598,9 +482,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
     }
 
-    /**
-     * Displays the GUI for interacting with a chest inventory. Args: chestInventory
-     */
     public void displayGUIChest(IInventory chestInventory)
     {
         String s = chestInventory instanceof IInteractionObject ? ((IInteractionObject)chestInventory).getGuiID() : "minecraft:container";
@@ -663,9 +544,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.mc.displayGuiScreen(new GuiMerchant(this.inventory, villager, this.worldObj));
     }
 
-    /**
-     * Called when the player performs a critical hit on the Entity. Args: entity that was hit critically
-     */
     public void onCriticalHit(Entity entityHit)
     {
         this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT);
@@ -676,9 +554,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.mc.effectRenderer.emitParticleAtEntity(entityHit, EnumParticleTypes.CRIT_MAGIC);
     }
 
-    /**
-     * Returns if this entity is sneaking.
-     */
     public boolean isSneaking()
     {
         boolean flag = this.movementInput != null ? this.movementInput.sneak : false;
@@ -706,10 +581,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
         return this.mc.getRenderViewEntity() == this;
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     public void onLivingUpdate() {
         if (this.sprintingTicksLeft > 0) {
             --this.sprintingTicksLeft;
@@ -747,8 +618,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             if (this.timeInPortal > 1.0F) {
                 this.timeInPortal = 1.0F;
             }
-        }
-        else {
+        } else {
             if (this.timeInPortal > 0.0F) {
                 this.timeInPortal -= 0.05F;
             }
@@ -771,8 +641,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         SlowDownEvent slowDownEvent = new SlowDownEvent(0.2f, 0.2f);
         slowDownEvent.call();
 
-        if (this.isUsingItem() && !this.isRiding())
-        {
+        if (this.isUsingItem() && !this.isRiding()) {
             MovementInput moveInput1 = this.movementInput;
             moveInput1.moveStrafe *= slowDownEvent.getStrafe();
             MovementInput moveInput2 = this.movementInput;
@@ -800,7 +669,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         OmniSprintEvent sprintEvent = new OmniSprintEvent(this.movementInput.moveForward < f);
         sprintEvent.call();
-
         if (this.isSprinting() && (sprintEvent.isSprintCheck() || this.isCollidedHorizontally || !flag3)) {
             this.setSprinting(false);
         }
