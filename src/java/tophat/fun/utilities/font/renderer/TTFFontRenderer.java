@@ -114,18 +114,16 @@ public class TTFFontRenderer {
         this.renderString(text, x, y, color, false);
     }
 
-    public void drawStringWithColorCode(final String text, final float x, final float y, final int color) {
-        GlStateManager.disableAlpha();
-        GlStateManager.disableBlend();
-        this.renderString(text, x, y, color, false, true);
-    }
-
     public void drawCenteredString(final String text, final float x, final float y, final int color) {
         final float width = this.getWidth(text) / 2.0f;
+        GlStateManager.disableAlpha();
+        GlStateManager.disableBlend();
         this.renderString(text, x - width, y, color, false);
     }
 
     public void drawStringWithShadow(final String text, final float x, final float y, final int color) {
+        GlStateManager.disableAlpha();
+        GlStateManager.disableBlend();
         GL11.glTranslated(0.5, 0.5, 0.0);
         this.renderString(text, x, y, color, true);
         GL11.glTranslated(-0.5, -0.5, 0.0);
@@ -141,84 +139,6 @@ public class TTFFontRenderer {
         y = Math.round(y * 10.0F) / 10.0F;
 
         final Minecraft mc = Minecraft.getMinecraft();
-
-        if (mc != null && mc.thePlayer != null && mc.theWorld != null && mc.thePlayer.getName() != null && text.length() > 1) {
-//            if (NameProtect.enabled) {
-//                text = text.replaceAll(mc.thePlayer.getName(), "Rise User");
-//            }
-//
-//            if (Streamer.enabled) {
-//                for (final String s : Streamer.PLAYERS) {
-//                    text = text.replaceAll(s, "Player");
-//                }
-//            }
-        }
-
-        GL11.glPushMatrix();
-        GlStateManager.scale(0.5, 0.5, 1.0);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(770, 771);
-
-        x -= 2.0f;
-        y -= 2.0f;
-        x += 0.5f;
-        y += 0.5f;
-        x *= 2.0f;
-        y *= 2.0f;
-
-        final CharacterData[] characterData = this.regularData;
-
-        final int length = text.length();
-        final double multiplier = 255.0 * (shadow ? 4 : 1);
-
-        final Color c = new Color(color);
-
-        GL11.glColor4d(c.getRed() / multiplier, c.getGreen() / multiplier, c.getBlue() / multiplier, (color >> 24 & 0xFF) / 255.0);
-
-        try {
-            for (int i = 0; i < length; ++i) {
-                final char character = text.charAt(i);
-                this.drawChar(character, characterData, x, y);
-
-                if (character >= characterData.length) continue;
-
-                final CharacterData charData = characterData[character];
-                x += charData.width - 8.0f;
-            }
-        } catch (final StringIndexOutOfBoundsException ex) {
-            System.out.println("[Rise] Couldn't render text");
-            ex.printStackTrace();
-        }
-
-        GL11.glPopMatrix();
-        GlStateManager.disableBlend();
-        GlStateManager.bindTexture(0);
-        GlStateManager.resetColor();
-
-        return (int) x;
-    }
-
-    private int renderString(String text, float x, float y, final int color, final boolean shadow, final boolean nickga) {
-        if (text.equals("") || text.length() == 0) {
-            return 0;
-        }
-
-        x = Math.round(x * 10.0F) / 10.0F;
-        y = Math.round(y * 10.0F) / 10.0F;
-
-        final Minecraft mc = Minecraft.getMinecraft();
-
-        if (mc != null && mc.thePlayer != null && mc.theWorld != null && mc.thePlayer.getName() != null && text.length() > 1) {
-//            if (NameProtect.enabled) {
-//                text = text.replaceAll(mc.thePlayer.getName(), "Rise User");
-//            }
-//
-//            if (Streamer.enabled) {
-//                for (final String s : Streamer.PLAYERS) {
-//                    text = text.replaceAll(s, "Player");
-//                }
-//            }
-        }
 
         GL11.glPushMatrix();
         GlStateManager.scale(0.5, 0.5, 1.0);
@@ -337,18 +257,6 @@ public class TTFFontRenderer {
 
     public float getWidthProtect(String text) {
         final Minecraft mc = Minecraft.getMinecraft();
-
-        if (mc != null && mc.thePlayer != null && mc.theWorld != null && mc.thePlayer.getName() != null && text.length() > 1) {
-//            if (NameProtect.enabled) {
-//                text = text.replaceAll(mc.thePlayer.getName(), "Rise User");
-//            }
-//
-//            if (Streamer.enabled) {
-//                for (final String s : Streamer.PLAYERS) {
-//                    text = text.replaceAll(s, "Player");
-//                }
-//            }
-        }
 
         float width = 0.0f;
         final CharacterData[] characterData = this.regularData;

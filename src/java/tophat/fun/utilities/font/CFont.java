@@ -21,10 +21,6 @@ public class CFont {
         fontRenderer.drawString(text, (float) x, (float) y, color);
     }
 
-    public void drawStringWithColorCode(final String text, final double x, final double y, final int color) {
-        fontRenderer.drawStringWithColorCode(text, (float) x, (float) y, color);
-    }
-
     public void drawStringBold(final String text, final double x, final double y, final int color) {
         fontRendererBold.drawString(text, (float) x, (float) y, color);
     }
@@ -69,10 +65,6 @@ public class CFont {
 
     public void drawCenteredString(final String text, final double x, final double y, final int color) {
         drawString(text, x - ((int) getWidth(text) >> 1), y, color);
-    }
-
-    public void drawCenteredColorCode(final String text, final double x, final double y, final int color) {
-        drawStringWithColorCode(text, x - ((int) getWidth(text) >> 1), y, color);
     }
 
     public void drawCenteredMedium(final String text, final double x, final double y, final int color) {
