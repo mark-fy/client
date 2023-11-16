@@ -29,8 +29,4 @@ public class BooleanSetting extends Setting {
     public void change(boolean value) { this.value = value; }
 
     public void onChange(boolean old, boolean current) {}
-
-    public void setValue(boolean value) {
-        this.value = value;
-    }
 }

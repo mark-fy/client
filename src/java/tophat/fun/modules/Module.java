@@ -58,8 +58,8 @@ public class Module implements Methods {
         MOVEMENT("Movement"),
         PLAYER("Player"),
         RENDER("Render"),
-        DESIGN("Design"),
-        OTHERS("Others");
+        OTHERS("Others"),
+        DESIGN("Design");
 
         private final String name;
 

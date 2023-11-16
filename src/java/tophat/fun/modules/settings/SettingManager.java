@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 public class SettingManager extends Storage<Setting> {
 
     @Override
-    public void init() {}
+    public void init() {
+
+    }
 
     public Setting getSetting(String input, Module parent) {
         return getSettingsByModule(parent).stream().filter(setting -> setting.getName().equalsIgnoreCase(input)).findFirst().get();

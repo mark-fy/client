@@ -59,8 +59,4 @@ public class StringSetting extends Setting {
     public boolean is(String input) { return value.equalsIgnoreCase(input); }
 
     public void onChange(String old, String current) {}
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 }

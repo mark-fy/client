@@ -50,8 +50,4 @@ public class NumberSetting extends Setting {
             return 1;
         }
     }
-
-    public void setValue(Number value) {
-        this.value = value;
-    }
 }

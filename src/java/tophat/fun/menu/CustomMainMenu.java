@@ -15,6 +15,8 @@ public class CustomMainMenu extends GuiScreen {
 
     private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsSemiBold 20");
 
+    private final ResourceLocation resourceLocation = new ResourceLocation("tophat/logo/3000x.png");
+
     public CustomMainMenu() {}
 
     @Override
@@ -32,7 +34,7 @@ public class CustomMainMenu extends GuiScreen {
         // Background
         RectUtil.rectangle(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), true, new Color(22, 22, 22));
 
-        mc.getTextureManager().bindTexture(new ResourceLocation("tophat/logo/3000x.png"));
+        mc.getTextureManager().bindTexture(resourceLocation);
         Gui.drawModalRectWithCustomSizedTexture((int) x - 27, (int) y - 105, 0, 0, 54, 54, 54, 54);
 
         // Buttons

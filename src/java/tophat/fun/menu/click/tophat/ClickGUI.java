@@ -1,13 +1,16 @@
 package tophat.fun.menu.click.tophat;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import tophat.fun.Client;
 import tophat.fun.modules.Module;
+import tophat.fun.modules.settings.Setting;
+import tophat.fun.modules.settings.impl.BooleanSetting;
+import tophat.fun.modules.settings.impl.StringSetting;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.RectUtil;
 import tophat.fun.utilities.render.RoundUtil;
+import tophat.fun.utilities.render.TextUtil;
 
 import java.awt.*;
 import java.io.IOException;
@@ -15,16 +18,13 @@ import java.io.IOException;
 public class ClickGUI extends GuiScreen {
 
     private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsMedium 18");
-    private final static TTFFontRenderer descFont = CFont.FONT_MANAGER.getFont("PoppinsMedium 14");
+    private final static TTFFontRenderer poppinsR = CFont.FONT_MANAGER.getFont("PoppinsRegular 18");
+    private final static TTFFontRenderer iconFont = CFont.FONT_MANAGER.getFont("RegularIcons 18");
 
-    private Module.Category selectedCategory = Module.Category.COMBAT;
+    private Module expandedModule = null;
 
     @Override
     public void initGui() {
-        ScaledResolution sr = new ScaledResolution(mc);
-
-        double width = 350;
-        double height = 350;
         super.initGui();
     }
 
@@ -35,20 +35,52 @@ public class ClickGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        ScaledResolution sr = new ScaledResolution(mc);
+        float x = 60;
+        float y = 5;
+        float modHeight = 20;
 
-        double x = sr.getScaledWidth_double() / 2;
-        double y = sr.getScaledHeight_double() / 2;
+        float catOffset = 100;
+        for (Module.Category category : Module.Category.values()) {
+            // background -- expands when needed
+            RoundUtil.drawRoundedRect(x + catOffset - 1, y - 1, 102, 22 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(24, 175, 162));
+            RoundUtil.drawRoundedRect(x + catOffset, y, 100, 20 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(19, 19, 19));
+            RoundUtil.drawRoundedRect(x + catOffset, y, 100, 20, 8, new Color(25, 25, 25));
+            poppins.drawString(category.getName(), x + catOffset + 5, y + 5, -1);
+            iconFont.drawString(TextUtil.getCategoryLetter(category), x + catOffset + 85, y + 7, -1);
 
-        RoundUtil.drawRoundedRect(x - 170, y - 150, 340, 300, 10, new Color(22,22,22));
+            float modOffset = y + 4 + 20;
+            for (Module module : Client.INSTANCE.moduleManager.getModulesByCategory(category)) {
+                if (module.isHidden()) continue;
+                poppinsR.drawString(module.getName(), x + catOffset + 5, modOffset, module.isEnabled() ? new Color(37, 239, 223).getRGB() : Color.WHITE.getRGB());
 
-        int catX = (int) (x - 135);
+                if (expandedModule == module) {
+                    // divider/spacer
+                    RectUtil.rectangle(x + catOffset + 5, modOffset + 13, 90, 1, true, new Color(35, 35, 35));
 
-        int catOffset = 120;
-        for(Module.Category category : Module.Category.values()) {
-            RoundUtil.drawRoundedRect(catX - 30, catOffset - 2, 60, 25, 8, new Color(56, 139, 211));
-            poppins.drawCenteredString(category.getName(), catX, 5 + catOffset, -1);
-            catOffset += 30;
+                    float settOffset = modOffset;
+                    for (Setting setting : Client.INSTANCE.settingManager.getSettingsByModule(expandedModule)) {
+                        if (setting.isHidden()) continue;
+
+                        if (setting instanceof StringSetting) {
+                            poppinsR.drawString(setting.getName() + ": " + ((StringSetting) setting).get(), x + catOffset + 5, settOffset + 20, -1);
+                            modHeight += 20;
+                            settOffset += 20;
+                        } else if (setting instanceof BooleanSetting) {
+                            poppinsR.drawString(setting.getName(), x + catOffset + 5, settOffset + 20, -1);
+                            RoundUtil.drawRoundedRect(x + catOffset + 83, settOffset + 19, 12, 12, 6, new Color(24, 175, 162));
+                            RoundUtil.drawRoundedRect(x + catOffset + 84, settOffset + 20, 10, 10, 4, ((BooleanSetting) setting).get() ? new Color(24, 175, 162) : new Color(25, 25, 25));
+                            poppinsR.drawString("✓", x + catOffset + 86, settOffset + 20, Color.WHITE.getRGB());
+                            fontRendererObj.drawStringWithShadow(((BooleanSetting) setting).get() ? "✓" : "", x + catOffset + 86, settOffset + 20, -1);
+                            modHeight += 20;
+                            settOffset += 20;
+                        }
+                    }
+                }
+
+                modOffset += 20;
+            }
+
+            catOffset += 120;
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -56,27 +88,24 @@ public class ClickGUI extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        ScaledResolution sr = new ScaledResolution(mc);
+        float x = 60;
+        float y = 5;
 
-        double x = sr.getScaledWidth_double() / 2;
-        double y = sr.getScaledHeight_double() / 2;
-        int catOffset = 120;
-        for(Module.Category category : Module.Category.values()) {
-            boolean hover = RectUtil.hovered(mouseX, mouseY, x - 165, catOffset - 8, 80, 25);
-            if(mouseButton == 0 && hover) {
-                selectedCategory = category;
+        float catOffset = 100;
+        for (Module.Category category : Module.Category.values()) {
+            float modOffset = y + 4 + 20;
+            for(Module module : Client.INSTANCE.moduleManager.getModulesByCategory(category)) {
+                if(module.isHidden()) continue;
+                boolean hover = RectUtil.hovered(mouseX, mouseY, x + catOffset, modOffset, 100, 18);
+
+                if(hover && mouseButton == 0) {
+                    module.toggle();
+                } else if(hover && mouseButton == 1) {
+                    expandedModule = (expandedModule == module) ? null : module;
+                }
+                modOffset += 20;
             }
-            catOffset += 35;
-        }
-
-        int modOffset = 120;
-        for(Module module : Client.INSTANCE.moduleManager.getModulesByCategory(selectedCategory)) {
-            boolean hover = RectUtil.hovered(mouseX, mouseY, x - 75, modOffset - 8, 80, 40);
-
-            if(mouseButton == 0 && hover) {
-                module.toggle();
-            }
-            modOffset += 42;
+            catOffset += 120;
         }
 
         super.mouseClicked(mouseX, mouseY, mouseButton);

@@ -2,9 +2,11 @@ package tophat.fun;
 
 import org.lwjgl.opengl.Display;
 import tophat.fun.events.EventManager;
+import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleManager;
 import tophat.fun.modules.settings.SettingManager;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 public enum Client implements Information {
@@ -15,7 +17,12 @@ public enum Client implements Information {
     public SettingManager settingManager = new SettingManager();
 
     public void run() {
-        Display.setTitle(CNAME + " v" + CVERSION + " | Made with love by " + Arrays.toString(CAUTHORS));
+        LocalDate today = LocalDate.now();
+        if (today.getDayOfMonth() == 18 && today.getMonthValue() == 11) {
+            Display.setTitle(CNAME + " " + CVERSION + " | Happy proclamation day Latvia!");
+        } else {
+            Display.setTitle(CNAME + " " + CVERSION + " | Made with love by " + Arrays.toString(CAUTHORS));
+        }
         moduleManager.init();
         settingManager.init();
     }
