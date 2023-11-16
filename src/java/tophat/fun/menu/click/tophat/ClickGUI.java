@@ -42,12 +42,13 @@ public class ClickGUI extends GuiScreen {
 
         RoundUtil.drawRoundedRect(x - 170, y - 150, 340, 300, 10, new Color(22,22,22));
 
-        int catX = (int) (x - 165);
+        int catX = (int) (x - 135);
 
         int catOffset = 120;
         for(Module.Category category : Module.Category.values()) {
+            RoundUtil.drawRoundedRect(catX - 30, catOffset - 2, 60, 25, 8, new Color(56, 139, 211));
             poppins.drawCenteredString(category.getName(), catX, 5 + catOffset, -1);
-            catOffset += 25;
+            catOffset += 30;
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
