@@ -21,7 +21,7 @@ public enum Client implements Information {
         if (today.getDayOfMonth() == 18 && today.getMonthValue() == 11) {
             Display.setTitle(CNAME + " " + CVERSION + " | Happy proclamation day Latvia!");
         } else {
-            Display.setTitle(CNAME + " " + CVERSION + " | Made with love by " + Arrays.toString(CAUTHORS));
+            Display.setTitle(CNAME + " " + CVERSION + " | Made by " + Arrays.toString(CAUTHORS));
         }
         moduleManager.init();
         settingManager.init();

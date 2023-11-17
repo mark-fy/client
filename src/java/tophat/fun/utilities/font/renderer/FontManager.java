@@ -31,6 +31,7 @@ public class FontManager {
         try {
             loadFont("/assets/minecraft/tophat/font/verdana/Verdana.ttf", "Verdana", new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 32, 128}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/verdana/Verdana-Bold.ttf", "VerdanaBold", new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 32, 128}, Font.PLAIN);
+            loadFont("/assets/minecraft/tophat/font/verdana/Verdana-Bold-Italic.ttf", "VerdanaBoldItalic", new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 32, 128}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/others/Biko-Regular.otf", "Biko", new int[]{16, 18, 28, 36, 48}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/others/Helvetica-Neue-Thin.ttf", "HelveticaThin", new int[]{18, 20, 24, 36, 48, 72, 96}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/icons/Regular-Icons.ttf", "RegularIcons", new int[]{18}, Font.PLAIN);

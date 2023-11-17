@@ -28,12 +28,12 @@ public class CustomMainMenu extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         ScaledResolution sr = new ScaledResolution(mc);
 
-        double x = sr.getScaledWidth_double() / 2;
-        double y = sr.getScaledHeight_double() / 2;
+        float x = (float) sr.getScaledWidth() / 2;
+        float y = (float) sr.getScaledHeight() / 2;
 
         // Background
         RectUtil.rectangle(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), true, new Color(22, 22, 22));
-
+        
         mc.getTextureManager().bindTexture(resourceLocation);
         Gui.drawModalRectWithCustomSizedTexture((int) x - 27, (int) y - 105, 0, 0, 54, 54, 54, 54);
 
@@ -51,11 +51,11 @@ public class CustomMainMenu extends GuiScreen {
             RoundUtil.drawRoundedRect(x - 60, offset, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
 
             // Draw button label
-            poppins.drawCenteredString(label, (float) x, (float) offset + 3.5f, -1);
+            poppins.drawCenteredString(label, x, (float) offset + 3.5f, -1);
         }
 
         // Copyright
-        poppins.drawCenteredString("Copyright © TopHat Client 2023", (float) x, sr.getScaledHeight() - 25, new Color(70, 70, 70).getRGB());
+        poppins.drawCenteredString("Copyright © TopHat Client 2023", x, sr.getScaledHeight() - 25, new Color(70, 70, 70).getRGB());
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -64,8 +64,8 @@ public class CustomMainMenu extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         ScaledResolution sr = new ScaledResolution(mc);
 
-        double x = sr.getScaledWidth_double() / 2;
-        double y = sr.getScaledHeight_double() / 2;
+        float x = (float) sr.getScaledWidth() / 2;
+        float y = (float) sr.getScaledHeight() / 2;
         double offset = y - 65;
 
         if (mouseButton == 0) {
