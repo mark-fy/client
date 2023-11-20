@@ -8,22 +8,17 @@ import tophat.fun.events.impl.player.OmniSprintEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
 import tophat.fun.modules.settings.impl.BooleanSetting;
-import tophat.fun.modules.settings.impl.NumberSetting;
-import tophat.fun.modules.settings.impl.StringSetting;
 import tophat.fun.utilities.player.MoveUtil;
-
 
 @ModuleInfo(name = "Sprint", desc = "sprints for you.", category = Module.Category.MOVEMENT)
 public class Sprint extends Module {
 
     private final BooleanSetting legit = new BooleanSetting(this, "Legit Sprint", true);
     private final BooleanSetting omni = new BooleanSetting(this, "All Directions", false);
-    private final StringSetting mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Legit");
-    private final NumberSetting speed = new NumberSetting(this, "Speed", 1, 10, 5, 0);
 
     public Sprint() {
         Client.INSTANCE.settingManager.add(
-                legit, omni, mode, speed
+                legit, omni
         );
     }
 
