@@ -24,11 +24,6 @@ public class GlErrors
 
         if (System.currentTimeMillis() > timeCheckStartMs + 3000L)
         {
-            if (countErrorsSuppressed > 0)
-            {
-                Config.error("Suppressed " + countErrors + " OpenGL errors");
-            }
-
             suppressed = countErrors > 10;
             timeCheckStartMs = System.currentTimeMillis();
             countErrors = 0;

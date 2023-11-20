@@ -926,18 +926,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     private void checkGLError(String message)
     {
-        if (this.enableGLErrorChecking)
-        {
-            int i = GL11.glGetError();
-
-            if (i != 0)
-            {
-                String s = GLU.gluErrorString(i);
-                logger.error("########## GL ERROR ##########");
-                logger.error("@ " + message);
-                logger.error(i + ": " + s);
-            }
-        }
+        // we don't like errors
     }
 
     public void shutdownMinecraftApplet()
