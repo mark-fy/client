@@ -37,7 +37,7 @@ public class ModuleList extends Module {
             return;
         }
 
-        int scWidth = sr.getScaledWidth(), pHeight = (int) ((poppins.getHeight() + 2 - poppins.getHeight()) / 2 - 3), y = 6;
+        int scWidth = sr.getScaledWidth(), pHeight = (int) ((poppins.getHeight() + 2 - poppins.getHeight()) / 2 - 3), y = 5;
 
         for (Module module : enabledModules) {
             RectUtil.rectangle(scWidth - 8, y + pHeight, 4, 15.5, true, new Color(25,25,25));
