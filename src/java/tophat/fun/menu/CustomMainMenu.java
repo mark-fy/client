@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.RectUtil;
+import tophat.fun.utilities.render.RenderUtil;
 import tophat.fun.utilities.render.RoundUtil;
 
 import java.awt.*;
@@ -44,11 +45,11 @@ public class CustomMainMenu extends GuiScreen {
         for (String label : buttonLabels) {
             offset += 23;
 
-            boolean hover = RectUtil.hovered(mouseX, mouseY, x - 60, offset, 120, 20);
+            boolean hover = RenderUtil.hovered(mouseX, mouseY, x - 60, offset, 120, 20);
 
             // Draw button background
-            RoundUtil.drawRoundedRect(x - 60 - 1, offset - 1, 122, 22, 7, hover ? new Color(14, 103, 95) : new Color(14, 109, 101));
-            RoundUtil.drawRoundedRect(x - 60, offset, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
+            RoundUtil.round(x - 60 - 1, offset - 1, 122, 22, 7, hover ? new Color(14, 103, 95) : new Color(14, 109, 101));
+            RoundUtil.round(x - 60, offset, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
 
             // Draw button label
             poppins.drawCenteredString(label, x, (float) offset + 3.5f, -1);
@@ -73,7 +74,7 @@ public class CustomMainMenu extends GuiScreen {
             for (int i = 0; i < buttonLabels.length; i++) {
                 offset += 23;
 
-                if (RectUtil.hovered(mouseX, mouseY, x - 60, offset, 120, 20)) {
+                if (RenderUtil.hovered(mouseX, mouseY, x - 60, offset, 120, 20)) {
                     switch (i) {
                         case 0:
                             mc.displayGuiScreen(new GuiSelectWorld(this));

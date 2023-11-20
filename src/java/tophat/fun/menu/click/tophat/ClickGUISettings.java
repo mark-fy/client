@@ -11,7 +11,7 @@ import tophat.fun.modules.settings.impl.StringSetting;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.math.MathUtil;
-import tophat.fun.utilities.render.RectUtil;
+import tophat.fun.utilities.render.RenderUtil;
 import tophat.fun.utilities.render.RoundUtil;
 
 import java.awt.*;
@@ -52,9 +52,9 @@ public class ClickGUISettings extends GuiScreen {
         float width = 200;
         float height = 200;
 
-        RoundUtil.drawRoundedRect(x - 1, y - 1, width + 2, height + 2, 8, new Color(24, 175, 162));
-        RoundUtil.drawRoundedRect(x, y, width, height, 8, new Color(25, 25, 25));
-        RoundUtil.drawRoundedRect(x, y, width, 20, 8, new Color(19, 19, 19));
+        RoundUtil.round(x - 1, y - 1, width + 2, height + 2, 8, new Color(24, 175, 162));
+        RoundUtil.round(x, y, width, height, 8, new Color(25, 25, 25));
+        RoundUtil.round(x, y, width, 20, 8, new Color(19, 19, 19));
         poppins.drawString(parent.getName(), x + 5, y + 5, -1);
 
         float offset = 20;
@@ -66,20 +66,20 @@ public class ClickGUISettings extends GuiScreen {
             if (setting.isHidden()) continue;
 
             if (setting instanceof BooleanSetting) {
-                boolean hover = RectUtil.hovered(mouseX, mouseY, x + 180 + 1, y + offset + 5, 10, 10);
+                boolean hover = RenderUtil.hovered(mouseX, mouseY, x + 180 + 1, y + offset + 5, 10, 10);
                 poppinsR.drawString(setting.getName(), x + 5, y + offset + 5, -1);
                 Color bg = new Color(24, 175, 162);
                 if(hover) {
                     bg = new Color(29, 201, 185);
                 }
-                RoundUtil.drawRoundedRect(x + 180, y + offset + 4, 12, 12, 6, bg);
-                RoundUtil.drawRoundedRect(x + 180 + 1, y + offset + 5, 10, 10, 4, ((BooleanSetting) setting).get() ? bg : new Color(25, 25, 25));
+                RoundUtil.round(x + 180, y + offset + 4, 12, 12, 6, bg);
+                RoundUtil.round(x + 180 + 1, y + offset + 5, 10, 10, 4, ((BooleanSetting) setting).get() ? bg : new Color(25, 25, 25));
                 checkmark.drawString(((BooleanSetting) setting).get() ? "g" : "", x + 180 + 1, y + offset + 7.5f, -1);
                 offset += 20;
             } else if (setting instanceof StringSetting) {
                 float settingWidth = poppinsR.getWidth(((StringSetting) setting).get());
-                boolean hoverRight = RectUtil.hovered(mouseX, mouseY, x + settingWidth + 120 + settingWidth, y + offset + 5.5, 10, 10);
-                boolean hoverLeft = RectUtil.hovered(mouseX, mouseY, x + settingWidth + 109.5, y + offset + 5.5, 10, 10);
+                boolean hoverRight = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 120 + settingWidth, y + offset + 5.5, 10, 10);
+                boolean hoverLeft = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 109.5, y + offset + 5.5, 10, 10);
 
                 poppinsR.drawString(setting.getName(), x + 5, y + offset + 5, -1);
                 arrows.drawString("2", x + settingWidth + 121 + settingWidth, y + offset + 7.5f, hoverRight ? Color.LIGHT_GRAY.getRGB() : -1);
@@ -89,21 +89,16 @@ public class ClickGUISettings extends GuiScreen {
             } else if (setting instanceof NumberSetting) {
                 float value = ((NumberSetting) setting).get().floatValue();
                 poppinsR.drawString(setting.getName() + ": " + value, x + 5, y + offset + 5, -1);
-                // Slider Background
-                RoundUtil.drawRoundedRect(x + 3, y + offset + 25,190 + 2, 5, 2, new Color(24, 175, 162));
-                RoundUtil.drawRoundedRect(x + 4, y + offset + 26,190, 3, 1, new Color(25, 25, 25));
-                // Slider Fill
+                RoundUtil.round(x + 3, y + offset + 25,190 + 2, 5, 2, new Color(24, 175, 162));
+                RoundUtil.round(x + 4, y + offset + 26,190, 3, 1, new Color(25, 25, 25));
                 float min = ((NumberSetting) setting).min().floatValue();
                 float max = ((NumberSetting) setting).max().floatValue();
                 float fillWidth = Math.min(Math.max((value - min) / (max - min), 0), 1) * 190;
-                RoundUtil.drawRoundedRect(x + 4, y + offset + 26, fillWidth, 3, 1, new Color(31, 227, 207));
-                // Slider Pointer Background
-                RoundUtil.drawRoundedRect(x + fillWidth, y + offset + 22, 5, 11, 1, new Color(105, 105, 105));
-                // Slider Pointer Main
-                RoundUtil.drawRoundedRect(x + fillWidth + 1, y + offset + 22.5, 3, 10, 1, new Color(255, 255, 255));
+                RoundUtil.round(x + 4, y + offset + 26, fillWidth, 3, 1, new Color(31, 227, 207));
+                RoundUtil.round(x + fillWidth, y + offset + 22, 5, 11, 1, new Color(105, 105, 105));
+                RoundUtil.round(x + fillWidth + 1, y + offset + 22.5, 3, 10, 1, new Color(255, 255, 255));
 
-                if (RectUtil.hovered(mouseX, mouseY, x + 4, y + offset + 22, 190, 15)) {
-                    // Check for left mouse button click
+                if (RenderUtil.hovered(mouseX, mouseY, x + 4, y + offset + 22, 190, 15)) {
                     if (Mouse.isButtonDown(0)) {
                         double normalizedX = (mouseX - (x + 4)) / 190.0;
                         double newValue = min + normalizedX * (max - min);
@@ -135,8 +130,6 @@ public class ClickGUISettings extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         float x = (float) this.width / 2 - 100;
         float y = (float) this.height / 2 - 100;
-        float width = 200;
-        float height = 200;
 
         float offset = 20;
         int settingsDisplayed = 0;
@@ -147,15 +140,15 @@ public class ClickGUISettings extends GuiScreen {
             if (setting.isHidden()) continue;
 
             if(setting instanceof BooleanSetting) {
-                boolean hover = RectUtil.hovered(mouseX, mouseY, x + 180 + 1, y + offset + 5, 10, 10);
+                boolean hover = RenderUtil.hovered(mouseX, mouseY, x + 180 + 1, y + offset + 5, 10, 10);
                 if(hover && mouseButton == 0) {
                     ((BooleanSetting) setting).toggle();
                 }
                 offset += 20;
             } else if(setting instanceof StringSetting) {
                 float settingWidth = poppinsR.getWidth(((StringSetting) setting).get());
-                boolean hoverRight = RectUtil.hovered(mouseX, mouseY, x + settingWidth + 120 + settingWidth, y + offset + 5.5, 10, 10);
-                boolean hoverLeft = RectUtil.hovered(mouseX, mouseY, x + settingWidth + 109.5, y + offset + 5.5, 10, 10);
+                boolean hoverRight = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 120 + settingWidth, y + offset + 5.5, 10, 10);
+                boolean hoverLeft = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 109.5, y + offset + 5.5, 10, 10);
 
                 if(hoverRight && mouseButton == 0) {
                     ((StringSetting) setting).forward();

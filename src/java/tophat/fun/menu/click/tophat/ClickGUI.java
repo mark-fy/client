@@ -5,7 +5,7 @@ import tophat.fun.Client;
 import tophat.fun.modules.Module;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
-import tophat.fun.utilities.render.RectUtil;
+import tophat.fun.utilities.render.RenderUtil;
 import tophat.fun.utilities.render.RoundUtil;
 import tophat.fun.utilities.render.TextUtil;
 
@@ -36,9 +36,9 @@ public class ClickGUI extends GuiScreen {
 
         float catOffset = 100;
         for (Module.Category category : Module.Category.values()) {
-            RoundUtil.drawRoundedRect(x + catOffset - 1, y - 1, 102, 22 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(24, 175, 162));
-            RoundUtil.drawRoundedRect(x + catOffset, y, 100, 20 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(25, 25, 25));
-            RoundUtil.drawRoundedRect(x + catOffset, y, 100, 20, 8, new Color(19, 19, 19));
+            RoundUtil.round(x + catOffset - 1, y - 1, 102, 22 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(24, 175, 162));
+            RoundUtil.round(x + catOffset, y, 100, 20 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(25, 25, 25));
+            RoundUtil.round(x + catOffset, y, 100, 20, 8, new Color(19, 19, 19));
             poppins.drawString(category.getName(), x + catOffset + 5, y + 5, -1);
             iconFont.drawString(TextUtil.getCategoryLetter(category), x + catOffset + 85, y + 7, -1);
 
@@ -65,7 +65,7 @@ public class ClickGUI extends GuiScreen {
             float modOffset = y + 4 + 20;
             for(Module module : Client.INSTANCE.moduleManager.getModulesByCategory(category)) {
                 if(module.isHidden()) continue;
-                boolean hover = RectUtil.hovered(mouseX, mouseY, x + catOffset, modOffset, 100, 18);
+                boolean hover = RenderUtil.hovered(mouseX, mouseY, x + catOffset, modOffset, 100, 18);
 
                 if(hover && mouseButton == 0) {
                     module.toggle();

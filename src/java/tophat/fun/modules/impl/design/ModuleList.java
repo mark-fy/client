@@ -41,7 +41,7 @@ public class ModuleList extends Module {
 
         for (Module module : enabledModules) {
             RectUtil.rectangle(scWidth - 8, y + pHeight, 4, 15.5, true, new Color(25,25,25));
-            RoundUtil.drawRoundedRect(scWidth - 5 - poppins.getWidth(module.getName()), y + pHeight, poppins.getWidth(module.getName()) + 2, poppins.getHeight() + 4, 6, new Color(25,25,25));
+            RoundUtil.round(scWidth - 5 - poppins.getWidth(module.getName()), y + pHeight, poppins.getWidth(module.getName()) + 2, poppins.getHeight() + 4, 6, new Color(25,25,25));
             RectUtil.rectangle(scWidth - 4, y + pHeight, 4, 15.5, true, new Color(25,25,25));
             poppins.drawString(module.getName(), scWidth - 2 - poppins.getWidth(module.getName()), y + (poppins.getHeight() + 4 - poppins.getHeight()) / 2 - 2, -1);
             y += 12;
