@@ -10,6 +10,7 @@ import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
 import tophat.fun.modules.settings.impl.NumberSetting;
+import tophat.fun.modules.settings.impl.StringSetting;
 import tophat.fun.utilities.Methods;
 import tophat.fun.utilities.player.RotationUtil;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @ModuleInfo(name = "Aura", desc = "attacks other players around you", category = Module.Category.COMBAT)
 public class Aura extends Module {
 
+    private final StringSetting sorting = new StringSetting(this, "Sorting", "Distance", "Distance", "Health", "FOV");
     private final NumberSetting reach = new NumberSetting(this, "Reach", 0.0, 6.0, 3.0, 1);
     private final NumberSetting aimRange = new NumberSetting(this, "AimRange", 0.0, 6.0, 4.5, 1);
     private final NumberSetting minCPS = new NumberSetting(this, "MinCPS", 0, 20, 8, 0);
@@ -27,17 +29,18 @@ public class Aura extends Module {
 
     public Aura() {
         Client.INSTANCE.settingManager.add(
-                reach,aimRange,minCPS,maxCPS
+                sorting, reach,aimRange,minCPS,maxCPS
         );
     }
 
-    Entity target;
+    public static Entity target;
     int cpsdelay = 0;
     long time = System.currentTimeMillis();
+
     @Listen
     public void onMotion(MotionEvent event) {
         if (event.getState() == Event.State.PRE) {
-            List<Entity> targets = Methods.mc.theWorld.loadedEntityList.stream()
+            List<EntityLivingBase> targets = Methods.mc.theWorld.loadedEntityList.stream()
                     .filter(entity -> entity instanceof EntityLivingBase)
                     .map(entity -> (EntityLivingBase) entity)
                     .filter(entityLivingBase -> entityLivingBase.getDistanceToEntity(mc.thePlayer) <= aimRange.get().floatValue()
@@ -46,13 +49,15 @@ public class Aura extends Module {
                             && entityLivingBase.getHealth() > 0
                             && !entityLivingBase.getName().isEmpty()
                             && !entityLivingBase.getName().contains(" "))
-                    .sorted(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(Methods.mc.thePlayer)))
+                    .sorted(getComparator(sorting.get()))
                     .collect(Collectors.toList());
-            if(!targets.isEmpty()){
+
+            if (!targets.isEmpty()) {
                 target = targets.get(0);
             }
         }
     }
+
     @Listen
     public void onUpdate(UpdateEvent event) {
         cpsdelay = (int) ((Math.random() * (maxCPS.value.intValue() - minCPS.value.intValue())) + minCPS.value.intValue());
@@ -67,4 +72,27 @@ public class Aura extends Module {
             }
         }
     }
+
+
+    private Comparator<EntityLivingBase> getComparator(String sortingOption) {
+        switch (sortingOption.toLowerCase()) {
+            case "health":
+                return Comparator.comparingDouble(EntityLivingBase::getHealth);
+            case "fov":
+                return Comparator.comparingDouble(entity -> {
+                    double deltaX = entity.posX - Methods.mc.thePlayer.posX;
+                    double deltaZ = entity.posZ - Methods.mc.thePlayer.posZ;
+                    double angle = Math.toDegrees(Math.atan2(deltaZ, deltaX));
+                    double playerYaw = Math.toDegrees(Methods.mc.thePlayer.rotationYaw) % 360;
+                    if (playerYaw < 0) {
+                        playerYaw += 360;
+                    }
+                    return Math.abs(playerYaw - angle);
+                });
+            case "distance":
+            default:
+                return Comparator.comparingDouble(entity -> entity.getDistanceToEntity(Methods.mc.thePlayer));
+        }
+    }
+
 }
