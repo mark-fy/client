@@ -53,7 +53,7 @@ public class Aura extends Module {
     public void onUpdate(UpdateEvent event) {
         cpsdelay = (int) ((Math.random() * (maxCPS.value.intValue() - minCPS.value.intValue())) + minCPS.value.intValue());
 
-        if(target != null){
+        if(target != null && !target.isDead){
             mc.thePlayer.rotationYaw = RotationUtil.getRotationsNeeded(target)[0];
             mc.thePlayer.rotationPitch = RotationUtil.getRotationsNeeded(target)[1];
             if(mc.thePlayer.getDistanceToEntity(target) <= reach.get().floatValue() && mc.pointedEntity == target && time <= System.currentTimeMillis() + cpsdelay){
