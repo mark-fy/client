@@ -24,9 +24,11 @@ public class ClickGUISettings extends GuiScreen {
     private final static TTFFontRenderer checkmark = CFont.FONT_MANAGER.getFont("RegularIcons2 18");
     private final static TTFFontRenderer arrows = CFont.FONT_MANAGER.getFont("ArrowIcons 18");
 
-    private NumberSetting currentDraggingSetting = null;
     private final GuiScreen screenParent;
     private final Module parent;
+
+    private int startIndex = 0;
+    private final int maxSettingsDisplayed = 5;
 
     public ClickGUISettings(GuiScreen screenParent, Module parent) {
         this.screenParent = screenParent;
@@ -56,10 +58,14 @@ public class ClickGUISettings extends GuiScreen {
         poppins.drawString(parent.getName(), x + 5, y + 5, -1);
 
         float offset = 20;
-        for(Setting setting : Client.INSTANCE.settingManager.getSettingsByModule(parent)) {
-            if(setting.isHidden()) continue;
+        int settingsDisplayed = 0;
 
-            if(setting instanceof BooleanSetting) {
+        for (int i = startIndex; i < Client.INSTANCE.settingManager.getSettingsByModule(parent).size(); i++) {
+            Setting setting = Client.INSTANCE.settingManager.getSettingsByModule(parent).get(i);
+
+            if (setting.isHidden()) continue;
+
+            if (setting instanceof BooleanSetting) {
                 boolean hover = RectUtil.hovered(mouseX, mouseY, x + 180 + 1, y + offset + 5, 10, 10);
                 poppinsR.drawString(setting.getName(), x + 5, y + offset + 5, -1);
                 Color bg = new Color(24, 175, 162);
@@ -70,7 +76,7 @@ public class ClickGUISettings extends GuiScreen {
                 RoundUtil.drawRoundedRect(x + 180 + 1, y + offset + 5, 10, 10, 4, ((BooleanSetting) setting).get() ? bg : new Color(25, 25, 25));
                 checkmark.drawString(((BooleanSetting) setting).get() ? "g" : "", x + 180 + 1, y + offset + 7.5f, -1);
                 offset += 20;
-            } else if(setting instanceof StringSetting) {
+            } else if (setting instanceof StringSetting) {
                 float settingWidth = poppinsR.getWidth(((StringSetting) setting).get());
                 boolean hoverRight = RectUtil.hovered(mouseX, mouseY, x + settingWidth + 120 + settingWidth, y + offset + 5.5, 10, 10);
                 boolean hoverLeft = RectUtil.hovered(mouseX, mouseY, x + settingWidth + 109.5, y + offset + 5.5, 10, 10);
@@ -80,7 +86,7 @@ public class ClickGUISettings extends GuiScreen {
                 arrows.drawString("Y", x + settingWidth + 110, y + offset + 8, hoverLeft ? Color.LIGHT_GRAY.getRGB() : -1);
                 poppinsR.drawString(((StringSetting) setting).get(), x + poppinsR.getWidth(((StringSetting) setting).get()) + 120, y + offset + 5, -1);
                 offset += 20;
-            } else if(setting instanceof NumberSetting) {
+            } else if (setting instanceof NumberSetting) {
                 float value = ((NumberSetting) setting).get().floatValue();
                 poppinsR.drawString(setting.getName() + ": " + value, x + 5, y + offset + 5, -1);
                 // Slider Background
@@ -108,6 +114,18 @@ public class ClickGUISettings extends GuiScreen {
                 }
                 offset += 35;
             }
+
+            settingsDisplayed++;
+
+            if (settingsDisplayed >= maxSettingsDisplayed) {
+                break;
+            }
+        }
+
+        int scroll = Mouse.getDWheel();
+        if (scroll != 0) {
+            startIndex -= Integer.signum(scroll);
+            startIndex = Math.max(0, Math.min(startIndex, Client.INSTANCE.settingManager.getSettingsByModule(parent).size() - maxSettingsDisplayed));
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -121,7 +139,11 @@ public class ClickGUISettings extends GuiScreen {
         float height = 200;
 
         float offset = 20;
-        for(Setting setting : Client.INSTANCE.settingManager.getSettingsByModule(parent)) {
+        int settingsDisplayed = 0;
+
+        for (int i = startIndex; i < Client.INSTANCE.settingManager.getSettingsByModule(parent).size(); i++) {
+            Setting setting = Client.INSTANCE.settingManager.getSettingsByModule(parent).get(i);
+
             if (setting.isHidden()) continue;
 
             if(setting instanceof BooleanSetting) {
@@ -148,6 +170,17 @@ public class ClickGUISettings extends GuiScreen {
                 offset += 35;
             }
 
+            settingsDisplayed++;
+
+            if (settingsDisplayed >= maxSettingsDisplayed) {
+                break;
+            }
+        }
+
+        int scroll = Mouse.getDWheel();
+        if (scroll != 0) {
+            startIndex -= Integer.signum(scroll);
+            startIndex = Math.max(0, Math.min(startIndex, Client.INSTANCE.settingManager.getSettingsByModule(parent).size() - maxSettingsDisplayed));
         }
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
