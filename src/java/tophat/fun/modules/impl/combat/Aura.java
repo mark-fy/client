@@ -3,29 +3,33 @@ package tophat.fun.modules.impl.combat;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import tophat.fun.Client;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
 import tophat.fun.modules.settings.impl.NumberSetting;
-import tophat.fun.modules.settings.impl.StringSetting;
 import tophat.fun.utilities.Methods;
 import tophat.fun.utilities.player.RotationUtil;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @ModuleInfo(name = "Aura", desc = "attacks other players around you", category = Module.Category.COMBAT)
 public class Aura extends Module {
 
     private final NumberSetting reach = new NumberSetting(this, "Reach", 0.0, 6.0, 3.0, 1);
-    private final NumberSetting aimRange = new NumberSetting(this, "Aim range", 0.0, 6.0, 4.5, 1);
+    private final NumberSetting aimRange = new NumberSetting(this, "AimRange", 0.0, 6.0, 4.5, 1);
     private final NumberSetting minCPS = new NumberSetting(this, "MinCPS", 0, 20, 8, 0);
     private final NumberSetting maxCPS = new NumberSetting(this, "MaxCPS", 0, 20, 13, 0);
+
+    public Aura() {
+        Client.INSTANCE.settingManager.add(
+                reach,aimRange,minCPS,maxCPS
+        );
+    }
 
     Entity target;
     int cpsdelay = 0;
