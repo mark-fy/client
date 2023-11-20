@@ -27,6 +27,4 @@ public class Fullbright extends Module {
         super.onDisable();
     }
 
-
-
 }

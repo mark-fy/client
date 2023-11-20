@@ -16,6 +16,9 @@ public class Optimisations extends Module {
 
         // Particles
         mc.gameSettings.ofVoidParticles = false;
+
+        // Shaders
+        mc.gameSettings.ofFastRender = false;
     }
 
 }

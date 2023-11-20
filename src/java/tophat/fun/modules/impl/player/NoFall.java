@@ -4,7 +4,6 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tophat.fun.Client;
 import tophat.fun.events.Event;
-import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
