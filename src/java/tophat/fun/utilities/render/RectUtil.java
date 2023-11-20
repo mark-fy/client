@@ -124,8 +124,4 @@ public class RectUtil {
         GlStateManager.popMatrix();
     }
 
-    public static boolean hovered(int mouseX, int mouseY, double x, double y, float width, float height) {
-        return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-    }
-
 }
