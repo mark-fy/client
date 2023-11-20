@@ -41,7 +41,7 @@ public class TargetHUD extends Module {
 
                 RoundUtil.round( x - 1, y - 1, width + 2, height + 2, 6, new Color(24, 175, 162));
                 RoundUtil.round( x, y, width, height, 6, new Color(25,25,25));
-                RenderUtil.drawHead(et, x + width - 35, y + 3, 30);
+                RenderUtil.drawHead(et, x + width - 33, y + 3, 30);
 
                 RoundUtil.round(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, new Color(24, 175, 175));
                 RoundUtil.round(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
