@@ -58,7 +58,6 @@ public class CustomAltManager extends GuiScreen {
         }
 
         // Input Boxes
-        // Make it so when I hover over them AND click my mouse ONCE in the mouseClicked method it enables me to write in one of these at a time
         String[] inputLabels = {"Username/Email", "Password"};
         double iOffset = y - 75;
 
