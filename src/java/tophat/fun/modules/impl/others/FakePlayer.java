@@ -14,8 +14,8 @@ public class FakePlayer extends Module {
 
     @Override
     public void onEnable() {
-        if(mc.thePlayer == null || !mc.thePlayer.isDead){
-            setEnabled(false);
+        if(mc.thePlayer == null || !mc.thePlayer.isDead || mc.theWorld == null){
+            //setEnabled(false);
         }
 
         EntityOtherPlayerMP clonedPlayer = new EntityOtherPlayerMP(Methods.mc.theWorld, new GameProfile(UUID.fromString("9b7f28c2-98ea-4d70-b2db-48e6c78a4a9d"), "TestSubject"));

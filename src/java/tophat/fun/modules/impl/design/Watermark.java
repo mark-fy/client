@@ -20,8 +20,8 @@ public class Watermark extends Module {
 
     public void renderIngame() {
         String text = Client.CNAME + " | " + Client.CVERSION + " | " + mc.getSession().getUsername();
-        RoundUtil.round( 5, 5, poppins.getWidth(text) + 9, 18, 6, new Color(24, 175, 162));
-        RoundUtil.round( 6, 6, poppins.getWidth(text) + 7, 16, 6, new Color(25,25,25));
+        RoundUtil.round(5, 5, poppins.getWidth(text) + 9, 18, 6, new Color(24, 175, 162));
+        RoundUtil.round(6, 6, poppins.getWidth(text) + 7, 16, 6, new Color(25, 25, 25));
         poppins.drawString(text, 10, 8, -1);
     }
 
