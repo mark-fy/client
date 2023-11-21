@@ -22,7 +22,7 @@ public class BlurRenderer implements Methods {
     }
 
     private void initShader() {
-        // Load and compile the vertex and fragment shaders
+        // Load and compile
         int vertexShader = loadShader("blur.vert", GL20.GL_VERTEX_SHADER);
         int fragmentShader = loadShader("blur.frag", GL20.GL_FRAGMENT_SHADER);
 
@@ -37,7 +37,7 @@ public class BlurRenderer implements Methods {
             throw new RuntimeException("Shader program linking failed");
         }
 
-        // Detach and delete the shaders
+        // delete the shaders
         glDetachShader(blurShaderProgram, vertexShader);
         glDetachShader(blurShaderProgram, fragmentShader);
         glDeleteShader(vertexShader);
@@ -69,16 +69,13 @@ public class BlurRenderer implements Methods {
 
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the exception if one occurs
             return null;
         }
     }
 
     public void renderBlur(int baseTextureId) {
-        // Use the blur shader program
         glUseProgram(blurShaderProgram);
 
-        // Bind the base texture
         glActiveTexture(GL13.GL_TEXTURE0);
         glBindTexture(GL11.GL_TEXTURE_2D, baseTextureId);
 
@@ -106,15 +103,12 @@ public class BlurRenderer implements Methods {
     }
 
     public void cleanup() {
-        // Delete the shader program
         glDeleteProgram(blurShaderProgram);
     }
 
     public void renderBlur(int baseTextureId, int x, int y, int width, int height) {
-        // Use the blur shader program
         GL20.glUseProgram(blurShaderProgram);
 
-        // Bind the texture containing the scene
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, baseTextureId);
 
@@ -137,7 +131,7 @@ public class BlurRenderer implements Methods {
         glVertex2f(x, y + height);
         glEnd();
 
-        // Stop using the blur shader program
+
         GL20.glUseProgram(0);
     }
 }

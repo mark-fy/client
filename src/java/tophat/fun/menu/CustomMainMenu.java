@@ -83,7 +83,7 @@ public class CustomMainMenu extends GuiScreen {
                             mc.displayGuiScreen(new GuiMultiplayer(this));
                             break;
                         case 2:
-                            // Alt manager
+                            mc.displayGuiScreen(new CustomAltManager());
                             break;
                         case 3:
                             mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
