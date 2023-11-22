@@ -1,16 +1,28 @@
-uniform sampler2D baseTexture;
-varying vec2 texCoords;
+#version 120
 
-void main() {
-    vec2 uv = texCoords.xy;
-    vec2 offset = 1.0 / textureSize(baseTexture, 0);
+uniform sampler2D sampler1;
+uniform sampler2D sampler2;
+uniform vec2 texelSize;
+uniform vec2 direction;
+uniform float radius;
+uniform float kernel[64];
 
-    // Apply a simple separable Gaussian blur
-    vec3 blur = vec3(0.0);
-    for (int i = -4; i <= 4; ++i) {
-        blur += texture2D(baseTexture, uv + vec2(float(i) * offset.x, 0.0)).rgb;
+void main()
+{
+    vec2 uv = gl_TexCoord[0].st;
+    uv.y = 1.0f - uv.y;
+
+    float alpha = texture2D(sampler2, uv).a;
+    if (direction.x == 0.0 && alpha == 0.0) {
+        discard;
     }
-    blur /= 9.0;
 
-    gl_FragColor = vec4(blur, 1.0);
+    vec4 pixel_color = texture2D(sampler1, uv) * kernel[0];
+    for (float f = 1; f <= radius; f++) {
+        vec2 offset = f * texelSize * direction;
+        pixel_color += texture2D(sampler1, uv - offset) * kernel[int(f)];
+        pixel_color += texture2D(sampler1, uv + offset) * kernel[int(f)];
+    }
+
+    gl_FragColor = vec4(pixel_color.rgb, direction.x == 0.0 ? alpha : 1.0);
 }
