@@ -84,7 +84,7 @@ public class AltManager {
                         boolean cracked = accountObject.get("Cracked").getAsBoolean();
 
                         // Add the account to the list
-                        accountList.add(username + ":" + (cracked ? "offline" : password));
+                        accountList.add(username + ":" + (cracked ? "cracked" : password));
                     }
                 }
             }

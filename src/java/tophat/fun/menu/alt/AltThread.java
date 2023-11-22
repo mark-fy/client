@@ -41,7 +41,7 @@ public class AltThread extends Thread implements Methods {
     public void run() {
         if (password.equals("")) {
             mc.session = new Session(username, "", "", "mojang");
-            status = EnumChatFormatting.GREEN + "Logged in. (" + username + " - offline name)";
+            status = EnumChatFormatting.GREEN + "Logged in. (" + username + " - cracked name)";
             return;
         }
         this.status = EnumChatFormatting.YELLOW + "Logging in...";
