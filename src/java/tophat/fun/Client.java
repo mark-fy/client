@@ -5,11 +5,12 @@ import tophat.fun.events.EventManager;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleManager;
 import tophat.fun.modules.settings.SettingManager;
+import tophat.fun.utilities.Methods;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
-public enum Client implements Information {
+public enum Client implements Information, Methods {
     INSTANCE;
 
     public EventManager eventManager = new EventManager();
@@ -25,6 +26,8 @@ public enum Client implements Information {
         }
         moduleManager.init();
         settingManager.init();
+
+        mc.gameSettings.limitFramerate = 122;
     }
 
 }
