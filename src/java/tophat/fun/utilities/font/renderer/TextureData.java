@@ -1,3 +1,7 @@
+/*
+    Original Code by: Rise Client (https://riseclient.com/)
+    Modified,Fixed & Improved Code by: MarkGG
+ */
 package tophat.fun.utilities.font.renderer;
 
 import java.nio.ByteBuffer;

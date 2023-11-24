@@ -1,3 +1,7 @@
+/*
+    Original Code by: Rise Client (https://riseclient.com/)
+    Modified,Fixed & Improved Code by: MarkGG
+ */
 package tophat.fun.utilities.font.renderer;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,7 +30,7 @@ public class FontManager {
         this.executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
         this.textureQueue = new ConcurrentLinkedQueue<>();
 
-        this.defaultFont = new TTFFontRenderer(executorService, textureQueue, new Font("Verdana", Font.PLAIN, 18));
+        this.defaultFont = new TTFFontRenderer(executorService, textureQueue, new Font("PoppinsRegular", Font.PLAIN, 18));
 
         try {
             loadFont("/assets/minecraft/tophat/font/verdana/Verdana.ttf", "Verdana", new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 32, 128}, Font.PLAIN);
@@ -73,8 +77,8 @@ public class FontManager {
 
     private void loadFont(String fontPath, String fontName, int[] sizes, int style) throws Exception {
         for (int size : sizes) {
-            InputStream istream = this.getClass().getResourceAsStream(fontPath);
-            Font myFont = Font.createFont(0, istream);
+            InputStream iStream = this.getClass().getResourceAsStream(fontPath);
+            Font myFont = Font.createFont(0, iStream);
             myFont = myFont.deriveFont(style, (float) size);
             this.fonts.put(fontName + " " + size, new TTFFontRenderer(executorService, textureQueue, myFont));
         }
