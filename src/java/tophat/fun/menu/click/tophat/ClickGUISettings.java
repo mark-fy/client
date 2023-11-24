@@ -11,7 +11,6 @@ import tophat.fun.modules.settings.impl.StringSetting;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.math.MathUtil;
-import tophat.fun.utilities.render.RectUtil;
 import tophat.fun.utilities.render.RenderUtil;
 import tophat.fun.utilities.render.shader.DrawHelper;
 
@@ -134,7 +133,6 @@ public class ClickGUISettings extends GuiScreen {
         float x = (float) this.width / 2 - 100;
         float y = (float) this.height / 2 - 100;
         float width = 200;
-        float height = 200;
 
         float offset = 20;
         int settingsDisplayed = 0;
