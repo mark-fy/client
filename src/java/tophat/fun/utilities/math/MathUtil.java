@@ -23,4 +23,7 @@ public class MathUtil implements Methods {
         return decimal.doubleValue();
     }
 
+    public static double interpolate(final double newPos, final double oldPos) {
+        return oldPos + (newPos - oldPos) * mc.timer.renderPartialTicks;
+    }
 }
