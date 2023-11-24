@@ -11,6 +11,7 @@ import tophat.fun.modules.settings.impl.StringSetting;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.math.MathUtil;
+import tophat.fun.utilities.render.RectUtil;
 import tophat.fun.utilities.render.RenderUtil;
 import tophat.fun.utilities.render.shader.DrawHelper;
 
@@ -79,13 +80,14 @@ public class ClickGUISettings extends GuiScreen {
                 offset += 20;
             } else if (setting instanceof StringSetting) {
                 float settingWidth = poppinsR.getWidth(((StringSetting) setting).get());
-                boolean hoverRight = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 120 + settingWidth, y + offset + 5.5, 10, 10);
-                boolean hoverLeft = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 109.5, y + offset + 5.5, 10, 10);
+                boolean hoverLeft = RenderUtil.hovered(mouseX, mouseY, x + width - arrows.getWidth("Y") - settingWidth - 12, y + offset + 6.5, 8, 8);
+                boolean hoverRight = RenderUtil.hovered(mouseX, mouseY, x + width - arrows.getWidth("2") - 2, y + offset + 6.5, 8, 8);
 
                 poppinsR.drawString(setting.getName() + ": ", x + 5, y + offset + 5, -1);
-                arrows.drawString("2", x + settingWidth + 121 + settingWidth, y + offset + 7.5f, hoverRight ? Color.LIGHT_GRAY.getRGB() : -1);
-                arrows.drawString("Y", x + settingWidth + 110, y + offset + 8, hoverLeft ? Color.LIGHT_GRAY.getRGB() : -1);
-                poppinsR.drawString(((StringSetting) setting).get(), x + poppinsR.getWidth(((StringSetting) setting).get()) + 120, y + offset + 5, -1);
+                arrows.drawString("Y", x + width - arrows.getWidth("Y") - settingWidth - 12, y + offset + 8, hoverLeft ? Color.LIGHT_GRAY.getRGB() : Color.WHITE.getRGB());
+                arrows.drawString("2", x + width - arrows.getWidth("2") - 2, y + offset + 7.5f, hoverRight ? Color.LIGHT_GRAY.getRGB() : Color.WHITE.getRGB());
+                poppinsR.drawString(((StringSetting) setting).get(), x + width - settingWidth - 12, y + offset + 5, -1);
+
                 offset += 20;
             } else if (setting instanceof NumberSetting) {
                 float value = ((NumberSetting) setting).get().floatValue();
@@ -131,6 +133,8 @@ public class ClickGUISettings extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         float x = (float) this.width / 2 - 100;
         float y = (float) this.height / 2 - 100;
+        float width = 200;
+        float height = 200;
 
         float offset = 20;
         int settingsDisplayed = 0;
@@ -148,15 +152,15 @@ public class ClickGUISettings extends GuiScreen {
                 offset += 20;
             } else if(setting instanceof StringSetting) {
                 float settingWidth = poppinsR.getWidth(((StringSetting) setting).get());
-                boolean hoverRight = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 120 + settingWidth, y + offset + 5.5, 10, 10);
-                boolean hoverLeft = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 109.5, y + offset + 5.5, 10, 10);
-
-                if(hoverRight && mouseButton == 0) {
-                    ((StringSetting) setting).forward();
-                }
+                boolean hoverLeft = RenderUtil.hovered(mouseX, mouseY, x + width - arrows.getWidth("Y") - settingWidth - 12, y + offset + 6.5, 8, 8);
+                boolean hoverRight = RenderUtil.hovered(mouseX, mouseY, x + width - arrows.getWidth("2") - 2, y + offset + 6.5, 8, 8);
 
                 if(hoverLeft && mouseButton == 0) {
                     ((StringSetting) setting).backward();
+                }
+
+                if(hoverRight && mouseButton == 0) {
+                    ((StringSetting) setting).forward();
                 }
 
                 offset += 20;
