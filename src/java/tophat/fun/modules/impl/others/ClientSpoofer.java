@@ -53,7 +53,7 @@ public class ClientSpoofer extends Module {
     private PacketBuffer createPacketBuffer(String data, boolean string) {
         if (string) {
             return new PacketBuffer(Unpooled.buffer()).writeString(data);
-        }else {
+        } else {
             return new PacketBuffer(Unpooled.wrappedBuffer(data.getBytes()));
         }
     }

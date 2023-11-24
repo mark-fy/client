@@ -26,19 +26,15 @@ public class Sprint extends Module {
     public void onMotion(MotionEvent event) {
         if (legit.get()) {
             mc.gameSettings.keyBindSprint.pressed = true;
-        } else {
-            if (MoveUtil.getSpeed() != 0) {
-                mc.thePlayer.setSprinting(true);
-            }
+        } else if (MoveUtil.getSpeed() != 0) {
+            mc.thePlayer.setSprinting(true);
         }
     }
 
     @Listen
     public void onOmniSprint(OmniSprintEvent event) {
-        if(omni.get()) {
-            if (MoveUtil.getSpeed() != 0) {
-                event.setSprintCheck(false);
-            }
+        if(omni.get() && MoveUtil.getSpeed() != 0) {
+            event.setSprintCheck(false);
         }
     }
 
@@ -47,5 +43,4 @@ public class Sprint extends Module {
         KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), false);
         super.onDisable();
     }
-
 }
