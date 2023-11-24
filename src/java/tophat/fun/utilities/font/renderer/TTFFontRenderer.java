@@ -138,8 +138,6 @@ public class TTFFontRenderer {
         x = Math.round(x * 10.0F) / 10.0F;
         y = Math.round(y * 10.0F) / 10.0F;
 
-        final Minecraft mc = Minecraft.getMinecraft();
-
         GL11.glPushMatrix();
         GlStateManager.scale(0.5, 0.5, 1.0);
         GlStateManager.enableBlend();
