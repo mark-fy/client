@@ -96,6 +96,7 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 import tophat.fun.events.impl.player.ReachEvent;
+import tophat.fun.events.impl.render.PerspectiveEvent;
 import tophat.fun.events.impl.render.Render3DEvent;
 import tophat.fun.menu.CustomMainMenu;
 
@@ -812,7 +813,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GlStateManager.scale(this.cameraZoom, this.cameraZoom, 1.0D);
         }
 
-        Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
+        PerspectiveEvent event = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight);
+        event.call();
+
+        Project.gluPerspective(this.getFOVModifier(partialTicks, true), event.getAspect(), 0.05F, this.clipDistance);
         GlStateManager.matrixMode(5888);
         GlStateManager.loadIdentity();
 
@@ -892,12 +896,15 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 GlStateManager.translate((float)(-(p_renderHand_2_ * 2 - 1)) * f, 0.0F, 0.0F);
             }
 
+            PerspectiveEvent event = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight, true);
+            event.call();
+
             if (Config.isShaders())
             {
                 Shaders.applyHandDepth();
             }
 
-            Project.gluPerspective(this.getFOVModifier(p_renderHand_1_, false), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
+            Project.gluPerspective(this.getFOVModifier(p_renderHand_1_, false), event.getAspect(), 0.05F, this.farPlaneDistance * 2.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.loadIdentity();
 
@@ -1517,7 +1524,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("sky");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
+
+            PerspectiveEvent event = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight);
+            event.call();
+
+            Project.gluPerspective(this.getFOVModifier(partialTicks, true), event.getAspect(), 0.05F, this.clipDistance);
             GlStateManager.matrixMode(5888);
 
             if (flag)
@@ -1534,7 +1545,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
+            Project.gluPerspective(this.getFOVModifier(partialTicks, true), event.getAspect(), 0.05F, this.clipDistance);
             GlStateManager.matrixMode(5888);
         }
         else
@@ -1842,7 +1853,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("clouds");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance * 4.0F);
+
+            PerspectiveEvent event = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight);
+            event.call();
+
+            Project.gluPerspective(this.getFOVModifier(partialTicks, true),  event.getAspect(), 0.05F, this.clipDistance * 4.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.pushMatrix();
             this.setupFog(0, partialTicks);
@@ -1851,7 +1866,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
+            Project.gluPerspective(this.getFOVModifier(partialTicks, true),  event.getAspect(), 0.05F, this.clipDistance);
             GlStateManager.matrixMode(5888);
         }
     }
