@@ -7,7 +7,7 @@ import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.RectUtil;
 import tophat.fun.utilities.render.RenderUtil;
-import tophat.fun.utilities.render.RoundUtil;
+import tophat.fun.utilities.render.shader.DrawHelper;
 
 import java.awt.*;
 import java.io.IOException;
@@ -48,11 +48,12 @@ public class CustomMainMenu extends GuiScreen {
             boolean hover = RenderUtil.hovered(mouseX, mouseY, x - 60, offset, 120, 20);
 
             // Draw button background
-            RoundUtil.round(x - 60 - 1, offset - 1, 122, 22, 7, hover ? new Color(14, 103, 95) : new Color(14, 109, 101));
-            RoundUtil.round(x - 60, offset, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
+            DrawHelper.drawRoundedRect(x - 60, offset - 1, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
+            DrawHelper.drawRoundedRectOutline(x - 60 - 1, offset - 2, 122, 22, 6, 2, hover ? new Color(14, 103, 95) : new Color(14, 109, 101));
+
 
             // Draw button label
-            poppins.drawCenteredString(label, x, (float) offset + 3.5f, -1);
+            poppins.drawCenteredString(label, x, (float) offset + 2.5f, -1);
         }
 
         // Copyright

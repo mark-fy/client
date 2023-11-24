@@ -12,7 +12,7 @@ import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.math.MathUtil;
 import tophat.fun.utilities.render.RenderUtil;
-import tophat.fun.utilities.render.RoundUtil;
+import tophat.fun.utilities.render.shader.DrawHelper;
 
 import java.awt.*;
 import java.io.IOException;
@@ -52,9 +52,10 @@ public class ClickGUISettings extends GuiScreen {
         float width = 200;
         float height = 200;
 
-        RoundUtil.round(x - 1, y - 1, width + 2, height + 2, 8, new Color(24, 175, 162));
-        RoundUtil.round(x, y, width, height, 8, new Color(25, 25, 25));
-        RoundUtil.round(x, y, width, 20, 8, new Color(19, 19, 19));
+        DrawHelper.drawRoundedRect(x, y, width, height, 8, new Color(25,25,25));
+        DrawHelper.drawRoundedRect(x, y, width, 20, 8, new Color(19,19,19));
+
+        DrawHelper.drawRoundedRectOutline(x - 1, y - 1, width + 2, height + 2, 8, 2, new Color(24, 175, 162));
         poppins.drawString(parent.getName(), x + 5, y + 5, -1);
 
         float offset = 20;
@@ -72,8 +73,8 @@ public class ClickGUISettings extends GuiScreen {
                 if(hover) {
                     bg = new Color(29, 201, 185);
                 }
-                RoundUtil.round(x + 180, y + offset + 4, 12, 12, 6, bg);
-                RoundUtil.round(x + 180 + 1, y + offset + 5, 10, 10, 4, ((BooleanSetting) setting).get() ? bg : new Color(25, 25, 25));
+                DrawHelper.drawCircle(x + 186, y + offset + 10, 5, ((BooleanSetting) setting).get() ? bg : new Color(25, 25, 25));
+                DrawHelper.drawCircleOutline(x + 186, y + offset + 10, 5, 2, bg);
                 checkmark.drawString(((BooleanSetting) setting).get() ? "g" : "", x + 180 + 1, y + offset + 7.5f, -1);
                 offset += 20;
             } else if (setting instanceof StringSetting) {
@@ -81,7 +82,7 @@ public class ClickGUISettings extends GuiScreen {
                 boolean hoverRight = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 120 + settingWidth, y + offset + 5.5, 10, 10);
                 boolean hoverLeft = RenderUtil.hovered(mouseX, mouseY, x + settingWidth + 109.5, y + offset + 5.5, 10, 10);
 
-                poppinsR.drawString(setting.getName(), x + 5, y + offset + 5, -1);
+                poppinsR.drawString(setting.getName() + ": ", x + 5, y + offset + 5, -1);
                 arrows.drawString("2", x + settingWidth + 121 + settingWidth, y + offset + 7.5f, hoverRight ? Color.LIGHT_GRAY.getRGB() : -1);
                 arrows.drawString("Y", x + settingWidth + 110, y + offset + 8, hoverLeft ? Color.LIGHT_GRAY.getRGB() : -1);
                 poppinsR.drawString(((StringSetting) setting).get(), x + poppinsR.getWidth(((StringSetting) setting).get()) + 120, y + offset + 5, -1);
@@ -89,14 +90,14 @@ public class ClickGUISettings extends GuiScreen {
             } else if (setting instanceof NumberSetting) {
                 float value = ((NumberSetting) setting).get().floatValue();
                 poppinsR.drawString(setting.getName() + ": " + value, x + 5, y + offset + 5, -1);
-                RoundUtil.round(x + 3, y + offset + 25,190 + 2, 5, 2, new Color(24, 175, 162));
-                RoundUtil.round(x + 4, y + offset + 26,190, 3, 1, new Color(25, 25, 25));
+                DrawHelper.drawRoundedRect(x + 4, y + offset + 26, 190, 3, 1, new Color(25,25,25));
+                DrawHelper.drawRoundedRectOutline(x + 3, y + offset + 24, 190 + 2, 5, 2, 2, new Color(24,175,162));
                 float min = ((NumberSetting) setting).min().floatValue();
                 float max = ((NumberSetting) setting).max().floatValue();
                 float fillWidth = Math.min(Math.max((value - min) / (max - min), 0), 1) * 190;
-                RoundUtil.round(x + 4, y + offset + 26, fillWidth, 3, 1, new Color(31, 227, 207));
-                RoundUtil.round(x + fillWidth, y + offset + 22, 5, 11, 1, new Color(105, 105, 105));
-                RoundUtil.round(x + fillWidth + 1, y + offset + 22.5, 3, 10, 1, new Color(255, 255, 255));
+                DrawHelper.drawRoundedRect(x + 4, y + offset + 25, fillWidth, 3, 1, new Color(31, 227, 207));
+                DrawHelper.drawRoundedRect(x + fillWidth + 1,y + offset + 21.5, 3, 9, 1, new Color(255, 255, 255));
+                DrawHelper.drawRoundedRectOutline(x + fillWidth, y + offset + 21, 5, 11, 1, 2, new Color(105, 105, 105));
 
                 if (RenderUtil.hovered(mouseX, mouseY, x + 4, y + offset + 22, 190, 15)) {
                     if (Mouse.isButtonDown(0)) {

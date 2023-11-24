@@ -9,23 +9,21 @@ import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.RectUtil;
 import tophat.fun.utilities.render.RenderUtil;
-import tophat.fun.utilities.render.RoundUtil;
+import tophat.fun.utilities.render.TextUtil;
+import tophat.fun.utilities.render.shader.DrawHelper;
 
 import java.awt.*;
 import java.io.IOException;
 
 public class CustomAltManager extends GuiScreen {
 
-    private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsSemiBold 20");
-    private final static TTFFontRenderer poppinsR = CFont.FONT_MANAGER.getFont("PoppinsMedium 20");
-
+    private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsSemiBold 20"), poppinsR = CFont.FONT_MANAGER.getFont("PoppinsMedium 20");
     private final ResourceLocation resourceLocation = new ResourceLocation("tophat/images/user.png");
 
-    private boolean listeningToUser = false;
-    private boolean listeningToPass = false;
+    private boolean listeningToUser = false, listeningToPass = false;
+    private String usernameBoxText = "", passwordBoxText = "";
 
-    private String usernameBoxText = "";
-    private String passwordBoxText = "";
+    private AltThread thread;
 
     public CustomAltManager() {}
 
@@ -58,39 +56,39 @@ public class CustomAltManager extends GuiScreen {
             boolean hover = RenderUtil.hovered(mouseX, mouseY, x - 60, offset, 120, 20);
 
             // Draw button background
-            RoundUtil.round(x - 60 - 1, offset - 1, 122, 22, 7, hover ? new Color(14, 103, 95) : new Color(14, 109, 101));
-            RoundUtil.round(x - 60, offset, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
+            DrawHelper.drawRoundedRect(x - 60, offset - 1, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
+            DrawHelper.drawRoundedRectOutline(x - 60 - 1, offset - 2, 122, 22, 6, 2, hover ? new Color(14, 103, 95) : new Color(14, 109, 101));
 
             // Draw button label
-            poppins.drawCenteredString(label, x, (float) offset + 3.5f, -1);
+            poppins.drawCenteredString(label, x, (float) offset + 2, -1);
         }
+        poppinsR.drawCenteredString(thread == null ? "§7Status: §rWaiting..." : thread.getStatus(), x + (poppinsR.getWidth("§x") + TextUtil.isColorCode(thread == null ? "§7Status: §rWaiting..." : thread.getStatus())), (float) (offset + 24), -1);
 
         // Password Input Box
         boolean hoverPass = RenderUtil.hovered(mouseX, mouseY, x - 60,  y - 75 + 46, 200, 20);
-        RoundUtil.round(x - 100 - 1,  y - 75 + 46 - 1, 200 + 2, 22, 7, hoverPass ? new Color(14, 103, 95) : new Color(14, 109, 101));
-        RoundUtil.round(x - 100,  y - 75 + 46, 200, 20, 6, hoverPass ? new Color(33,33,33) : new Color(22, 22, 22));
+        DrawHelper.drawRoundedRect(x - 100,  y - 75 + 46, 200, 20, 6,  hoverPass ? new Color(33,33,33) : new Color(22, 22, 22));
+        DrawHelper.drawRoundedRectOutline(x - 100 - 1,  y - 75 + 46 - 1, 202, 22, 7, 2, hoverPass ? new Color(14, 103, 95) : new Color(14, 109, 101));
         String truncatedPassword = passwordBoxText.length() >= 28 ? passwordBoxText.substring(0, 28) + "..." : passwordBoxText;
         poppinsR.drawString(truncatedPassword.isEmpty() ? (hoverPass ? (listeningToPass ? "_" : "Password") : "Password") : (hoverPass ? truncatedPassword + "_" : truncatedPassword), x - 95, y - 75 + 46 + 3.5f, truncatedPassword.isEmpty() ? Color.lightGray.getRGB() : -1);
 
         // Username/Email Input Box
         boolean hoverUser = RenderUtil.hovered(mouseX, mouseY, x - 60, y - 75 + 23, 200, 20);
-        RoundUtil.round(x - 100 - 1, y - 75 + 23 - 1, 200 + 2, 22, 7, hoverUser ? new Color(14, 103, 95) : new Color(14, 109, 101));
-        RoundUtil.round(x - 100, y - 75 + 23, 200, 20, 6, hoverUser ? new Color(33,33,33) : new Color(22, 22, 22));
+        DrawHelper.drawRoundedRect(x - 100, y - 75 + 23, 200, 20, 6, hoverUser ? new Color(33,33,33) : new Color(22, 22, 22));
+        DrawHelper.drawRoundedRectOutline(x - 100 - 1, y - 75 + 23 - 1, 200 + 2, 22, 7, 2, hoverUser ? new Color(14, 103, 95) : new Color(14, 109, 101));
         String truncatedUsername = usernameBoxText.length() >= 28 ? usernameBoxText.substring(0, 28) + "..." : usernameBoxText;
         poppinsR.drawString(truncatedUsername.isEmpty() ? (hoverUser ? (listeningToUser ? "_" : "Username/Email") : "Username/Email") : (hoverUser ? truncatedUsername + "_" : truncatedUsername), x - 95, y - 75 + 23 + 3.5f, truncatedUsername.isEmpty() ? Color.lightGray.getRGB() : -1);
 
-        RoundUtil.round(5,5, 160 + 2, this.height - 13, 6, new Color(14, 109, 101));
-        RoundUtil.round(6,6, 160, this.height - 15, 6, new Color(22,22,22));
+        DrawHelper.drawRoundedRectOutline(4,6.5, 164, this.height - 13, 6, 2, new Color(14, 109, 101));
 
-        poppinsR.drawString(mc.getSession().getUsername(), 10, 8, -1);
+        poppinsR.drawString(mc.getSession().getUsername(), 10, 10, -1);
 
         String accounts = AltManager.getAccounts("tophat");
         String[] accountStrings = accounts.split(",");
         int accountY = 30;
         for (String accountString : accountStrings) {
-            boolean isHovered = RenderUtil.hovered(mouseX, mouseY, 8, accountY - 6, 160, 32);
-            RoundUtil.round(7.5, accountY - 7, 157, 34, 7, isHovered ? new Color(14, 103, 95) : new Color(14, 109, 101));
-            RoundUtil.round(8.5, accountY - 6, 155, 32, 6, isHovered ? new Color(40, 40, 40) : new Color(22, 22, 22));
+            boolean isHovered = RenderUtil.hovered(mouseX, mouseY, 8, accountY - 4, 160, 32);
+            DrawHelper.drawRoundedRect(8.5, accountY - 4, 155, 32, 6, isHovered ? new Color(40, 40, 40) : new Color(22, 22, 22));
+            DrawHelper.drawRoundedRectOutline(7.5, accountY - 5, 157, 34, 7, 2, isHovered ? new Color(14, 103, 95) : new Color(14, 109, 101));
 
             String[] parts = accountString.split(":");
             if (parts.length >= 2) {
@@ -104,7 +102,7 @@ public class CustomAltManager extends GuiScreen {
 
                 poppinsR.drawString(username, 10, accountY - 3, -1);
 
-                poppinsR.drawString(!passwordOrStatus.equalsIgnoreCase("cracked") ? createAsteriskString(passwordOrStatus) : "cracked", 10, accountY + 10, Color.LIGHT_GRAY.getRGB());
+                poppinsR.drawString(!passwordOrStatus.equalsIgnoreCase("cracked") ? TextUtil.createAsteriskString(passwordOrStatus) : "cracked", 10, accountY + 10, Color.LIGHT_GRAY.getRGB());
 
                 accountY += 36;
             }
@@ -140,13 +138,14 @@ public class CustomAltManager extends GuiScreen {
             if (RenderUtil.hovered(mouseX, mouseY, x - 60, offset, 120, 20) && mouseButton == 0) {
                 switch (i) {
                     case 0:
-                        AltThread thread = new AltThread(usernameBoxText, passwordBoxText.isEmpty() ? "" : passwordBoxText, passwordBoxText.isEmpty());
+                        thread = new AltThread(usernameBoxText, passwordBoxText.isEmpty() ? "" : passwordBoxText);
                         thread.start();
                         break;
                     case 1:
                         if (!usernameBoxText.isEmpty()) {
                             AltManager.save(usernameBoxText, passwordBoxText, passwordBoxText.isEmpty(), "tophat");
                         }
+                        thread.setStatus("§eInfo: §rSaved account §6" + usernameBoxText);
                         break;
                     case 2:
                         mc.displayGuiScreen(new CustomMainMenu());
@@ -160,7 +159,7 @@ public class CustomAltManager extends GuiScreen {
         String[] accountStrings = accounts.split(",");
         int accountY = 30;
         for (String accountString : accountStrings) {
-            boolean isHovered = RenderUtil.hovered(mouseX, mouseY, 8, accountY - 6, 160, 32);
+            boolean isHovered = RenderUtil.hovered(mouseX, mouseY, 8, accountY - 4, 160, 32);
 
             String[] parts = accountString.split(":");
             if (parts.length >= 2) {
@@ -174,6 +173,7 @@ public class CustomAltManager extends GuiScreen {
 
                 if(isHovered && mouseButton == 1) {
                     AltManager.deleteAccount(username, "tophat");
+                    thread.setStatus("§eInfo: §rRemoved account §6" + usernameBoxText);
                 }
                 accountY += 36;
             }
@@ -194,7 +194,7 @@ public class CustomAltManager extends GuiScreen {
         } else if (listeningToPass) {
             if (keyCode == Keyboard.KEY_BACK && passwordBoxText.length() > 0) {
                 passwordBoxText = passwordBoxText.substring(0, passwordBoxText.length() - 1);
-            } else if (isPrintableChar(typedChar) && passwordBoxText.length() < 254) {
+            } else if (TextUtil.isPrintableChar(typedChar) && passwordBoxText.length() < 254) {
                 passwordBoxText += typedChar;
             }
         }
@@ -206,16 +206,6 @@ public class CustomAltManager extends GuiScreen {
         super.keyTyped(typedChar, keyCode);
     }
 
-    private String createAsteriskString(String input) {
-        StringBuilder asterisks = new StringBuilder();
-        for (int i = 0; i < input.length(); i++) {
-            asterisks.append('*');
-        }
-        return asterisks.toString();
-    }
 
-    private static boolean isPrintableChar(char c) {
-        return c >= 32 && c <= 126;
-    }
 
 }

@@ -6,8 +6,8 @@ import tophat.fun.modules.Module;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.RenderUtil;
-import tophat.fun.utilities.render.RoundUtil;
 import tophat.fun.utilities.render.TextUtil;
+import tophat.fun.utilities.render.shader.DrawHelper;
 
 import java.awt.*;
 import java.io.IOException;
@@ -36,9 +36,10 @@ public class ClickGUI extends GuiScreen {
 
         float catOffset = 100;
         for (Module.Category category : Module.Category.values()) {
-            RoundUtil.round(x + catOffset - 1, y - 1, 102, 22 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(24, 175, 162));
-            RoundUtil.round(x + catOffset, y, 100, 20 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(25, 25, 25));
-            RoundUtil.round(x + catOffset, y, 100, 20, 8, new Color(19, 19, 19));
+            DrawHelper.drawRoundedRect(x + catOffset, y, 100, 20 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(25,25,25));
+            DrawHelper.drawRoundedRect(x + catOffset, y, 100, 20, 8, new Color(19, 19, 19));
+            DrawHelper.drawRoundedRectOutline(x + catOffset - 1, y -1, 102, 22 + modHeight * Client.INSTANCE.moduleManager.getModulesByCategory(category).size(), 8, 2, new Color(24, 175, 162));
+
             poppins.drawString(category.getName(), x + catOffset + 5, y + 5, -1);
             iconFont.drawString(TextUtil.getCategoryLetter(category), x + catOffset + 85, y + 7, -1);
 

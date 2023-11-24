@@ -14,7 +14,7 @@ import tophat.fun.modules.impl.combat.Aura;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.RenderUtil;
-import tophat.fun.utilities.render.RoundUtil;
+import tophat.fun.utilities.render.shader.DrawHelper;
 
 import java.awt.*;
 
@@ -39,38 +39,40 @@ public class TargetHUD extends Module {
                 EntityLivingBase et = (EntityLivingBase) Aura.target;
                 if(et.getHealth() <= 0) return;
 
-                RoundUtil.round( x - 1, y - 1, width + 2, height + 2, 6, new Color(24, 175, 162));
-                RoundUtil.round( x, y, width, height, 6, new Color(25,25,25));
-                RenderUtil.drawHead(et, x + width - 33, y + 3, 30);
+                DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
+                DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
 
-                RoundUtil.round(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, new Color(24, 175, 175));
-                RoundUtil.round(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
+                RenderUtil.drawSkinHead(et, x + width - 33, y + 3, 30);
+
+                DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
+                DrawHelper.drawRoundedRectOutline(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, 2, new Color(24, 175, 175));
 
                 float healthPercentage = Math.min(et.getHealth() / et.getMaxHealth(), 1.0f);
                 float healthBarWidth = (width - 40) * healthPercentage;
-                RoundUtil.round(x + 3, y + 23.5, healthBarWidth, 8, 3, new Color(31, 206, 206));
+                DrawHelper.drawRoundedRect(x + 3, y + 23.5, healthBarWidth, 8, 3, new Color(31, 206, 206));
 
                 float textX = et.getHealth() <= 9 ? x + healthBarWidth - 5 : x + healthBarWidth - 7.5f;
-                poppins.drawString(et.getHealth() <= 1 ? "" : String.valueOf((int) et.getHealth()), textX, y + 22.5f, -1);
+                poppins.drawString(et.getHealth() <= 1 ? "" : String.valueOf((int) et.getHealth()), textX - 1, y + 22.5f, -1);
 
                 poppins.drawString(text, x + 4, y + 4, -1);
             }
         } else {
             text = "You";
 
-            RoundUtil.round(x - 1, y - 1, width + 2, height + 2, 6, new Color(24, 175, 162));
-            RoundUtil.round(x, y, width, height, 6, new Color(25,25,25));
-            RenderUtil.drawHead(mc.thePlayer, x + width - 33, y + 3, 30);
+            DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
+            DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
 
-            RoundUtil.round(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, new Color(24, 175, 175));
-            RoundUtil.round(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
+            RenderUtil.drawSkinHead(mc.thePlayer, x + width - 33, y + 3, 30);
+
+            DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
+            DrawHelper.drawRoundedRectOutline(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, 2, new Color(24, 175, 175));
 
             float healthPercentage = Math.min(mc.thePlayer.getHealth() / mc.thePlayer.getMaxHealth(), 1.0f);
             float healthBarWidth = (width - 40) * healthPercentage;
-            RoundUtil.round(x + 3, y + 23.5, healthBarWidth, 8, 3, new Color(31, 206, 206));
+            DrawHelper.drawRoundedRect(x + 3, y + 23.5, healthBarWidth, 8, 3, new Color(31, 206, 206));
 
             float textX = mc.thePlayer.getHealth() <= 9 ? x + healthBarWidth - 5 : x + healthBarWidth - 7.5f;
-            poppins.drawString(mc.thePlayer.getHealth() <= 1 ? "" : String.valueOf((int) mc.thePlayer.getHealth()), textX, y + 22.5f, -1);
+            poppins.drawString(mc.thePlayer.getHealth() <= 1 ? "" : String.valueOf((int) mc.thePlayer.getHealth()), textX - 1, y + 22.5f, -1);
 
             poppins.drawString(text, x + 4, y + 4, -1);
         }
