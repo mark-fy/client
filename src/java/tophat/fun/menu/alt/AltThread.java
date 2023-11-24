@@ -9,16 +9,13 @@ import tophat.fun.utilities.Methods;
 
 public class AltThread extends Thread implements Methods {
 
-    private final String password;
-    private String status;
-    private final String username;
-    boolean Mojang;
+    private final String password, username;
+    private String status, error;
 
-    public AltThread(String username, String password, boolean mojang) {
+    public AltThread(String username, String password) {
         super("Alt Thread");
         this.username = username;
         this.password = password;
-        Mojang = mojang;
         this.status = EnumChatFormatting.GRAY + "Waiting...";
     }
 
@@ -26,9 +23,10 @@ public class AltThread extends Thread implements Methods {
         MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
         try {
             MicrosoftAuthResult result = authenticator.loginWithCredentials(username, password);
+            error = "";
             return new Session(result.getProfile().getName(), result.getProfile().getId(), result.getAccessToken(), "mojang");
         } catch (MicrosoftAuthenticationException e) {
-            e.printStackTrace();
+            error = e.getMessage();
             return null;
         }
     }
@@ -41,17 +39,16 @@ public class AltThread extends Thread implements Methods {
     public void run() {
         if (password.equals("")) {
             mc.session = new Session(username, "", "", "mojang");
-            status = EnumChatFormatting.GREEN + "Logged in. (" + username + " - cracked name)";
+            setStatus("§aSuccess: §rLogged in cracked as §6" + username);
             return;
         }
-        this.status = EnumChatFormatting.YELLOW + "Logging in...";
+        setStatus("§eInfo: §rTrying to log in...");
         Session auth = createSession(username, password);
         if (auth == null) {
-            status = EnumChatFormatting.RED + "Login failed!";
+            setStatus("§cError: §r" + error);
         } else {
-            status = EnumChatFormatting.GREEN + "Logged in. (" + auth.getUsername() + ")";
+            setStatus("§aSuccess: §rLogged in as §6" + auth.getUsername());
             mc.session = auth;
         }
     }
-
 }
