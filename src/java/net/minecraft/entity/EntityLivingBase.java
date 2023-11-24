@@ -50,7 +50,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import tophat.fun.Client;
 import tophat.fun.events.impl.player.DelayJumpEvent;
+import tophat.fun.modules.impl.render.HitAnimations;
 
 public abstract class EntityLivingBase extends Entity
 {
@@ -1136,9 +1138,16 @@ public abstract class EntityLivingBase extends Entity
         this.dataWatcher.updateObject(9, Byte.valueOf((byte)count));
     }
 
-    private int getArmSwingAnimationEnd()
-    {
-        return this.isPotionActive(Potion.digSpeed) ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1 : (this.isPotionActive(Potion.digSlowdown) ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2 : 6);
+    private int getArmSwingAnimationEnd() {
+        double swingSpeed = Client.INSTANCE.moduleManager.getByClass(HitAnimations.class).isEnabled()
+                ? 1.0 / Client.INSTANCE.moduleManager.getByClass(HitAnimations.class).swingSpeed.get().doubleValue()
+                : 1.0;
+
+        return this.isPotionActive(Potion.digSpeed)
+                ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1
+                : (int) ((this.isPotionActive(Potion.digSlowdown)
+                ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2
+                : 6) * swingSpeed);
     }
 
     public void swingItem()
