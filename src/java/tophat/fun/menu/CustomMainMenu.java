@@ -38,6 +38,9 @@ public class CustomMainMenu extends GuiScreen {
         mc.getTextureManager().bindTexture(resourceLocation);
         Gui.drawModalRectWithCustomSizedTexture((int) x - 27, (int) y - 105, 0, 0, 54, 54, 54, 54);
 
+        // Copyright
+        poppins.drawCenteredString("Copyright © TopHat Client 2023", x, sr.getScaledHeight() - 25, new Color(70, 70, 70).getRGB());
+
         // Buttons
         String[] buttonLabels = {"Singleplayer", "Multiplayer", "Accounts", "Settings", "Exit"};
         double offset = y - 65;
@@ -51,13 +54,9 @@ public class CustomMainMenu extends GuiScreen {
             DrawHelper.drawRoundedRect(x - 60, offset - 1, 120, 20, 6, hover ? new Color(33,33,33) : new Color(22, 22, 22));
             DrawHelper.drawRoundedRectOutline(x - 60 - 1, offset - 2, 122, 22, 6, 2, hover ? new Color(14, 103, 95) : new Color(14, 109, 101));
 
-
             // Draw button label
             poppins.drawCenteredString(label, x, (float) offset + 2.5f, -1);
         }
-
-        // Copyright
-        poppins.drawCenteredString("Copyright © TopHat Client 2023", x, sr.getScaledHeight() - 25, new Color(70, 70, 70).getRGB());
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
