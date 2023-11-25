@@ -9,7 +9,7 @@ import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
-import tophat.fun.utilities.others.ServerUtil;
+import tophat.fun.utilities.others.SessionUtil;
 import tophat.fun.utilities.render.shader.DrawHelper;
 
 import java.awt.*;
@@ -45,7 +45,7 @@ public class SessionInfo extends Module {
         DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
 
         poppins.drawString("Session Info", x + 2, y, -1);
-        poppinsR.drawString("Play Time: " + ServerUtil.getSessionLength(), x + 2, y + 30, -1);
+        poppinsR.drawString("Play Time: " + SessionUtil.getSessionLength(), x + 2, y + 30, -1);
         poppinsR.drawString("Kills: " + kills, x + 2, y + 10, -1);
         poppinsR.drawString("Deaths: " + deaths, x + 2, y + 20, -1);
         poppinsR.drawString("KDR: " + Math.max(1, this.kills) / Math.max(1, this.deaths), x + 2, y + 40, -1);

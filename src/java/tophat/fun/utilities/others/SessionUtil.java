@@ -2,7 +2,7 @@ package tophat.fun.utilities.others;
 
 import tophat.fun.utilities.Methods;
 
-public class ServerUtil implements Methods {
+public class SessionUtil implements Methods {
 
     public static long timeJoined;
     public static String serverIp;

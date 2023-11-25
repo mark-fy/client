@@ -17,8 +17,6 @@ public class EntityESPUtil implements Methods {
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.disableDepth();
         GlStateManager.disableCull();
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glLineWidth(3.0F);
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(renderPosX, renderPosY, renderPosZ);
@@ -66,7 +64,6 @@ public class EntityESPUtil implements Methods {
         GL11.glEnd();
 
         GlStateManager.enableDepth();
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
         GlStateManager.enableCull();
