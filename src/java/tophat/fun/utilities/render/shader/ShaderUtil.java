@@ -71,12 +71,18 @@ public class ShaderUtil implements Methods {
 	}
 
 	public static int getTextureId(ResourceLocation identifier, TextureManager textureManager) {
-		Texture abstractTexture = (Texture) textureManager.getTexture(identifier);
-		if (abstractTexture == null) {
-			abstractTexture = (Texture) new SimpleTexture(identifier);
-			textureManager.loadTexture(identifier, (ITextureObject) abstractTexture);
+		ITextureObject textureObject = textureManager.getTexture(identifier);
+
+		if (textureObject == null) {
+			textureObject = new SimpleTexture(identifier);
+			textureManager.loadTexture(identifier, textureObject);
 		}
-		return ((ITextureObject) abstractTexture).getGlTextureId();
+
+		if (textureObject instanceof SimpleTexture) {
+			return textureObject.getGlTextureId();
+		}
+
+		return 0;
 	}
 
 	public static void initStencilReplace() {

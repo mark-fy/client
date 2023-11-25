@@ -95,9 +95,13 @@ public class Shader implements Methods {
     }
 
 	public void setUniformfb(String name, FloatBuffer buffer) {
-		GL20.glUniform1f(GL20.glGetUniformLocation(programId, name), buffer.get());
+		int location = GL20.glGetUniformLocation(programId, name);
+
+		for (int i = 0; i < buffer.remaining(); i++) {
+			GL20.glUniform1f(location + i, buffer.get(i));
+		}
 	}
-    
+
     public static void draw() {
 		draw(0, 0, mc.displayWidth, mc.displayHeight);
 	}
