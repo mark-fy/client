@@ -56,6 +56,7 @@ import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.events.impl.network.ChatEvent;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.events.impl.player.OmniSprintEvent;
+import tophat.fun.events.impl.player.RotationEvent;
 import tophat.fun.events.impl.player.SlowDownEvent;
 
 public class EntityPlayerSP extends AbstractClientPlayer
@@ -134,8 +135,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
     }
 
     public void onUpdateWalkingPlayer() {
-        MotionEvent eventMotion = new MotionEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
+        MotionEvent eventMotion = new MotionEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround);
+        RotationEvent rotationEvent = new RotationEvent(this.rotationYaw, this.rotationPitch);
+        rotationEvent.setState(Event.State.PRE);
         eventMotion.setState(Event.State.PRE);
+        rotationEvent.call();
         eventMotion.call();
         boolean sprinting = this.isSprinting();
 
@@ -166,24 +170,24 @@ public class EntityPlayerSP extends AbstractClientPlayer
             double yDiff = eventMotion.getY() - this.lastReportedPosY;
             double zDiff = eventMotion.getZ() - this.lastReportedPosZ;
 
-            double yawDiff   = eventMotion.getYaw() - this.lastReportedYaw;
-            double pitchDiff = eventMotion.getPitch() - this.lastReportedPitch;
+            double yawDiff = rotationEvent.getYaw() - this.lastReportedYaw;
+            double pitchDiff = rotationEvent.getPitch() - this.lastReportedPitch;
 
             boolean moving = xDiff * xDiff + yDiff * yDiff + zDiff * zDiff > 9.0E-4D || this.positionUpdateTicks >= 20;
             boolean looking = yawDiff != 0.0D || pitchDiff != 0.0D;
 
             if (this.ridingEntity == null) {
                 if (moving && looking) {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(eventMotion.getX(), eventMotion.getY(), eventMotion.getZ(), eventMotion.getYaw(), eventMotion.getPitch(), eventMotion.isOnGround()));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(eventMotion.getX(), eventMotion.getY(), eventMotion.getZ(), rotationEvent.getYaw(), rotationEvent.getPitch(), eventMotion.isOnGround()));
                 } else if (moving) {
                     this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(eventMotion.getX(), eventMotion.getY(), eventMotion.getZ(), eventMotion.isOnGround()));
                 } else if (looking) {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(eventMotion.getYaw(), eventMotion.getPitch(), eventMotion.isOnGround()));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotationEvent.getYaw(), rotationEvent.getPitch(), eventMotion.isOnGround()));
                 } else {
                     this.sendQueue.addToSendQueue(new C03PacketPlayer(eventMotion.isOnGround()));
                 }
             } else {
-                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, eventMotion.getYaw(), eventMotion.getPitch(), eventMotion.isOnGround()));
+                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, rotationEvent.getYaw(), rotationEvent.getPitch(), eventMotion.isOnGround()));
                 moving = false;
             }
 
@@ -197,12 +201,14 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
 
             if (looking) {
-                this.lastReportedYaw = eventMotion.getYaw();
-                this.lastReportedPitch = eventMotion.getPitch();
+                this.lastReportedYaw = rotationEvent.getYaw();
+                this.lastReportedPitch = rotationEvent.getPitch();
             }
         }
         eventMotion.setState(Event.State.POST);
+        rotationEvent.setState(Event.State.POST);
         eventMotion.call();
+        rotationEvent.call();
     }
 
     public EntityItem dropOneItem(boolean dropAll)

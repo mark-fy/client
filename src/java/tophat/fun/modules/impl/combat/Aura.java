@@ -6,6 +6,7 @@ import tophat.fun.Client;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.events.impl.player.MotionEvent;
+import tophat.fun.events.impl.player.RotationEvent;
 import tophat.fun.events.impl.render.Render3DEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
@@ -31,16 +32,26 @@ public class Aura extends Module {
     private final NumberSetting minCPS = new NumberSetting(this, "MinCPS", 0, 20, 8, 0);
     private final NumberSetting maxCPS = new NumberSetting(this, "MaxCPS", 0, 20, 13, 0);
     private final BooleanSetting targetESP = new BooleanSetting(this, "TargetESP", false);
+    private final BooleanSetting lockAim = new BooleanSetting(this, "LockAim", false);
 
     public Aura() {
         Client.INSTANCE.settingManager.add(
-                sorting,reach,aimRange,minCPS,maxCPS, targetESP
+                sorting,reach,aimRange,minCPS,maxCPS,targetESP,lockAim
         );
     }
 
+    private float yaw,pitch;
     public static EntityLivingBase target;
     int cpsdelay = 0;
     long time = System.currentTimeMillis();
+
+    @Override
+    public void onEnable() {
+        yaw = mc.thePlayer.rotationYaw;
+        pitch = mc.thePlayer.rotationPitch;
+
+        super.onEnable();
+    }
 
     @Override
     public void onDisable() {
@@ -75,12 +86,28 @@ public class Aura extends Module {
         cpsdelay = (int) ((Math.random() * (maxCPS.value.intValue() - minCPS.value.intValue())) + minCPS.value.intValue());
 
         if(target != null && !target.isDead){
-            mc.thePlayer.rotationYaw = RotationUtil.getRotationsNeeded(target)[0];
-            mc.thePlayer.rotationPitch = RotationUtil.getRotationsNeeded(target)[1];
             if(mc.thePlayer.getDistanceToEntity(target) <= reach.get().floatValue() && mc.pointedEntity == target && time <= System.currentTimeMillis() + cpsdelay){
                 mc.playerController.attackEntity(mc.thePlayer, target);
                 mc.thePlayer.swingItem();
                 time = System.currentTimeMillis();
+            }
+        }
+    }
+
+    @Listen
+    public void onRotation(RotationEvent event) { // kind of works, doesn't attack if you don't look at the target
+        if(event.getState() == Event.State.PRE) {
+            if(target != null && !target.isDead){
+                if(lockAim.get()) {
+                    mc.thePlayer.rotationYaw = RotationUtil.getRotationsNeeded(target)[0];
+                    mc.thePlayer.rotationPitch = RotationUtil.getRotationsNeeded(target)[1];
+                } else {
+                    event.setYaw(RotationUtil.getRotationsNeeded(target)[0]);
+                    event.setPitch(RotationUtil.getRotationsNeeded(target)[1]);
+                }
+
+                mc.thePlayer.rotationYawHead = event.getYaw();
+                mc.thePlayer.renderYawOffset = event.getYaw();
             }
         }
     }
