@@ -1,10 +1,12 @@
 package tophat.fun.modules.impl.design;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import tophat.fun.Client;
 import tophat.fun.events.impl.render.Render2DEvent;
@@ -36,13 +38,13 @@ public class TargetHUD extends Module {
                 if(!(Aura.target instanceof EntityPlayer)) return;
                 text = Aura.target.getName();
 
-                EntityLivingBase et = (EntityLivingBase) Aura.target;
+                AbstractClientPlayer et = (AbstractClientPlayer) Aura.target;
                 if(et.getHealth() <= 0) return;
 
                 DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
                 DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
 
-                RenderUtil.drawSkinHead(et, x + width - 33, y + 3, 30);
+                DrawHelper.drawRoundedTexture(new ResourceLocation(et.getLocationSkin().getResourcePath()), x + width - 33, y + 32.5, 30, 30, 8, 8, 8, 8, 12);
 
                 DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
                 DrawHelper.drawRoundedRectOutline(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, 2, new Color(24, 175, 175));
@@ -62,7 +64,7 @@ public class TargetHUD extends Module {
             DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
             DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
 
-            RenderUtil.drawSkinHead(mc.thePlayer, x + width - 33, y + 3, 30);
+            DrawHelper.drawRoundedTexture(new ResourceLocation(mc.thePlayer.getLocationSkin().getResourcePath()), x + width - 33, y + 32.5, 30, 30, 8, 8, 8, 8, 12);
 
             DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
             DrawHelper.drawRoundedRectOutline(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, 2, new Color(24, 175, 175));
