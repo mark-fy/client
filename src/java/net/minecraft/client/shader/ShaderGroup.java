@@ -44,8 +44,8 @@ public class ShaderGroup
         this.mainFramebuffer = p_i1050_3_;
         this.field_148036_j = 0.0F;
         this.field_148037_k = 0.0F;
-        this.mainFramebufferWidth = p_i1050_3_.framebufferWidth;
-        this.mainFramebufferHeight = p_i1050_3_.framebufferHeight;
+        this.mainFramebufferWidth = p_i1050_3_.width;
+        this.mainFramebufferHeight = p_i1050_3_.height;
         this.shaderGroupName = p_i1050_4_.toString();
         this.resetProjectionMatrix();
         this.parseGroup(p_i1050_1_, p_i1050_4_);

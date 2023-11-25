@@ -90,12 +90,12 @@ public class ScreenShotHelper
 
             if (OpenGlHelper.isFramebufferEnabled())
             {
-                bufferedimage = new BufferedImage(buffer.framebufferWidth, buffer.framebufferHeight, 1);
-                int i1 = buffer.framebufferTextureHeight - buffer.framebufferHeight;
+                bufferedimage = new BufferedImage(buffer.width, buffer.height, 1);
+                int i1 = buffer.framebufferTextureHeight - buffer.height;
 
                 for (int j1 = i1; j1 < buffer.framebufferTextureHeight; ++j1)
                 {
-                    for (int k1 = 0; k1 < buffer.framebufferWidth; ++k1)
+                    for (int k1 = 0; k1 < buffer.width; ++k1)
                     {
                         bufferedimage.setRGB(k1, j1 - i1, pixelValues[j1 * buffer.framebufferTextureWidth + k1]);
                     }

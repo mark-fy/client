@@ -13,8 +13,8 @@ public class Framebuffer
 {
     public int framebufferTextureWidth;
     public int framebufferTextureHeight;
-    public int framebufferWidth;
-    public int framebufferHeight;
+    public int width;
+    public int height;
     public boolean useDepth;
     public int framebufferObject;
     public int framebufferTexture;
@@ -40,8 +40,8 @@ public class Framebuffer
     {
         if (!OpenGlHelper.isFramebufferEnabled())
         {
-            this.framebufferWidth = width;
-            this.framebufferHeight = height;
+            this.width = width;
+            this.height = height;
         }
         else
         {
@@ -88,8 +88,8 @@ public class Framebuffer
 
     public void createFramebuffer(int width, int height)
     {
-        this.framebufferWidth = width;
-        this.framebufferHeight = height;
+        this.width = width;
+        this.height = height;
         this.framebufferTextureWidth = width;
         this.framebufferTextureHeight = height;
 
@@ -192,7 +192,7 @@ public class Framebuffer
 
             if (p_147610_1_)
             {
-                GlStateManager.viewport(0, 0, this.framebufferWidth, this.framebufferHeight);
+                GlStateManager.viewport(0, 0, this.width, this.height);
             }
         }
     }
@@ -246,8 +246,8 @@ public class Framebuffer
             this.bindFramebufferTexture();
             float f = (float)p_178038_1_;
             float f1 = (float)p_178038_2_;
-            float f2 = (float)this.framebufferWidth / (float)this.framebufferTextureWidth;
-            float f3 = (float)this.framebufferHeight / (float)this.framebufferTextureHeight;
+            float f2 = (float)this.width / (float)this.framebufferTextureWidth;
+            float f3 = (float)this.height / (float)this.framebufferTextureHeight;
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
