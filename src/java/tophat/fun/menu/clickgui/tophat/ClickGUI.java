@@ -1,4 +1,4 @@
-package tophat.fun.menu.click.tophat;
+package tophat.fun.menu.clickgui.tophat;
 
 import net.minecraft.client.gui.GuiScreen;
 import tophat.fun.Client;

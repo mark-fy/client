@@ -9,7 +9,7 @@ public class ClickGUI extends Module {
 
     @Override
     public void onEnable() {
-        mc.displayGuiScreen(new tophat.fun.menu.click.tophat.ClickGUI());
+        mc.displayGuiScreen(new tophat.fun.menu.clickgui.tophat.ClickGUI());
         this.setEnabled(false);
         super.onEnable();
     }

@@ -1,6 +1,6 @@
 /*
 	Original Code by: sxmurxy2005 (https://github.com/sxmurxy2005/2D-Render-Util-1.16)
-	Ported to 1.8.9 by: MarkGG
+	Ported to 1.8.9 and modified by: MarkGG
  */
 
 package tophat.fun.utilities.render.shader;
@@ -104,8 +104,6 @@ public class DrawHelper implements Methods {
 		drawFinish();
 	}
 
-	// progress [1;100]
-	// direction: 1 - по часовой стрелке; 0 - против часовой стрелки
 	public static void drawCircle(double x, double y, double radius, int progress, int direction, Color color) {
 		double angle1 = direction == 0 ? ANGLE : -ANGLE;
 		float steps = (STEPS / 100f) * progress;
@@ -225,7 +223,6 @@ public class DrawHelper implements Methods {
 		drawFinish();
 	}
 
-	// progress [1;100]
 	public static void drawCircleOutline(double x, double y, double radius, float thikness, int progress, int direction, Color color) {
 		double angle1 = direction == 0 ? ANGLE : -ANGLE;
 		float steps = (STEPS / 100f) * progress;
@@ -346,7 +343,7 @@ public class DrawHelper implements Methods {
 		ROUNDED_GRADIENT.setUniformf("color2", c1[0], c1[1], c1[2], c1[3]);
 		ROUNDED_GRADIENT.setUniformf("color3", c2[0], c2[1], c2[2], c2[3]);
 		ROUNDED_GRADIENT.setUniformf("color4", c3[0], c3[1], c3[2], c3[3]);
-		Shader.draw(x, y - height, width, height);
+		Shader.draw(x, y, width, height);
 		ROUNDED_GRADIENT.unload();
 
 		drawFinish();
@@ -364,7 +361,7 @@ public class DrawHelper implements Methods {
 		ROUNDED_BLURRED.setUniformf("softness", blurR);
 		ROUNDED_BLURRED.setUniformf("radius", (float)roundR);
 		ROUNDED_BLURRED.setUniformf("color", c[0], c[1], c[2], c[3]);
-		Shader.draw(x - blurR, y - height - blurR, width + blurR * 2, height + blurR * 2);
+		Shader.draw(x - blurR, y - blurR, width + blurR * 2, height + blurR * 2);
 		ROUNDED_BLURRED.unload();
 
 		glDisable(GL_ALPHA_TEST);
@@ -389,7 +386,7 @@ public class DrawHelper implements Methods {
 		ROUNDED_BLURRED_GRADIENT.setUniformf("color2", c1[0], c1[1], c1[2], c1[3]);
 		ROUNDED_BLURRED_GRADIENT.setUniformf("color3", c2[0], c2[1], c2[2], c2[3]);
 		ROUNDED_BLURRED_GRADIENT.setUniformf("color4", c3[0], c3[1], c3[2], c3[3]);
-		Shader.draw(x - blurR, y - height - blurR, width + blurR * 2, height + blurR * 2);
+		Shader.draw(x - blurR, y - blurR, width + blurR * 2, height + blurR * 2);
 		ROUNDED_BLURRED_GRADIENT.unload();
 
 		glDisable(GL_ALPHA_TEST);
@@ -506,7 +503,7 @@ public class DrawHelper implements Methods {
 		ROUNDED_TEXTURE.setUniformf("size", (float)width * 2, (float)height * 2);
 		ROUNDED_TEXTURE.setUniformf("round", (float)radius * 2);
 		bindTexture(texId);
-		Shader.draw(x, y - height, width, height);
+		Shader.draw(x, y, width, height);
 		bindTexture(0);
 		ROUNDED_TEXTURE.unload();
 
