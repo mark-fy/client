@@ -3,19 +3,16 @@ package tophat.fun.modules.impl.design;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Mouse;
 import tophat.fun.Client;
 import tophat.fun.events.impl.render.Render2DEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
 import tophat.fun.modules.impl.combat.Aura;
+import tophat.fun.modules.settings.impl.BooleanSetting;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
-import tophat.fun.utilities.render.RenderUtil;
 import tophat.fun.utilities.render.shader.DrawHelper;
 
 import java.awt.*;
@@ -23,7 +20,15 @@ import java.awt.*;
 @ModuleInfo(name = "TargetHUD", desc = "displays the aura's target info.", category = Module.Category.DESIGN)
 public class TargetHUD extends Module {
 
+    private final BooleanSetting gradientOutline = new BooleanSetting(this, "GradientOutline", false);
+
     private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsMedium 18");
+
+    public TargetHUD() {
+        Client.INSTANCE.settingManager.add(
+                gradientOutline
+        );
+    }
 
     @Listen
     public void on2D(Render2DEvent event) {
@@ -41,13 +46,21 @@ public class TargetHUD extends Module {
                 AbstractClientPlayer et = (AbstractClientPlayer) Aura.target;
                 if(et.getHealth() <= 0) return;
 
-                DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
-                DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
+                if(gradientOutline.get()) {
+                    DrawHelper.drawRoundedGradientRect( x - 1, y - 1, width + 2, height + 2, 6, new Color(24, 175, 162), new Color(0, 101, 197), new Color(24, 175, 162).brighter().brighter(), new Color(0, 101, 197).brighter().brighter());
+                    DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
+
+                    DrawHelper.drawRoundedGradientRect(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, new Color(24, 175, 162), new Color(0, 101, 197), new Color(24, 175, 162).brighter().brighter(), new Color(0, 101, 197).brighter().brighter());
+                    DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
+                } else {
+                    DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
+                    DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
+
+                    DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
+                    DrawHelper.drawRoundedRectOutline(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, 2, new Color(24, 175, 175));
+                }
 
                 DrawHelper.drawRoundedTexture(new ResourceLocation(et.getLocationSkin().getResourcePath()), x + width - 33, y + 32.5, 30, 30, 8, 8, 8, 8, 12);
-
-                DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
-                DrawHelper.drawRoundedRectOutline(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, 2, new Color(24, 175, 175));
 
                 float healthPercentage = Math.min(et.getHealth() / et.getMaxHealth(), 1.0f);
                 float healthBarWidth = (width - 40) * healthPercentage;
@@ -61,13 +74,21 @@ public class TargetHUD extends Module {
         } else {
             text = "You";
 
-            DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
-            DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
+            if(gradientOutline.get()) {
+                DrawHelper.drawRoundedGradientRect( x - 1, y - 1, width + 2, height + 2, 6, new Color(24, 175, 162), new Color(0, 101, 197), new Color(24, 175, 162).brighter().brighter(), new Color(0, 101, 197).brighter().brighter());
+                DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
+
+                DrawHelper.drawRoundedGradientRect(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, new Color(24, 175, 162), new Color(0, 101, 197), new Color(24, 175, 162).brighter().brighter(), new Color(0, 101, 197).brighter().brighter());
+                DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
+            } else {
+                DrawHelper.drawRoundedRect( x, y, width, height, 6, new Color(25,25,25));
+                DrawHelper.drawRoundedRectOutline( x - 1, y - 1, width + 2, height + 2, 6, 2, new Color(24, 175, 162));
+
+                DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
+                DrawHelper.drawRoundedRectOutline(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, 2, new Color(24, 175, 175));
+            }
 
             DrawHelper.drawRoundedTexture(new ResourceLocation(mc.thePlayer.getLocationSkin().getResourcePath()), x + width - 33, y + 32.5, 30, 30, 8, 8, 8, 8, 12);
-
-            DrawHelper.drawRoundedRect(x + 3, y + 23.5, width - 40, 8, 3, new Color(25,25,25));
-            DrawHelper.drawRoundedRectOutline(x + 3 - 1, y + 22.5, width - 40 + 2, 8 + 2, 3, 2, new Color(24, 175, 175));
 
             float healthPercentage = Math.min(mc.thePlayer.getHealth() / mc.thePlayer.getMaxHealth(), 1.0f);
             float healthBarWidth = (width - 40) * healthPercentage;

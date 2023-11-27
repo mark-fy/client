@@ -18,6 +18,8 @@ public class ClickGUI extends GuiScreen {
     private final static TTFFontRenderer poppinsR = CFont.FONT_MANAGER.getFont("PoppinsRegular 18");
     private final static TTFFontRenderer iconFont = CFont.FONT_MANAGER.getFont("RegularIcons 18");
 
+    private tophat.fun.modules.impl.design.ClickGUI clickGUI;
+
     @Override
     public void initGui() {
         super.initGui();
@@ -30,16 +32,24 @@ public class ClickGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if(clickGUI == null) {
+            clickGUI = Client.INSTANCE.moduleManager.getByClass(tophat.fun.modules.impl.design.ClickGUI.class);
+        }
         float x = 60;
         float y = 5;
         float modHeight = 20;
 
         float catOffset = 100;
         for (Module.Category category : Module.Category.values()) {
-            DrawHelper.drawRoundedRect(x + catOffset, y, 100, 20 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(25,25,25));
-            DrawHelper.drawRoundedRect(x + catOffset, y, 100, 20, 8, new Color(19, 19, 19));
-            DrawHelper.drawRoundedRectOutline(x + catOffset - 1, y -1, 102, 22 + modHeight * Client.INSTANCE.moduleManager.getModulesByCategory(category).size(), 8, 2, new Color(24, 175, 162));
-
+            if(clickGUI.gradientOutline.get()) {
+                DrawHelper.drawRoundedGradientRect(x + catOffset - 1, y - 1, 102, 22 + modHeight * Client.INSTANCE.moduleManager.getModulesByCategory(category).size(), 8, new Color(24, 175, 162), new Color(0, 101, 197), new Color(24, 175, 162).brighter().brighter(), new Color(0, 101, 197).brighter().brighter());
+                DrawHelper.drawRoundedRect(x + catOffset, y, 100, 20 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(25, 25, 25));
+                DrawHelper.drawRoundedRect(x + catOffset, y, 100, 20, 8, new Color(19, 19, 19));
+            } else {
+                DrawHelper.drawRoundedRect(x + catOffset, y, 100, 20 + Client.INSTANCE.moduleManager.getModulesByCategory(category).size() * modHeight, 8, new Color(25, 25, 25));
+                DrawHelper.drawRoundedRect(x + catOffset, y, 100, 20, 8, new Color(19, 19, 19));
+                DrawHelper.drawRoundedRectOutline(x + catOffset - 1, y - 1, 102, 22 + modHeight * Client.INSTANCE.moduleManager.getModulesByCategory(category).size(), 8, 2, new Color(24, 175, 162));
+            }
             poppins.drawString(category.getName(), x + catOffset + 5, y + 5, -1);
             iconFont.drawString(TextUtil.getCategoryLetter(category), x + catOffset + 85, y + 7, -1);
 

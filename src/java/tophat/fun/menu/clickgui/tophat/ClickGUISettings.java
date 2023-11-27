@@ -24,6 +24,8 @@ public class ClickGUISettings extends GuiScreen {
     private final static TTFFontRenderer checkmark = CFont.FONT_MANAGER.getFont("RegularIcons2 18");
     private final static TTFFontRenderer arrows = CFont.FONT_MANAGER.getFont("ArrowIcons 18");
 
+    private tophat.fun.modules.impl.design.ClickGUI clickGUI;
+
     private final GuiScreen screenParent;
     private final Module parent;
 
@@ -47,15 +49,24 @@ public class ClickGUISettings extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if(clickGUI == null) {
+            clickGUI = Client.INSTANCE.moduleManager.getByClass(tophat.fun.modules.impl.design.ClickGUI.class);
+        }
         float x = (float) this.width / 2 - 100;
         float y = (float) this.height / 2 - 100;
         float width = 200;
         float height = 200;
 
-        DrawHelper.drawRoundedRect(x, y, width, height, 8, new Color(25,25,25));
-        DrawHelper.drawRoundedRect(x, y, width, 20, 8, new Color(19,19,19));
+        if(clickGUI.gradientOutline.get()) {
+            DrawHelper.drawRoundedGradientRect(x - 1, y - 1, width + 2, height + 2, 8, new Color(24, 175, 162), new Color(0, 101, 197), new Color(24, 175, 162).brighter().brighter(), new Color(0, 101, 197).brighter().brighter());
+            DrawHelper.drawRoundedRect(x, y, width, height, 8, new Color(25,25,25));
+            DrawHelper.drawRoundedRect(x, y, width, 20, 8, new Color(19,19,19));
+        } else {
+            DrawHelper.drawRoundedRect(x, y, width, height, 8, new Color(25,25,25));
+            DrawHelper.drawRoundedRect(x, y, width, 20, 8, new Color(19,19,19));
+            DrawHelper.drawRoundedRectOutline(x - 1, y - 1, width + 2, height + 2, 8, 2, new Color(24, 175, 162));
+        }
 
-        DrawHelper.drawRoundedRectOutline(x - 1, y - 1, width + 2, height + 2, 8, 2, new Color(24, 175, 162));
         poppins.drawString(parent.getName(), x + 5, y + 5, -1);
 
         float offset = 20;
