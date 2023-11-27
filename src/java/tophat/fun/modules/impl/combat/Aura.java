@@ -31,27 +31,19 @@ public class Aura extends Module {
     private final NumberSetting aimRange = new NumberSetting(this, "AimRange", 0.0, 6.0, 4.5, 1);
     private final NumberSetting minCPS = new NumberSetting(this, "MinCPS", 0, 20, 8, 0);
     private final NumberSetting maxCPS = new NumberSetting(this, "MaxCPS", 0, 20, 13, 0);
+    private final BooleanSetting attackWhenLooking = new BooleanSetting(this, "AttackWhenLooking", false);
     private final BooleanSetting targetESP = new BooleanSetting(this, "TargetESP", false);
     private final BooleanSetting lockAim = new BooleanSetting(this, "LockAim", false);
 
     public Aura() {
         Client.INSTANCE.settingManager.add(
-                sorting,reach,aimRange,minCPS,maxCPS,targetESP,lockAim
+                sorting,reach,aimRange,minCPS,maxCPS,attackWhenLooking,targetESP,lockAim
         );
     }
 
-    private float yaw,pitch;
     public static EntityLivingBase target;
     int cpsdelay = 0;
     long time = System.currentTimeMillis();
-
-    @Override
-    public void onEnable() {
-        yaw = mc.thePlayer.rotationYaw;
-        pitch = mc.thePlayer.rotationPitch;
-
-        super.onEnable();
-    }
 
     @Override
     public void onDisable() {
@@ -86,16 +78,21 @@ public class Aura extends Module {
         cpsdelay = (int) ((Math.random() * (maxCPS.value.intValue() - minCPS.value.intValue())) + minCPS.value.intValue());
 
         if(target != null && !target.isDead){
-            if(mc.thePlayer.getDistanceToEntity(target) <= reach.get().floatValue() && mc.pointedEntity == target && time <= System.currentTimeMillis() + cpsdelay){
+            if(mc.thePlayer.getDistanceToEntity(target) <= reach.get().floatValue() && time <= System.currentTimeMillis() + cpsdelay){
+                if(attackWhenLooking.get() && mc.pointedEntity != target) {
+                    return;
+                }
+
                 mc.playerController.attackEntity(mc.thePlayer, target);
                 mc.thePlayer.swingItem();
+
                 time = System.currentTimeMillis();
             }
         }
     }
 
     @Listen
-    public void onRotation(RotationEvent event) { // kind of works, doesn't attack if you don't look at the target
+    public void onRotation(RotationEvent event) {
         if(event.getState() == Event.State.PRE) {
             if(target != null && !target.isDead){
                 if(lockAim.get()) {
@@ -114,7 +111,7 @@ public class Aura extends Module {
 
     @Listen
     public void onRender(Render3DEvent event) {
-        if(target != null && !target.isDead) {
+        if(target != null && !target.isDead && targetESP.get()) {
             double x = MathUtil.interpolate(target.posX, target.lastTickPosX) - mc.getRenderManager().renderPosX;
             double y = MathUtil.interpolate(target.posY, target.lastTickPosY) - mc.getRenderManager().renderPosY;
             double z = MathUtil.interpolate(target.posZ, target.lastTickPosZ) - mc.getRenderManager().renderPosZ;
