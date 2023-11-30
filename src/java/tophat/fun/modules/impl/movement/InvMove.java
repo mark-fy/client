@@ -22,6 +22,8 @@ public class InvMove extends Module {
     private final BooleanSetting openPacket = new BooleanSetting(this, "CancelOpenPackets", false);
     private final BooleanSetting extraStorage = new BooleanSetting(this, "ExtraStorage", false);
 
+    private final KeyBinding[] keybinds = new KeyBinding[]{mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindJump, mc.gameSettings.keyBindSprint};
+
     @Listen
     public void onPacket(PacketEvent event) {
         if(mc.thePlayer == null || mc.theWorld == null) {
@@ -49,18 +51,19 @@ public class InvMove extends Module {
     public void onMotion(MotionEvent event) {
         if(event.getState() == Event.State.PRE) {
             block3 : {
-                KeyBinding[] moveKeys;
                 block2 : {
-                    moveKeys = new KeyBinding[]{mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindJump, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint};
                     if (mc.currentScreen == null || (mc.currentScreen instanceof GuiChat))
                         break block2;
-                    for (KeyBinding key : moveKeys) {
+
+                    for (KeyBinding key : keybinds) {
+
                         key.pressed = Keyboard.isKeyDown(key.getKeyCode());
                     }
                     break block3;
                 }
-                for (KeyBinding bind : moveKeys) {
-                    if (Keyboard.isKeyDown(bind.getKeyCode()))  continue;
+                for (KeyBinding bind : keybinds) {
+                    if (Keyboard.isKeyDown(bind.getKeyCode()))
+                        continue;
                     KeyBinding.setKeyBindState(bind.getKeyCode(), false);
                 }
             }

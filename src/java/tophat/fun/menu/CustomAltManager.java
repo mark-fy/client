@@ -172,8 +172,8 @@ public class CustomAltManager extends GuiScreen {
                 }
 
                 if(isHovered && mouseButton == 1) {
+                    thread.setStatus("§eInfo: §rRemoved account §6" + username);
                     AltManager.deleteAccount(username, "tophat");
-                    thread.setStatus("§eInfo: §rRemoved account §6" + usernameBoxText);
                 }
                 accountY += 36;
             }
