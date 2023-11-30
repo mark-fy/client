@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IntHashMap;
+import tophat.fun.events.impl.game.KeyPressedEvent;
 
 public class KeyBinding implements Comparable<KeyBinding>
 {
@@ -89,17 +90,17 @@ public class KeyBinding implements Comparable<KeyBinding>
         return this.keyCategory;
     }
 
-    public boolean isPressed()
-    {
-        if (this.pressTime == 0)
-        {
-            return false;
-        }
-        else
-        {
+    public boolean isPressed() {
+        boolean pressed = false;
+        if(this.pressTime != 0) {
             --this.pressTime;
-            return true;
+            pressed = true;
         }
+
+        KeyPressedEvent keyPressedEvent = new KeyPressedEvent(this, pressed);
+        keyPressedEvent.call();
+
+        return keyPressedEvent.isPressed();
     }
 
     private void unpressKey()
