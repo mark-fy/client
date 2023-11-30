@@ -12,8 +12,8 @@ import tophat.fun.utilities.player.MoveUtil;
 @ModuleInfo(name = "Sprint", desc = "sprints for you.", category = Module.Category.MOVEMENT)
 public class Sprint extends Module {
 
-    private final BooleanSetting legit = new BooleanSetting(this, "Legit Sprint", true);
-    private final BooleanSetting omni = new BooleanSetting(this, "All Directions", false);
+    private final BooleanSetting legit = new BooleanSetting(this, "LegitSprint", true);
+    private final BooleanSetting omni = new BooleanSetting(this, "AllDirections", false);
 
     @Listen
     public void onMotion(MotionEvent event) {

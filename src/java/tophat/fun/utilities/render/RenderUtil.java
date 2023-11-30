@@ -6,11 +6,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 import tophat.fun.utilities.Methods;
-import tophat.fun.utilities.render.shader.DrawHelper;
 
 public class RenderUtil implements Methods {
 
-    public static void drawSkinHead(EntityLivingBase player, double x, double y, int size) {
+    public static void drawSkinHead(EntityLivingBase player, float x, float y, int size) {
         if (!(player instanceof EntityPlayer))
             return;
 
