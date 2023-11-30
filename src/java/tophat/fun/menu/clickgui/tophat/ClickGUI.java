@@ -35,7 +35,7 @@ public class ClickGUI extends GuiScreen {
         if(clickGUI == null) {
             clickGUI = Client.INSTANCE.moduleManager.getByClass(tophat.fun.modules.impl.design.ClickGUI.class);
         }
-        float x = 60;
+        float x = 70;
         float y = 5;
         float modHeight = 20;
 
@@ -68,7 +68,7 @@ public class ClickGUI extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        float x = 60;
+        float x = 70;
         float y = 5;
 
         float catOffset = 100;

@@ -14,7 +14,7 @@ public class FakePlayer extends Module {
 
     @Override
     public void onEnable() {
-        if(mc.theWorld == null || mc.thePlayer == null || mc.thePlayer.isDead ){
+        if(mc.theWorld == null || mc.thePlayer == null || mc.thePlayer.isDead){
             setEnabled(false);
         }
 

@@ -1,7 +1,6 @@
 package tophat.fun.modules.impl.design;
 
 import io.github.nevalackin.radbus.Listen;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S02PacketChat;
 import tophat.fun.Client;
 import tophat.fun.events.impl.network.PacketEvent;
@@ -48,7 +47,7 @@ public class SessionInfo extends Module {
     @Listen
     public void on2D(Render2DEvent event) {
         float x = 6;
-        float y = 25;
+        float y = 28;
         float width = 130;
         float height = 52;
 
