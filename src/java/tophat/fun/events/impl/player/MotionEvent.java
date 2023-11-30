@@ -42,4 +42,8 @@ public class MotionEvent extends Event {
         return onGround;
     }
 
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
+    }
+
 }
