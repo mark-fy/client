@@ -2,7 +2,6 @@ package tophat.fun.modules.impl.movement;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.settings.KeyBinding;
-import tophat.fun.Client;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.events.impl.player.OmniSprintEvent;
 import tophat.fun.modules.Module;
@@ -15,12 +14,6 @@ public class Sprint extends Module {
 
     private final BooleanSetting legit = new BooleanSetting(this, "Legit Sprint", true);
     private final BooleanSetting omni = new BooleanSetting(this, "All Directions", false);
-
-    public Sprint() {
-        Client.INSTANCE.settingManager.add(
-                legit, omni
-        );
-    }
 
     @Listen
     public void onMotion(MotionEvent event) {

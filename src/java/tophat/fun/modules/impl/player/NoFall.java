@@ -2,7 +2,6 @@ package tophat.fun.modules.impl.player;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import tophat.fun.Client;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.modules.Module;
@@ -14,12 +13,6 @@ import tophat.fun.utilities.player.MoveUtil;
 public class NoFall extends Module {
 
     private final StringSetting mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Packet", "Invalid");
-
-    public NoFall() {
-        Client.INSTANCE.settingManager.add(
-                mode
-        );
-    }
 
     @Listen
     public void onMotion(MotionEvent event) {

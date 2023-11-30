@@ -17,9 +17,6 @@ public class Watermark extends Module {
     private final BooleanSetting gradientOutline = new BooleanSetting(this, "GradientOutline", false);
 
     public Watermark() {
-        Client.INSTANCE.settingManager.add(
-                gradientOutline
-        );
         setEnabled(true);
     }
 

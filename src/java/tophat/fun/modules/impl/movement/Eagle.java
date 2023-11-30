@@ -5,7 +5,6 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;
-import tophat.fun.Client;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.modules.Module;
@@ -20,12 +19,6 @@ public class Eagle extends Module {
     private final NumberSetting delay = new NumberSetting(this, "Delay", 0, 300, 30);
 
     private final TimeUtil timer = new TimeUtil();
-
-    public Eagle() {
-        Client.INSTANCE.settingManager.add(
-                delay
-        );
-    }
 
     @Listen
     public void onMotion(MotionEvent event) {

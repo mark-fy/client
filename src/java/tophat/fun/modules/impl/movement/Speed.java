@@ -2,7 +2,6 @@ package tophat.fun.modules.impl.movement;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.settings.KeyBinding;
-import tophat.fun.Client;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.events.impl.player.MotionEvent;
@@ -17,12 +16,6 @@ public class Speed extends Module {
 
     private final StringSetting mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Legit");
     private final NumberSetting vSpeed = new NumberSetting(this, "VanillaSpeed", 1, 1.5, 0.5, 1).setHidden(() -> !mode.is("Vanilla"));
-
-    public Speed() {
-        Client.INSTANCE.settingManager.add(
-                mode, vSpeed
-        );
-    }
 
     @Override
     public void onDisable() {

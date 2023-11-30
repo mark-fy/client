@@ -72,8 +72,8 @@ public class ClickGUISettings extends GuiScreen {
         float offset = 20;
         int settingsDisplayed = 0;
 
-        for (int i = startIndex; i < Client.INSTANCE.settingManager.getSettingsByModule(parent).size(); i++) {
-            Setting setting = Client.INSTANCE.settingManager.getSettingsByModule(parent).get(i);
+        for (int i = startIndex; i < Setting.getSettingsByMododule(parent).size(); i++) {
+            Setting setting = Setting.getSettingsByMododule(parent).get(i);
 
             if (setting.isHidden()) continue;
 
@@ -133,7 +133,7 @@ public class ClickGUISettings extends GuiScreen {
         int scroll = Mouse.getDWheel();
         if (scroll != 0) {
             startIndex -= Integer.signum(scroll);
-            startIndex = Math.max(0, Math.min(startIndex, Client.INSTANCE.settingManager.getSettingsByModule(parent).size() - maxSettingsDisplayed));
+            startIndex = Math.max(0, Math.min(startIndex, Setting.getSettingsByMododule(parent).size() - maxSettingsDisplayed));
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -148,8 +148,8 @@ public class ClickGUISettings extends GuiScreen {
         float offset = 20;
         int settingsDisplayed = 0;
 
-        for (int i = startIndex; i < Client.INSTANCE.settingManager.getSettingsByModule(parent).size(); i++) {
-            Setting setting = Client.INSTANCE.settingManager.getSettingsByModule(parent).get(i);
+        for (int i = startIndex; i < Setting.getSettingsByMododule(parent).size(); i++) {
+            Setting setting = Setting.getSettingsByMododule(parent).get(i);
 
             if (setting.isHidden()) continue;
 
@@ -187,7 +187,7 @@ public class ClickGUISettings extends GuiScreen {
         int scroll = Mouse.getDWheel();
         if (scroll != 0) {
             startIndex -= Integer.signum(scroll);
-            startIndex = Math.max(0, Math.min(startIndex, Client.INSTANCE.settingManager.getSettingsByModule(parent).size() - maxSettingsDisplayed));
+            startIndex = Math.max(0, Math.min(startIndex, Setting.getSettingsByMododule(parent).size() - maxSettingsDisplayed));
         }
 
         super.mouseClicked(mouseX, mouseY, mouseButton);

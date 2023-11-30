@@ -4,7 +4,6 @@ import io.github.nevalackin.radbus.Listen;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
-import tophat.fun.Client;
 import tophat.fun.events.impl.network.PacketEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
@@ -14,12 +13,6 @@ import tophat.fun.modules.settings.impl.StringSetting;
 public class ClientSpoofer extends Module {
 
     private final StringSetting mode = new StringSetting(this, "Brand", "Lunar", "Lunar", "Forge", "LabyMod", "CheatBreaker", "PvP Lounge", "Geyser");
-
-    public ClientSpoofer() {
-        Client.INSTANCE.settingManager.add(
-                mode
-        );
-    }
 
     @Listen
     public void onPacket(PacketEvent event) {

@@ -1,7 +1,6 @@
 package tophat.fun.modules.impl.player;
 
 import io.github.nevalackin.radbus.Listen;
-import tophat.fun.Client;
 import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
@@ -11,12 +10,6 @@ import tophat.fun.modules.settings.impl.NumberSetting;
 public class Timer extends Module {
 
     private final NumberSetting speed = new NumberSetting(this, "Timer Speed", 0.1, 5, 1, 1);
-
-    public Timer() {
-        Client.INSTANCE.settingManager.add(
-                speed
-        );
-    }
 
     @Listen
     public void onUpdate(UpdateEvent updateEvent) {

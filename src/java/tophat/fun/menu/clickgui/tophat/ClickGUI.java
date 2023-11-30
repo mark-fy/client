@@ -3,6 +3,7 @@ package tophat.fun.menu.clickgui.tophat;
 import net.minecraft.client.gui.GuiScreen;
 import tophat.fun.Client;
 import tophat.fun.modules.Module;
+import tophat.fun.modules.settings.Setting;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.RenderUtil;
@@ -81,7 +82,7 @@ public class ClickGUI extends GuiScreen {
                 if(hover && mouseButton == 0) {
                     module.toggle();
                 } else if(hover && mouseButton == 1) {
-                    if (Client.INSTANCE.settingManager.getSettingsByModule(module).size() > 0) {
+                    if (Setting.getSettingsByMododule(module).size() > 0) {
                         mc.displayGuiScreen(new ClickGUISettings(this, module));
                     }
                 }

@@ -15,12 +15,6 @@ public class Reach extends Module {
     private final NumberSetting attackRange = new NumberSetting(this, "Attack Range", 3, 6, 3, 1);
     private final BooleanSetting fixMisplace = new BooleanSetting(this, "Fix Server-Side Misplace", true);
 
-    public Reach() {
-        Client.INSTANCE.settingManager.add(
-                attackRange, fixMisplace
-        );
-    }
-
     double correctedRange;
 
     @Listen

@@ -24,12 +24,6 @@ public class TargetHUD extends Module {
 
     private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsMedium 18");
 
-    public TargetHUD() {
-        Client.INSTANCE.settingManager.add(
-                gradientOutline
-        );
-    }
-
     @Listen
     public void on2D(Render2DEvent event) {
         float x = (float) event.getScaledResolution().getScaledWidth() / 2 + 10;

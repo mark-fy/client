@@ -2,7 +2,6 @@ package tophat.fun.modules.impl.design;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.server.S02PacketChat;
-import tophat.fun.Client;
 import tophat.fun.events.impl.network.PacketEvent;
 import tophat.fun.events.impl.player.DeathEvent;
 import tophat.fun.events.impl.render.Render2DEvent;
@@ -20,12 +19,6 @@ import java.awt.*;
 public class SessionInfo extends Module {
 
     private final BooleanSetting gradientOutline = new BooleanSetting(this, "GradientOutline", false);
-
-    public SessionInfo() {
-        Client.INSTANCE.settingManager.add(
-                gradientOutline
-        );
-    }
 
     private int deaths = 0;
     private int kills = 0;

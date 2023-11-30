@@ -17,12 +17,6 @@ public class Velocity extends Module {
     private final NumberSetting horizontal = new NumberSetting(this, "Horizontal", 0, 100, 100, 0).setHidden(() -> !mode.is("Simple") && !mode.is("Reverse"));
     private final NumberSetting vertical = new NumberSetting(this, "Vertical", 0, 100, 100, 0).setHidden(() -> !mode.is("Simple") && !mode.is("Reverse"));
 
-    public Velocity() {
-        Client.INSTANCE.settingManager.add(
-                mode, horizontal, vertical
-        );
-    }
-
     @Listen
     public void onPacket(PacketEvent event) {
         if (mc.thePlayer == null || mc.theWorld == null)

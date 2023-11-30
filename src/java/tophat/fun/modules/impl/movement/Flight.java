@@ -1,10 +1,13 @@
 package tophat.fun.modules.impl.movement;
 
 import io.github.nevalackin.radbus.Listen;
+import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;
-import tophat.fun.Client;
 import tophat.fun.events.Event;
-import tophat.fun.events.impl.game.UpdateEvent;
+import tophat.fun.events.impl.game.CollisionBoxesEvent;
+import tophat.fun.events.impl.network.PacketEvent;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
@@ -16,14 +19,8 @@ import tophat.fun.utilities.player.MoveUtil;
 @ModuleInfo(name = "Flight", desc = "makes you float midair.", category = Module.Category.MOVEMENT)
 public class Flight extends Module {
 
-    private final StringSetting mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Jump");
-    private final NumberSetting vSpeed = new NumberSetting(this, "VanillaSpeed", 1, 2, 0.5, 1).setHidden(() -> !mode.is("Vanilla"));
-
-    public Flight() {
-        Client.INSTANCE.settingManager.add(
-                mode, vSpeed
-        );
-    }
+    private final StringSetting mode = new StringSetting(this, "Mode", "Vanilla", "Vanilla", "Jump", "Ground", "Collision");
+    private final NumberSetting vSpeed = new NumberSetting(this, "VanillaSpeed", 0, 2, 0.5, 1).setHidden(() -> !mode.is("Vanilla"));
 
     private final TimeUtil timer = new TimeUtil();
 
@@ -39,9 +36,47 @@ public class Flight extends Module {
     }
 
     @Listen
+    public void onCollision(CollisionBoxesEvent event) {
+        if(mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
+        switch (mode.get()) {
+            case "Collision":
+                if(!mc.gameSettings.keyBindSneak.pressed) {
+                    event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ()));
+                }
+                break;
+        }
+    }
+
+    @Listen
+    public void onPacket(PacketEvent event) {
+        switch (mode.get()) {
+            case "Ground":
+                if(event.getPacket() instanceof C03PacketPlayer) {
+                    event.setCancelled(true);
+                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+                }
+                break;
+        }
+    }
+
+    @Listen
     public void onMotion(MotionEvent event) {
         if(event.getState() == Event.State.PRE) {
             switch (mode.get()) {
+                case "Jump":
+                    if (timer.elapsed(545, true)) {
+                        mc.thePlayer.jump();
+                        mc.thePlayer.onGround = true;
+                    }
+                    break;
+                case "Ground":
+                    mc.thePlayer.motionY = 0.0;
+                    mc.thePlayer.onGround = true;
+                    mc.theWorld.setBlockState(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ), null);
+                    break;
                 case "Vanilla":
                     mc.thePlayer.motionY = 0;
 
@@ -56,18 +91,6 @@ public class Flight extends Module {
                     MoveUtil.setSpeed(vSpeed.get().floatValue());
                     break;
             }
-        }
-    }
-
-    @Listen
-    public void onUpdate(UpdateEvent event) {
-        switch (mode.get()) {
-            case "Jump":
-                if (timer.elapsed(545, true)) {
-                    mc.thePlayer.jump();
-                    mc.thePlayer.onGround = true;
-                }
-                break;
         }
     }
 

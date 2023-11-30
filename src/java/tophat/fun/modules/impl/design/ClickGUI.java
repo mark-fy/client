@@ -1,7 +1,6 @@
 package tophat.fun.modules.impl.design;
 
 import org.lwjgl.input.Keyboard;
-import tophat.fun.Client;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
 import tophat.fun.modules.settings.impl.BooleanSetting;
@@ -10,12 +9,6 @@ import tophat.fun.modules.settings.impl.BooleanSetting;
 public class ClickGUI extends Module {
 
     public final BooleanSetting gradientOutline = new BooleanSetting(this, "GradientOutline", false);
-
-    public ClickGUI() {
-        Client.INSTANCE.settingManager.add(
-                gradientOutline
-        );
-    }
 
     @Override
     public void onEnable() {

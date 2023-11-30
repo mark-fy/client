@@ -35,12 +35,6 @@ public class Aura extends Module {
     private final BooleanSetting targetESP = new BooleanSetting(this, "TargetESP", false);
     private final BooleanSetting lockAim = new BooleanSetting(this, "LockAim", false);
 
-    public Aura() {
-        Client.INSTANCE.settingManager.add(
-                sorting,reach,aimRange,minCPS,maxCPS,attackWhenLooking,targetESP,lockAim
-        );
-    }
-
     public static EntityLivingBase target;
     int cpsdelay = 0;
     long time = System.currentTimeMillis();
