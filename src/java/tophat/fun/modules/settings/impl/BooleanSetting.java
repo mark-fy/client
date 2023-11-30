@@ -11,6 +11,7 @@ public class BooleanSetting extends Setting {
         this.parent = parent;
         this.name = name;
         this.value = value;
+        parent.registerSettings(this);
     }
 
     public boolean toggle() {

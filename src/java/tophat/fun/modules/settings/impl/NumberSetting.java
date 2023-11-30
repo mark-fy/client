@@ -15,6 +15,7 @@ public class NumberSetting extends Setting {
         this.max = max;
         this.value = value;
         this.decimalPoints = decimalPoints;
+        parent.registerSettings(this);
     }
 
     public NumberSetting(Module parent, String name, Number min, Number max, Number value) {
@@ -24,6 +25,7 @@ public class NumberSetting extends Setting {
         this.max = max;
         this.value = value;
         this.decimalPoints = 0;
+        parent.registerSettings(this);
     }
 
     public Number min() { return min; }

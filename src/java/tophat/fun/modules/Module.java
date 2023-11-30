@@ -1,7 +1,12 @@
 package tophat.fun.modules;
 
 import tophat.fun.Client;
+import tophat.fun.modules.settings.Setting;
 import tophat.fun.utilities.Methods;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Module implements Methods {
 
@@ -9,6 +14,16 @@ public class Module implements Methods {
     public String desc = this.getClass().getAnnotation(ModuleInfo.class).desc();
     public Category category = this.getClass().getAnnotation(ModuleInfo.class).category();
     public int keyCode = this.getClass().getAnnotation(ModuleInfo.class).bind();
+
+    public List<Setting> settings = new ArrayList<Setting>();
+
+    public void registerSettings(Setting... settings) {
+        this.settings.addAll(Arrays.asList(settings));
+    }
+
+    public List<Setting> getSettings() {
+        return settings;
+    }
 
     private boolean enabled;
     private boolean hidden;

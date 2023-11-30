@@ -18,6 +18,7 @@ public class StringSetting extends Setting {
         this.name = name;
         this.value = value;
         this.all = new ArrayList<>(Arrays.asList(all));
+        parent.registerSettings(this);
     }
 
     public List<String> getValues() { return all; }
@@ -28,7 +29,6 @@ public class StringSetting extends Setting {
         onChange(this.value, value);
         change(value);
     }
-
 
     public void change(String value) { this.value = value; }
 
