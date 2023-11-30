@@ -82,7 +82,7 @@ public class ClickGUI extends GuiScreen {
                 if(hover && mouseButton == 0) {
                     module.toggle();
                 } else if(hover && mouseButton == 1) {
-                    if (Setting.getSettingsByMododule(module).size() > 0) {
+                    if (Setting.getSettingsByModule(module).size() > 0) {
                         mc.displayGuiScreen(new ClickGUISettings(this, module));
                     }
                 }
