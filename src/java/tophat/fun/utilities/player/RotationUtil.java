@@ -19,14 +19,14 @@ public class RotationUtil implements Methods {
         final float pitch = (float) (-(Math.atan2(ySize, theta) * 180 / Math.PI));
         return new float[]{(mc.thePlayer.rotationYaw + MathHelper.wrapAngleTo180_float(yaw - mc.thePlayer.rotationYaw)) % 360, (mc.thePlayer.rotationPitch + MathHelper.wrapAngleTo180_float(pitch - mc.thePlayer.rotationPitch)) % 360.0f};
     }
-    public static float[] getRotationsBlock(final BlockPos blockPos) {
-        if (blockPos == null) {
+    public static float[] getRotationsBlock(final Vec3 vec) {
+        if (vec == null) {
             return null;
         }
         Minecraft mc = Minecraft.getMinecraft();
-        final double xSize = blockPos.getX() - mc.thePlayer.posX;
-        final double ySize = blockPos.getY() - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight());
-        final double zSize = blockPos.getZ() - mc.thePlayer.posZ;
+        final double xSize = vec.xCoord - mc.thePlayer.posX;
+        final double ySize = vec.yCoord - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight());
+        final double zSize = vec.zCoord - mc.thePlayer.posZ;
         final double theta = MathHelper.sqrt_double(xSize * xSize + zSize * zSize);
         final float yaw = (float) (Math.atan2(zSize, xSize) * 180 / Math.PI) - 90;
         final float pitch = (float) (-(Math.atan2(ySize, theta) * 180 / Math.PI));
