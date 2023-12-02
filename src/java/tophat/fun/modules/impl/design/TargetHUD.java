@@ -46,6 +46,7 @@ public class TargetHUD extends Module {
 
                 switch (design.get()) {
                     case "TopHat":
+
                         width = 120;
                         height = 35;
                         if(gradientOutline.get()) {
@@ -66,6 +67,7 @@ public class TargetHUD extends Module {
 
                         float healthPercentage = Math.min(et.getHealth() / et.getMaxHealth(), 1.0f);
                         float healthBarWidth = (width - 40) * healthPercentage;
+
                         DrawHelper.drawRoundedRect(x + 3, y + 23.5, healthBarWidth, 8, 3, new Color(31, 206, 206));
 
                         float textX = et.getHealth() <= 9 ? x + healthBarWidth - 5 : x + healthBarWidth - 7.5f;

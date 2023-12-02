@@ -182,7 +182,6 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.util.glu.GLU;
 import tophat.fun.Client;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.game.KeyboardEvent;
@@ -962,8 +961,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         System.gc();
     }
 
-    private void runGameLoop() throws IOException
-    {
+    private void runGameLoop() throws IOException {
+
         long i = System.nanoTime();
         this.mcProfiler.startSection("root");
 
