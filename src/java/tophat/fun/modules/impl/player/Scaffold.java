@@ -20,13 +20,12 @@ import static java.awt.event.InputEvent.BUTTON3_DOWN_MASK;
 public class Scaffold extends Module {
 
     private final BooleanSetting lockAim = new BooleanSetting(this, "LockAim", true);
-    private final BooleanSetting lockyaw = new BooleanSetting(this, "LockAimYaw", false);
     long time = System.currentTimeMillis();
     Vec3 bpos = null;
     Vec3 vec = null;
     boolean place = false;
     boolean pmotionX, pmotionZ, nmotionX, nmotionZ;
-    float yaw;
+    Vec3 yaw;
 
     @Override
     public void onDisable() {
@@ -40,14 +39,11 @@ public class Scaffold extends Module {
             vec = mc.thePlayer.getPositionVector().addVector(0.0, -0.5, 0.0);
             if(!(mc.theWorld.getBlockState(BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord)).getBlock() instanceof BlockAir)) {
                 bpos = vec.addVector(0.0, -0.5, 0.0);
+                BlockPos yawbpos = BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord);
+                yaw = new Vec3(yawbpos.getX() + 0.5, yawbpos.getY() + 0.5, yawbpos.getZ() + 0.5);
             }else{
                 place = true;
             }
-            //was going to use this for calculating yaw
-            pmotionX = mc.thePlayer.motionX > 0;
-            pmotionZ = mc.thePlayer.motionZ > 0;
-            nmotionX = mc.thePlayer.motionX < 0;
-            nmotionZ = mc.thePlayer.motionZ < 0;
 
         }
     }
@@ -65,15 +61,15 @@ public class Scaffold extends Module {
     @Listen
     public void onRotation(RotationEvent event) {
         if(event.getState() == Event.State.PRE) {
-            if(bpos != null && mc.thePlayer.getDistanceSq(new BlockPos(bpos.xCoord, bpos.yCoord, bpos.zCoord)) <= 4.5 * 4.5/* && mc.theWorld.getBlockState(BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord)).getBlock() instanceof BlockAir*/){
+            if(bpos != null && yaw != null && mc.thePlayer.getDistanceSq(new BlockPos(bpos.xCoord, bpos.yCoord, bpos.zCoord)) <= 4.5 * 4.5 && mc.thePlayer.posY > bpos.yCoord/* && mc.theWorld.getBlockState(BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord)).getBlock() instanceof BlockAir*/){
 
                 if(lockAim.get()) {
-                    if(lockyaw.get()) {
-                        mc.thePlayer.rotationYaw = yaw;
+                    if(mc.theWorld.getBlockState(BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord)).getBlock() instanceof BlockAir) {
+                        mc.thePlayer.rotationYaw = 45 * (Math.round(RotationUtil.getRotationsBlock(yaw)[0] / 45));
                     }
                     mc.thePlayer.rotationPitch = RotationUtil.getRotationsBlock(bpos)[1];
                 } else {
-                    event.setYaw(RotationUtil.getRotationsBlock(bpos)[0]);
+                    event.setYaw(RotationUtil.getRotationsBlock(yaw)[0]);
                     event.setPitch(RotationUtil.getRotationsBlock(bpos)[1]);
                 }
 
