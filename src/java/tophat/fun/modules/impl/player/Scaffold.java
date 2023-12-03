@@ -10,6 +10,7 @@ import tophat.fun.events.impl.player.RotationEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
 import tophat.fun.modules.settings.impl.BooleanSetting;
+import tophat.fun.modules.settings.impl.NumberSetting;
 import tophat.fun.utilities.player.RotationUtil;
 
 import java.awt.*;
@@ -20,11 +21,13 @@ import static java.awt.event.InputEvent.BUTTON3_DOWN_MASK;
 public class Scaffold extends Module {
 
     private final BooleanSetting lockAim = new BooleanSetting(this, "LockAim", true);
+    private final NumberSetting y = new NumberSetting(this, "Y diagonal modifier", -2.0, 2.0, 0, 1);
     long time = System.currentTimeMillis();
     Vec3 bpos = null;
     Vec3 vec = null;
     boolean place = false;
     Vec3 yaw;
+    float reqyaw;
 
     @Override
     public void onDisable() {
@@ -42,8 +45,13 @@ public class Scaffold extends Module {
                 bpos = vec.addVector(0.0, -0.5, 0.0);
                 BlockPos yawbpos = BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord);
                 yaw = new Vec3(yawbpos.getX() + 0.5, yawbpos.getY() + 0.5, yawbpos.getZ() + 0.5);
+                reqyaw = 45 * (Math.round(RotationUtil.getRotationsBlock(yaw)[0] / 45));
             }
 
+            if(reqyaw % 45 == 0 && reqyaw % 90 != 0){
+                bpos = bpos.addVector(0.0, y.value.doubleValue(), 0.0);
+                System.out.println(y.value.doubleValue());
+            }
         }
     }
 
@@ -52,7 +60,7 @@ public class Scaffold extends Module {
         try {
             System.setProperty("java.awt.headless", "false");
             robot = new Robot();
-        } catch (AWTException e) {
+        } catch (AWTException ignored) {
         }
     }
 
@@ -65,7 +73,7 @@ public class Scaffold extends Module {
                 if(lockAim.get()) {
 
                     if(mc.theWorld.getBlockState(BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord)).getBlock() instanceof BlockAir) {
-                        mc.thePlayer.rotationYaw = 45 * (Math.round(RotationUtil.getRotationsBlock(yaw)[0] / 45));
+                        mc.thePlayer.rotationYaw = reqyaw;
                     }
                     mc.thePlayer.rotationPitch = RotationUtil.getRotationsBlock(bpos)[1];
 
