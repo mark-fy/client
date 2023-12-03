@@ -1,4 +1,4 @@
-package tophat.fun.menu.clickgui.tophat;
+package tophat.fun.menu.clickgui.dropdown;
 
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;

@@ -40,10 +40,10 @@ public class FontManager {
             loadFont("/assets/minecraft/tophat/font/roboto/Roboto.ttf", "Roboto", new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 32, 128}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/others/Biko-Regular.otf", "Biko", new int[]{16, 18, 28, 36, 48}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/others/Helvetica-Neue-Thin.ttf", "HelveticaThin", new int[]{18, 20, 24, 36, 48, 72, 96}, Font.PLAIN);
-            loadFont("/assets/minecraft/tophat/font/icons/Regular-Icons.ttf", "RegularIcons", new int[]{18}, Font.PLAIN);
-            loadFont("/assets/minecraft/tophat/font/icons/Regular-Icons2.ttf", "RegularIcons2", new int[]{18}, Font.PLAIN);
-            loadFont("/assets/minecraft/tophat/font/icons/Arrow-Icons.otf", "ArrowIcons", new int[]{18}, Font.PLAIN);
-            loadFont("/assets/minecraft/tophat/font/icons/CSGO-Icons.ttf", "CSGOIcons", new int[]{18}, Font.PLAIN);
+            loadFont("/assets/minecraft/tophat/font/icons/Regular-Icons.ttf", "RegularIcons", new int[]{18, 24}, Font.PLAIN);
+            loadFont("/assets/minecraft/tophat/font/icons/Regular-Icons2.ttf", "RegularIcons2", new int[]{18, 24}, Font.PLAIN);
+            loadFont("/assets/minecraft/tophat/font/icons/Arrow-Icons.otf", "ArrowIcons", new int[]{18, 24}, Font.PLAIN);
+            loadFont("/assets/minecraft/tophat/font/icons/CSGO-Icons.ttf", "CSGOIcons", new int[]{18, 24}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/sf_pro_display/SF-Pro-SemiBold.ttf", "SFProSemiBold", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/sf_ui_display/SF-UI-Light.ttf", "SFUILight", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
             loadFont("/assets/minecraft/tophat/font/sf_ui_display/SF-UI-Regular.ttf", "SFUIRegular", new int[]{16, 18, 20, 22, 24, 32}, Font.PLAIN);
