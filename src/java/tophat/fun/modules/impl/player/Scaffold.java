@@ -16,7 +16,7 @@ import java.awt.*;
 
 import static java.awt.event.InputEvent.BUTTON3_DOWN_MASK;
 
-@ModuleInfo(name = "Scaffold", desc = "places blocks under you", category = Module.Category.PLAYER)
+@ModuleInfo(name = "Scaffold", desc = "places blocks under you, currently moonwalks and can diagonal if you setup and get lucky!", category = Module.Category.PLAYER)
 public class Scaffold extends Module {
 
     private final BooleanSetting lockAim = new BooleanSetting(this, "LockAim", true);
@@ -25,6 +25,8 @@ public class Scaffold extends Module {
     Vec3 bpos = null;
     Vec3 vec = null;
     boolean place = false;
+    boolean pmotionX, pmotionZ, nmotionX, nmotionZ;
+    float yaw;
 
     @Override
     public void onDisable() {
@@ -41,7 +43,11 @@ public class Scaffold extends Module {
             }else{
                 place = true;
             }
-
+            //was going to use this for calculating yaw
+            pmotionX = mc.thePlayer.motionX > 0;
+            pmotionZ = mc.thePlayer.motionZ > 0;
+            nmotionX = mc.thePlayer.motionX < 0;
+            nmotionZ = mc.thePlayer.motionZ < 0;
 
         }
     }
@@ -52,7 +58,7 @@ public class Scaffold extends Module {
             System.setProperty("java.awt.headless", "false");
             robot = new Robot();
         } catch (AWTException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
     }
 
@@ -60,9 +66,10 @@ public class Scaffold extends Module {
     public void onRotation(RotationEvent event) {
         if(event.getState() == Event.State.PRE) {
             if(bpos != null && mc.thePlayer.getDistanceSq(new BlockPos(bpos.xCoord, bpos.yCoord, bpos.zCoord)) <= 4.5 * 4.5/* && mc.theWorld.getBlockState(BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord)).getBlock() instanceof BlockAir*/){
+
                 if(lockAim.get()) {
                     if(lockyaw.get()) {
-                        mc.thePlayer.rotationYaw = RotationUtil.getRotationsBlock(bpos)[0];
+                        mc.thePlayer.rotationYaw = yaw;
                     }
                     mc.thePlayer.rotationPitch = RotationUtil.getRotationsBlock(bpos)[1];
                 } else {
@@ -74,7 +81,9 @@ public class Scaffold extends Module {
                 mc.thePlayer.renderYawOffset = event.getYaw();
                 mc.thePlayer.rotationPitchHead = event.getPitch();
 
-                if(place){
+                if(place && mc.currentScreen == null){
+                    robot.mousePress(BUTTON3_DOWN_MASK);
+                    robot.mouseRelease(BUTTON3_DOWN_MASK);
                     robot.mousePress(BUTTON3_DOWN_MASK);
                     robot.mouseRelease(BUTTON3_DOWN_MASK);
                     place = false;
