@@ -1,8 +1,4 @@
 import java.io.File;
-<<<<<<< Updated upstream
-import java.lang.reflect.Field;
-=======
->>>>>>> Stashed changes
 import java.util.Arrays;
 
 import net.minecraft.client.main.Main;
