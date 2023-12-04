@@ -1,6 +1,7 @@
 package tophat.fun;
 
 import org.lwjgl.opengl.Display;
+import tophat.fun.commands.CommandManager;
 import tophat.fun.events.EventManager;
 import tophat.fun.modules.ModuleManager;
 import tophat.fun.utilities.Methods;
@@ -13,6 +14,7 @@ public enum Client implements Information, Methods {
 
     public final EventManager eventManager = new EventManager();
     public final ModuleManager moduleManager = new ModuleManager();
+    public final CommandManager commandManager = new CommandManager();
 
     public void run() {
         Methods.createFolder("tophat");
@@ -23,7 +25,9 @@ public enum Client implements Information, Methods {
         } else {
             Display.setTitle(CNAME + " " + CVERSION + " | Made by " + Arrays.toString(CAUTHORS));
         }
+
         moduleManager.init();
+        commandManager.init();
 
         mc.gameSettings.limitFramerate = 144;
     }
