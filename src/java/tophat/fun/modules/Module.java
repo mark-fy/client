@@ -46,16 +46,12 @@ public class Module implements Methods {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
 
-        try {
-            if (isEnabled()) {
-                onEnable();
-                Client.INSTANCE.eventManager.subscribe(this);
-            } else {
-                onDisable();
-                Client.INSTANCE.eventManager.unsubscribe(this);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isEnabled()) {
+            onEnable();
+            Client.INSTANCE.eventManager.subscribe(this);
+        } else {
+            onDisable();
+            Client.INSTANCE.eventManager.unsubscribe(this);
         }
     }
 

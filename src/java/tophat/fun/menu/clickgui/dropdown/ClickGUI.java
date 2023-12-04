@@ -56,7 +56,6 @@ public class ClickGUI extends GuiScreen {
 
             float modOffset = y + 4 + 20;
             for (Module module : Client.INSTANCE.moduleManager.getModulesByCategory(category)) {
-                if (module.isHidden()) continue;
                 poppinsR.drawString(module.getName(), x + catOffset + 5, modOffset, module.isEnabled() ? new Color(37, 239, 223).getRGB() : Color.WHITE.getRGB());
                 modOffset += 20;
             }
@@ -76,19 +75,11 @@ public class ClickGUI extends GuiScreen {
         for (Module.Category category : Module.Category.values()) {
             float modOffset = y + 4 + 20;
             for(Module module : Client.INSTANCE.moduleManager.getModulesByCategory(category)) {
-                if(module.isHidden()) continue;
-                boolean hover = RenderUtil.hovered(mouseX, mouseY, x + catOffset, modOffset, 100, 18);
-
+                boolean hover = RenderUtil.hovered(mouseX, mouseY, x + catOffset, modOffset, 80, 18);
                 if(hover && mouseButton == 0) {
                     module.toggle();
                 } else if(hover && mouseButton == 1) {
-                    if(Setting.getSettingsByModule(module) == null) {
-                        return;
-                    }
-
-                    if (Setting.getSettingsByModule(module).size() > 0) {
-                        mc.displayGuiScreen(new ClickGUISettings(this, module));
-                    }
+                    mc.displayGuiScreen(new ClickGUISettings(this, module));
                 }
 
                 modOffset += 20;

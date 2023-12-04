@@ -18,6 +18,7 @@ public class Watermark extends Module {
 
     public Watermark() {
         setEnabled(true);
+        setHidden(true);
     }
 
     private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsMedium 18");

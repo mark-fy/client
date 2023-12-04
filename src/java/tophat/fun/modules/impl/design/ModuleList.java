@@ -18,6 +18,7 @@ public class ModuleList extends Module {
 
     public ModuleList() {
         setEnabled(true);
+        setHidden(true);
     }
 
     private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsMedium 18");
@@ -26,6 +27,7 @@ public class ModuleList extends Module {
         ScaledResolution sr = new ScaledResolution(mc);
         List<Module> enabledModules = Client.INSTANCE.moduleManager.getEnabledModules()
                 .stream()
+                .filter(module -> !module.isHidden())
                 .sorted((module1, module2) -> {
                     int width1 = (int) poppins.getWidth(module1.getName()) + 1;
                     int width2 = (int) poppins.getWidth(module2.getName()) + 1;
