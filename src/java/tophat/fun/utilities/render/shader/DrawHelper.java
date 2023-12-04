@@ -39,11 +39,13 @@ import static org.lwjgl.opengl.GL11.glVertex2d;
 import java.awt.Color;
 import java.util.HashMap;
 
+import by.radioegor146.nativeobfuscator.Native;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import tophat.fun.utilities.Methods;
 import tophat.fun.utilities.render.ColorUtil;
 
+@Native
 public class DrawHelper implements Methods {
 
 	public static final HashMap<Integer, Integer> glowCache = new HashMap<Integer, Integer>();

@@ -3001,7 +3001,7 @@ public class GameSettings
             printwriter.println("ofShowFps:" + this.ofShowFps);
             printwriter.println("ofAutoSaveTicks:" + this.ofAutoSaveTicks);
             printwriter.println("ofBetterGrass:" + this.ofBetterGrass);
-            printwriter.println("ofConnectedTextures:" + this.ofConnectedTextures);
+            //printwriter.println("ofConnectedTextures:" + this.ofConnectedTextures);
             printwriter.println("ofWeather:" + this.ofWeather);
             printwriter.println("ofSky:" + this.ofSky);
             printwriter.println("ofStars:" + this.ofStars);

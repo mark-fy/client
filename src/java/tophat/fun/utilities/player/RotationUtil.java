@@ -1,10 +1,12 @@
 package tophat.fun.utilities.player;
 
+import by.radioegor146.nativeobfuscator.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.*;
 import tophat.fun.utilities.Methods;
 
+@Native
 public class RotationUtil implements Methods {
     public static float[] getRotationsNeeded(final Entity entity) {
         if (entity == null) {

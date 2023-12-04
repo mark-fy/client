@@ -1,5 +1,6 @@
 package tophat.fun.menu;
 
+import by.radioegor146.nativeobfuscator.Native;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
@@ -15,6 +16,7 @@ import tophat.fun.utilities.render.shader.DrawHelper;
 import java.awt.*;
 import java.io.IOException;
 
+@Native
 public class CustomAltManager extends GuiScreen {
 
     private final static TTFFontRenderer poppins = CFont.FONT_MANAGER.getFont("PoppinsSemiBold 20"), poppinsR = CFont.FONT_MANAGER.getFont("PoppinsMedium 20");

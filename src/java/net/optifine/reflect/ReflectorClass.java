@@ -37,7 +37,7 @@ public class ReflectorClass implements IResolvable
             }
             catch (ClassNotFoundException var2)
             {
-                Log.log("(Reflector) Class not present: " + this.targetClassName);
+                //Log.log("(Reflector) Class not present: " + this.targetClassName);
             }
             catch (Throwable throwable)
             {
