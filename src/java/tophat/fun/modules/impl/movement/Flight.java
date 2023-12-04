@@ -1,13 +1,10 @@
 package tophat.fun.modules.impl.movement;
 
 import io.github.nevalackin.radbus.Listen;
-import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.game.CollisionBoxesEvent;
-import tophat.fun.events.impl.network.PacketEvent;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.modules.Module;
 import tophat.fun.modules.ModuleInfo;
@@ -51,18 +48,6 @@ public class Flight extends Module {
     }
 
     @Listen
-    public void onPacket(PacketEvent event) {
-        switch (mode.get()) {
-            case "Ground":
-                if(event.getPacket() instanceof C03PacketPlayer) {
-                    event.setCancelled(true);
-                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-                }
-                break;
-        }
-    }
-
-    @Listen
     public void onMotion(MotionEvent event) {
         if(event.getState() == Event.State.PRE) {
             switch (mode.get()) {
@@ -75,7 +60,6 @@ public class Flight extends Module {
                 case "Ground":
                     mc.thePlayer.motionY = 0.0;
                     mc.thePlayer.onGround = true;
-                    mc.theWorld.setBlockState(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ), null);
                     break;
                 case "Vanilla":
                     mc.thePlayer.motionY = 0;
