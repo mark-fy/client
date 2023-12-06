@@ -4,7 +4,9 @@
       <root url="file://$PROJECT_DIR$/libraries" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/guava-17.0-sources.jar!/" />
+    </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/libraries" recursive="false" />
   </library>
 </component>
