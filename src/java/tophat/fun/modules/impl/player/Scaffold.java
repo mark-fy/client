@@ -21,7 +21,7 @@ import static java.awt.event.InputEvent.BUTTON3_DOWN_MASK;
 public class Scaffold extends Module {
 
     private final BooleanSetting lockAim = new BooleanSetting(this, "LockAim", true);
-    private final NumberSetting y = new NumberSetting(this, "Y diagonal modifier", -2.0, 2.0, 0, 1);
+    private final NumberSetting y = new NumberSetting(this, "YDiagonalModifier", -2.0, 2.0, 0, 1);
     long time = System.currentTimeMillis();
     Vec3 bpos = null;
     Vec3 vec = null;

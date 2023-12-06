@@ -7,9 +7,13 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAppleGold;
+import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import tophat.fun.Client;
+import tophat.fun.modules.impl.render.UHCOverlay;
 
 public class RenderEntityItem extends Render<EntityItem>
 {
@@ -24,44 +28,71 @@ public class RenderEntityItem extends Render<EntityItem>
         this.shadowOpaque = 0.75F;
     }
 
-    private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_)
+    private UHCOverlay uhcOverlay;
+
+    private int transformModelCount(EntityItem itemIn, double x, double y, double z, float spinningQuality, IBakedModel bakedModel)
     {
         ItemStack itemstack = itemIn.getEntityItem();
         Item item = itemstack.getItem();
 
-        if (item == null)
-        {
+        if(uhcOverlay == null)
+            uhcOverlay = Client.INSTANCE.moduleManager.getByClass(UHCOverlay.class);
+
+        if (item == null) {
             return 0;
-        }
-        else
-        {
-            boolean flag = p_177077_9_.isGui3d();
-            int i = this.func_177078_a(itemstack);
-            float f = 0.25F;
-            float f1 = MathHelper.sin(((float)itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
-            float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
-            GlStateManager.translate((float)p_177077_2_, (float)p_177077_4_ + f1 + 0.25F * f2, (float)p_177077_6_);
+        } else {
+            if (item instanceof ItemAppleGold && uhcOverlay.isEnabled()) {
+                boolean is3D = bakedModel.isGui3d();
+                int modelCount = this.getModelCount(itemstack);
+                float f1 = MathHelper.sin(((float) itemIn.getAge() + spinningQuality) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
+                float f2 = bakedModel.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
 
-            if (flag || this.renderManager.options != null)
-            {
-                float f3 = (((float)itemIn.getAge() + p_177077_8_) / 20.0F + itemIn.hoverStart) * (180F / (float)Math.PI);
-                GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
+                float scale = uhcOverlay.gAppleSize.get().floatValue();
+
+                GlStateManager.translate((float) x, (float) y + f1 + 0.25F * f2, (float) z);
+
+                if (is3D || this.renderManager.options != null) {
+                    float f3 = (((float) itemIn.getAge() + spinningQuality) / 20.0F + itemIn.hoverStart) * (180F / (float) Math.PI);
+                    GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
+                }
+
+                if (!is3D) {
+                    float f6 = -0.0F * (float) (modelCount - 1) * 0.5F;
+                    float f4 = -0.0F * (float) (modelCount - 1) * 0.5F;
+                    float f5 = -0.046875F * (float) (modelCount - 1) * 0.5F;
+                    GlStateManager.scale(scale, scale, scale);
+
+                    GlStateManager.translate(f6, f4 + 0.12F, f5);
+                }
+
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                return modelCount;
+            } else {
+                boolean is3D = bakedModel.isGui3d();
+                int modelCount = this.getModelCount(itemstack);
+                float f1 = MathHelper.sin(((float)itemIn.getAge() + spinningQuality) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
+                float f2 = bakedModel.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
+                GlStateManager.translate((float)x, (float)y + f1 + 0.25F * f2, (float)z);
+
+                if (is3D || this.renderManager.options != null) {
+                    float f3 = (((float)itemIn.getAge() + spinningQuality) / 20.0F + itemIn.hoverStart) * (180F / (float)Math.PI);
+                    GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
+                }
+
+                if (!is3D) {
+                    float f6 = -0.0F * (float)(modelCount - 1) * 0.5F;
+                    float f4 = -0.0F * (float)(modelCount - 1) * 0.5F;
+                    float f5 = -0.046875F * (float)(modelCount - 1) * 0.5F;
+                    GlStateManager.translate(f6, f4, f5);
+                }
+
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                return modelCount;
             }
-
-            if (!flag)
-            {
-                float f6 = -0.0F * (float)(i - 1) * 0.5F;
-                float f4 = -0.0F * (float)(i - 1) * 0.5F;
-                float f5 = -0.046875F * (float)(i - 1) * 0.5F;
-                GlStateManager.translate(f6, f4, f5);
-            }
-
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            return i;
         }
     }
 
-    private int func_177078_a(ItemStack stack)
+    private int getModelCount(ItemStack stack)
     {
         int i = 1;
 
@@ -103,7 +134,7 @@ public class RenderEntityItem extends Render<EntityItem>
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.pushMatrix();
         IBakedModel ibakedmodel = this.itemRenderer.getItemModelMesher().getItemModel(itemstack);
-        int i = this.func_177077_a(entity, x, y, z, partialTicks, ibakedmodel);
+        int i = this.transformModelCount(entity, x, y, z, partialTicks, ibakedmodel);
 
         for (int j = 0; j < i; ++j)
         {
