@@ -2,9 +2,11 @@ package tophat.fun.commands.impl;
 
 import tophat.fun.Client;
 import tophat.fun.commands.Command;
+import tophat.fun.commands.CommandAlias;
 import tophat.fun.commands.CommandInfo;
 import tophat.fun.modules.Module;
 
+@CommandAlias(alias = "t")
 @CommandInfo(name = "toggle", desc = "toggle a module.", command = ".toggle <module>")
 public class Toggle extends Command {
 

@@ -3,11 +3,13 @@ package tophat.fun.commands.impl;
 import org.lwjgl.input.Keyboard;
 import tophat.fun.Client;
 import tophat.fun.commands.Command;
+import tophat.fun.commands.CommandAlias;
 import tophat.fun.commands.CommandInfo;
 import tophat.fun.modules.Module;
 
 import java.util.Locale;
 
+@CommandAlias(alias = "b")
 @CommandInfo(name = "bind", desc = "bind a module to a key.", command = ".bind <module> <key>")
 public class Bind extends Command {
 

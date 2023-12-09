@@ -32,6 +32,10 @@ public class CommandManager extends Storage<Command> implements Methods {
         return this.getList().stream().filter(command -> command.getName().equalsIgnoreCase(input)).findFirst().orElse(null);
     }
 
+    public Command getCommandByAlias(String input) {
+        return this.getList().stream().filter(command -> command.getAlias().equalsIgnoreCase(input)).findFirst().orElse(null);
+    }
+
     @Override
     public <V extends Command> V getByClass(final Class<V> clazz) {
         final Command feature = this.getList().stream().filter(c -> c.getClass().equals(clazz)).findFirst().orElse(null);
@@ -41,7 +45,7 @@ public class CommandManager extends Storage<Command> implements Methods {
 
     @Listen
     public void onCommand(ChatEvent event) {
-        if(event.isCancelled()) {
+        if (event.isCancelled()) {
             return;
         }
 
@@ -57,9 +61,12 @@ public class CommandManager extends Storage<Command> implements Methods {
         String name = arguments[0].substring(1);
 
         Command command = getCommandByName(name);
+        Command command1 = getCommandByAlias(name);
 
         if (command != null) {
             command.onCommand(arguments, message);
+        } else if(command1 != null) {
+            command1.onCommand(arguments, message); // Fix the line here
         } else {
             sendChat(String.format("Could not find command .%s", name.toLowerCase(Locale.ROOT)), true);
         }
