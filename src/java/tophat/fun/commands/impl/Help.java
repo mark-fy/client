@@ -16,7 +16,7 @@ public class Help extends Command {
         sendChat(String.format("Running %s %s made by %s\n", Client.CNAME, Client.CVERSION, Arrays.toString(Client.CAUTHORS)), true);
 
         for (Command cmd : Client.INSTANCE.commandManager.getList()) {
-            sendChat(cmd.getCommand() + " - " + cmd.getDesc(), true);
+            sendChat(String.format("%s - %s [%s]", cmd.getCommand(), cmd.getDesc(), cmd.getAlias()), true);
         }
 
         super.onCommand(args,command);
