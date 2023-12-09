@@ -549,7 +549,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private void createDisplay() throws LWJGLException
     {
         Display.setResizable(true);
-        Display.setTitle("Loading TopHat!");
+        Display.setTitle(Client.CLOADTEXT);
 
         try
         {
