@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TopHat.iml" filepath="$PROJECT_DIR$/TopHat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TopHat.client.iml" filepath="$PROJECT_DIR$/.idea/modules/TopHat.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TopHat.main.iml" filepath="$PROJECT_DIR$/.idea/modules/TopHat.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TopHat.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TopHat.test.iml" />
     </modules>
   </component>
 </project>
