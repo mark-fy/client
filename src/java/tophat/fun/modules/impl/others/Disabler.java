@@ -8,9 +8,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.events.impl.network.PacketEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
 
 @ModuleInfo(name = "Disabler", desc = "disable anticheat checks.", category = Module.Category.OTHERS)
 public class Disabler extends Module {

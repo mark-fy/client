@@ -4,9 +4,9 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.settings.KeyBinding;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.events.impl.player.OmniSprintEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
 import tophat.fun.utilities.player.MoveUtil;
 
 @ModuleInfo(name = "Sprint", desc = "sprints for you.", category = Module.Category.MOVEMENT)

@@ -4,9 +4,9 @@ import io.github.nevalackin.radbus.Listen;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.player.MotionEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.StringSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.StringSetting;
 import tophat.fun.utilities.player.MoveUtil;
 
 @ModuleInfo(name = "NoFall", desc = "disables fall damage.", category = Module.Category.PLAYER)

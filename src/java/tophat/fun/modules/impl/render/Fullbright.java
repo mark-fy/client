@@ -2,8 +2,8 @@ package tophat.fun.modules.impl.render;
 
 import io.github.nevalackin.radbus.Listen;
 import tophat.fun.events.impl.game.UpdateEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
 
 @ModuleInfo(name = "Fullbright", desc = "turns up the brightness.", category = Module.Category.RENDER)
 public class Fullbright extends Module {

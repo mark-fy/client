@@ -6,6 +6,8 @@ import org.reflections.Reflections;
 import tophat.fun.Client;
 import tophat.fun.events.impl.game.KeyboardEvent;
 import tophat.fun.events.impl.render.Render2DEvent;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
 import tophat.fun.utilities.Methods;
 
 import java.lang.reflect.InvocationTargetException;

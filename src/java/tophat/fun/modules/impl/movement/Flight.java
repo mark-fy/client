@@ -6,10 +6,10 @@ import org.lwjgl.input.Keyboard;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.game.CollisionBoxesEvent;
 import tophat.fun.events.impl.player.MotionEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.NumberSetting;
-import tophat.fun.modules.settings.impl.StringSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.NumberSetting;
+import tophat.fun.modules.base.settings.impl.StringSetting;
 import tophat.fun.utilities.others.TimeUtil;
 import tophat.fun.utilities.player.MoveUtil;
 

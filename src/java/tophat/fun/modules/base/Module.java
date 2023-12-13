@@ -1,7 +1,7 @@
-package tophat.fun.modules;
+package tophat.fun.modules.base;
 
 import tophat.fun.Client;
-import tophat.fun.modules.settings.Setting;
+import tophat.fun.modules.base.settings.Setting;
 import tophat.fun.utilities.Methods;
 
 import java.util.ArrayList;

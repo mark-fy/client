@@ -1,8 +1,8 @@
 package tophat.fun.commands.impl;
 
-import tophat.fun.commands.Command;
-import tophat.fun.commands.CommandAlias;
-import tophat.fun.commands.CommandInfo;
+import tophat.fun.commands.base.Command;
+import tophat.fun.commands.base.CommandAlias;
+import tophat.fun.commands.base.CommandInfo;
 
 @CommandAlias(alias = "hc")
 @CommandInfo(name = "hclip", desc = "clip on the x axis.", command = ".hclip <blocks>")

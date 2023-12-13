@@ -3,12 +3,11 @@ package tophat.fun.modules.impl.combat;
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import tophat.fun.Client;
 import tophat.fun.events.impl.network.PacketEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.NumberSetting;
-import tophat.fun.modules.settings.impl.StringSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.NumberSetting;
+import tophat.fun.modules.base.settings.impl.StringSetting;
 
 @ModuleInfo(name = "Velocity", desc = "reduces your knockback.", category = Module.Category.COMBAT)
 public class Velocity extends Module {

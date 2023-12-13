@@ -1,6 +1,6 @@
 package tophat.fun.utilities.render;
 
-import tophat.fun.modules.Module;
+import tophat.fun.modules.base.Module;
 import tophat.fun.utilities.Methods;
 
 import java.util.regex.Matcher;

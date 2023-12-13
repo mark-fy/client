@@ -7,10 +7,10 @@ import net.minecraft.util.Vec3;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.events.impl.player.RotationEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.BooleanSetting;
-import tophat.fun.modules.settings.impl.NumberSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.settings.impl.NumberSetting;
 import tophat.fun.utilities.player.RotationUtil;
 
 import java.awt.*;

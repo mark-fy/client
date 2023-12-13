@@ -1,15 +1,14 @@
 package tophat.fun.menu.clickgui.dropdown;
 
-import com.sun.jna.platform.win32.Wdm;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import tophat.fun.Client;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.settings.Setting;
-import tophat.fun.modules.settings.impl.BooleanSetting;
-import tophat.fun.modules.settings.impl.NumberSetting;
-import tophat.fun.modules.settings.impl.StringSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.settings.Setting;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.settings.impl.NumberSetting;
+import tophat.fun.modules.base.settings.impl.StringSetting;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.math.MathUtil;

@@ -1,4 +1,4 @@
-package tophat.fun.modules;
+package tophat.fun.commands.base;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,11 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ModuleInfo {
-
+public @interface CommandInfo {
     String name();
     String desc();
-    Module.Category category();
-    int bind() default 0;
-
+    String command();
 }

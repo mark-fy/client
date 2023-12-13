@@ -2,8 +2,7 @@ package tophat.fun.menu.clickgui.dropdown;
 
 import net.minecraft.client.gui.GuiScreen;
 import tophat.fun.Client;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.settings.Setting;
+import tophat.fun.modules.base.Module;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.RenderUtil;

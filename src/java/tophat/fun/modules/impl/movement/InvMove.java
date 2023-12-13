@@ -12,9 +12,9 @@ import org.lwjgl.input.Keyboard;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.network.PacketEvent;
 import tophat.fun.events.impl.player.MotionEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
 
 @ModuleInfo(name = "InvMove", desc = "move while having a gui open.", category = Module.Category.MOVEMENT)
 public class InvMove extends Module {

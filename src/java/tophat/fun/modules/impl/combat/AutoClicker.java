@@ -2,9 +2,9 @@ package tophat.fun.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
 import tophat.fun.events.impl.game.KeyPressedEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.NumberSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.NumberSetting;
 import tophat.fun.utilities.others.TimeUtil;
 
 import java.util.Random;

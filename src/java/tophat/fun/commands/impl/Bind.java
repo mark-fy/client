@@ -2,10 +2,10 @@ package tophat.fun.commands.impl;
 
 import org.lwjgl.input.Keyboard;
 import tophat.fun.Client;
-import tophat.fun.commands.Command;
-import tophat.fun.commands.CommandAlias;
-import tophat.fun.commands.CommandInfo;
-import tophat.fun.modules.Module;
+import tophat.fun.commands.base.Command;
+import tophat.fun.commands.base.CommandAlias;
+import tophat.fun.commands.base.CommandInfo;
+import tophat.fun.modules.base.Module;
 
 import java.util.Locale;
 

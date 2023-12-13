@@ -1,8 +1,8 @@
 package tophat.fun.modules.impl.render;
 
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.NumberSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.NumberSetting;
 
 @ModuleInfo(name = "UHCOverlay", desc = "modifies your game for UHC's.", category = Module.Category.RENDER)
 public class UHCOverlay extends Module {

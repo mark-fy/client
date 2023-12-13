@@ -2,8 +2,8 @@ package tophat.fun.modules.impl.movement;
 
 import io.github.nevalackin.radbus.Listen;
 import tophat.fun.events.impl.player.SafeWalkEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
 
 @ModuleInfo(name = "SafeWalk", desc = "prevents you from falling off edges.", category = Module.Category.MOVEMENT)
 public class SafeWalk extends Module {

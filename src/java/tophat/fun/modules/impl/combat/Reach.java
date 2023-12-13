@@ -2,12 +2,11 @@ package tophat.fun.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.util.EnumFacing;
-import tophat.fun.Client;
 import tophat.fun.events.impl.player.ReachEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.BooleanSetting;
-import tophat.fun.modules.settings.impl.NumberSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.settings.impl.NumberSetting;
 
 @ModuleInfo(name = "Reach", desc = "enables you to reach further.", category = Module.Category.COMBAT)
 public class Reach extends Module {

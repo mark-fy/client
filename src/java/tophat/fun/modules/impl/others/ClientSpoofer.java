@@ -5,9 +5,9 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import tophat.fun.events.impl.network.PacketEvent;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.StringSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.StringSetting;
 
 @ModuleInfo(name = "ClientSpoofer", desc = "spoof the client brand.", category = Module.Category.OTHERS)
 public class ClientSpoofer extends Module {

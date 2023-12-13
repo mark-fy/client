@@ -3,8 +3,8 @@ package tophat.fun.modules.impl.others;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.world.WorldSettings;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
 import tophat.fun.utilities.Methods;
 
 import java.util.UUID;

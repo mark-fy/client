@@ -1,4 +1,4 @@
-package tophat.fun.commands;
+package tophat.fun.commands.base;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface CommandInfo {
-    String name();
-    String desc();
-    String command();
+public @interface CommandAlias {
+    String alias();
 }

@@ -1,10 +1,10 @@
 package tophat.fun.modules.impl.design;
 
 import org.lwjgl.input.Keyboard;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.BooleanSetting;
-import tophat.fun.modules.settings.impl.StringSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.settings.impl.StringSetting;
 
 @ModuleInfo(name = "ClickGUI", desc = "clicky gui.", category = Module.Category.DESIGN, bind = Keyboard.KEY_RSHIFT)
 public class ClickGUI extends Module {

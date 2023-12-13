@@ -6,6 +6,8 @@ import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
 import org.reflections.Reflections;
 import tophat.fun.Client;
+import tophat.fun.commands.base.Command;
+import tophat.fun.commands.base.CommandInfo;
 import tophat.fun.events.impl.game.KeyboardEvent;
 import tophat.fun.events.impl.network.ChatEvent;
 import tophat.fun.utilities.Methods;

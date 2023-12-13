@@ -1,9 +1,9 @@
 package tophat.fun.modules.impl.render;
 
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.BooleanSetting;
-import tophat.fun.modules.settings.impl.StringSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.settings.impl.StringSetting;
 
 @ModuleInfo(name = "BlockAnimations", desc = "changes the sword block animation.", category = Module.Category.RENDER)
 public class BlockAnimations extends Module {

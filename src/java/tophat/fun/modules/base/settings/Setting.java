@@ -1,9 +1,6 @@
-package tophat.fun.modules.settings;
+package tophat.fun.modules.base.settings;
 
-import tophat.fun.modules.Module;
-import tophat.fun.modules.settings.impl.BooleanSetting;
-import tophat.fun.modules.settings.impl.NumberSetting;
-import tophat.fun.modules.settings.impl.StringSetting;
+import tophat.fun.modules.base.Module;
 
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;

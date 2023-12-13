@@ -2,9 +2,9 @@ package tophat.fun.modules.impl.design;
 
 import net.minecraft.client.Minecraft;
 import tophat.fun.Client;
-import tophat.fun.modules.Module;
-import tophat.fun.modules.ModuleInfo;
-import tophat.fun.modules.settings.impl.BooleanSetting;
+import tophat.fun.modules.base.Module;
+import tophat.fun.modules.base.ModuleInfo;
+import tophat.fun.modules.base.settings.impl.BooleanSetting;
 import tophat.fun.utilities.font.CFont;
 import tophat.fun.utilities.font.renderer.TTFFontRenderer;
 import tophat.fun.utilities.render.shader.DrawHelper;

@@ -1,4 +1,4 @@
-package tophat.fun.commands;
+package tophat.fun.commands.base;
 
 import tophat.fun.utilities.Methods;
 
