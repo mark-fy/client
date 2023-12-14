@@ -8,7 +8,7 @@ import net.fabricmc.loader.api.metadata.Person;
 
 import java.util.stream.Collectors;
 
-public class TopHat implements ClientModInitializer {
+public class TopHat implements ClientModInitializer{
 
     private final String name;
     private final String version;
@@ -48,4 +48,5 @@ public class TopHat implements ClientModInitializer {
     public String getAuthors() {
         return this.authors;
     }
+
 }
