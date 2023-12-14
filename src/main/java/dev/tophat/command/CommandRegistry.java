@@ -6,6 +6,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.tophat.command.impl.HelpCommand;
 import dev.tophat.command.impl.TestCommand;
+import dev.tophat.command.impl.ToggleCommand;
 import dev.tophat.command.impl.VerticalClipCommand;
 import dev.tophat.structure.Registry;
 import dev.tophat.util.MessageUtil;
@@ -29,6 +30,7 @@ public class CommandRegistry extends Registry<Command> {
     public CommandRegistry() {
         this.register(new VerticalClipCommand());
         this.register(new HelpCommand());
+        this.register(new ToggleCommand());
     }
 
     public void handle(final String message) {

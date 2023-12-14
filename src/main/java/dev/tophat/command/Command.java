@@ -20,7 +20,6 @@ public abstract class Command implements Comparable<Command> {
 
     public abstract void build(final LiteralArgumentBuilder<CommandSource> builder);
 
-
     protected LiteralArgumentBuilder<CommandSource> literal(final String name) {
         return LiteralArgumentBuilder.literal(name);
     }

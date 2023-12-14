@@ -1,6 +1,7 @@
 package dev.tophat;
 
 import dev.tophat.command.CommandRegistry;
+import dev.tophat.module.ModuleRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -25,17 +26,22 @@ public class TopHat implements ClientModInitializer{
     }
 
     private CommandRegistry commandRegistry;
-
+    private ModuleRegistry moduleRegistry;
 
     @Override
     public void onInitializeClient() {
         INSTANCE = this;
 
         this.commandRegistry = new CommandRegistry();
+        this.moduleRegistry = new ModuleRegistry();
     }
 
     public CommandRegistry getCommandRegistry() {
         return this.commandRegistry;
+    }
+
+    public ModuleRegistry getModuleRegistry() {
+        return this.moduleRegistry;
     }
 
     public String getName() {
