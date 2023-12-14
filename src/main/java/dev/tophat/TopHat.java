@@ -26,6 +26,7 @@ public class TopHat implements ClientModInitializer{
 
     private CommandRegistry commandRegistry;
 
+
     @Override
     public void onInitializeClient() {
         INSTANCE = this;

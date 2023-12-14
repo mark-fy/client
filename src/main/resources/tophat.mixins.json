@@ -9,7 +9,8 @@
     "event.ClientPlayerEntityMixin",
     "event.InGameHudMixin",
     "event.KeyboardMixin",
-    "event.MinecraftClientMixin"
+    "event.MinecraftClientMixin",
+    "base.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
