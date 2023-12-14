@@ -38,6 +38,12 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	implementation "de.florianmichael:DietrichEvents2:1.1.5"
+
+	implementation "io.github.spair:imgui-java-binding:${project.imgui_version}"
+	implementation "io.github.spair:imgui-java-lwjgl3:${project.imgui_version}"
+
+	implementation "io.github.spair:imgui-java-natives-windows:${project.imgui_version}"
+	implementation "io.github.spair:imgui-java-natives-linux:${project.imgui_version}"
 }
 
 processResources {

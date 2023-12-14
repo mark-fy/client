@@ -4,13 +4,15 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "LoadWorldMixin",
+    "base.MinecraftClientMixin",
     "command.ChatInputSuggestorMixin",
     "command.ChatScreenMixin",
     "event.ClientPlayerEntityMixin",
     "event.InGameHudMixin",
     "event.KeyboardMixin",
     "event.MinecraftClientMixin",
-    "base.MinecraftClientMixin"
+    "imgui.MinecraftClientMixin",
+    "imgui.TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
