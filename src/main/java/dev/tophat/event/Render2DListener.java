@@ -2,8 +2,6 @@ package dev.tophat.event;
 
 import de.florianmichael.dietrichevents2.AbstractEvent;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.util.math.MatrixStack;
 
 public interface Render2DListener {
 
