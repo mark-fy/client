@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.tophat.command.impl.HelpCommand;
 import dev.tophat.command.impl.TestCommand;
 import dev.tophat.structure.Registry;
 import dev.tophat.util.MessageUtil;
@@ -26,6 +27,7 @@ public class CommandRegistry extends Registry<Command> {
 
     public CommandRegistry() {
         this.register(new TestCommand());
+        this.register(new HelpCommand());
     }
 
     public void handle(final String message) {
