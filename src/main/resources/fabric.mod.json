@@ -1,44 +1,35 @@
 {
 	"schemaVersion": 1,
+
 	"id": "tophat",
 	"version": "${version}",
 	"name": "TopHat",
-	"description": "TopHat client for fabric",
+	"description": "Haka client ngl best (please change this line)",
 	"authors": [
 		"MarkGG",
-		"cfyre",
-		"sootysplash",
-		"heritsy"
+		"Fyre",
+		"Sootysplash",
+		"Heritsy",
+		"Dimeus",
+		"DisPro.jar"
 	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "sorry brah"
-	},
+
 	"license": "CC0-1.0",
 	"icon": "assets/tophat/icon.png",
+
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			"tophat.fun.TopHat"
-		],
 		"client": [
-			"tophat.fun.TopHatClient"
+			"fun.tophat.TopHat"
 		]
 	},
 	"mixins": [
-		"tophat.mixins.json",
-		{
-			"config": "tophat.client.mixins.json",
-			"environment": "client"
-		}
+		"tophat.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.1",
 		"minecraft": "~1.20.4",
 		"java": ">=17",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
