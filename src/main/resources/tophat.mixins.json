@@ -6,7 +6,8 @@
 		"LoadWorldMixin",
 		"command.ChatInputSuggestorMixin",
 		"command.ChatScreenMixin",
-		"event.ClientPlayerEntityMixin"
+		"event.ClientPlayerEntityMixin",
+		"event.MinecraftClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
