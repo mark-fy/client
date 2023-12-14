@@ -26,6 +26,7 @@
 	"mixins": [
 		"tophat.mixins.json"
 	],
+	"accessWidener": "tophat.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.15.1",
 		"minecraft": "~1.20.4",
