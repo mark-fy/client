@@ -1,5 +1,6 @@
-package fun.tophat;
+package dev.tophat;
 
+import dev.tophat.command.CommandRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -13,6 +14,8 @@ public class TopHat implements ClientModInitializer {
     private final String version;
     private final String authors;
 
+    public static TopHat INSTANCE;
+
     public TopHat() {
         final ModMetadata metadata = FabricLoader.getInstance().getModContainer("tophat").orElseThrow().getMetadata();
 
@@ -21,9 +24,17 @@ public class TopHat implements ClientModInitializer {
         this.authors = metadata.getAuthors().stream().map(Person::getName).collect(Collectors.joining(", "));
     }
 
+    private CommandRegistry commandRegistry;
+
     @Override
     public void onInitializeClient() {
+        INSTANCE = this;
 
+        this.commandRegistry = new CommandRegistry();
+    }
+
+    public CommandRegistry getCommandRegistry() {
+        return this.commandRegistry;
     }
 
     public String getName() {

@@ -1,12 +1,12 @@
 {
 	"required": true,
-	"package": "fun.tophat.mixin",
+	"package": "dev.tophat.mixin",
 	"compatibilityLevel": "JAVA_17",
-
 	"client": [
-		"LoadWorldMixin"
+		"LoadWorldMixin",
+		"command.ChatInputSuggestorMixin",
+		"command.ChatScreenMixin"
 	],
-
 	"injectors": {
 		"defaultRequire": 1
 	}

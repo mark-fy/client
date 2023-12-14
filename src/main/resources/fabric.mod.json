@@ -20,7 +20,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"client": [
-			"fun.tophat.TopHat"
+			"dev.tophat.TopHat"
 		]
 	},
 	"mixins": [
