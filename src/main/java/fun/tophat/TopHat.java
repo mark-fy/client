@@ -1,19 +1,40 @@
 package fun.tophat;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.fabricmc.loader.api.metadata.Person;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.stream.Collectors;
 
 public class TopHat implements ClientModInitializer {
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-    public static final Logger LOGGER = LoggerFactory.getLogger("tophat");
 
-	@Override
-	public void onInitializeClient() {
-		LOGGER.info("Hello Fabric world!");
-	}
+    private final String name;
+    private final String version;
+    private final String authors;
+
+    public TopHat() {
+        final ModMetadata metadata = FabricLoader.getInstance().getModContainer("tophat").orElseThrow().getMetadata();
+
+        this.name = metadata.getName();
+        this.version = metadata.getVersion().getFriendlyString();
+        this.authors = metadata.getAuthors().stream().map(Person::getName).collect(Collectors.joining(", "));
+    }
+
+    @Override
+    public void onInitializeClient() {
+
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public String getAuthors() {
+        return this.authors;
+    }
 }
