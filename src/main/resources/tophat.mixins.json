@@ -8,6 +8,7 @@
     "command.ChatScreenMixin",
     "event.ClientPlayerEntityMixin",
     "event.InGameHudMixin",
+    "event.KeyboardMixin",
     "event.MinecraftClientMixin"
   ],
   "injectors": {
