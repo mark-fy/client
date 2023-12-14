@@ -6,6 +6,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.tophat.command.impl.HelpCommand;
 import dev.tophat.command.impl.TestCommand;
+import dev.tophat.command.impl.VerticalClipCommand;
 import dev.tophat.structure.Registry;
 import dev.tophat.util.MessageUtil;
 import net.minecraft.client.MinecraftClient;
@@ -26,7 +27,7 @@ public class CommandRegistry extends Registry<Command> {
     public final static Character PREFIX = '.';
 
     public CommandRegistry() {
-        this.register(new TestCommand());
+        this.register(new VerticalClipCommand());
         this.register(new HelpCommand());
     }
 
