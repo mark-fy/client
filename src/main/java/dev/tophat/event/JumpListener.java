@@ -8,7 +8,7 @@ public interface JumpListener {
 
     class JumpEvent extends AbstractEvent<JumpListener> {
         public static final int ID = 3;
-        private float yaw;
+        private final float yaw;
 
         public JumpEvent(final float yaw) {
             this.yaw = yaw;
