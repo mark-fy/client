@@ -21,6 +21,7 @@ import net.minecraft.block.BlockSilverfish;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockWall;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -43,6 +44,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import tophat.fun.utilities.player.RotationUtil;
 
 public class Item
 {
@@ -314,8 +316,14 @@ public class Item
 
     protected MovingObjectPosition getMovingObjectPositionFromPlayer(World worldIn, EntityPlayer playerIn, boolean useLiquids)
     {
-        float f = playerIn.rotationPitch;
-        float f1 = playerIn.rotationYaw;
+        float yaw = playerIn.rotationYaw;
+        float pitch = playerIn.rotationPitch;
+        if(playerIn == Minecraft.getMinecraft().thePlayer) {
+            yaw = RotationUtil.yaw;
+            pitch = RotationUtil.pitch;
+        }
+        float f = pitch;
+        float f1 = yaw;
         double d0 = playerIn.posX;
         double d1 = playerIn.posY + (double)playerIn.getEyeHeight();
         double d2 = playerIn.posZ;

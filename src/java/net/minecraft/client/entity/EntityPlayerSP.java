@@ -42,13 +42,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MovementInput;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import tophat.fun.events.Event;
@@ -58,6 +52,8 @@ import tophat.fun.events.impl.player.MotionEvent;
 import tophat.fun.events.impl.player.OmniSprintEvent;
 import tophat.fun.events.impl.player.RotationEvent;
 import tophat.fun.events.impl.player.SlowDownEvent;
+import tophat.fun.utilities.player.PlayerUtil;
+import tophat.fun.utilities.player.RotationUtil;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -124,7 +120,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
             if (this.isRiding())
             {
-                this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+                this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(RotationUtil.yaw, RotationUtil.pitch, this.onGround));
                 this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
             }
             else
@@ -134,12 +130,23 @@ public class EntityPlayerSP extends AbstractClientPlayer
         }
     }
 
+
+    @Override
+    public Vec3 getLookVec() {
+        return this.getLook(1.0F);
+    }
+
+    /**
+     * interpolated look vector
+     */
+    @Override
+    public Vec3 getLook(float partialTicks) {
+        return getVectorForRotation(RotationUtil.pitch, RotationUtil.yaw);
+    }
+
     public void onUpdateWalkingPlayer() {
         MotionEvent eventMotion = new MotionEvent(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround);
-        RotationEvent rotationEvent = new RotationEvent(this.rotationYaw, this.rotationPitch);
-        rotationEvent.setState(Event.State.PRE);
         eventMotion.setState(Event.State.PRE);
-        rotationEvent.call();
         eventMotion.call();
         boolean sprinting = this.isSprinting();
 
@@ -149,6 +156,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
             } else {
                 this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SPRINTING));
             }
+
+            PlayerUtil.sprintReset = false;
 
             this.serverSprintState = sprinting;
         }
@@ -170,24 +179,24 @@ public class EntityPlayerSP extends AbstractClientPlayer
             double yDiff = eventMotion.getY() - this.lastReportedPosY;
             double zDiff = eventMotion.getZ() - this.lastReportedPosZ;
 
-            double yawDiff = rotationEvent.getYaw() - this.lastReportedYaw;
-            double pitchDiff = rotationEvent.getPitch() - this.lastReportedPitch;
+            double yawDiff = RotationUtil.yaw - this.lastReportedYaw;
+            double pitchDiff = RotationUtil.pitch - this.lastReportedPitch;
 
             boolean moving = xDiff * xDiff + yDiff * yDiff + zDiff * zDiff > 9.0E-4D || this.positionUpdateTicks >= 20;
             boolean looking = yawDiff != 0.0D || pitchDiff != 0.0D;
 
             if (this.ridingEntity == null) {
                 if (moving && looking) {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(eventMotion.getX(), eventMotion.getY(), eventMotion.getZ(), rotationEvent.getYaw(), rotationEvent.getPitch(), eventMotion.isOnGround()));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(eventMotion.getX(), eventMotion.getY(), eventMotion.getZ(), RotationUtil.yaw, RotationUtil.pitch, eventMotion.isOnGround()));
                 } else if (moving) {
                     this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(eventMotion.getX(), eventMotion.getY(), eventMotion.getZ(), eventMotion.isOnGround()));
                 } else if (looking) {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotationEvent.getYaw(), rotationEvent.getPitch(), eventMotion.isOnGround()));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(RotationUtil.yaw, RotationUtil.pitch, eventMotion.isOnGround()));
                 } else {
                     this.sendQueue.addToSendQueue(new C03PacketPlayer(eventMotion.isOnGround()));
                 }
             } else {
-                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, rotationEvent.getYaw(), rotationEvent.getPitch(), eventMotion.isOnGround()));
+                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, RotationUtil.yaw, RotationUtil.pitch, eventMotion.isOnGround()));
                 moving = false;
             }
 
@@ -201,14 +210,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
 
             if (looking) {
-                this.lastReportedYaw = rotationEvent.getYaw();
-                this.lastReportedPitch = rotationEvent.getPitch();
+                this.lastReportedYaw = RotationUtil.yaw;
+                this.lastReportedPitch = RotationUtil.pitch;
             }
         }
         eventMotion.setState(Event.State.POST);
-        rotationEvent.setState(Event.State.POST);
         eventMotion.call();
-        rotationEvent.call();
     }
 
     public EntityItem dropOneItem(boolean dropAll)
@@ -661,7 +668,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
         boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 
-        if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag3 && (!this.isUsingItem() || slowDownEvent.isSprint()) && !this.isPotionActive(Potion.blindness)) {
+        float movef = this.movementInput.moveForward;
+        if (PlayerUtil.sprintReset) {
+            movef = this.movementInput.moveForward;
+            this.movementInput.moveForward = 0;
+        }
+        if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag3 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness)) {
             if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown()) {
                 this.sprintToggleTimer = 7;
             } else {
@@ -669,18 +681,19 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
         }
 
-        if (!this.isSprinting() && this.movementInput.moveForward >= f && flag3 && (!this.isUsingItem() || slowDownEvent.isSprint()) && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown()) {
+        if (!this.isSprinting() && this.movementInput.moveForward >= f && flag3 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown()) {
             this.setSprinting(true);
         }
 
-        OmniSprintEvent sprintEvent = new OmniSprintEvent(this.movementInput.moveForward < f);
-        sprintEvent.call();
-        if (this.isSprinting() && (sprintEvent.isSprintCheck() || this.isCollidedHorizontally || !flag3)) {
+        final OmniSprintEvent sprintCheckEvent = new OmniSprintEvent(this.movementInput.moveForward < f);
+        sprintCheckEvent.call();
+        if (this.isSprinting() && (sprintCheckEvent.isSprintCheck() || this.isCollidedHorizontally || !flag3)) {
             this.setSprinting(false);
         }
 
-        if (!slowDownEvent.isSprint() && this.isUsingItem() && !this.isRiding()) {
-            this.setSprinting(false);
+        if (PlayerUtil.sprintReset) {
+            this.movementInput.moveForward = movef;
+            PlayerUtil.sprintReset = false;
         }
 
         if (this.capabilities.allowFlying) {

@@ -13,6 +13,8 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import tophat.fun.utilities.player.PlayerUtil;
+import tophat.fun.utilities.player.RotationUtil;
 
 public class GuiInventory extends InventoryEffectRenderer
 {
@@ -73,6 +75,7 @@ public class GuiInventory extends InventoryEffectRenderer
 
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent)
     {
+        GlStateManager.enableDepth();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)posX, (float)posY, 50.0F);
@@ -83,6 +86,11 @@ public class GuiInventory extends InventoryEffectRenderer
         float f2 = ent.rotationPitch;
         float f3 = ent.prevRotationYawHead;
         float f4 = ent.rotationYawHead;
+
+        final float beforeYaw = RotationUtil.yaw;
+        final float beforePitch = RotationUtil.pitch;
+        final float beforePrevPitch = RotationUtil.prevPitch;
+
         GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
@@ -92,6 +100,11 @@ public class GuiInventory extends InventoryEffectRenderer
         ent.rotationPitch = -((float)Math.atan((double)(mouseY / 40.0F))) * 20.0F;
         ent.rotationYawHead = ent.rotationYaw;
         ent.prevRotationYawHead = ent.rotationYaw;
+        if(ent == Minecraft.getMinecraft().thePlayer) {
+            RotationUtil.yaw = ent.rotationYawHead;
+            RotationUtil.pitch = ent.rotationPitch;
+            RotationUtil.prevPitch = ent.prevRotationPitch;
+        }
         GlStateManager.translate(0.0F, 0.0F, 0.0F);
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         rendermanager.setPlayerViewY(180.0F);
@@ -103,6 +116,11 @@ public class GuiInventory extends InventoryEffectRenderer
         ent.rotationPitch = f2;
         ent.prevRotationYawHead = f3;
         ent.rotationYawHead = f4;
+        if(ent == Minecraft.getMinecraft().thePlayer) {
+            RotationUtil.yaw = beforeYaw;
+            RotationUtil.pitch = beforePitch;
+            RotationUtil.prevPitch = beforePrevPitch;
+        }
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();

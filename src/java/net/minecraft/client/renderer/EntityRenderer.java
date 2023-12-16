@@ -96,9 +96,11 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 import tophat.fun.events.impl.player.ReachEvent;
+import tophat.fun.events.impl.player.RotationEvent;
 import tophat.fun.events.impl.render.PerspectiveEvent;
 import tophat.fun.events.impl.render.Render3DEvent;
 import tophat.fun.menu.CustomMainMenu;
+import tophat.fun.utilities.player.RotationUtil;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -1223,6 +1225,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.smoothCamPitch = 0.0F;
                 this.mc.thePlayer.setAngles(f2, f3 * (float)i);
             }
+
+            RotationUtil.prevYaw = RotationUtil.yaw;
+            RotationUtil.prevPitch = RotationUtil.pitch;
+            final RotationEvent rotationEvent = new RotationEvent(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
+            rotationEvent.call();
+            RotationUtil.yaw = rotationEvent.getYaw();
+            RotationUtil.pitch = rotationEvent.getPitch();
         }
 
         this.mc.mcProfiler.endSection();

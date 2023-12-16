@@ -12,6 +12,7 @@ import java.util.UUID;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
@@ -53,6 +54,7 @@ import net.minecraft.world.WorldServer;
 import tophat.fun.Client;
 import tophat.fun.events.impl.player.DelayJumpEvent;
 import tophat.fun.modules.impl.render.HitAnimations;
+import tophat.fun.utilities.player.RotationUtil;
 
 public abstract class EntityLivingBase extends Entity
 {
@@ -304,9 +306,14 @@ public abstract class EntityLivingBase extends Entity
         this.prevMovedDistance = this.movedDistance;
         this.prevRenderYawOffset = this.renderYawOffset;
         this.prevRotationYawHead = this.rotationYawHead;
-        this.prevRotationPitchHead = this.rotationPitchHead;
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
+
+        if(this == Minecraft.getMinecraft().thePlayer) {
+            this.prevRotationYawHead = RotationUtil.yaw;
+            RotationUtil.prevPitch = RotationUtil.pitch;
+        }
+
         this.worldObj.theProfiler.endSection();
     }
 
@@ -813,31 +820,29 @@ public abstract class EntityLivingBase extends Entity
                     }
                 }
 
-                if (flag)
-                {
-                    this.worldObj.setEntityState(this, (byte)2);
 
-                    if (source != DamageSource.drown)
-                    {
+                if (flag) {
+                    this.worldObj.setEntityState(this, (byte) 2);
+
+                    if (source != DamageSource.drown) {
                         this.setBeenAttacked();
                     }
 
-                    if (entity != null)
-                    {
+                    if (entity != null) {
                         double d1 = entity.posX - this.posX;
                         double d0;
 
-                        for (d0 = entity.posZ - this.posZ; d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D)
-                        {
+                        for (d0 = entity.posZ - this.posZ; d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
                             d1 = (Math.random() - Math.random()) * 0.01D;
                         }
 
-                        this.attackedAtYaw = (float)(MathHelper.atan2(d0, d1) * 180.0D / Math.PI - (double)this.rotationYaw);
+                        float yaw = this.rotationYaw;
+                        if(this == Minecraft.getMinecraft().thePlayer)
+                            yaw = RotationUtil.yaw;
+                        this.attackedAtYaw = (float) (MathHelper.atan2(d0, d1) * 180.0D / Math.PI - (double) yaw);
                         this.knockBack(entity, amount, d1, d0);
-                    }
-                    else
-                    {
-                        this.attackedAtYaw = (float)((int)(Math.random() * 2.0D) * 180);
+                    } else {
+                        this.attackedAtYaw = (float) ((int) (Math.random() * 2.0D) * 180);
                     }
                 }
 
@@ -1588,34 +1593,32 @@ public abstract class EntityLivingBase extends Entity
         }
 
         this.onLivingUpdate();
-        double d0 = this.posX - this.prevPosX;
-        double d1 = this.posZ - this.prevPosZ;
-        float f = (float)(d0 * d0 + d1 * d1);
-        float f1 = this.renderYawOffset;
+
+        double deltaX = this.posX - this.prevPosX;
+        double deltaZ = this.posZ - this.prevPosZ;
+        float distance = (float) (deltaX * deltaX + deltaZ * deltaZ);
+        float yawHead = rotationYawHead;
+        if(this == Minecraft.getMinecraft().thePlayer)
+            yawHead = RotationUtil.yaw;
+        float offset = renderYawOffset;
+
         float f2 = 0.0F;
         this.prevOnGroundSpeedFactor = this.onGroundSpeedFactor;
         float f3 = 0.0F;
 
-        if (f > 0.0025000002F)
-        {
-            f3 = 1.0F;
-            f2 = (float)Math.sqrt((double)f) * 3.0F;
-            f1 = (float)MathHelper.atan2(d1, d0) * 180.0F / (float)Math.PI - 90.0F;
-        }
+        if (distance > 0.0025000002F)
+            offset = (float) MathHelper.atan2(deltaZ, deltaX) * 180.0F / (float) Math.PI - 90.0F;
 
         if (this.swingProgress > 0.0F)
-        {
-            f1 = this.rotationYaw;
-        }
+            offset = yawHead;
 
-        if (!this.onGround)
-        {
+        if (!this.onGround) {
             f3 = 0.0F;
         }
 
         this.onGroundSpeedFactor += (f3 - this.onGroundSpeedFactor) * 0.3F;
         this.worldObj.theProfiler.startSection("headTurn");
-        f2 = this.updateDistance(f1, f2);
+        f2 = this.updateDistance(offset, f2);
         this.worldObj.theProfiler.endSection();
         this.worldObj.theProfiler.startSection("rangeChecks");
 
@@ -1663,35 +1666,20 @@ public abstract class EntityLivingBase extends Entity
         this.movedDistance += f2;
     }
 
-    protected float updateDistance(float p_110146_1_, float p_110146_2_)
-    {
-        float f = MathHelper.wrapAngleTo180_float(p_110146_1_ - this.renderYawOffset);
-        this.renderYawOffset += f * 0.3F;
-        float f1 = MathHelper.wrapAngleTo180_float(this.rotationYaw - this.renderYawOffset);
-        boolean flag = f1 < -90.0F || f1 >= 90.0F;
+    protected float updateDistance(float p_110146_1_, float p_110146_2_) {
+        float yaw = this.rotationYaw;
+        if(this == Minecraft.getMinecraft().thePlayer)
+            yaw = RotationUtil.yaw;
+        float offsetCalc = MathHelper.wrapAngleTo180_float(p_110146_1_ - renderYawOffset);
+        renderYawOffset += offsetCalc * 0.3F;
+        float curOffset = MathHelper.wrapAngleTo180_float(yaw - renderYawOffset);
 
-        if (f1 < -75.0F)
-        {
-            f1 = -75.0F;
-        }
+        curOffset = MathHelper.clamp_float(curOffset, -75, 75);
 
-        if (f1 >= 75.0F)
-        {
-            f1 = 75.0F;
-        }
+        renderYawOffset = yaw - curOffset;
 
-        this.renderYawOffset = this.rotationYaw - f1;
-
-        if (f1 * f1 > 2500.0F)
-        {
-            this.renderYawOffset += f1 * 0.2F;
-        }
-
-        if (flag)
-        {
-            p_110146_2_ *= -1.0F;
-        }
-
+        if (curOffset * curOffset > 2500.0F)
+            renderYawOffset += curOffset * 0.2F;
         return p_110146_2_;
     }
 

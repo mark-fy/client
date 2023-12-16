@@ -31,6 +31,7 @@ import net.optifine.shaders.Shaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
+import tophat.fun.utilities.player.RotationUtil;
 
 public abstract class RendererLivingEntity<T extends EntityLivingBase> extends Render<T>
 {
@@ -120,8 +121,12 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
             this.mainModel.isChild = entity.isChild();
 
             try {
+                float yaw = entity.rotationYawHead;
+                if(entity == Minecraft.getMinecraft().thePlayer) {
+                    yaw = RotationUtil.yaw;
+                }
                 float f = this.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-                float f1 = this.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
+                float f1 = this.interpolateRotation(entity.prevRotationYawHead, yaw, partialTicks);
                 float f2 = f1 - f;
 
                 if (this.mainModel.isRiding && entity.ridingEntity instanceof EntityLivingBase) {
@@ -153,6 +158,10 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                 } else {
                     f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
                 }
+
+                if (entity == Minecraft.getMinecraft().thePlayer)
+                    f7 = RotationUtil.prevPitch + (RotationUtil.pitch - RotationUtil.prevPitch) * partialTicks;
+
                 this.renderLivingAt(entity, x, y, z);
                 float f8 = this.handleRotationFloat(entity, partialTicks);
                 this.rotateCorpse(entity, f8, f, partialTicks);

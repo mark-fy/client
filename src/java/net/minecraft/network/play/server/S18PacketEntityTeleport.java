@@ -1,11 +1,14 @@
 package net.minecraft.network.play.server;
 
 import java.io.IOException;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.util.MathHelper;
+import tophat.fun.utilities.player.RotationUtil;
 
 public class S18PacketEntityTeleport implements Packet<INetHandlerPlayClient>
 {
@@ -21,16 +24,18 @@ public class S18PacketEntityTeleport implements Packet<INetHandlerPlayClient>
     {
     }
 
+
     public S18PacketEntityTeleport(Entity entityIn)
     {
         this.entityId = entityIn.getEntityId();
         this.posX = MathHelper.floor_double(entityIn.posX * 32.0D);
         this.posY = MathHelper.floor_double(entityIn.posY * 32.0D);
         this.posZ = MathHelper.floor_double(entityIn.posZ * 32.0D);
-        this.yaw = (byte)((int)(entityIn.rotationYaw * 256.0F / 360.0F));
-        this.pitch = (byte)((int)(entityIn.rotationPitch * 256.0F / 360.0F));
+        this.yaw = (byte)((int)((entityIn == Minecraft.getMinecraft().thePlayer ? RotationUtil.yaw : entityIn.rotationYaw) * 256.0F / 360.0F));
+        this.pitch = (byte)((int)((entityIn == Minecraft.getMinecraft().thePlayer ? RotationUtil.pitch : entityIn.rotationPitch) * 256.0F / 360.0F));
         this.onGround = entityIn.onGround;
     }
+
 
     public S18PacketEntityTeleport(int entityIdIn, int posXIn, int posYIn, int posZIn, byte yawIn, byte pitchIn, boolean onGroundIn)
     {

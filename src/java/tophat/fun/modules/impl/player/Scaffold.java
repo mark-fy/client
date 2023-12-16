@@ -45,7 +45,7 @@ public class Scaffold extends Module {
                 bpos = vec.addVector(0.0, -0.5, 0.0);
                 BlockPos yawbpos = BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord);
                 yaw = new Vec3(yawbpos.getX() + 0.5, yawbpos.getY() + 0.5, yawbpos.getZ() + 0.5);
-                reqyaw = 45 * (Math.round(RotationUtil.getRotationsBlock(yaw)[0] / 45));
+                reqyaw = 45 * (Math.round(RotationUtil.getRotationsToVector(yaw)[0] / 45));
             }
 
             if(reqyaw % 45 == 0 && reqyaw % 90 != 0){
@@ -75,14 +75,14 @@ public class Scaffold extends Module {
                     if(mc.theWorld.getBlockState(BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord)).getBlock() instanceof BlockAir) {
                         mc.thePlayer.rotationYaw = reqyaw;
                     }
-                    mc.thePlayer.rotationPitch = RotationUtil.getRotationsBlock(bpos)[1];
+                    mc.thePlayer.rotationPitch = RotationUtil.getRotationsToVector(bpos)[1];
 
                 } else {
 
                     if(mc.theWorld.getBlockState(BlockPos.ORIGIN.add(vec.xCoord, vec.yCoord, vec.zCoord)).getBlock() instanceof BlockAir) {
-                        event.setYaw(RotationUtil.getRotationsBlock(yaw)[0]);
+                        event.setYaw(RotationUtil.getRotationsToVector(yaw)[0]);
                     }
-                    event.setPitch(RotationUtil.getRotationsBlock(bpos)[1]);
+                    event.setPitch(RotationUtil.getRotationsToVector(bpos)[1]);
                 }
 
                 mc.thePlayer.rotationYawHead = event.getYaw();

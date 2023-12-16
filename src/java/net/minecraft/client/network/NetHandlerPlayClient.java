@@ -213,6 +213,7 @@ import org.apache.logging.log4j.Logger;
 import tophat.fun.events.impl.network.PacketEvent;
 import tophat.fun.events.impl.player.DeathEvent;
 import tophat.fun.menu.CustomMainMenu;
+import tophat.fun.utilities.player.RotationUtil;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient
 {
@@ -509,29 +510,29 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
     }
 
-    public void handleEntityTeleport(S18PacketEntityTeleport packetIn)
-    {
+    public void handleEntityTeleport(S18PacketEntityTeleport packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
         Entity entity = this.clientWorldController.getEntityByID(packetIn.getEntityId());
 
-        if (entity != null)
-        {
+        if (entity != null) {
             entity.serverPosX = packetIn.getX();
             entity.serverPosY = packetIn.getY();
             entity.serverPosZ = packetIn.getZ();
-            double d0 = (double)entity.serverPosX / 32.0D;
-            double d1 = (double)entity.serverPosY / 32.0D;
-            double d2 = (double)entity.serverPosZ / 32.0D;
-            float f = (float)(packetIn.getYaw() * 360) / 256.0F;
-            float f1 = (float)(packetIn.getPitch() * 360) / 256.0F;
+            double d0 = (double) entity.serverPosX / 32.0D;
+            double d1 = (double) entity.serverPosY / 32.0D;
+            double d2 = (double) entity.serverPosZ / 32.0D;
+            float f = (float) (packetIn.getYaw() * 360) / 256.0F;
+            float f1 = (float) (packetIn.getPitch() * 360) / 256.0F;
 
-            if (Math.abs(entity.posX - d0) < 0.03125D && Math.abs(entity.posY - d1) < 0.015625D && Math.abs(entity.posZ - d2) < 0.03125D)
-            {
+            if (Math.abs(entity.posX - d0) < 0.03125D && Math.abs(entity.posY - d1) < 0.015625D && Math.abs(entity.posZ - d2) < 0.03125D) {
                 entity.setPositionAndRotation2(entity.posX, entity.posY, entity.posZ, f, f1, 3, true);
-            }
-            else
-            {
+            } else {
                 entity.setPositionAndRotation2(d0, d1, d2, f, f1, 3, true);
+            }
+
+            if(entity == Minecraft.getMinecraft().thePlayer) {
+                RotationUtil.yaw = f;
+                RotationUtil.pitch = f1;
             }
 
             entity.onGround = packetIn.getOnGround();
@@ -629,16 +630,22 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
         if (packetIn.func_179834_f().contains(S08PacketPlayerPosLook.EnumFlags.X_ROT))
         {
-            f1 += entityplayer.rotationPitch;
+            f1 += RotationUtil.pitch;
         }
 
         if (packetIn.func_179834_f().contains(S08PacketPlayerPosLook.EnumFlags.Y_ROT))
         {
-            f += entityplayer.rotationYaw;
+            f += RotationUtil.yaw;
         }
 
+
+        final float yaw = f;
+        final float pitch = f1;
         entityplayer.setPositionAndRotation(d0, d1, d2, f, f1);
-        this.netManager.sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(entityplayer.posX, entityplayer.getEntityBoundingBox().minY, entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch, false));
+        RotationUtil.yaw = yaw;
+        RotationUtil.pitch = pitch;
+
+        this.netManager.sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(entityplayer.posX, entityplayer.getEntityBoundingBox().minY, entityplayer.posZ, yaw, pitch, false));
 
         if (!this.doneLoadingTerrain)
         {

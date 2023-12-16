@@ -2,6 +2,8 @@ package tophat.fun.modules.impl.combat;
 
 import io.github.nevalackin.radbus.Listen;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import tophat.fun.events.Event;
 import tophat.fun.events.impl.game.UpdateEvent;
 import tophat.fun.events.impl.player.MotionEvent;
@@ -14,10 +16,13 @@ import tophat.fun.modules.base.settings.impl.NumberSetting;
 import tophat.fun.modules.base.settings.impl.StringSetting;
 import tophat.fun.utilities.Methods;
 import tophat.fun.utilities.math.MathUtil;
+import tophat.fun.utilities.player.PlayerUtil;
 import tophat.fun.utilities.player.RotationUtil;
 import tophat.fun.utilities.render.esp.EntityESPUtil;
 
 import java.awt.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +38,8 @@ public class Aura extends Module {
     private final BooleanSetting attackWhenLooking = new BooleanSetting(this, "AttackWhenLooking", false);
     private final BooleanSetting targetESP = new BooleanSetting(this, "TargetESP", false);
     private final BooleanSetting lockAim = new BooleanSetting(this, "LockAim", false);
+    private final BooleanSetting randomizeRotations = new BooleanSetting(this, "RandomizeRotations", false);
+    private final BooleanSetting mouseFix = new BooleanSetting(this, "GCDFix", true);
 
     public static EntityLivingBase target;
     int cpsdelay = 0;
@@ -51,7 +58,7 @@ public class Aura extends Module {
             List<EntityLivingBase> targets = Methods.mc.theWorld.loadedEntityList.stream()
                     .filter(entity -> entity instanceof EntityLivingBase)
                     .map(entity -> (EntityLivingBase) entity)
-                    .filter(entityLivingBase -> entityLivingBase.getDistanceToEntity(mc.thePlayer) <= aimRange.get().floatValue()
+                    .filter(entityLivingBase -> PlayerUtil.getRange(entityLivingBase) <= aimRange.get().floatValue()
                             && entityLivingBase != Methods.mc.thePlayer
                             && !entityLivingBase.isDead
                             && entityLivingBase.getHealth() > 0
@@ -71,7 +78,7 @@ public class Aura extends Module {
         cpsdelay = (int) ((Math.random() * (maxCPS.value.intValue() - minCPS.value.intValue())) + minCPS.value.intValue());
 
         if(target != null && !target.isDead){
-            if(mc.thePlayer.getDistanceToEntity(target) <= reach.get().floatValue() && time <= System.currentTimeMillis() + cpsdelay){
+            if(PlayerUtil.getRange(target) <= reach.get().floatValue() && time <= System.currentTimeMillis() + cpsdelay){
                 if(attackWhenLooking.get() && mc.pointedEntity != target) {
                     return;
                 }
@@ -88,18 +95,61 @@ public class Aura extends Module {
     public void onRotation(RotationEvent event) {
         if(event.getState() == Event.State.PRE) {
             if(target != null && !target.isDead){
+                float[] rotations = getRotations();
+
                 if(lockAim.get()) {
-                    mc.thePlayer.rotationYaw = RotationUtil.getRotationsNeeded(target)[0];
-                    mc.thePlayer.rotationPitch = RotationUtil.getRotationsNeeded(target)[1];
-                } else {
-                    event.setYaw(RotationUtil.getRotationsNeeded(target)[0]);
-                    event.setPitch(RotationUtil.getRotationsNeeded(target)[1]);
+                    mc.thePlayer.rotationYaw = rotations[0];
+                    mc.thePlayer.rotationPitch = rotations[1];
                 }
 
-                mc.thePlayer.rotationYawHead = event.getYaw();
-                mc.thePlayer.renderYawOffset = event.getYaw();
+                event.setYaw(rotations[0]);
+                event.setPitch(rotations[1]);
             }
         }
+    }
+
+    private float[] getRotations() {
+        // Initial values
+        final double eyeX = mc.thePlayer.posX;
+        final double eyeY = mc.thePlayer.posY + mc.thePlayer.getEyeHeight();
+        final double eyeZ = mc.thePlayer.posZ;
+
+        // Finding ideal aim vector
+        Vec3 aimVector = RotationUtil.getBestVector(mc.thePlayer.getPositionEyes(1f), target.getEntityBoundingBox());
+
+        double entityX = aimVector.xCoord;
+        double entityY = aimVector.yCoord;
+        double entityZ = aimVector.zCoord;
+
+        // Randomizing rotations, bypasses Intave, I don't know about Polar
+        if(randomizeRotations.get()) {
+            try {
+                entityX += SecureRandom.getInstanceStrong().nextDouble() * 0.1;
+                entityY += SecureRandom.getInstanceStrong().nextDouble() * 0.1;
+                entityZ += SecureRandom.getInstanceStrong().nextDouble() * 0.1;
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        // Rotation calculation
+        double x = entityX - eyeX;
+        double y = entityY - eyeY;
+        double z = entityZ - eyeZ;
+
+        double angle = MathHelper.sqrt_double(x * x + z * z);
+
+        float yawAngle = (float) (MathHelper.atan2(z, x) * 180.0D / Math.PI) - 90.0F;
+        float pitchAngle = (float) (-(MathHelper.atan2(y, angle) * 180.0D / Math.PI));
+
+        // Adding sensitivity to the rotations
+        if(mouseFix.get()) {
+            float[] fixed = RotationUtil.applyMouseFix(yawAngle, pitchAngle);
+            yawAngle = fixed[0];
+            pitchAngle = fixed[1];
+        }
+
+        return new float[] {yawAngle, pitchAngle};
     }
 
     @Listen
