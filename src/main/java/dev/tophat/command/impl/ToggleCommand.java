@@ -30,30 +30,5 @@ public class ToggleCommand extends Command {
                             return 1;
                         })
         );
-        /*
-        builder.then(
-                argument("module", StringArgumentType.string())
-                        .executes(context -> {
-                            final String moduleName = StringArgumentType.getString(context, "module");
-                            Module module = TopHat.INSTANCE.getModuleRegistry().getModule(moduleName);
-
-                            if(module != null) {
-                                module.toggle();
-                                MessageUtil.sendMessage(
-                                        Text.empty()
-                                                .append(Text.literal("Toggled " + moduleName + " ")).formatted(Formatting.GRAY)
-                                                .append(Text.literal(module.isEnabled() ? "on" : "off")).formatted(Formatting.BLUE)
-                                );
-                            } else {
-                                MessageUtil.sendMessage(
-                                        Text.empty()
-                                                .append(Text.literal("Module " + moduleName + " not found!")).formatted(Formatting.GRAY)
-                                );
-                            }
-
-                            return 1;
-                        })
-        );
-         */
     }
 }
