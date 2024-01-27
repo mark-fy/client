@@ -3,4 +3,4 @@ TopHat is made as a modification for Minecraft that improves your user experienc
 ## Features
 We have many features that improve the gameplay and framerate. All of our modules are togglable and customizable. We also allow using your own cloaks ingame.
 ## Developers
-MarkGG, fyre, sootysplash, heritsy, dimeus and DisPro.jar
+MarkGG, fyre and heritsy
